@@ -1,13 +1,14 @@
 # Distribution without npmjs
 
 Isoline test packages are attached to GitHub prereleases as `.tgz` files created
-by `npm pack`. The tarball is the package under `packages/react-native`, not a
+by `npm pack`. Each tarball is a package under `packages/react-native` or `packages/native`, not a
 GitHub source archive of the entire monorepo.
 
 ## Install
 
 ```sh
-npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.0/isoline-ui-react-native-0.1.0-alpha.0.tgz
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-react-native-0.1.0-alpha.1.tgz https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-native-0.1.0-alpha.1.tgz
+npx expo install expo-glass-effect
 ```
 
 Commit both package.json and the lockfile in each app. npm records the release
@@ -21,7 +22,7 @@ selected by the consuming Expo SDK.
 A downloaded archive also works:
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-0.1.0-alpha.0.tgz
+npm install ./vendor/isoline-ui-react-native-0.1.0-alpha.1.tgz
 ```
 
 For a local-file dependency, commit the archive or otherwise make the same path
@@ -52,3 +53,8 @@ are started from Actions → Publish prerelease → Run workflow after a version
 Only prerelease versions are accepted. A published version is left unchanged.
 If an upload partially fails, the workflow does not replace existing assets;
 inspect the draft before retrying.
+
+The native archive also includes Expo autolinking configuration and Android
+Kotlin/Gradle sources. See [native appearance](native.md) for rebuild requirements
+and migration. Native support is optional: install only the UI archive if the app
+does not use native appearance.

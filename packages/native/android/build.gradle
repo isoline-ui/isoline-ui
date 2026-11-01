@@ -1,0 +1,18 @@
+// Same layout as modules/expo-imap: expo-module-gradle-plugin applies the
+// Kotlin plugin and configures publishing itself.
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'isoline.modules.systemcolors'
+version = '0.1.0'
+
+android {
+  namespace 'isoline.modules.systemcolors'
+
+  defaultConfig {
+    versionCode 1
+    versionName '0.1.0'
+  }
+}

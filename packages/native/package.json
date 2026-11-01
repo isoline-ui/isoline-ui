@@ -1,0 +1,51 @@
+{
+  "name": "@isoline-ui/native",
+  "version": "0.1.0-alpha.1",
+  "description": "Native system colors and platform materials for Isoline UI",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "react-native": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "react-native": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./theme": {
+      "types": "./dist/dynamic-color.d.ts",
+      "default": "./src/dynamic-color.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "dist",
+    "android",
+    "expo-module.config.json",
+    "README.md",
+    "LICENSE",
+    "NOTICE.md"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/isoline-ui/isoline-ui.git",
+    "directory": "packages/native"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@isoline-ui/react-native": "0.1.0-alpha.1",
+    "expo": ">=57 <59",
+    "expo-glass-effect": ">=57 <59",
+    "react": ">=19.2 <20",
+    "react-native": ">=0.86 <0.89"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json",
+    "build": "tsc --project tsconfig.build.json"
+  }
+}

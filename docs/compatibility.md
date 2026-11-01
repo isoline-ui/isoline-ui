@@ -12,8 +12,10 @@ Peer ranges express intended compatibility, not proof of every intermediate
 version. The component showcase is the integration surface. Native iPhone
 and Android interaction checks are required before a stable release.
 
-No native modules are supplied by this alpha. Native peers must be installed
-using the version selected by each consuming Expo SDK.
+The optional `@isoline-ui/native` package supplies an Android Expo module and
+an iOS glass adapter. Native peers, including `expo-glass-effect`, must be
+installed using the version selected by each consuming Expo SDK. See [native
+appearance](native.md).
 
 ## Local verification
 

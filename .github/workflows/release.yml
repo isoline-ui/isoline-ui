@@ -1,5 +1,4 @@
 name: Publish prerelease
-
 on:
   workflow_dispatch:
     inputs:
@@ -7,21 +6,13 @@ on:
         description: Source commit or ref to package
         required: true
         default: main
-  push:
-    branches: [main]
-    paths: [.github/workflows/release.yml]
-
 permissions:
   contents: read
-
 concurrency:
   group: isoline-prerelease
   cancel-in-progress: false
-
 jobs:
   publish:
-    # Bootstrap the first release once; subsequent releases are started manually.
-    if: github.event_name == 'workflow_dispatch' || github.run_number == '1'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -35,45 +26,17 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npm run check
-      - name: Pack the checked package
-        shell: bash
-        run: |
-          set -euo pipefail
-          npm pack --workspace @isoline-ui/react-native --pack-destination "$RUNNER_TEMP" --json > "$RUNNER_TEMP/packed.json"
-          PACKAGE_FILE="$(node -p "JSON.parse(require('node:fs').readFileSync(process.argv[1], 'utf8'))[0].filename" "$RUNNER_TEMP/packed.json")"
-          cd "$RUNNER_TEMP"
-          sha256sum "$PACKAGE_FILE" > SHA256SUMS
-          printf 'PACKAGE_FILE=%s\n' "$PACKAGE_FILE" >> "$GITHUB_ENV"
-      - name: Upload and publish the prerelease
-        shell: bash
+      - run: npm run typecheck --workspace isoline-showcase
+      - run: npm run export:ios --workspace isoline-showcase
+        env:
+          EXPO_NO_TELEMETRY: 1
+          EXPO_OFFLINE: 1
+      - run: npm run export:android --workspace isoline-showcase
+        env:
+          EXPO_NO_TELEMETRY: 1
+          EXPO_OFFLINE: 1
+      - name: Pack both archives and publish the prerelease
+        run: node scripts/publish-prerelease.mjs
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          VERSION="$(node -p "require('./packages/react-native/package.json').version")"
-          node -e "if (!/^\\d+\\.\\d+\\.\\d+-[0-9A-Za-z.-]+$/.test(process.argv[1])) process.exit(1)" "$VERSION"
-          TAG="v$VERSION"
-          SOURCE_SHA="$(git rev-parse HEAD)"
-          URL="https://github.com/$GH_REPO/releases/download/$TAG/$PACKAGE_FILE"
-          NOTES="$RUNNER_TEMP/release-notes.md"
-          {
-            printf '# Isoline UI %s\n\n' "$VERSION"
-            printf 'Test installation without publishing Isoline to npmjs:\n\n'
-            printf '\x60\x60\x60sh\nnpm install %s\n\x60\x60\x60\n\n' "$URL"
-            printf 'The import name remains \x60@isoline-ui/react-native\x60. Keep native peer versions selected by your Expo SDK. Normal dependencies still use the configured registry.\n\n'
-            printf 'Package typecheck, tests, declaration build and export checks passed before packing. Metro sources, declarations, NativeWind preset and licence notices are included. Device interaction remains to be verified.\n\n'
-            printf 'Source commit: %s\n\nSHA256SUMS is attached. Published assets are never replaced.\n' "$SOURCE_SHA"
-          } > "$NOTES"
-          if gh release view "$TAG" --json isDraft --jq .isDraft > "$RUNNER_TEMP/is-draft"; then
-            if [ "$(cat "$RUNNER_TEMP/is-draft")" != true ]; then
-              echo "This version is already published; leaving its tag and assets unchanged."
-              exit 0
-            fi
-            gh release edit "$TAG" --draft=true --prerelease --latest=false --target "$SOURCE_SHA" --notes-file "$NOTES"
-          else
-            gh release create "$TAG" --draft --prerelease --latest=false --target "$SOURCE_SHA" --title "Isoline UI $VERSION" --notes-file "$NOTES"
-          fi
-          # Do not clobber an asset from another run, even on an incomplete draft.
-          gh release upload "$TAG" "$RUNNER_TEMP/$PACKAGE_FILE" "$RUNNER_TEMP/SHA256SUMS"
-          gh release edit "$TAG" --draft=false --prerelease --latest=false

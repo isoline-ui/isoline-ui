@@ -59,3 +59,9 @@ See the [package guide](packages/react-native/README.md),
 ## Licence
 
 MIT. Existing source notices are retained. See [NOTICE](NOTICE.md).
+
+## Native appearance
+
+Optional [`@isoline-ui/native`](packages/native/README.md) provides Android Material
+You system colors and iOS Liquid Glass surfaces, with platform and accessibility
+fallbacks. See [native integration](docs/native.md) and the showcase.

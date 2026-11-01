@@ -7,12 +7,13 @@
     "examples/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace @isoline-ui/react-native",
-    "typecheck": "npm run typecheck --workspace @isoline-ui/react-native",
+    "build": "npm run build --workspace @isoline-ui/react-native && npm run build --workspace @isoline-ui/native",
+    "typecheck": "npm run typecheck --workspace @isoline-ui/react-native && npm run typecheck --workspace @isoline-ui/native",
     "test": "node --test --experimental-strip-types tests/*.test.ts",
-    "check": "npm run typecheck && npm test && npm run build && node scripts/check-package.mjs",
-    "pack": "npm run build && npm pack --workspace @isoline-ui/react-native",
-    "showcase": "npm run start --workspace isoline-showcase"
+    "check": "npm run typecheck && npm test && npm run build && node scripts/check-package.mjs && npm run check:native",
+    "pack": "npm run build && npm pack --workspace @isoline-ui/react-native --workspace @isoline-ui/native",
+    "showcase": "npm run start --workspace isoline-showcase",
+    "check:native": "node scripts/check-native.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

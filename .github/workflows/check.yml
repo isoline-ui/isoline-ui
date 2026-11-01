@@ -25,3 +25,43 @@ jobs:
         env:
           EXPO_NO_TELEMETRY: 1
           EXPO_OFFLINE: 1
+  android-native:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npx expo prebuild --platform android --no-install
+        working-directory: examples/showcase
+        env:
+          EXPO_NO_TELEMETRY: 1
+      - run: ./gradlew :isoline-ui-native:compileDebugKotlin --stacktrace
+        working-directory: examples/showcase/android
+  ios-native:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npx expo prebuild --platform ios
+        working-directory: examples/showcase
+        env:
+          EXPO_NO_TELEMETRY: 1
+      - run: xcodebuild -workspace ios/IsolineUIShowcase.xcworkspace -scheme IsolineUIShowcase -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+        working-directory: examples/showcase

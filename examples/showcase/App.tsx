@@ -29,6 +29,8 @@ import {
   type ColorScheme,
 } from '@isoline-ui/react-native';
 
+import { MaterialSurface, useSystemTheme } from '@isoline-ui/native';
+
 type Brand = keyof typeof themes;
 export default function App() {
   const [ready] = useFonts({
@@ -62,8 +64,10 @@ function Showcase() {
   const [dialog, setDialog] = React.useState(false);
   const [menu, setMenu] = React.useState(false);
   const [status, setStatus] = React.useState('Choose a theme and try the controls.');
+  const [systemColors, setSystemColors] = React.useState(true);
+  const theme = useSystemTheme(themes[brand][scheme], systemColors);
   return (
-    <IsolineProvider theme={themes[brand][scheme]} labels={{ close: 'Close' }}>
+    <IsolineProvider theme={theme} labels={{ close: 'Close' }}>
       <ScrollView
         className="flex-1 bg-background"
         contentContainerStyle={{
@@ -96,6 +100,22 @@ function Showcase() {
             { id: 'dark', label: 'Dark' },
           ]}
         />
+        <View className="flex-row items-center justify-between">
+          <Text>Android system colors</Text>
+          <Switch
+            value={systemColors}
+            onValueChange={setSystemColors}
+            accessibilityLabel="Use Android system colors"
+          />
+        </View>
+        <MaterialSurface style={{ padding: 20, borderRadius: 24, gap: 12 }}>
+          <Text variant="heading">Platform material</Text>
+          <Text>Native Liquid Glass on supported iOS; a themed surface elsewhere.</Text>
+          <Button
+            label="Material action"
+            onPress={() => setStatus('Material action pressed.')}
+          />
+        </MaterialSurface>
         <Text variant="heading">Actions</Text>
         <Button label="Primary action" onPress={() => setStatus('Primary action pressed.')} />
         <Button

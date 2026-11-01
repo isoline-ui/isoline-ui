@@ -1,0 +1,6 @@
+{
+  "platforms": ["android"],
+  "android": {
+    "modules": ["isoline.modules.systemcolors.IsolineSystemColorsModule"]
+  }
+}
