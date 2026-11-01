@@ -46,12 +46,12 @@ jobs:
       - run: ./gradlew :isoline-ui-native:compileDebugKotlin --stacktrace
         working-directory: examples/showcase/android
   ios-native:
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 45
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '26.2'
+          xcode-version: '26.6'
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
