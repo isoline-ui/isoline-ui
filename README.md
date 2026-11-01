@@ -23,6 +23,23 @@ The runtime source is shipped for Metro to compile with the consuming app's
 NativeWind and Reanimated setup. Type declarations are generated separately.
 React and native runtimes are peer dependencies.
 
+## Test installation without npmjs
+
+The alpha package is distributed as an npm-compatible tarball on GitHub Releases.
+Install this fixed version from an app directory:
+
+```sh
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.0/isoline-ui-react-native-0.1.0-alpha.0.tgz
+```
+
+The import name remains `@isoline-ui/react-native`. Isoline itself is downloaded
+from GitHub; its normal dependencies and peers still use the app's configured
+registry. Keep the peer versions selected by your Expo SDK.
+
+Follow the package guide for the NativeWind content scan, preset and provider.
+Installing the dependency alone does not migrate the app's existing components.
+See [distribution](docs/distribution.md) for local tarballs and update rules.
+
 ## Development
 
 ```sh

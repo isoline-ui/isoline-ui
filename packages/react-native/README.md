@@ -1,11 +1,18 @@
 # @isoline-ui/react-native
 
-Expressive shared UI with platform-aware interaction. Initial alpha; not yet
-published to npm. The package name does not reserve the npm organisation.
+Expressive shared UI with platform-aware interaction. Initial alpha distributed through GitHub Releases; not published to npm. The package name does not reserve the npm organisation.
+
+## Install the test release
+
+```sh
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.0/isoline-ui-react-native-0.1.0-alpha.0.tgz
+```
+
+The URL is versioned and the package imports as `@isoline-ui/react-native`.
 
 ## Consumer setup
 
-After an authorised release, install the package and the peer dependencies
+Install the package and the peer dependencies
 matching your Expo SDK. Use `npx expo install` for native peers; do not install
 a second React or React Native runtime.
 
