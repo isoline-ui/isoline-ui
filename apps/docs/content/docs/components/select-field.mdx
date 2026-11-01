@@ -1,0 +1,44 @@
+---
+title: 'SelectField'
+description: 'Choose one named value from a short list.'
+---
+
+Use `SelectField` for a setting whose choices need more room than a button group. The field opens its own modal list and closes after a selection.
+
+## A type-safe picker
+
+```tsx
+import { useState } from 'react';
+import { SelectField } from '@isoline-ui/react-native';
+type SortOrder = 'newest' | 'oldest' | 'name';
+export function SortPicker() {
+  const [order, setOrder] = useState<SortOrder>('newest');
+  return (
+    <SelectField<SortOrder>
+      value={order}
+      onChange={setOrder}
+      accessibilityLabel="Sort order"
+      options={[
+        { id: 'newest', label: 'Newest first' },
+        { id: 'oldest', label: 'Oldest first' },
+        { id: 'name', label: 'By name' },
+      ]}
+    />
+  );
+}
+```
+
+## Keep the current value valid
+
+Choose an initial ID that exists in `options`. If options are loaded asynchronously, render the picker after you have a valid selection or provide a separate loading state.
+
+The current picker is a short, single-selection list. It does not provide searching, multi-select, an error prop, or a disabled prop. For many results, build a searchable list in your own sheet. Use [ButtonGroup](/en/docs/components/button-group) when all choices fit comfortably on the screen.
+
+## Props
+
+| Prop                 | Type / default                  | How to use it                               |
+| -------------------- | ------------------------------- | ------------------------------------------- |
+| `value`              | `T extends string · required`   | ID of the selected option.                  |
+| `options`            | `SelectOption<T>[] · required`  | Options with a unique id and visible label. |
+| `onChange`           | `(value: T) => void · required` | Store the selected ID.                      |
+| `accessibilityLabel` | `string · required`             | Name of the setting this picker changes.    |

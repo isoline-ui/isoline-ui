@@ -1,0 +1,58 @@
+---
+title: 'Dialog'
+description: 'Bitte um eine kurze Entscheidung oder eine kleine Eingabe.'
+---
+
+<ComponentPreview kind="overlays" />
+
+Verwende einen Dialog, wenn jemand vor dem Fortfahren eine Aktion bestätigen oder einen kleinen Wert eingeben soll. Ergänze eine Überschrift, die den nächsten Schritt erklärt, und eindeutige Aktionen.
+
+## Ein Bestätigungsdialog
+
+```tsx
+import { useState } from 'react';
+import { Button, Dialog, DialogActions, Text } from '@isoline-ui/react-native';
+export function ConfirmExample() {
+  const [open, setOpen] = useState(false);
+  const [archived, setArchived] = useState(false);
+  return (
+    <>
+      <Button label="Archive" onPress={() => setOpen(true)} />
+      <Dialog visible={open} onClose={() => setOpen(false)}>
+        <Text variant="heading">Archive this item?</Text>
+        <Text>You can find it again in your archive.</Text>
+        <DialogActions>
+          <Button label="Cancel" variant="ghost" size="s" onPress={() => setOpen(false)} />
+          <Button
+            label="Archive"
+            size="s"
+            onPress={() => {
+              setArchived(true);
+              setOpen(false);
+            }}
+          />
+        </DialogActions>
+      </Dialog>
+      {archived && <Text accessibilityLiveRegion="polite">Item archived.</Text>}
+    </>
+  );
+}
+```
+
+## Eingaben und längere Inhalte
+
+Der Dialoginhalt kann bei Bedarf scrollen und berücksichtigt Safe Areas. Für ein kleines Formular verwende ein `TextField` und fokussiere es über `onShow`; siehe [Overlays mit Formularen](/de/docs/guides/overlays). Längere Lesetexte oder mehrstufige Aufgaben gehören auf einen vollständigen Bildschirm.
+
+Der Dialog ruft beim Tippen auf den Hintergrund und bei plattformspezifischem Schließen deinen Callback auf. Eine getrennte Eigenschaft zum Verhindern des Schließens gibt es in dieser Version nicht. Behandle `onClose` in deiner App passend, wenn sonst ungespeicherte Arbeit verloren ginge, und biete klare Aktionen an.
+
+Deaktiviere bei asynchroner Arbeit den Absenden-Button während der Anfrage, zeige Fehler an und schließe erst nach Erfolg. `DialogActions` ordnet die Aktionen an. Es sendet und schließt nicht selbst.
+
+## Eigenschaften
+
+| Eigenschaft              | Typ / Standard          | Verwendung                                                 |
+| ------------------------ | ----------------------- | ---------------------------------------------------------- |
+| `visible`                | `boolean · required`    | Ob der Dialog sichtbar ist.                                |
+| `onClose`                | `() => void · required` | Schließe den Dialog in deinem App-Zustand.                 |
+| `onShow`                 | `() => void`            | Fokussiere ein Eingabefeld, sobald das Modal sichtbar ist. |
+| `children`               | `ReactNode · required`  | Überschrift, Inhalt und Aktionen.                          |
+| `DialogActions.children` | `ReactNode`             | Platziere Aktionsbuttons in der gemeinsamen Aktionszeile.  |

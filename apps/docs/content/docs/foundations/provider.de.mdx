@@ -1,0 +1,44 @@
+---
+title: 'IsolineProvider'
+description: 'Versorge alle Komponenten mit einem gemeinsamen Theme, Beschriftungen und optionalem haptischem Feedback.'
+---
+
+## Einmal am App-Einstieg ergänzen
+
+Platziere `IsolineProvider` nahe am App-Einstieg innerhalb von `SafeAreaProvider` und `GestureHandlerRootView`. Jede Isoline-Komponente muss im React-Baum darunter liegen.
+
+```tsx
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+
+<IsolineProvider theme={themes.yours.light} labels={{ close: 'Close' }}>
+  {/* Your screens */}
+</IsolineProvider>;
+```
+
+Der Provider stellt das Theme für NativeWind-Klassen und für Eigenschaften wie SVG- oder Switch-Farben bereit. Übergibst du ein neues Theme, ändern sich beide gemeinsam.
+
+## Die Schließen-Beschriftung ändern
+
+Nutze `labels={{ close: 'Close' }}` für Englisch oder `labels={{ close: 'Schließen' }}` für Deutsch. Damit beschriftest du gemeinsame Schließen-Bedienelemente. Texte deiner eigenen Buttons, Felder, Menüs und Bildschirme kommen weiterhin aus deiner App.
+
+## Haptisches Feedback aktivieren
+
+Übergib eigene Callbacks für `selectionHaptic` und `impactHaptic`. Ohne diese Callbacks wird kein haptisches Feedback ausgelöst. Unter [Haptisches Feedback](/de/docs/foundations/haptics) findest du ein Expo-Beispiel, das eine gespeicherte Einstellung berücksichtigt.
+
+## Verschachtelte Provider
+
+Ein verschachtelter Provider braucht ein ausdrückliches `theme`. Er übernimmt Beschriftungen und haptische Callbacks des übergeordneten Providers und ergänzt deine Überschreibungen. Seine Root-View verwendet standardmäßig `flex: 1`. Übergib bei einer kleinen Vorschau oder einem Teilbereich ein passendes `style`.
+
+## Aktuelle Werte lesen
+
+`useIsolineTheme()` liefert das vollständige Theme, `useThemeColors()` konkrete Farbwerte, `useRipple()` Android-Ripple-Farben, `useLabels()` gemeinsame Beschriftungen und `useHaptics()` deine Callbacks. Rufe die Hooks in einer untergeordneten Komponente auf, nicht oberhalb des Providers in derselben Komponente.
+
+## Eigenschaften
+
+| Eigenschaft         | Typ / Standard                | Verwendung                                                           |
+| ------------------- | ----------------------------- | -------------------------------------------------------------------- |
+| `theme`             | `IsolineTheme · erforderlich` | Das Theme für den gesamten Teilbaum.                                 |
+| `labels`            | `{ close?: string }`          | Überschreibe gemeinsame Beschriftungen. Der Standard lautet „Close“. |
+| `haptics`           | `Partial<IsolineHaptics>`     | Binde die haptischen Funktionen deiner App an.                       |
+| `style / className` | `View-Styles`                 | Gestalte die Root-View des Providers.                                |
+| `children`          | `ReactNode · erforderlich`    | Deine Bildschirme oder Komponenten.                                  |

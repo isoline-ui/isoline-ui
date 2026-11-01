@@ -1,0 +1,53 @@
+---
+title: 'Text'
+description: 'Gib Überschriften, Absätzen, Beschriftungen und Werten eine klare Hierarchie.'
+---
+
+<ComponentPreview kind="text" />
+
+Verwende Isolines `Text` innerhalb des Providers, damit Farben und Typografie dem aktuellen Theme folgen. Es nimmt die normalen React-Native-Text-Eigenschaften an.
+
+## Text für alltägliche Inhalte
+
+```tsx
+import { View } from 'react-native';
+import { Text } from '@isoline-ui/react-native';
+export function Summary() {
+  return (
+    <View className="gap-2">
+      <Text variant="title" accessibilityRole="header">
+        Your collection
+      </Text>
+      <Text variant="body">A little room for everything worth keeping.</Text>
+      <Text variant="valueLarge">42</Text>
+      <Text variant="caption">Items saved this month</Text>
+    </View>
+  );
+}
+```
+
+## Verfügbare Varianten
+
+| Rolle                 | Geeignet für                                                           |
+| --------------------- | ---------------------------------------------------------------------- |
+| `default`, `body`     | Normalen Oberflächentext und Absätze.                                  |
+| `display`             | Einen großen Einstieg oder eine auffällige Überschrift im Leerzustand. |
+| `title`               | Den Haupttitel eines Bildschirms.                                      |
+| `heading`             | Eine Abschnittsüberschrift.                                            |
+| `subject`             | Einen kurzen, hervorgehobenen Zeilentitel.                             |
+| `reader`              | Längere Lesetexte mit größerem Zeilenabstand.                          |
+| `muted`, `caption`    | Ergänzende Hinweise.                                                   |
+| `labelLarge`, `label` | Kurze Beschriftungen.                                                  |
+| `mono`                | Kleine ergänzende Texte in nichtproportionaler Schrift.                |
+| `value`, `valueLarge` | Zahlen oder Messwerte.                                                 |
+| `meta`                | Kleine Metadaten wie einen Zeitstempel.                                |
+
+Eine Textvariante ändert die Darstellung, nicht die Rolle für Bedienungshilfen. Ergänze für passende Überschriften `accessibilityRole="header"`. Über [Typografie-Anpassungen](/de/docs/foundations/typography) änderst du eine Rolle appweit. Die nichtproportionalen Atlas-Varianten setzen geladene Schriftarten voraus.
+
+## Eigenschaften
+
+| Eigenschaft         | Typ / Standard                   | Verwendung                                                                          |
+| ------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
+| `variant`           | `TextVariant · default: default` | Wähle eine der unten beschriebenen Textrollen.                                      |
+| `className / style` | `Text styles`                    | Ergänze lokale Anpassungen nach der Theme-Typografie.                               |
+| `Text props`        | `React Native TextProps`         | Verwende numberOfLines, selectable, accessibilityRole und andere Texteigenschaften. |

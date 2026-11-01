@@ -1,0 +1,93 @@
+---
+title: 'Installation'
+description: 'Install the current release and connect it to an Expo app.'
+---
+
+## Before you start
+
+Use an Expo SDK **57 or 58** app with React Native **0.86 or 0.88**. If you already use NativeWind 4, keep your existing setup and merge the changes below. Do not replace your app's dependency versions with those from an unrelated example.
+
+## 1. Add the UI package
+
+Install the versioned release archive:
+
+```sh
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-react-native-0.1.0-alpha.1.tgz
+```
+
+You still import it as `@isoline-ui/react-native`. Commit `package.json` and your lockfile so teammates and CI install the same archive. No Isoline npm account or npm organization is required. Other dependencies continue to come from your configured registry.
+
+## 2. Install the peer dependencies
+
+Let Expo select native dependency versions for your SDK:
+
+```sh
+npx expo install react-native-reanimated react-native-gesture-handler react-native-safe-area-context react-native-svg
+npm install nativewind@^4.2.6 tailwindcss@^3.4.19
+```
+
+Reanimated 4 also requires a compatible `react-native-worklets` installation. Keep the version recommended for your Expo SDK; use `npx expo install --check` to review your app's versions. Expo's Babel preset handles its worklets integration.
+
+## 3. Configure NativeWind 4
+
+Add the Isoline preset and the installed package's source files to Tailwind's content scan. Keep any of your existing content paths and theme extensions.
+
+```js title="tailwind.config.js"
+const path = require('node:path');
+const ui = path.dirname(require.resolve('@isoline-ui/react-native/package.json'));
+
+module.exports = {
+  content: [
+    './App.{js,jsx,ts,tsx}',
+    './app/**/*.{js,jsx,ts,tsx}',
+    './src/**/*.{js,jsx,ts,tsx}',
+    path.join(ui, 'src/**/*.{ts,tsx}'),
+  ],
+  presets: [require('nativewind/preset'), require('@isoline-ui/react-native/nativewind')],
+};
+```
+
+Use the normal NativeWind 4 Babel and Metro configuration:
+
+```js title="babel.config.js"
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: [['babel-preset-expo', { jsxImportSource: 'nativewind' }], 'nativewind/babel'],
+  };
+};
+```
+
+```js title="metro.config.js"
+const { getDefaultConfig } = require('expo/metro-config');
+const { withNativeWind } = require('nativewind/metro');
+module.exports = withNativeWind(getDefaultConfig(__dirname), {
+  input: './global.css',
+});
+```
+
+```css title="global.css"
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+Import `global.css` once in your app entry or root layout. Add NativeWind's TypeScript reference:
+
+```ts title="nativewind-env.d.ts"
+/// <reference types="nativewind/types" />
+```
+
+If your `package.json` uses `"type": "module"`, use `.cjs` for the CommonJS configuration files above.
+
+## 4. Add the root providers
+
+Follow [Your first screen](/en/docs/getting-started/first-screen) for a complete provider setup and a working screen.
+
+## 5. Add native appearance when you need it
+
+For Android system colors and iOS Liquid Glass, install **both matching Isoline archives** and let Expo choose the glass dependency. See [Native appearance](/en/docs/native/overview).
+
+## Check the setup
+
+Restart Metro with `npx expo start --clear` after changing Babel, Metro, or Tailwind configuration. If a component has no styles, check the package content-scan path first. If you added a native dependency, [rebuild the app](/en/docs/native/development-builds).

@@ -1,0 +1,44 @@
+---
+title: 'ExpressiveShape'
+description: 'Rahme ein Icon oder ein kurzes Detail mit einer markanten Form ein.'
+---
+
+<ComponentPreview kind="shapes" />
+
+Verwende `ExpressiveShape` als dekorativen Akzent in einem Leerzustand, einem Einführungsschritt oder einer Funktionskarte. Wähle zwischen `clover`, `cookie` und `flower`.
+
+## Ein Detail im Leerzustand
+
+```tsx
+import { View } from 'react-native';
+import { ExpressiveShape, Text, useThemeColors } from '@isoline-ui/react-native';
+export function EmptyCollection() {
+  const colors = useThemeColors();
+  return (
+    <View className="items-center gap-4 p-8">
+      <ExpressiveShape shape="flower" size={80} color={colors.primaryContainer}>
+        <Text style={{ color: colors.onPrimaryContainer }} variant="heading">
+          +
+        </Text>
+      </ExpressiveShape>
+      <Text variant="heading">A little room for ideas</Text>
+      <Text>Add your first item to get started.</Text>
+    </View>
+  );
+}
+```
+
+## Bedeutung im Text vermitteln
+
+Eine Form ist kein Button. Soll der Inhalt bedienbar sein, ergänze daneben eine klar beschriftete Aktion oder eine passend konfigurierte drückbare Umgebung. Überschrift und Anleitung des Leerzustands sollten auch ohne Dekoration verständlich bleiben.
+
+Die Komponente bietet keine allgemeine Eigenschaft `className` oder `style`. Verwende für Abstände und Layout eine umgebende View. Für eine Form, die laufende Aktivität vermittelt, gibt es [LoadingIndicator](/de/docs/components/loading-indicator).
+
+## Eigenschaften
+
+| Eigenschaft | Typ / Standard                        | Verwendung                                           |
+| ----------- | ------------------------------------- | ---------------------------------------------------- |
+| `shape`     | `clover / cookie / flower · required` | Wähle die Kontur.                                    |
+| `size`      | `number · required`                   | Breite und Höhe in dp.                               |
+| `color`     | `string · required`                   | Füllfarbe aus dem Theme oder ein konkreter Farbwert. |
+| `children`  | `ReactNode`                           | Inhalt mittig über der Form.                         |

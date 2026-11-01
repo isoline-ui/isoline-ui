@@ -1,0 +1,34 @@
+---
+title: 'Barrierefreie Oberflächen'
+description: 'Gestalte Bedienelemente verständlich, erreichbar und angenehm bedienbar.'
+---
+
+## Jeder Aktion einen Namen geben
+
+Verwende klare Button-Texte und ergänze `accessibilityLabel` bei Aktionen ohne Text sowie bei Switches. `SearchField` benötigt Beschriftungen für das Eingabefeld und die Leeren-Aktion. `SelectField` braucht eine Beschriftung, die die Einstellung erklärt, nicht nur ihren aktuellen Wert.
+
+```tsx
+<Switch
+  value={notifications}
+  onValueChange={setNotifications}
+  accessibilityLabel="Benachrichtigungen aktivieren"
+/>
+```
+
+Setze bei einem eigenen `Pressable` die passende `accessibilityRole` und den Zustand selbst. Beschreibe die mögliche Aktion und vermeide Namen wie „Glocken-Icon“.
+
+## Texte lesbar halten
+
+Erlaube die System-Schriftskalierung und gib Inhalten Raum für Zeilenumbrüche. Prüfe lange Übersetzungen, große Schrift und den kleinsten unterstützten Bildschirm. Zeige Fehler direkt beim betroffenen Feld. Für dynamisch eingeblendete Fehler oder Speicherbestätigungen kann eine React-Native-Live-Region auf dem Text sinnvoll sein, soweit unterstützt.
+
+## Overlays sorgfältig behandeln
+
+Gemeinsame Sheets und Dialoge unterstützen Schließen über den Hintergrund, Android-Zurück und die iOS-Escape-Geste für Bedienungshilfen. Fokussiere bei Bedarf das relevante Feld über `onShow`. Stelle den Fokus auf das auslösende Bedienelement zurück, wenn dein Navigationsablauf das erfordert. Prüfe Fokusreihenfolge und Schließen mit VoiceOver und TalkBack in deiner App.
+
+## Darstellungseinstellungen berücksichtigen
+
+Verwende kontrastreiche Vordergrund-Hintergrund-Paare. Teste helle und dunkle Themes einschließlich der Android-Systempalette. Liquid-Glass-Flächen werden bei reduzierter Transparenz undurchsichtig dargestellt. Die Bewegungsanpassung hängt von der Komponente ab: Ladefeedback kann aktiv bleiben, während dekorative Formwechsel reduziert werden.
+
+## Eine hilfreiche Abschlussprüfung
+
+Probiere deine tatsächlichen Bildschirme mit Screenreader, größerer Schrift, reduzierter Bewegung, reduzierter Transparenz unter iOS und deaktiviertem haptischem Feedback. Jede Aufgabe sollte sich ohne alleinige Abhängigkeit von Farbe oder Vibration erledigen lassen. Web-Illustrationen und erfolgreiche Builds ersetzen diese Prüfung nicht.

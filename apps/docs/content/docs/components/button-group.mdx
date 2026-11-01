@@ -1,0 +1,48 @@
+---
+title: 'ButtonGroup'
+description: 'Let people choose one value from a small set of related options.'
+---
+
+<ComponentPreview kind="group" />
+
+Use a connected button group for a small, single-choice control: a list view, a display mode, or a short filter. Store the selected ID in your app.
+
+## A controlled group
+
+Use a string union so TypeScript checks the values of your items and callbacks:
+
+```tsx
+import { useState } from 'react';
+import { ButtonGroup } from '@isoline-ui/react-native';
+type ViewMode = 'all' | 'saved' | 'recent';
+export function ViewPicker() {
+  const [mode, setMode] = useState<ViewMode>('all');
+  return (
+    <ButtonGroup<ViewMode>
+      value={mode}
+      onChange={setMode}
+      items={[
+        { id: 'all', label: 'All', badge: 12 },
+        { id: 'saved', label: 'Saved', badge: 6 },
+        { id: 'recent', label: 'Recent', badge: 3 },
+      ]}
+    />
+  );
+}
+```
+
+## Badges, icons, and compact mode
+
+Add a numeric `badge` to show a count and an `icon` component for a familiar symbol. Use `compact` only when the remaining icon or count makes each unselected option understandable. The selected item keeps its label.
+
+Keep labels short enough to fit at larger font sizes. For longer choices use [SelectField](/en/docs/components/select-field). For independently selectable filters use [FilterChip](/en/docs/components/filter-chip). ButtonGroup itself does not navigate or filter your data; react to its selected value in your app.
+
+## Props
+
+| Prop        | Type / default                    | How to use it                                         |
+| ----------- | --------------------------------- | ----------------------------------------------------- |
+| `items`     | `ButtonGroupItem<T>[] · required` | Items with id and label; icon and badge are optional. |
+| `value`     | `T · required`                    | ID of the selected item.                              |
+| `onChange`  | `(value: T) => void · required`   | Store the new selection.                              |
+| `compact`   | `boolean · default: false`        | Hide labels on unselected items.                      |
+| `className` | `string`                          | Style the outer row.                                  |

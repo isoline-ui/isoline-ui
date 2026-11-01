@@ -1,0 +1,45 @@
+---
+title: 'WavyProgress'
+description: 'Show how much of an operation is complete.'
+---
+
+<ComponentPreview kind="loading" />
+
+Use `WavyProgress` when you have a real completion value. Pass a number from **0 to 1**, not from 0 to 100.
+
+## A progress value
+
+```tsx
+import { View } from 'react-native';
+import { Text, WavyProgress } from '@isoline-ui/react-native';
+export function ImportProgress({ completed, total }: { completed: number; total: number }) {
+  const progress = total > 0 ? Math.min(1, Math.max(0, completed / total)) : 0;
+  const percentage = Math.round(progress * 100);
+  return (
+    <View
+      className="gap-3"
+      accessibilityRole="progressbar"
+      accessibilityLabel="Import progress"
+      accessibilityValue={{ min: 0, max: 100, now: percentage }}
+    >
+      <Text>{percentage}% imported</Text>
+      <WavyProgress progress={progress} />
+    </View>
+  );
+}
+```
+
+## Give it room
+
+The indicator measures its containing width. Place it in a view with a usable width; in a row you may need a wrapper with `flex: 1`. It has no `className`, height, or style prop in this release.
+
+Use a text status and accessible progress values on the surrounding view. Set `animated={false}` for a quiet preview or where motion would distract. System reduced-motion settings also affect its animation. For an unknown duration use [LoadingIndicator](/en/docs/components/loading-indicator).
+
+## Props
+
+| Prop         | Type / default                    | How to use it                       |
+| ------------ | --------------------------------- | ----------------------------------- |
+| `progress`   | `number · required`               | Completion value between 0 and 1.   |
+| `color`      | `string · default: theme.primary` | Color of the completed section.     |
+| `trackColor` | `string`                          | Override the remaining track color. |
+| `animated`   | `boolean · default: true`         | Set false to keep the wave still.   |

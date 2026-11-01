@@ -1,0 +1,45 @@
+---
+title: 'IconButton'
+description: 'Eine kompakte Aktion mit ausreichend großer Berührungsfläche.'
+---
+
+Verwende `IconButton` für vertraute Aktionen wie Zurück, Hinzufügen oder Schließen. Übergib eine Icon-Komponente und eine gesprochene Beschreibung der Aktion.
+
+## Eine Zurück-Aktion ergänzen
+
+`HEADER_ICON_BUTTON` setzt eine 48-dp-Berührungsfläche mit einem 22-dp-Icon. Die Navigation bleibt in deinem Callback:
+
+```tsx
+import { BackIcon, HEADER_ICON_BUTTON, IconButton } from '@isoline-ui/react-native';
+
+export function BackAction({ onBack }: { onBack: () => void }) {
+  return (
+    <IconButton
+      {...HEADER_ICON_BUTTON}
+      icon={BackIcon}
+      onPress={onBack}
+      accessibilityLabel="Go back"
+    />
+  );
+}
+```
+
+## Icons und Berührungsflächen
+
+Das sichtbare Symbol kann klein sein, während die Berührungsfläche groß bleibt. Verkleinere die Fläche nicht nur für einen dichteren Navigationskopf. Für ein Icon neben einer sichtbaren Beschriftung nutze `Button` mit `icon`.
+
+Liegt die Aktion in einer ebenfalls drückbaren Zeile, rufe `event.stopPropagation()` auf, wenn die innere Aktion nicht zusätzlich die Zeile auslösen soll. Unter [Icons](/de/docs/foundations/icons) findest du ein eigenes SVG-Beispiel.
+
+## Eigenschaften
+
+| Eigenschaft          | Typ / Standard                   | Verwendung                                                                                  |
+| -------------------- | -------------------------------- | ------------------------------------------------------------------------------------------- |
+| `icon`               | `React.ComponentType · required` | Eine Komponente mit size, color und optional fill.                                          |
+| `onPress`            | `(event) => void · required`     | Führe die Aktion aus. Bei verschachtelten Bedienelementen steht das Ereignis zur Verfügung. |
+| `size`               | `number · default: 40`           | Durchmesser der Berührungsfläche in dp.                                                     |
+| `iconSize`           | `number · default: 18`           | Größe des Icons innerhalb der Fläche.                                                       |
+| `color / fill`       | `string`                         | Überschreibe Theme-Farbe oder Füllung des Icons.                                            |
+| `accessibilityLabel` | `string`                         | Beschreibe die Aktion für Screenreader.                                                     |
+| `hitSlop`            | `Pressable hitSlop · default: 8` | Erweitere die Berührungsfläche, soweit das Layout es erlaubt.                               |
+| `disabled`           | `boolean`                        | Deaktiviere die Aktion.                                                                     |
+| `className / style`  | `View styles`                    | Gestalte den Container.                                                                     |

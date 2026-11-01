@@ -8,3 +8,9 @@ coverage/
 examples/*/dist/
 examples/*/android/
 examples/*/ios/
+apps/*/.next/
+apps/*/out/
+apps/*/.source/
+apps/*/next-env.d.ts
+apps/*/tsconfig.tsbuildinfo
+.docs-examples-*/

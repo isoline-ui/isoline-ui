@@ -1,0 +1,57 @@
+---
+title: 'MenuSheet'
+description: 'Biete eine kurze Liste benannter Aktionen mit Icons an.'
+---
+
+Verwende `MenuSheet` für die Aktionen eines Mehr-Menüs. Jeder Eintrag hat eine stabile ID, ein Icon, eine Beschriftung und einen Callback. Das Sheet schließt vor dem Ausführen der ausgewählten Aktion.
+
+## Eine Aktionsliste
+
+```tsx
+import { useState } from 'react';
+import { BackIcon, Button, MenuSheet, Text } from '@isoline-ui/react-native';
+export function ActionsExample() {
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  return (
+    <>
+      <Button label="More actions" variant="outline" onPress={() => setOpen(true)} />
+      <MenuSheet
+        visible={open}
+        onClose={() => setOpen(false)}
+        title="Actions"
+        subject="Weekend plans"
+        items={[
+          {
+            id: 'move',
+            icon: BackIcon,
+            label: 'Move to inbox',
+            onPress: () => setMessage('Moved to inbox.'),
+          },
+        ]}
+      />
+      <Text accessibilityLiveRegion="polite">{message}</Text>
+    </>
+  );
+}
+```
+
+## Aktionen verständlich benennen
+
+Verwende Verben wie „In den Posteingang verschieben“ oder „Element teilen“. Ergänze `subject`, wenn erkennbar sein muss, welches Element betroffen ist. Binde Icons aus deiner vorhandenen Bibliothek an; das Beispiel nutzt zur Vereinfachung einen eingebauten Pfeil.
+
+## Eigene Sheet-Inhalte
+
+Verwende `MenuSheetRows` innerhalb eines eigenen `BottomSheet`, wenn du einen eigenen Kopfbereich oder zusätzliche Inhalte möchtest. Übergib dieselben `items` und einen `onClose`-Callback. Es rendert die Zeilen ohne ein weiteres Modal.
+
+Die aktuelle Eintrags-API bietet keine Eigenschaften für Deaktivierung, Untertitel oder destruktive Aktionen. `color` passt die Icon-Farbe an. Kennzeichne destruktive Aktionen aber nicht allein über Farbe. Bestätige irreversible Aktionen bei Bedarf in deinem eigenen Ablauf.
+
+## Eigenschaften
+
+| Eigenschaft              | Typ / Standard                    | Verwendung                                      |
+| ------------------------ | --------------------------------- | ----------------------------------------------- |
+| `visible / onClose`      | `boolean / () => void · required` | Steuere den Öffnungszustand des Sheets.         |
+| `title`                  | `string · required`               | Überschrift der Aktionsliste.                   |
+| `subject`                | `string`                          | Optionaler Kontext unter dem Titel.             |
+| `items`                  | `MenuSheetItem[] · required`      | Einträge mit id, icon, label und onPress.       |
+| `item.color / item.fill` | `string`                          | Optionale abweichende Icon-Farbe oder -Füllung. |

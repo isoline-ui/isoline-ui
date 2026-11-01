@@ -1,0 +1,43 @@
+---
+title: 'LoadingIndicator'
+description: 'Show activity when the completion time is not known.'
+---
+
+<ComponentPreview kind="loading" />
+
+Use `LoadingIndicator` for an operation in progress without a meaningful percentage. Put a short status message beside it so people know what is happening.
+
+## Loading with context
+
+```tsx
+import { View } from 'react-native';
+import { LoadingIndicator, Text } from '@isoline-ui/react-native';
+export function LoadingState() {
+  return (
+    <View
+      className="flex-row items-center gap-3"
+      accessibilityRole="progressbar"
+      accessibilityLabel="Loading your collection"
+      accessibilityState={{ busy: true }}
+    >
+      <LoadingIndicator size={36} contained />
+      <Text>Loading your collection…</Text>
+    </View>
+  );
+}
+```
+
+## Busy versus progress
+
+Use [WavyProgress](/en/docs/components/wavy-progress) when your app knows how much is complete. Avoid inventing a percentage for an operation that cannot report one.
+
+The loading indicator does not accept arbitrary accessibility props. Add meaningful progress semantics to a surrounding view as in the example. Its decorative morphing is reduced with the system motion setting; activity feedback can continue to indicate that work is ongoing. Remove the indicator when the operation completes or fails.
+
+## Props
+
+| Prop        | Type / default                    | How to use it                         |
+| ----------- | --------------------------------- | ------------------------------------- |
+| `size`      | `number · default: 48`            | Overall indicator size in dp.         |
+| `color`     | `string · default: theme.primary` | Override the active shape color.      |
+| `contained` | `boolean · default: false`        | Show the shape inside a tonal circle. |
+| `className` | `string`                          | Style the outer container.            |

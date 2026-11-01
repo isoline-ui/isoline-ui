@@ -1,0 +1,44 @@
+---
+title: 'Probleme lösen'
+description: 'Finde den ersten Prüfschritt bei Problemen mit Styles oder nativen Funktionen.'
+---
+
+## Komponenten haben keine Styles
+
+Prüfe den Content-Scan des Pakets und das Isoline-Preset unter [Installation](/de/docs/getting-started/installation). Importiere global.css einmal und starte Metro nach Konfigurationsänderungen mit `npx expo start --clear` neu. Ergänze deine vorhandene Konfiguration, statt sie zu ersetzen.
+
+## „Must be inside IsolineProvider“
+
+Lege den Provider um den Bildschirmbaum und rufe Theme-Hooks in einer untergeordneten Komponente auf. Nur die zurückgegebenen Kinder zu umschließen, verschiebt den Hook der aktuellen Komponente nicht in den Provider.
+
+## Einige Farben ändern sich nicht
+
+Übergib das Ergebnis von `useSystemTheme` an den Provider. Fest eingetragene Farben ändern sich nicht automatisch. Verwende semantische Klassen oder `useThemeColors()` für native Eigenschaften.
+
+## Atlas verwendet die falsche Schrift
+
+Lade die [Atlas-Schriftarten](/de/docs/foundations/typography) oder überschreibe die Schriftfamilien. Prüfe die exakten registrierten Namen und behandle Ladefehler.
+
+## Das schwebende Label hat einen sichtbaren Hintergrundfleck
+
+Setze `notchClassName` von `TextField` passend zur umgebenden Fläche. Auf einem Bildschirm passt `bg-background`. Der Standard `bg-popover` passt zu gemeinsamen Dialogen und Sheets.
+
+## Android-Systemfarben fehlen
+
+Prüfe Android 12+, die aktivierte Einstellung und einen nativen Build mit `@isoline-ui/native`. Expo Go verwendet die Alternative. Übergib das aufgelöste Theme an den Provider. Siehe [Systemfarben](/de/docs/native/system-colors).
+
+## Liquid Glass wirkt undurchsichtig
+
+Prüfe iOS 26+, Glasverfügbarkeit, `material` und reduzierte Transparenz. Auf nicht unterstützten Systemen und bei reduzierter Transparenz ist eine undurchsichtige Fläche beabsichtigt. Vermeide undurchsichtige Hintergründe und Deckkraft auf übergeordneten Views. Probiere abwechslungsreichen Inhalt darunter. Siehe [Liquid Glass](/de/docs/native/liquid-glass).
+
+## Nach einem Update fehlt ein natives Modul
+
+Ein Metro-Neustart ergänzt keinen nativen Code. Baue und installiere eine neue App mit der Abhängigkeit und halte die OTA-Runtime-Version kompatibel. Siehe [Native Builds](/de/docs/native/development-builds).
+
+## Die Installation sucht ein passendes Isoline-Peer-Paket
+
+Installiere für native Darstellung beide GitHub-Archive in einem Befehl. Ihre Versionen müssen übereinstimmen. Verwende die Release-Dateien statt der Quelltext-ZIP und committe die Lockdatei.
+
+## Noch nicht gelöst?
+
+[Erstelle ein Issue](https://github.com/isoline-ui/isoline-ui/issues) mit Expo-, React-Native- und Isoline-Version, betroffener Plattform, genauer Fehlermeldung und einem kleinen nachvollziehbaren Beispiel. Entferne Zugangsdaten und private App-Daten vor dem Teilen.

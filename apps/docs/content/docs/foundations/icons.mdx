@@ -1,0 +1,41 @@
+---
+title: 'Icons'
+description: 'Bring your own icon components and keep them aligned with the theme.'
+---
+
+## Use an icon component
+
+Pass a component to `icon`, rather than an already rendered element. The component should accept `size` and `color`; `IconProps` also supports SVG properties such as `fill` and `style`.
+
+```tsx title="AddAction.tsx"
+import Svg, { Path } from 'react-native-svg';
+import { IconButton, type IconProps } from '@isoline-ui/react-native';
+
+function PlusIcon({ size = 24, color = 'currentColor', ...props }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
+      <Path d="M12 5v14M5 12h14" stroke={color} strokeWidth={2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function AddAction() {
+  return <IconButton icon={PlusIcon} onPress={() => {}} accessibilityLabel="Add item" />;
+}
+```
+
+You can adapt icons from your existing React Native icon library in the same way. Isoline does not bundle a product-specific icon collection.
+
+## Back navigation
+
+`BackIcon` renders a chevron on iOS and a back arrow on Android. Use it with `IconButton` and call your router from `onPress`:
+
+```tsx
+<IconButton icon={BackIcon} onPress={() => router.back()} accessibilityLabel="Go back" />
+```
+
+`BackIcon` is visual only; it does not navigate. When rendering it by itself, pass a theme color because its standalone default is black.
+
+## Label icon-only actions
+
+Always give an icon-only button a meaningful `accessibilityLabel`, such as “Add item” or “Go back”. A tooltip or the shape of the icon alone is not a spoken label. Use the [header size preset](/en/docs/components/icon-button) for comfortably sized toolbar actions.

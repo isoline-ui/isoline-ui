@@ -1,0 +1,80 @@
+---
+title: 'Your first screen'
+description: 'Set up the providers and build a small, working screen.'
+---
+
+## A complete starting point
+
+After [installation](/en/docs/getting-started/installation), replace the main component of a plain Expo app with this example. It includes everything the screen needs: safe areas, gestures, a theme, a text field, and a save action.
+
+```tsx title="App.tsx"
+import './global.css';
+import { useState } from 'react';
+import { View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Button, IsolineProvider, Text, TextField, themes } from '@isoline-ui/react-native';
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <IsolineProvider theme={themes.inboki.light} labels={{ close: 'Close' }}>
+          <ProfileScreen />
+        </IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+
+function ProfileScreen() {
+  const [name, setName] = useState('');
+  const [saved, setSaved] = useState(false);
+  return (
+    <SafeAreaView className="flex-1 bg-background">
+      <View className="gap-6 p-6">
+        <Text variant="title">Make yourself at home</Text>
+        <Text variant="body">What should we call you?</Text>
+        <TextField
+          label="Your name"
+          value={name}
+          onChangeText={(text) => {
+            setName(text);
+            setSaved(false);
+          }}
+          notchClassName="bg-background"
+          autoCapitalize="words"
+        />
+        <Button label="Save" disabled={!name.trim()} onPress={() => setSaved(true)} />
+        {saved && <Text accessibilityLiveRegion="polite">Saved, {name.trim()}.</Text>}
+      </View>
+    </SafeAreaView>
+  );
+}
+```
+
+## What to change first
+
+Replace `themes.inboki.light` with `themes.yours.light` or `themes.atlas.light` to try another theme. Use the corresponding `.dark` theme for a dark interface. [Atlas uses custom fonts](/en/docs/foundations/typography); load them before using its typography or override those font families.
+
+`TextField` is controlled: `value` comes from your state and `onChangeText` updates it. The button enables only when the name contains text. The example keeps the result in memory; connect your own persistence when you are ready.
+
+## Using Expo Router
+
+Keep the providers in your root `app/_layout.tsx` and render your existing `<Stack />` or `<Slot />` inside `IsolineProvider`. Import your global stylesheet there. Your route components can then use Isoline without repeating the setup.
+
+```tsx
+<GestureHandlerRootView style={{ flex: 1 }}>
+  <SafeAreaProvider>
+    <IsolineProvider theme={themes.inboki.light}>
+      <Stack />
+    </IsolineProvider>
+  </SafeAreaProvider>
+</GestureHandlerRootView>
+```
+
+Do not nest another navigation container solely to use Isoline. Keep screen padding and safe-area handling in the parts of your app that already own them.
+
+## Next steps
+
+Try [forms](/en/docs/guides/forms), [theme customization](/en/docs/foundations/theming), or a [bottom sheet](/en/docs/components/bottom-sheet).

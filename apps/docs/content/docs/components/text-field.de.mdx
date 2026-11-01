@@ -1,0 +1,53 @@
+---
+title: 'TextField'
+description: 'Ein beschriftetes, kontrolliertes Eingabefeld mit Fehlerrückmeldung.'
+---
+
+<ComponentPreview kind="fields" />
+
+Verwende `TextField` für Formularwerte wie Namen, E-Mail-Adressen oder Passwörter. Es nimmt React-Native-TextInput-Eigenschaften an, einschließlich Tastaturkonfiguration und Ref.
+
+## Ein beschriftetes Eingabefeld
+
+```tsx
+import { useState } from 'react';
+import { TextField } from '@isoline-ui/react-native';
+export function EmailField() {
+  const [email, setEmail] = useState('');
+  const invalid = email.length > 0 && !email.includes('@');
+  return (
+    <TextField
+      label="Email address"
+      value={email}
+      onChangeText={setEmail}
+      error={invalid ? 'Enter an email address.' : undefined}
+      keyboardType="email-address"
+      autoCapitalize="none"
+      autoCorrect={false}
+      notchClassName="bg-background"
+    />
+  );
+}
+```
+
+## Den Label-Hintergrund abstimmen
+
+Verwende `notchClassName="bg-background"` auf dem Bildschirmhintergrund, `bg-card` auf einer Karte oder die Klasse deiner tatsächlichen Fläche. Der Standard `bg-popover` passt zu gemeinsamen Dialogen und Sheets. Bei einer Abweichung kann hinter dem schwebenden Label ein sichtbarer Fleck entstehen.
+
+## Validierung und Fokus
+
+Entscheide in deiner App, wann ein Fehler sichtbar wird: nach Verlassen des Feldes, nach dem Absenden oder beim Tippen. Das einfache E-Mail-Beispiel zeigt nur die Rückmeldung. Verwende eine für dein Produkt geeignete Validierung.
+
+Über einen Ref kannst du das Feld in `onShow` eines Dialogs oder Sheets fokussieren. Das [Overlay-Rezept](/de/docs/guides/overlays) zeigt die Einrichtung. Für ein nicht bearbeitbares Feld verwende `editable={false}`. Das ist eine TextInput-Eigenschaft, nicht `disabled`.
+
+## Eigenschaften
+
+| Eigenschaft       | Typ / Standard                 | Verwendung                                                                                      |
+| ----------------- | ------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `label`           | `string · required`            | Die sichtbare Beschriftung des Feldes.                                                          |
+| `value`           | `string`                       | Der aktuelle Wert, normalerweise aus deinem App-Zustand.                                        |
+| `onChangeText`    | `(value: string) => void`      | Aktualisiere den kontrollierten Wert.                                                           |
+| `error`           | `string or null`               | Zeige eine Meldung und Fehlerdarstellung.                                                       |
+| `notchClassName`  | `string · default: bg-popover` | Stimme den Hintergrund des schwebenden Labels auf die Umgebung ab.                              |
+| `ref`             | `TextInput ref`                | Fokussiere das Feld oder nutze native TextInput-Methoden.                                       |
+| `TextInput props` | `React Native TextInputProps`  | Übergib keyboardType, secureTextEntry, editable, returnKeyType und andere Eingabeeigenschaften. |

@@ -1,0 +1,48 @@
+---
+title: 'ButtonGroup'
+description: 'Lass Nutzer einen Wert aus einer kleinen Gruppe zusammengehöriger Optionen auswählen.'
+---
+
+<ComponentPreview kind="group" />
+
+Verwende eine verbundene Button-Gruppe für eine kleine Einzelauswahl: eine Listenansicht, einen Darstellungsmodus oder einen kurzen Filter. Speichere die ausgewählte ID in deiner App.
+
+## Eine kontrollierte Gruppe
+
+Mit einer String-Union prüft TypeScript die Werte deiner Einträge und Callbacks:
+
+```tsx
+import { useState } from 'react';
+import { ButtonGroup } from '@isoline-ui/react-native';
+type ViewMode = 'all' | 'saved' | 'recent';
+export function ViewPicker() {
+  const [mode, setMode] = useState<ViewMode>('all');
+  return (
+    <ButtonGroup<ViewMode>
+      value={mode}
+      onChange={setMode}
+      items={[
+        { id: 'all', label: 'All', badge: 12 },
+        { id: 'saved', label: 'Saved', badge: 6 },
+        { id: 'recent', label: 'Recent', badge: 3 },
+      ]}
+    />
+  );
+}
+```
+
+## Zähler, Icons und kompakte Darstellung
+
+Mit `badge` ergänzt du eine Anzahl, mit `icon` ein vertrautes Symbol. Verwende `compact` nur, wenn das verbleibende Icon oder die Anzahl jede nicht ausgewählte Option verständlich macht. Der ausgewählte Eintrag behält seine Beschriftung.
+
+Halte Beschriftungen auch bei größerer Schrift kurz genug. Für längere Auswahltexte eignet sich [SelectField](/de/docs/components/select-field). Für unabhängig auswählbare Filter nutze [FilterChip](/de/docs/components/filter-chip). ButtonGroup navigiert und filtert nicht selbst; reagiere in deiner App auf den ausgewählten Wert.
+
+## Eigenschaften
+
+| Eigenschaft | Typ / Standard                    | Verwendung                                               |
+| ----------- | --------------------------------- | -------------------------------------------------------- |
+| `items`     | `ButtonGroupItem<T>[] · required` | Einträge mit id und label; icon und badge sind optional. |
+| `value`     | `T · required`                    | ID des ausgewählten Eintrags.                            |
+| `onChange`  | `(value: T) => void · required`   | Speichere die neue Auswahl.                              |
+| `compact`   | `boolean · default: false`        | Blende Beschriftungen nicht ausgewählter Einträge aus.   |
+| `className` | `string`                          | Gestalte die äußere Zeile.                               |

@@ -1,0 +1,35 @@
+---
+title: 'Android system colors'
+description: 'Follow the colors your user selected in Android’s wallpaper and theme settings.'
+---
+
+## Use the system palette
+
+After [installing native appearance](/en/docs/native/overview) and rebuilding the app, call `useSystemTheme(baseTheme, enabled)` before rendering the provider.
+
+```tsx
+const baseTheme = themes.yours[scheme];
+const theme = useSystemTheme(baseTheme, useSystemColors);
+
+return <IsolineProvider theme={theme}>{children}</IsolineProvider>;
+```
+
+Keep `scheme` and `useSystemColors` in your app's appearance settings. The returned theme applies the Android palette while preserving your base typography and semantic error/success colors. NativeWind classes, SVG colors, and other theme-aware native properties use the same result.
+
+## Give users a choice
+
+Set `enabled` to `false` to use the base theme exactly as supplied. This is useful for a “Use system colors” switch. Keep the preference in your existing settings store; the hook does not persist it.
+
+The palette is re-read when the app becomes active and when system appearance changes. A wallpaper change made in Android settings is picked up when the user returns to your app.
+
+## Unsupported devices and missing modules
+
+On Android versions below 12, on iOS, or when the native bridge is missing, the hook returns the base theme. In Expo Go, the custom Isoline Android module is not available, so this fallback is expected. Use a development build to test real system colors.
+
+If colors do not change, check the OS version, the saved preference, whether the rebuilt binary includes the package, and whether the hook's result is passed to your provider.
+
+## Use a raw palette
+
+`getSystemPalette()` returns a validated palette or `null`. `useSystemPalette(enabled)` provides the same data with lifecycle updates. A palette contains `accent1`, `accent2`, `accent3`, `neutral1`, and `neutral2`, each with 13 hex color stops.
+
+Use `applySystemPalette(baseTheme, palette)` if another part of your app already owns palette loading. `dynamicRoles(palette, scheme)` returns mapped roles as hex colors and HSL variable values. For normal app setup, prefer `useSystemTheme` so you do not need to assemble those values yourself.

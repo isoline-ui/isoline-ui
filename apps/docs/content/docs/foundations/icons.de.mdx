@@ -1,0 +1,41 @@
+---
+title: 'Icons'
+description: 'Binde eigene Icon-Komponenten ein und stimme sie auf das Theme ab.'
+---
+
+## Eine Icon-Komponente verwenden
+
+Übergib eine Komponente an `icon`, nicht ein bereits gerendertes Element. Die Komponente sollte `size` und `color` annehmen. `IconProps` unterstützt zusätzlich SVG-Eigenschaften wie `fill` und `style`.
+
+```tsx title="AddAction.tsx"
+import Svg, { Path } from 'react-native-svg';
+import { IconButton, type IconProps } from '@isoline-ui/react-native';
+
+function PlusIcon({ size = 24, color = 'currentColor', ...props }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" {...props}>
+      <Path d="M12 5v14M5 12h14" stroke={color} strokeWidth={2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+export function AddAction() {
+  return <IconButton icon={PlusIcon} onPress={() => {}} accessibilityLabel="Add item" />;
+}
+```
+
+Auf dieselbe Weise kannst du Icons aus deiner vorhandenen React-Native-Icon-Bibliothek anbinden. Isoline enthält keine produktspezifische Icon-Sammlung.
+
+## Zurück-Navigation
+
+`BackIcon` zeigt unter iOS einen Chevron und unter Android einen Zurück-Pfeil. Verwende es mit `IconButton` und rufe deinen Router in `onPress` auf:
+
+```tsx
+<IconButton icon={BackIcon} onPress={() => router.back()} accessibilityLabel="Zurück" />
+```
+
+`BackIcon` stellt nur das Symbol dar und navigiert nicht selbst. Übergib bei einer eigenständigen Verwendung eine Theme-Farbe, denn der Standardwert ist Schwarz.
+
+## Aktionen ohne Text beschriften
+
+Gib einem Icon-Button immer ein aussagekräftiges `accessibilityLabel`, etwa „Element hinzufügen“ oder „Zurück“. Ein Tooltip oder die Form des Icons ersetzt keine gesprochene Beschriftung. Für gut bedienbare Aktionen im Navigationskopf gibt es das [Header-Größenpreset](/de/docs/components/icon-button).

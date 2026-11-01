@@ -1,0 +1,51 @@
+---
+title: 'Farbreferenz'
+description: 'Finde semantische Klassen und konkrete Farben für eigene Komponenten.'
+---
+
+## Klassen und native Eigenschaften
+
+Verwende NativeWind-Klassen für View- und Text-Styles. Nutze `useThemeColors()`, wenn SVG oder eine native Eigenschaft einen Farbwert benötigt.
+
+```tsx
+const colors = useThemeColors();
+// NativeWind: <View className="bg-primaryContainer" />
+// SVG/native: <YourIcon color={colors.primary} />
+```
+
+Klassenrollen erhalten das übliche Präfix `bg-`, `text-` oder `border-`. Hook-Schlüssel sind JavaScript-Eigenschaftsnamen.
+
+| Klassenrolle                                    | Hook-Schlüssel                                                                                                     | Verwendung                                                                 |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| `primary / primary-foreground`                  | `primary / onPrimary`                                                                                              | Hauptaktion und Text                                                       |
+| `primaryContainer / onPrimaryContainer`         | `primaryContainer / onPrimaryContainer`                                                                            | Zurückhaltende Betonung                                                    |
+| `secondaryContainer / onSecondaryContainer`     | `secondaryContainer / onSecondaryContainer`                                                                        | Ergänzende Optionen                                                        |
+| `tertiary / tertiary-foreground`                | `tertiary / onTertiary`                                                                                            | Ergänzender Akzent                                                         |
+| `tertiaryContainer / onTertiaryContainer`       | `tertiaryContainer / onTertiaryContainer`                                                                          | Zurückhaltender ergänzender Akzent                                         |
+| `surface / onSurface`                           | `surface / onSurface`                                                                                              | Fläche und Inhalt                                                          |
+| `surfaceVariant / onSurfaceVariant`             | `surfaceVariant / onSurfaceVariant`                                                                                | Ergänzende Flächendarstellung                                              |
+| `surfaceContainerLowest / Low / High / Highest` | `surfaceContainerLowest / surfaceContainerLow / surfaceContainer / surfaceContainerHigh / surfaceContainerHighest` | Container-Abstufungen; verwende vollständige Namen wie surfaceContainerLow |
+| `outline / outlineVariant`                      | `outline / outlineVariant`                                                                                         | Ränder und Trennlinien                                                     |
+| `destructive / destructive-foreground`          | `error / onError`                                                                                                  | Fehlerbetonung                                                             |
+| `errorContainer / onErrorContainer`             | `errorContainer / onErrorContainer`                                                                                | Fehlerfläche und Text                                                      |
+| `inverseSurface / inverseOnSurface`             | `inverseSurface / inverseOnSurface`                                                                                | Invertierte Fläche                                                         |
+| `inversePrimary`                                | `inversePrimary`                                                                                                   | Invertierter Akzent                                                        |
+| `success`                                       | `success`                                                                                                          | Positiver Status                                                           |
+
+## Weitere nützliche Rollen
+
+`background` / `foreground` bilden das Basispaar des Bildschirms. `card` / `card-foreground`, `popover` / `popover-foreground`, `muted` / `muted-foreground` und `accent` / `accent-foreground` stehen als Klassen bereit. `input` und `ring` ergänzen Rollen für Ränder und Fokus.
+
+Nicht jede Klasse hat einen eigenen Schlüssel in `useThemeColors()`. Verwende für weitere Rollen die Token-Tabelle oder belasse die Gestaltung in NativeWind.
+
+## Eigene Tokens
+
+Die Token-Tabelle verwendet Namen wie `--primary`, `--primary-foreground` und `--surface-container-high`. Werte sind HSL-Kanalwerte, keine Hex-Werte und keine vollständigen `hsl(...)`-Ausdrücke.
+
+```tsx
+const theme = extendTheme(themes.inboki.light, {
+  tokens: { '--surface-container': '140 14% 95%', '--on-surface': '145 18% 14%' },
+});
+```
+
+Passe Vordergrund und Hintergrund gemeinsam an und prüfe den Kontrast. Siehe [Themes](/de/docs/foundations/theming) oder [Android-Systemfarben](/de/docs/native/system-colors).

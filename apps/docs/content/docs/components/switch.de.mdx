@@ -1,0 +1,42 @@
+---
+title: 'Switch'
+description: 'Schalte eine Einstellung mit dem nativen Switch der Plattform ein oder aus.'
+---
+
+<ComponentPreview kind="switch" />
+
+Verwende `Switch` für eine boolesche Einstellung, die sofort wirksam wird. Halte den Wert im App-Zustand und speichere ihn über deine übliche Einstellungsverwaltung.
+
+## Eine beschriftete Einstellung
+
+```tsx
+import { useState } from 'react';
+import { View } from 'react-native';
+import { Switch, Text } from '@isoline-ui/react-native';
+export function NotificationSetting() {
+  const [enabled, setEnabled] = useState(true);
+  return (
+    <View className="flex-row items-center justify-between gap-4">
+      <Text>Notifications</Text>
+      <Switch value={enabled} onValueChange={setEnabled} accessibilityLabel="Notifications" />
+    </View>
+  );
+}
+```
+
+## Layout und Speicherung
+
+Gestalte eine umgebende `View` für Abstände, Hintergründe und Zeilentrenner. `Switch` bietet nur die oben genannten Eigenschaften. Es nimmt weder `className`, beliebige native Switch-Eigenschaften noch eine Zeilenbeschriftung an.
+
+Kann ein Update fehlschlagen, entscheide, ob du den neuen Wert zunächst optimistisch zeigst oder den alten Wert wiederherstellst und einen Fehler meldest. Der sichtbare Switch sollte nicht dauerhaft von der gespeicherten Einstellung abweichen.
+
+Die Form bleibt unter iOS und Android nativ. Seine Farben folgen dem aktuellen Isoline-Theme. Das [Einstellungs-Rezept](/de/docs/guides/settings) zeigt eine Darstellungsauswahl und die Systemfarben-Einstellung.
+
+## Eigenschaften
+
+| Eigenschaft          | Typ / Standard                        | Verwendung                                   |
+| -------------------- | ------------------------------------- | -------------------------------------------- |
+| `value`              | `boolean · required`                  | Aktueller Ein-/Aus-Wert.                     |
+| `onValueChange`      | `(value: boolean) => void · required` | Speichere den neuen Wert.                    |
+| `disabled`           | `boolean`                             | Deaktiviere den Switch.                      |
+| `accessibilityLabel` | `string`                              | Beschreibe die Einstellung für Screenreader. |

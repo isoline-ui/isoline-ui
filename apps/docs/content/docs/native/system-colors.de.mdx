@@ -1,0 +1,35 @@
+---
+title: 'Android-Systemfarben'
+description: 'Verwende die Farben aus den Android-Hintergrundbild- und Theme-Einstellungen.'
+---
+
+## Die Systempalette verwenden
+
+Rufe nach der [Installation der nativen Darstellung](/de/docs/native/overview) und einem erneuten App-Build `useSystemTheme(baseTheme, enabled)` auf, bevor du den Provider renderst.
+
+```tsx
+const baseTheme = themes.yours[scheme];
+const theme = useSystemTheme(baseTheme, useSystemColors);
+
+return <IsolineProvider theme={theme}>{children}</IsolineProvider>;
+```
+
+Verwalte `scheme` und `useSystemColors` in den Darstellungseinstellungen deiner App. Das zurückgegebene Theme übernimmt die Android-Palette und behält deine Basistypografie sowie semantische Fehler- und Erfolgsfarben. NativeWind-Klassen, SVG-Farben und andere Theme-abhängige native Eigenschaften verwenden dasselbe Ergebnis.
+
+## Eine Auswahl anbieten
+
+Setze `enabled` auf `false`, um exakt das übergebene Basistheme zu verwenden. Das eignet sich für einen Switch „Systemfarben verwenden“. Speichere die Auswahl in deiner vorhandenen Einstellungsverwaltung. Der Hook speichert sie nicht dauerhaft.
+
+Die Palette wird neu gelesen, wenn die App aktiv wird oder die Systemdarstellung wechselt. Ein in den Android-Einstellungen geändertes Hintergrundbild wird beim Zurückkehren in die App berücksichtigt.
+
+## Nicht unterstützte Geräte und fehlende Module
+
+Unter Android vor Version 12, unter iOS oder bei fehlender nativer Anbindung liefert der Hook das Basistheme zurück. In Expo Go fehlt das eigene Android-Modul von Isoline. Dort ist diese Alternative zu erwarten. Nutze zum Prüfen tatsächlicher Systemfarben einen Development-Build.
+
+Ändern sich die Farben nicht, prüfe die Betriebssystemversion, die gespeicherte Einstellung, das Vorhandensein des Pakets im neu gebauten App-Binary und die Übergabe des Hook-Ergebnisses an den Provider.
+
+## Eine rohe Palette verwenden
+
+`getSystemPalette()` liefert eine geprüfte Palette oder `null`. `useSystemPalette(enabled)` stellt dieselben Daten mit Lebenszyklus-Aktualisierungen bereit. Eine Palette enthält `accent1`, `accent2`, `accent3`, `neutral1` und `neutral2` mit jeweils 13 Hex-Farbstufen.
+
+Verwende `applySystemPalette(baseTheme, palette)`, wenn ein anderer Teil deiner App die Palette bereits lädt. `dynamicRoles(palette, scheme)` liefert zugeordnete Rollen als Hex-Farben und HSL-Variablenwerte. Für die normale Einrichtung ist `useSystemTheme` einfacher, weil du diese Werte nicht selbst zusammensetzen musst.

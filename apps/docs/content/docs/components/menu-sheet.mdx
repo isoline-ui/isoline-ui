@@ -1,0 +1,57 @@
+---
+title: 'MenuSheet'
+description: 'Offer a short list of named actions with icons.'
+---
+
+Use `MenuSheet` for the actions behind an overflow menu. Each item has a stable ID, an icon, a label, and a callback. The sheet closes before the selected action runs.
+
+## An action list
+
+```tsx
+import { useState } from 'react';
+import { BackIcon, Button, MenuSheet, Text } from '@isoline-ui/react-native';
+export function ActionsExample() {
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  return (
+    <>
+      <Button label="More actions" variant="outline" onPress={() => setOpen(true)} />
+      <MenuSheet
+        visible={open}
+        onClose={() => setOpen(false)}
+        title="Actions"
+        subject="Weekend plans"
+        items={[
+          {
+            id: 'move',
+            icon: BackIcon,
+            label: 'Move to inbox',
+            onPress: () => setMessage('Moved to inbox.'),
+          },
+        ]}
+      />
+      <Text accessibilityLiveRegion="polite">{message}</Text>
+    </>
+  );
+}
+```
+
+## Make the actions clear
+
+Name actions with verbs, such as “Move to inbox” or “Share item”. Use a `subject` when people need to know which item is affected. Adapt icons from your existing icon library; the example uses a built-in arrow for simplicity.
+
+## Custom sheet content
+
+Use `MenuSheetRows` inside your own `BottomSheet` when you want a custom header or additional content. Pass the same `items` and an `onClose` callback. It renders the rows without creating another modal.
+
+The current item API has no disabled, subtitle, or destructive flag. Use `color` for an icon override, but do not rely on color alone to communicate a destructive action. Confirm an irreversible action in your own flow where appropriate.
+
+## Props
+
+| Prop                     | Type / default                    | How to use it                            |
+| ------------------------ | --------------------------------- | ---------------------------------------- |
+| `visible / onClose`      | `boolean / () => void · required` | Control the sheet’s open state.          |
+| `title`                  | `string · required`               | Heading for the action list.             |
+| `subject`                | `string`                          | Optional context under the title.        |
+| `items`                  | `MenuSheetItem[] · required`      | Items with id, icon, label, and onPress. |
+| `item.color / item.fill` | `string`                          | Optional icon color or fill override.    |

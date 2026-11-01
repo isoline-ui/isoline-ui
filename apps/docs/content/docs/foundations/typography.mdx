@@ -1,0 +1,64 @@
+---
+title: 'Typography and fonts'
+description: 'Use text roles and connect your own font families.'
+---
+
+## Start with text roles
+
+Use `Text` with a role that describes the content: `title` for a screen title, `body` for a paragraph, `caption` for supporting information, and `value` for a prominent number. The [Text reference](/en/docs/components/text) lists every variant.
+
+## Change a role
+
+Pass `typography` overrides to `extendTheme`. You can set `fontFamily`, `fontSize`, `lineHeight`, `fontWeight`, and `letterSpacing`. Values are React Native style values, not CSS strings.
+
+```tsx
+const theme = extendTheme(themes.inboki.light, {
+  typography: {
+    title: { fontFamily: 'YourFont_700Bold', fontSize: 32, lineHeight: 38 },
+    body: { fontSize: 17, lineHeight: 27 },
+  },
+});
+```
+
+Use the exact font name you registered with your app's font loader. Load it before displaying the theme. If your font files provide separate weights, register those files with the appropriate family names.
+
+## Load the Atlas fonts
+
+The built-in Atlas theme refers to Space Grotesk and JetBrains Mono. Install the font packages and load them in your app:
+
+```sh
+npx expo install expo-font
+npm install @expo-google-fonts/space-grotesk @expo-google-fonts/jetbrains-mono
+```
+
+```tsx title="AtlasExample.tsx"
+import { useFonts } from 'expo-font';
+import { SpaceGrotesk_700Bold } from '@expo-google-fonts/space-grotesk';
+import {
+  JetBrainsMono_500Medium,
+  JetBrainsMono_700Bold,
+} from '@expo-google-fonts/jetbrains-mono';
+import { IsolineProvider, Text, themes } from '@isoline-ui/react-native';
+
+export function AtlasExample() {
+  const [ready, error] = useFonts({
+    SpaceGrotesk_700Bold,
+    JetBrainsMono_500Medium,
+    JetBrainsMono_700Bold,
+  });
+  if (error) throw error;
+  if (!ready) return null;
+  return (
+    <IsolineProvider theme={themes.atlas.light}>
+      <Text variant="display">Make room for ideas.</Text>
+      <Text variant="value">42.00</Text>
+    </IsolineProvider>
+  );
+}
+```
+
+Keep your app's existing loading screen while fonts load. Handle a loading failure in your own error boundary or fallback screen. Alternatively, override Atlas' font families with fonts you already load.
+
+## Keep text comfortable to read
+
+Leave font scaling enabled, allow labels to wrap where possible, and test your screens at larger system text sizes. Use `numberOfLines` deliberately for compact summaries, rather than clipping important form instructions or errors.

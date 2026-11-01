@@ -1,0 +1,65 @@
+---
+title: 'Darstellungseinstellungen bauen'
+description: 'Biete Systemdarstellung, Hell und Dunkel sowie Android-Systemfarben an.'
+---
+
+## Ein funktionierender Einstellungsbildschirm
+
+Schließe zuerst die [native Installation](/de/docs/native/overview) ab. Belasse das Beispiel innerhalb deiner Gesten- und Safe-Area-Einrichtung.
+
+```tsx title="AppearanceSettings.tsx"
+import { useState } from 'react';
+import { useColorScheme, View } from 'react-native';
+import { IsolineProvider, SelectField, Switch, Text, themes } from '@isoline-ui/react-native';
+import { useSystemTheme } from '@isoline-ui/native';
+type Appearance = 'system' | 'light' | 'dark';
+export function AppearanceSettings() {
+  const systemScheme = useColorScheme();
+  const [appearance, setAppearance] = useState<Appearance>('system');
+  const [systemColors, setSystemColors] = useState(true);
+  const scheme =
+    appearance === 'system' ? (systemScheme === 'dark' ? 'dark' : 'light') : appearance;
+  const theme = useSystemTheme(themes.inboki[scheme], systemColors);
+  return (
+    <IsolineProvider theme={theme}>
+      <View className="flex-1 gap-6 bg-background p-6">
+        <Text variant="title">Appearance</Text>
+        <View className="flex-row items-center justify-between gap-4">
+          <Text>Color mode</Text>
+          <SelectField<Appearance>
+            value={appearance}
+            onChange={setAppearance}
+            accessibilityLabel="Color mode"
+            options={[
+              { id: 'system', label: 'System' },
+              { id: 'light', label: 'Light' },
+              { id: 'dark', label: 'Dark' },
+            ]}
+          />
+        </View>
+        <View className="flex-row items-center justify-between gap-4">
+          <Text>Use system colors</Text>
+          <Switch
+            value={systemColors}
+            onValueChange={setSystemColors}
+            accessibilityLabel="Use Android system colors"
+          />
+        </View>
+        <Text variant="caption">System colors are available on Android 12 and later.</Text>
+      </View>
+    </IsolineProvider>
+  );
+}
+```
+
+## Einstellungen speichern
+
+Das Beispiel verwendet lokalen Zustand, damit du es sofort ausprobieren kannst. Ersetze die Werte durch deine Einstellungsverwaltung, um die Auswahl über App-Starts hinweg zu behalten. Stelle gespeicherte Einstellungen vor dem endgültigen Theme wieder her, wenn du einen vorübergehenden Darstellungswechsel beim Start vermeiden möchtest.
+
+## Auf die ganze App anwenden
+
+Verschiebe Zustand und Provider in einer echten App in dein Root-Layout. Belasse die Bedienelemente im Einstellungsbildschirm und ändere dort den gemeinsamen Zustand. Ein Provider nur um den Einstellungsbildschirm verändert lediglich diesen Teilbaum.
+
+Die Hell-/Dunkel-Auswahl funktioniert auf beiden Plattformen. Systemfarben benötigen Android 12+ und eine neu gebaute App mit nativer Anbindung. Andernfalls bleibt das Basistheme aktiv. Du kannst die Zeile außerhalb von Android ausblenden.
+
+Halte Navigation, Statusleiste und andere von deiner App verwaltete Flächen mit der aufgelösten Darstellung synchron. Siehe [Haptisches Feedback](/de/docs/foundations/haptics) und [Typografie](/de/docs/foundations/typography) für weitere Einstellungen.

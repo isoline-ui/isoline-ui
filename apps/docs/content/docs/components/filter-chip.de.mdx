@@ -1,0 +1,46 @@
+---
+title: 'FilterChip'
+description: 'Schalte einen Filter um oder öffne über einen kleinen beschrifteten Chip eine Auswahl.'
+---
+
+<ComponentPreview kind="filters" />
+
+Verwende einen Chip für einen ein- oder ausschaltbaren Filter. Mehrere Chips können unabhängig ausgewählt sein, wenn deine App mehrere Werte speichert.
+
+## Einen Filter umschalten
+
+```tsx
+import { useState } from 'react';
+import { FilterChip } from '@isoline-ui/react-native';
+export function UnreadFilter() {
+  const [selected, setSelected] = useState(false);
+  return (
+    <FilterChip
+      label="Unread"
+      selected={selected}
+      onPress={() => setSelected((value) => !value)}
+    />
+  );
+}
+```
+
+## Zur umgebenden Fläche passend darstellen
+
+Ein nicht ausgewählter Chip hat eine eigene Füllung. Verwende `surface="popover"` in einem gemeinsamen Dialog oder Sheet beziehungsweise `surface="surfaceContainerHigh"` auf dieser Farbfläche. Auf einem normalen Bildschirm passt der Standard `background`.
+
+## Eine Auswahl öffnen
+
+Ein Chip kann statt des direkten Umschaltens ein Sheet öffnen. Ergänze ein nachfolgendes Chevron-Icon und setze `selected` danach, ob ein Filter aktiv ist. Das Sheet und seinen Zustand verwaltest du in deiner App. Verstecke die einzige Änderungsmöglichkeit nicht hinter `onLongPress`.
+
+Diese Komponente hat in der aktuellen Version keine Eigenschaften `disabled` oder `className`. Verwende die dokumentierten Eigenschaften und bei Bedarf eine gestaltete umgebende View.
+
+## Eigenschaften
+
+| Eigenschaft           | Typ / Standard                                                      | Verwendung                                                    |
+| --------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `label`               | `string · required`                                                 | Sichtbarer Name des Filters.                                  |
+| `selected`            | `boolean · required`                                                | Aktueller Auswahlzustand.                                     |
+| `onPress`             | `() => void · required`                                             | Schalte den Zustand um oder öffne eine Auswahl in deiner App. |
+| `onLongPress`         | `() => void`                                                        | Eine optionale zweite Aktion.                                 |
+| `icon / trailingIcon` | `React.ComponentType<IconProps>`                                    | Optionale führende und nachfolgende Icon-Komponenten.         |
+| `surface`             | `background / surfaceContainerHigh / popover · default: background` | Stimme den Chip auf die darunterliegende Fläche ab.           |

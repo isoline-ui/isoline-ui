@@ -1,0 +1,53 @@
+---
+title: 'Text'
+description: 'Give headings, paragraphs, labels, and values a consistent hierarchy.'
+---
+
+<ComponentPreview kind="text" />
+
+Use Isoline's `Text` inside your provider to follow the active colors and typography. It accepts normal React Native Text props.
+
+## Text for everyday content
+
+```tsx
+import { View } from 'react-native';
+import { Text } from '@isoline-ui/react-native';
+export function Summary() {
+  return (
+    <View className="gap-2">
+      <Text variant="title" accessibilityRole="header">
+        Your collection
+      </Text>
+      <Text variant="body">A little room for everything worth keeping.</Text>
+      <Text variant="valueLarge">42</Text>
+      <Text variant="caption">Items saved this month</Text>
+    </View>
+  );
+}
+```
+
+## Available variants
+
+| Role                  | Use it for                                             |
+| --------------------- | ------------------------------------------------------ |
+| `default`, `body`     | Ordinary interface text and paragraphs.                |
+| `display`             | A large introduction or prominent empty-state heading. |
+| `title`               | The main screen title.                                 |
+| `heading`             | A section heading.                                     |
+| `subject`             | A short, emphasized row title.                         |
+| `reader`              | Longer reading content with more line height.          |
+| `muted`, `caption`    | Supporting information.                                |
+| `labelLarge`, `label` | Short labels.                                          |
+| `mono`                | Compact monospaced supporting text.                    |
+| `value`, `valueLarge` | Numbers or measurements.                               |
+| `meta`                | Small metadata, such as a timestamp.                   |
+
+A text variant changes appearance, not its accessibility role. Add `accessibilityRole="header"` to a heading when appropriate. Use [typography overrides](/en/docs/foundations/typography) to change a role across the app. Atlas' monospaced variants need its fonts to be loaded.
+
+## Props
+
+| Prop                | Type / default                   | How to use it                                                                          |
+| ------------------- | -------------------------------- | -------------------------------------------------------------------------------------- |
+| `variant`           | `TextVariant · default: default` | Choose a text role from the list below.                                                |
+| `className / style` | `Text styles`                    | Apply local adjustments after the theme’s typography.                                  |
+| `Text props`        | `React Native TextProps`         | Use numberOfLines, selectable, accessibilityRole, and other supported text properties. |

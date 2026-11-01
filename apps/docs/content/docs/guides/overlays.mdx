@@ -1,0 +1,80 @@
+---
+title: 'Overlays with forms'
+description: 'Open a dialog, focus an input, and keep cancel and save behavior clear.'
+---
+
+## Keep a draft while editing
+
+Keep the saved value and draft separate. Opening copies the saved value; Cancel closes without changing it; Save commits the draft.
+
+```tsx title="RenameItem.tsx"
+import { useRef, useState, type ComponentRef } from 'react';
+import { Button, Dialog, DialogActions, Text, TextField } from '@isoline-ui/react-native';
+export function RenameItem() {
+  const [name, setName] = useState('Weekend plans');
+  const [draft, setDraft] = useState(name);
+  const [open, setOpen] = useState(false);
+  const input = useRef<ComponentRef<typeof TextField>>(null);
+  const close = () => setOpen(false);
+  return (
+    <>
+      <Text>{name}</Text>
+      <Button
+        label="Rename"
+        variant="outline"
+        onPress={() => {
+          setDraft(name);
+          setOpen(true);
+        }}
+      />
+      <Dialog visible={open} onClose={close} onShow={() => input.current?.focus()}>
+        <Text variant="heading">Rename item</Text>
+        <TextField
+          ref={input}
+          label="Name"
+          value={draft}
+          onChangeText={setDraft}
+          selectTextOnFocus
+          returnKeyType="done"
+        />
+        <DialogActions>
+          <Button label="Cancel" size="s" variant="ghost" onPress={close} />
+          <Button
+            label="Save"
+            size="s"
+            disabled={!draft.trim()}
+            onPress={() => {
+              setName(draft.trim());
+              close();
+            }}
+          />
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+```
+
+## Focus after opening
+
+Use `onShow` to focus the input after the native modal appears. `TextField` forwards a TextInput ref. Use `selectTextOnFocus` for a short value that people are likely to replace.
+
+## Dialog or sheet?
+
+Use `Dialog` for a short question. Use `BottomSheet` for a small collection of choices or controls. Both accept `visible`, `onClose`, `onShow`, and children. A dialog has `DialogActions`; arrange a sheet's actions yourself.
+
+For long sheet content, add a bounded scroll view:
+
+```tsx
+<BottomSheet visible={open} onClose={close}>
+  <ScrollView style={{ maxHeight: 360 }} keyboardShouldPersistTaps="handled">
+    {/* Your fields or rows */}
+  </ScrollView>
+</BottomSheet>
+```
+
+Try scrolling, the handle's dismiss gesture, the last field with the keyboard open, Android Back, and the iOS accessibility escape action.
+
+## Async saves
+
+Keep the overlay open until saving succeeds. Disable duplicate submissions and show an error on failure. Connect your own persistence; the rename example only changes local state.

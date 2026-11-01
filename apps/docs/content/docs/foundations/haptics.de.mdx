@@ -1,0 +1,54 @@
+---
+title: 'Haptisches Feedback'
+description: 'Binde Expo Haptics an und berücksichtige die Feedback-Einstellungen deiner Nutzer.'
+---
+
+## Das Feedback deiner App anbinden
+
+Haptisches Feedback bleibt deaktiviert, bis du Callbacks an `IsolineProvider` übergibst. Verwendest du Expo Haptics, installiere die zu deinem SDK passende Version:
+
+```sh
+npx expo install expo-haptics
+```
+
+```tsx title="AppFeedback.tsx"
+import { useMemo, type ReactNode } from 'react';
+import * as Haptics from 'expo-haptics';
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+
+export function AppFeedback({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+  const haptics = useMemo(
+    () => ({
+      selectionHaptic: () => {
+        if (enabled) void Haptics.selectionAsync().catch(() => {});
+      },
+      impactHaptic: (style: 'light' | 'medium') => {
+        if (!enabled) return;
+        const impact =
+          style === 'light'
+            ? Haptics.ImpactFeedbackStyle.Light
+            : Haptics.ImpactFeedbackStyle.Medium;
+        void Haptics.impactAsync(impact).catch(() => {});
+      },
+    }),
+    [enabled],
+  );
+  return (
+    <IsolineProvider theme={themes.inboki.light} haptics={haptics}>
+      {children}
+    </IsolineProvider>
+  );
+}
+```
+
+Übergib deine gespeicherte Einstellung als `enabled`. Ein fehlendes oder nicht unterstütztes haptisches Signal ist optionales Feedback und darf keine Aktion verhindern.
+
+## Welche Bedienelemente nutzen es?
+
+`Button` kann beim Drücken einen Auswahl-Impuls auslösen. Mit `haptic={false}` deaktivierst du ihn für einen einzelnen Button. Button-Gruppen verwenden ebenfalls den übergebenen Auswahl-Callback. Durch das Übergeben der Callbacks vibriert nicht automatisch jedes Bedienelement.
+
+Für ein eigenes Bedienelement liest du die konfigurierten Callbacks mit `useHaptics()` aus und rufst sie nach der beabsichtigten Aktion auf. Vermeide einen zweiten Impuls bei einem `Button`, der bereits selbst einen auslöst.
+
+## Auf einem Gerät ausprobieren
+
+Ein Simulator bildet physisches Feedback möglicherweise nicht nach. Prüfe das Ergebnis auf einem echten Telefon und mit deaktiviertem Feedback in deinen App-Einstellungen.

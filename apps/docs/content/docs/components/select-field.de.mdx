@@ -1,0 +1,44 @@
+---
+title: 'SelectField'
+description: 'Wähle einen benannten Wert aus einer kurzen Liste aus.'
+---
+
+Verwende `SelectField` für eine Einstellung, deren Optionen mehr Platz als eine Button-Gruppe benötigen. Das Feld öffnet eine eigene modale Liste und schließt sie nach der Auswahl.
+
+## Eine typsichere Auswahl
+
+```tsx
+import { useState } from 'react';
+import { SelectField } from '@isoline-ui/react-native';
+type SortOrder = 'newest' | 'oldest' | 'name';
+export function SortPicker() {
+  const [order, setOrder] = useState<SortOrder>('newest');
+  return (
+    <SelectField<SortOrder>
+      value={order}
+      onChange={setOrder}
+      accessibilityLabel="Sort order"
+      options={[
+        { id: 'newest', label: 'Newest first' },
+        { id: 'oldest', label: 'Oldest first' },
+        { id: 'name', label: 'By name' },
+      ]}
+    />
+  );
+}
+```
+
+## Einen gültigen aktuellen Wert verwenden
+
+Wähle eine anfängliche ID, die in `options` vorkommt. Lädt deine App die Optionen asynchron, zeige die Auswahl erst mit einem gültigen Wert an oder verwende einen getrennten Ladezustand.
+
+Die aktuelle Komponente ist eine kurze Einzelauswahl. Sie bietet keine Suche, Mehrfachauswahl und keine Eigenschaften für Fehler oder Deaktivierung. Für viele Ergebnisse kannst du eine durchsuchbare Liste in einem eigenen Sheet bauen. Verwende [ButtonGroup](/de/docs/components/button-group), wenn alle Optionen bequem nebeneinander passen.
+
+## Eigenschaften
+
+| Eigenschaft          | Typ / Standard                  | Verwendung                                        |
+| -------------------- | ------------------------------- | ------------------------------------------------- |
+| `value`              | `T extends string · required`   | ID der ausgewählten Option.                       |
+| `options`            | `SelectOption<T>[] · required`  | Optionen mit eindeutiger id und sichtbarem label. |
+| `onChange`           | `(value: T) => void · required` | Speichere die ausgewählte ID.                     |
+| `accessibilityLabel` | `string · required`             | Name der Einstellung, die diese Auswahl ändert.   |

@@ -1,0 +1,45 @@
+---
+title: 'WavyProgress'
+description: 'Zeige an, wie viel eines Vorgangs abgeschlossen ist.'
+---
+
+<ComponentPreview kind="loading" />
+
+Verwende `WavyProgress`, wenn du einen tatsächlichen Fortschrittswert hast. Übergib eine Zahl zwischen **0 und 1**, nicht zwischen 0 und 100.
+
+## Ein Fortschrittswert
+
+```tsx
+import { View } from 'react-native';
+import { Text, WavyProgress } from '@isoline-ui/react-native';
+export function ImportProgress({ completed, total }: { completed: number; total: number }) {
+  const progress = total > 0 ? Math.min(1, Math.max(0, completed / total)) : 0;
+  const percentage = Math.round(progress * 100);
+  return (
+    <View
+      className="gap-3"
+      accessibilityRole="progressbar"
+      accessibilityLabel="Import progress"
+      accessibilityValue={{ min: 0, max: 100, now: percentage }}
+    >
+      <Text>{percentage}% imported</Text>
+      <WavyProgress progress={progress} />
+    </View>
+  );
+}
+```
+
+## Ausreichend Platz geben
+
+Der Indikator misst die verfügbare Breite. Platziere ihn in einer View mit nutzbarer Breite. In einer Zeile kann eine umgebende View mit `flex: 1` nötig sein. In dieser Version gibt es keine Eigenschaften `className`, Höhe oder `style`.
+
+Ergänze einen Textstatus und zugängliche Fortschrittswerte auf der umgebenden View. Verwende `animated={false}` für eine ruhige Vorschau oder dort, wo Bewegung ablenken würde. Auch die Systemeinstellung für reduzierte Bewegung beeinflusst die Animation. Bei unbekannter Dauer verwende [LoadingIndicator](/de/docs/components/loading-indicator).
+
+## Eigenschaften
+
+| Eigenschaft  | Typ / Standard                    | Verwendung                                           |
+| ------------ | --------------------------------- | ---------------------------------------------------- |
+| `progress`   | `number · required`               | Fortschrittswert zwischen 0 und 1.                   |
+| `color`      | `string · default: theme.primary` | Farbe des abgeschlossenen Abschnitts.                |
+| `trackColor` | `string`                          | Überschreibe die Farbe des verbleibenden Abschnitts. |
+| `animated`   | `boolean · default: true`         | Setze false für eine unbewegte Welle.                |

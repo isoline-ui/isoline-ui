@@ -1,0 +1,34 @@
+---
+title: 'Accessible interfaces'
+description: 'Make controls understandable, reachable, and comfortable to use.'
+---
+
+## Give every action a name
+
+Use clear button labels and provide `accessibilityLabel` for icon-only actions and switches. `SearchField` needs labels for both the input and its clear button. `SelectField` needs a label that explains the setting, not just its current value.
+
+```tsx
+<Switch
+  value={notifications}
+  onValueChange={setNotifications}
+  accessibilityLabel="Enable notifications"
+/>
+```
+
+For a custom `Pressable`, supply the appropriate `accessibilityRole` and state yourself. Describe the action people can take; avoid names such as “bell icon”.
+
+## Keep text readable
+
+Allow system font scaling and give content room to wrap. Check long translated labels, large text, and the smallest supported screen. Use a visible error message next to the relevant field. For a dynamically displayed error or saved status, consider a React Native live region on the surrounding text where supported.
+
+## Handle overlays carefully
+
+Shared sheets and dialogs support backdrop dismissal, Android Back, and iOS accessibility escape. Put focus on the relevant field with `onShow` when needed. Return focus to the triggering control when your surrounding navigation flow requires it. Verify focus order and dismissal with VoiceOver and TalkBack in your app.
+
+## Respect appearance settings
+
+Use foreground/background pairs with enough contrast. Test both light and dark themes, including your Android system palette. Liquid Glass surfaces fall back to solid colors when Reduce Transparency is enabled. Motion behavior varies by component; loading feedback can remain active while decorative morphing is reduced.
+
+## A useful final check
+
+Try your actual screens with a screen reader, larger text, reduced motion, reduced transparency on iOS, and your app's haptics setting disabled. Check that each task can be completed without relying on color or vibration alone. Web illustrations and a successful build cannot replace this check.

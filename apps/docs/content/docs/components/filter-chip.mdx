@@ -1,0 +1,46 @@
+---
+title: 'FilterChip'
+description: 'Toggle a filter or open a related choice from a small labeled chip.'
+---
+
+<ComponentPreview kind="filters" />
+
+Use a chip for a filter that can be on or off. Multiple chips can be selected independently when your app stores multiple values.
+
+## Toggle a filter
+
+```tsx
+import { useState } from 'react';
+import { FilterChip } from '@isoline-ui/react-native';
+export function UnreadFilter() {
+  const [selected, setSelected] = useState(false);
+  return (
+    <FilterChip
+      label="Unread"
+      selected={selected}
+      onPress={() => setSelected((value) => !value)}
+    />
+  );
+}
+```
+
+## Match the surrounding surface
+
+The unselected chip has its own fill. Set `surface="popover"` inside a shared dialog or sheet, or `surface="surfaceContainerHigh"` when it sits on that tone. Use the default `background` on a normal screen.
+
+## Opening a choice
+
+A chip can also open a sheet instead of toggling directly. Use a trailing chevron icon and set `selected` according to whether a filter is active. Provide the sheet and its state in your app. Do not hide the only way to change a filter behind `onLongPress`.
+
+This component has no `disabled` or `className` prop in the current release. Use the documented props and place it in a styled parent view when needed.
+
+## Props
+
+| Prop                  | Type / default                                                      | How to use it                                  |
+| --------------------- | ------------------------------------------------------------------- | ---------------------------------------------- |
+| `label`               | `string · required`                                                 | Visible filter name.                           |
+| `selected`            | `boolean · required`                                                | Current selection state.                       |
+| `onPress`             | `() => void · required`                                             | Toggle state or open a choice in your app.     |
+| `onLongPress`         | `() => void`                                                        | An optional secondary action.                  |
+| `icon / trailingIcon` | `React.ComponentType<IconProps>`                                    | Optional leading and trailing icon components. |
+| `surface`             | `background / surfaceContainerHigh / popover · default: background` | Match the surface behind the chip.             |

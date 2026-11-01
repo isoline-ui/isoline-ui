@@ -4,7 +4,8 @@
   "type": "module",
   "workspaces": [
     "packages/*",
-    "examples/*"
+    "examples/*",
+    "apps/*"
   ],
   "scripts": {
     "build": "npm run build --workspace @isoline-ui/react-native && npm run build --workspace @isoline-ui/native",
@@ -13,7 +14,10 @@
     "check": "npm run typecheck && npm test && npm run build && node scripts/check-package.mjs && npm run check:native",
     "pack": "npm run build && npm pack --workspace @isoline-ui/react-native --workspace @isoline-ui/native",
     "showcase": "npm run start --workspace isoline-showcase",
-    "check:native": "node scripts/check-native.mjs"
+    "check:native": "node scripts/check-native.mjs",
+    "docs:dev": "npm run dev --workspace isoline-docs",
+    "docs:build": "npm run build --workspace isoline-docs",
+    "docs:check": "npm run typecheck --workspace isoline-docs && node scripts/check-docs.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

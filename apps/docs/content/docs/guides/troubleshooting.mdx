@@ -1,0 +1,44 @@
+---
+title: 'Troubleshooting'
+description: 'Find the first thing to check when styles or native features do not work.'
+---
+
+## Components have no styles
+
+Check the package source scan and Isoline preset in [Installation](/en/docs/getting-started/installation). Import global.css once, and restart Metro with `npx expo start --clear` after changing configuration. Merge settings into your existing config rather than replacing it.
+
+## “Must be inside IsolineProvider”
+
+Put the provider around the screen tree. Call theme hooks in a descendant component. Wrapping only the returned children does not put the current component’s hook inside the provider.
+
+## Some colors do not change
+
+Pass the result of `useSystemTheme` to the provider. Hard-coded colors do not change automatically; use semantic classes or `useThemeColors()` for native properties.
+
+## Atlas uses the wrong font
+
+Load the [Atlas fonts](/en/docs/foundations/typography) or override the font families. Check the exact registered names and handle loading errors.
+
+## The floating label has a visible patch
+
+Set `TextField`’s `notchClassName` to the surrounding surface. Use `bg-background` on a screen. The default `bg-popover` fits shared dialogs and sheets.
+
+## Android system colors are missing
+
+Check Android 12+, the enabled preference, and a native build containing `@isoline-ui/native`. Expo Go uses the fallback. Pass the resolved theme to the provider. See [System colors](/en/docs/native/system-colors).
+
+## Liquid Glass looks solid
+
+Check iOS 26+, glass availability, `material`, and Reduce Transparency. A solid surface is expected on unsupported systems and with reduced transparency. Avoid opaque backgrounds and ancestor opacity styles, and try varied content underneath. See [Liquid Glass](/en/docs/native/liquid-glass).
+
+## A native module is missing after an update
+
+Restarting Metro cannot add native code. Build and install a new app containing the dependency, and keep your OTA runtime version compatible. See [Native builds](/en/docs/native/development-builds).
+
+## Install looks for a matching Isoline peer
+
+Install both GitHub archives in the same command for native appearance. Their versions must match. Use release assets, not the source ZIP, and commit your lockfile.
+
+## Still stuck?
+
+[Open an issue](https://github.com/isoline-ui/isoline-ui/issues) with your Expo, React Native, and Isoline versions, affected platform, exact error, and a small reproducible example. Remove credentials and private app data before sharing.

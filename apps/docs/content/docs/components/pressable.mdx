@@ -1,0 +1,40 @@
+---
+title: 'Pressable'
+description: 'Build a custom touch target with platform-aware feedback.'
+---
+
+Use the shared `Pressable` when you need a custom row or card. It accepts React Native Pressable props and preserves your style callback. Add a role, label, and appropriate state for the action you build.
+
+## A custom row
+
+```tsx
+import { Pressable, Text, useRipple } from '@isoline-ui/react-native';
+export function OpenRow({ onOpen }: { onOpen: () => void }) {
+  const ripple = useRipple();
+  return (
+    <Pressable
+      className="rounded-2xl bg-surfaceContainer p-5"
+      android_ripple={{ color: ripple.onNeutral }}
+      accessibilityRole="button"
+      accessibilityLabel="Open collection"
+      onPress={onOpen}
+    >
+      <Text variant="subject">Open collection</Text>
+    </Pressable>
+  );
+}
+```
+
+## Feedback on each platform
+
+On Android, pass `android_ripple` when you want a ripple. Contained ripples are clipped to the view's bounds. On iOS, the shared pressable supplies pressed-opacity feedback while keeping your own styles.
+
+Use `AnimatedPressable` when the target needs a Reanimated animated style. Use [motion helpers](/en/docs/components/layout-motion) for a small press response on a custom card. For ordinary actions, use `Button` or `IconButton` instead of recreating their labeling and layout.
+
+## Props
+
+| Prop              | Type / default                 | How to use it                                                     |
+| ----------------- | ------------------------------ | ----------------------------------------------------------------- |
+| `Pressable props` | `React Native PressableProps`  | Use onPress, disabled, accessibility props, style, and className. |
+| `android_ripple`  | `PressableAndroidRippleConfig` | Supply ripple color and options for Android.                      |
+| `ref`             | `Pressable view ref`           | Forwarded to the underlying native target.                        |

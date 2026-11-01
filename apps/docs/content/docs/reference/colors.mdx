@@ -1,0 +1,51 @@
+---
+title: 'Color reference'
+description: 'Find semantic classes and literal colors for your own components.'
+---
+
+## Classes and native properties
+
+Use NativeWind classes for View and Text styles. Use `useThemeColors()` when an SVG or native property needs a color string.
+
+```tsx
+const colors = useThemeColors();
+// NativeWind: <View className="bg-primaryContainer" />
+// SVG/native: <YourIcon color={colors.primary} />
+```
+
+Class roles take the usual `bg-`, `text-`, or `border-` prefix. Hook keys are JavaScript property names.
+
+| Class role                                      | Hook key                                                                                                           | Use                                                         |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
+| `primary / primary-foreground`                  | `primary / onPrimary`                                                                                              | Main action and text                                        |
+| `primaryContainer / onPrimaryContainer`         | `primaryContainer / onPrimaryContainer`                                                                            | Tonal emphasis                                              |
+| `secondaryContainer / onSecondaryContainer`     | `secondaryContainer / onSecondaryContainer`                                                                        | Supporting choices                                          |
+| `tertiary / tertiary-foreground`                | `tertiary / onTertiary`                                                                                            | Complementary accent                                        |
+| `tertiaryContainer / onTertiaryContainer`       | `tertiaryContainer / onTertiaryContainer`                                                                          | Soft complementary accent                                   |
+| `surface / onSurface`                           | `surface / onSurface`                                                                                              | Surface and content                                         |
+| `surfaceVariant / onSurfaceVariant`             | `surfaceVariant / onSurfaceVariant`                                                                                | Secondary surface treatment                                 |
+| `surfaceContainerLowest / Low / High / Highest` | `surfaceContainerLowest / surfaceContainerLow / surfaceContainer / surfaceContainerHigh / surfaceContainerHighest` | Container tones; use full names such as surfaceContainerLow |
+| `outline / outlineVariant`                      | `outline / outlineVariant`                                                                                         | Borders and dividers                                        |
+| `destructive / destructive-foreground`          | `error / onError`                                                                                                  | Error emphasis                                              |
+| `errorContainer / onErrorContainer`             | `errorContainer / onErrorContainer`                                                                                | Error surface and text                                      |
+| `inverseSurface / inverseOnSurface`             | `inverseSurface / inverseOnSurface`                                                                                | Inverted surface                                            |
+| `inversePrimary`                                | `inversePrimary`                                                                                                   | Inverse accent                                              |
+| `success`                                       | `success`                                                                                                          | Positive status                                             |
+
+## Other useful roles
+
+`background` / `foreground` are the screen's base pair. `card` / `card-foreground`, `popover` / `popover-foreground`, `muted` / `muted-foreground`, and `accent` / `accent-foreground` are available as classes. `input` and `ring` add border and focus roles.
+
+Not every class has a dedicated `useThemeColors()` key. For other roles, use the theme token map or keep styling in NativeWind.
+
+## Custom tokens
+
+The token map uses CSS custom-property names such as `--primary`, `--primary-foreground`, and `--surface-container-high`. Values are HSL channel triplets, not hex strings or complete `hsl(...)` expressions.
+
+```tsx
+const theme = extendTheme(themes.inboki.light, {
+  tokens: { '--surface-container': '140 14% 95%', '--on-surface': '145 18% 14%' },
+});
+```
+
+Adjust foreground/background pairs together and check their contrast. See [Themes](/en/docs/foundations/theming) or [Android system colors](/en/docs/native/system-colors).

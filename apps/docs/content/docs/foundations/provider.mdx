@@ -1,0 +1,44 @@
+---
+title: 'IsolineProvider'
+description: 'Give every component the same theme, labels, and optional haptics.'
+---
+
+## Add it once
+
+Place `IsolineProvider` near the root of your app, inside `SafeAreaProvider` and `GestureHandlerRootView`. Every Isoline component must be below it in the React tree.
+
+```tsx
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+
+<IsolineProvider theme={themes.yours.light} labels={{ close: 'Close' }}>
+  {/* Your screens */}
+</IsolineProvider>;
+```
+
+The provider supplies the theme to NativeWind classes and to properties such as SVG colors and switch colors. When you pass a new theme, both update together.
+
+## Change the close label
+
+Use `labels={{ close: 'Close' }}` for English or `labels={{ close: 'Schließen' }}` for German. This labels the shared close controls. Labels on your own buttons, fields, menus, and screens still come from your app.
+
+## Enable haptics
+
+Pass your own `selectionHaptic` and `impactHaptic` callbacks. They do nothing when you do not supply them. See [Haptics](/en/docs/foundations/haptics) for an Expo example that respects a saved preference.
+
+## Nested providers
+
+A nested provider needs an explicit `theme`. It inherits the parent's labels and haptic callbacks, then applies any overrides you pass. Its root view defaults to `flex: 1`; supply `style` if you use it for a small preview or subsection.
+
+## Read the current values
+
+Use `useIsolineTheme()` for the complete theme, `useThemeColors()` for literal color strings, `useRipple()` for Android ripple colors, `useLabels()` for shared labels, and `useHaptics()` for your callbacks. Call them inside a descendant component, not in the same component above the provider.
+
+## Props
+
+| Prop                | Type / default            | How to use it                                               |
+| ------------------- | ------------------------- | ----------------------------------------------------------- |
+| `theme`             | `IsolineTheme · required` | The theme used by the whole subtree.                        |
+| `labels`            | `{ close?: string }`      | Override shared labels. The default close label is “Close”. |
+| `haptics`           | `Partial<IsolineHaptics>` | Connect your app’s haptic functions.                        |
+| `style / className` | `View styles`             | Style the provider’s root view.                             |
+| `children`          | `ReactNode · required`    | Your screens or components.                                 |

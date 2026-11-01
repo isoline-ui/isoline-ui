@@ -1,0 +1,12 @@
+{
+  "title": "Dokumentation",
+  "pages": [
+    "index",
+    "getting-started",
+    "foundations",
+    "components",
+    "native",
+    "guides",
+    "reference"
+  ]
+}

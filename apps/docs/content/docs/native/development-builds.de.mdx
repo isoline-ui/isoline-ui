@@ -1,0 +1,49 @@
+---
+title: 'Native Builds und Expo Go'
+description: 'Erfahre, wann eine Installation eine neue App-Datei braucht und wie du die Showcase-App ausprobierst.'
+---
+
+## Nach dem Hinzufügen nativen Codes neu bauen
+
+Das Android-Modul von Isoline wird beim nativen App-Build eingebunden. Sein `.tgz` in `node_modules` verändert keine bereits auf dem Telefon installierte App-Datei.
+
+Für einen lokalen Expo-Build:
+
+```sh
+npx expo run:android
+# Unter macOS mit Xcode:
+npx expo run:ios
+```
+
+Du kannst auch deine normalen EAS-Build-Profile verwenden. Mit einem Development-Build kannst du beim Testen der nativen Funktionen weiterhin Metro verwenden.
+
+## Expo Go
+
+Expo Go enthält das eigene Android-Palettenmodul von Isoline nicht. Systemfarben fallen dort auf das Basistheme zurück. Liquid Glass hängt von der in Expo Go enthaltenen Glas-Unterstützung und der iOS-Version des Geräts ab. Für einen aussagekräftigen Test deiner eigenen App nutze deren nativen Development-Build.
+
+## Vorhandene native Projekte
+
+Für ein Expo-Projekt mit generierten nativen Ordnern verwende nach Änderungen nativer Abhängigkeiten oder der App-Konfiguration deinen normalen Prebuild-Ablauf. Pflegst du `android/` oder `ios/` manuell, bleibe bei deinem vorhandenen Gradle- und CocoaPods-Prozess. Überschreibe keine manuell gepflegten Änderungen nur wegen eines Einrichtungsbeispiels.
+
+Expo Autolinking erkennt das installierte Paket `@isoline-ui/native` automatisch. Du musst es weder in einen lokalen `modules/`-Ordner kopieren noch in `nativeModulesDir` eintragen. Installiere keine zweite Kopie derselben Isoline-Anbindung.
+
+## JavaScript-Updates
+
+Ein Over-the-Air-Update kann JavaScript ändern, das bereits installierte native APIs nutzt. Es ergänzt aber kein fehlendes natives Modul. Halte Updates über die Runtime-Version-Regel deiner App zum App-Binary kompatibel. Ändert sich nativer Code, veröffentliche einen neuen App-Build.
+
+## Die Showcase-App starten
+
+Klone das öffentliche Repository, installiere die Abhängigkeiten und baue die Beispiel-App:
+
+```sh
+git clone https://github.com/isoline-ui/isoline-ui.git
+cd isoline-ui
+npm ci
+npm run build
+cd examples/showcase
+npx expo run:android
+# Oder unter macOS:
+npx expo run:ios
+```
+
+In der Showcase-App wechselst du Themes und Darstellung, probierst Bedienelemente sowie Overlays aus und prüfst Systemfarben und Materialien auf einem unterstützten Gerät. Ihr Quelltext zeigt außerdem, wie du einen vollständigen Bildschirm zusammensetzt.

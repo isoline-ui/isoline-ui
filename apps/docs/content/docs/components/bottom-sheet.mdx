@@ -1,0 +1,51 @@
+---
+title: 'BottomSheet'
+description: 'Show a focused set of controls in a dismissible panel at the bottom.'
+---
+
+<ComponentPreview kind="overlays" />
+
+Use a bottom sheet for a short task or a set of choices that should stay close to the current screen. You control whether it is open.
+
+## Open and close a sheet
+
+```tsx
+import { useState } from 'react';
+import { View } from 'react-native';
+import { BottomSheet, Button, Text } from '@isoline-ui/react-native';
+export function SheetExample() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button label="Show details" onPress={() => setOpen(true)} />
+      <BottomSheet visible={open} onClose={() => setOpen(false)}>
+        <View className="gap-4">
+          <Text variant="heading">A little more detail</Text>
+          <Text>Keep the next step clear and close at hand.</Text>
+          <Button label="Done" onPress={() => setOpen(false)} />
+        </View>
+      </BottomSheet>
+    </>
+  );
+}
+```
+
+## Content that scrolls
+
+The sheet does not automatically add a scroll view. Put a bounded `ScrollView` or list inside when your content is long, and try it with the keyboard open and large text. The drag-to-dismiss gesture belongs to the handle so it can coexist with scrolling content.
+
+## Dismissal and keyboard
+
+`onClose` handles the backdrop, Android Back, accessibility dismissal, and the dismiss gesture. Always update your `visible` state in that callback. A form in the sheet can use `onShow` to focus an input; iOS keyboard avoidance is included.
+
+Shared overlays use the `popover` surface, so the default TextField label background fits them. Use [MenuSheet](/en/docs/components/menu-sheet) for an action list or [Dialog](/en/docs/components/dialog) for a short confirmation.
+
+## Props
+
+| Prop        | Type / default                  | How to use it                                                      |
+| ----------- | ------------------------------- | ------------------------------------------------------------------ |
+| `visible`   | `boolean · required`            | Control whether the sheet is shown.                                |
+| `onClose`   | `() => void · required`         | Set your open state to false.                                      |
+| `onShow`    | `() => void`                    | Run after the native modal appears, for example to focus an input. |
+| `maxHeight` | `DimensionValue · default: 90%` | Limit the panel height.                                            |
+| `children`  | `ReactNode · required`          | Provide the content and your actions.                              |

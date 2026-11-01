@@ -1,0 +1,53 @@
+---
+title: 'SearchField'
+description: 'Collect a search query with a built-in clear action.'
+---
+
+<ComponentPreview kind="fields" />
+
+Use `SearchField` to filter a list or collect a query. It gives you the current text; your app decides which results to show and when to fetch them.
+
+## Keep the query in state
+
+```tsx
+import { useState } from 'react';
+import { SearchField, Text } from '@isoline-ui/react-native';
+const names = ['Garden notes', 'Weekend plans', 'Reading list'];
+export function SearchExample() {
+  const [query, setQuery] = useState('');
+  const results = names.filter((name) => name.toLowerCase().includes(query.toLowerCase()));
+  return (
+    <>
+      <SearchField
+        value={query}
+        onChangeText={setQuery}
+        placeholder="Search notes"
+        accessibilityLabel="Search notes"
+        clearAccessibilityLabel="Clear search"
+      />
+      {results.map((name) => (
+        <Text key={name}>{name}</Text>
+      ))}
+      {results.length === 0 && <Text>No notes found.</Text>}
+    </>
+  );
+}
+```
+
+## Results and remote search
+
+For a local list, derive results from `value` as shown above. For a remote search, debounce the request in your app, handle cancellation or stale responses, and show a loading state and an empty state beside the results.
+
+The clear button appears only when the value is not empty. Both accessibility labels are required because the input and clear action are separate controls. This component does not expose arbitrary TextInput props or a submit callback in the current release; use `TextField` for a more configurable input.
+
+## Props
+
+| Prop                      | Type / default                       | How to use it                                                     |
+| ------------------------- | ------------------------------------ | ----------------------------------------------------------------- |
+| `value`                   | `string · required`                  | Current query text.                                               |
+| `onChangeText`            | `(value: string) => void · required` | Update your query; clearing also calls this with an empty string. |
+| `placeholder`             | `string · required`                  | Hint displayed when empty.                                        |
+| `accessibilityLabel`      | `string · required`                  | Spoken description of the search input.                           |
+| `clearAccessibilityLabel` | `string · required`                  | Spoken description of the clear button.                           |
+| `autoFocus`               | `boolean · default: false`           | Focus the field on mount.                                         |
+| `className`               | `string`                             | Style the containing pill.                                        |

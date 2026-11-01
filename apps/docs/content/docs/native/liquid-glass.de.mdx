@@ -1,0 +1,56 @@
+---
+title: 'Liquid-Glass-Flächen'
+description: 'Nutze das native iOS-Material für ausgewählte schwebende Bedienelemente und Flächen.'
+---
+
+<ComponentPreview kind="surface" />
+
+## Eine Fläche ergänzen
+
+Rendere `MaterialSurface` nach der [nativen Installation](/de/docs/native/overview) innerhalb von `IsolineProvider`:
+
+```tsx title="FloatingActions.tsx"
+import { MaterialSurface } from '@isoline-ui/native';
+import { Button, Text } from '@isoline-ui/react-native';
+import { View } from 'react-native';
+
+export function FloatingActions() {
+  return (
+    <MaterialSurface style={{ borderRadius: 28, padding: 16 }}>
+      <View className="flex-row items-center justify-between gap-4">
+        <Text variant="subject">Your collection</Text>
+        <Button label="Add" size="s" onPress={() => {}} />
+      </View>
+    </MaterialSurface>
+  );
+}
+```
+
+Platziere die Fläche über abwechslungsreichem Inhalt, etwa einer scrollenden Liste oder Bildern, wenn das Material sichtbar werden soll. Auf einem gleichmäßigen Hintergrund fällt der Effekt von Natur aus weniger auf. Die Vorschau oben ist eine Web-Illustration; die iOS-App nutzt Expos native Glas-View.
+
+## Passende Stellen auswählen
+
+Beginne mit einer kleinen schwebenden Werkzeugleiste oder einer ergänzenden Navigationsfläche. Halte größere Lese- und Formularflächen gut lesbar. `MaterialSurface` zeichnet eine View mit Materialhintergrund. Es erstellt keine Navigationsleiste, Tab-Bar und keinen nativen Button für dich.
+
+`interactive` aktiviert die native Materialinteraktion. Ergänze einen `Button`, `IconButton` oder eine eigene barrierefreie Aktion, damit beim Drücken etwas passiert.
+
+## Alternative Darstellung
+
+Natives Glas wird auf **iOS 26+** verwendet, wenn die benötigten APIs verfügbar sind und die App die Liquid-Glass-Darstellung unterstützt. Auf älteren iOS-Versionen, anderen Plattformen und bei reduzierter Transparenz zeigt die Komponente eine undurchsichtige Theme-Fläche. Auch `material="glass"` berücksichtigt diese Prüfungen. `material="solid"` fordert immer die undurchsichtige Alternative an.
+
+Die Glasdarstellung folgt dem hellen oder dunklen Isoline-Theme. Teste beide Varianten und die reduzierte Transparenz in den iOS-Bedienungshilfen.
+
+## Hinweise zur Gestaltung
+
+Verwende `style` für Innenabstand, Layout und Eckenradius. Ein undurchsichtiger Hintergrund kann das Material verdecken. Vermeide reduzierte Deckkraft auf dem Glas oder seinen übergeordneten Views, auch durch Press-Opacity-Wrapper. Setze stattdessen bedienbare Elemente hinein. Blende bei Animationen nicht die gesamte Fläche wie eine normale undurchsichtige View aus.
+
+## Eigenschaften
+
+| Eigenschaft     | Typ / Standard                             | Verwendung                                                                      |
+| --------------- | ------------------------------------------ | ------------------------------------------------------------------------------- |
+| `material`      | `auto / glass / solid · default: auto`     | Verwende Glas, sofern verfügbar, oder ausdrücklich eine undurchsichtige Fläche. |
+| `glassStyle`    | `regular / clear · default: regular`       | Wähle die native Glasdarstellung.                                               |
+| `tintColor`     | `string`                                   | Optionale Tönung für das native Glas.                                           |
+| `interactive`   | `boolean · default: false`                 | Aktiviere die native Materialinteraktion. Das ergänzt keine Aktionsbehandlung.  |
+| `fallbackColor` | `string · default: theme.surfaceContainer` | Hintergrund der undurchsichtigen Alternative.                                   |
+| `View props`    | `React Native ViewProps`                   | Setze Layout, Radius, Innenabstand, Bedienungshilfen und Inhalt.                |

@@ -1,0 +1,31 @@
+---
+title: 'Compatibility'
+description: 'Check dependency versions and platform requirements before integrating.'
+---
+
+## Dependency combinations
+
+| Expo SDK | React Native | React |
+| -------- | ------------ | ----- |
+| 57       | 0.86         | 19.2  |
+| 58       | 0.88         | 19.3  |
+
+Use native peer versions selected by your SDK. The UI package expects **NativeWind 4 and Tailwind CSS 3**. Do not copy this documentation website's Tailwind 4 setup into your native app.
+
+## Native features
+
+Android system colors need **Android 12+** and the Isoline module in the binary. Native Liquid Glass needs **iOS 26+**, available glass APIs, and a supported app appearance. Otherwise, the supplied brand theme or solid surface is used. Your Expo SDK defines the app's baseline supported OS versions; the glass requirement does not raise the minimum version of every screen.
+
+## Verification
+
+The alpha sources have passed Android Kotlin compilation and a complete iOS simulator showcase build with Xcode 26.6, plus package, declaration, and Metro export checks. Installed release archives were also checked against SDK 57 / React Native 0.86 types and Android autolinking. That SDK 57 check was not a complete native app build.
+
+Before shipping, test your own screens, keyboard behavior, gestures, accessibility, colors, and materials on supported devices.
+
+## Web and Node
+
+Isoline's UI package targets React Native and Metro. Site previews are web illustrations. Importing the UI barrel in a plain Node script or using it as a browser component library is not a supported setup.
+
+## Current release
+
+**0.1.0-alpha.1** is a prerelease distributed through GitHub assets. Keep fixed versions and a lockfile. Read [Updating Isoline](/en/docs/getting-started/upgrading) before upgrading.

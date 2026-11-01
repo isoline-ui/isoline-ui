@@ -1,0 +1,53 @@
+---
+title: 'Native Darstellung'
+description: 'Ergänze deine Isoline-Oberfläche um Android-Systemfarben und iOS Liquid Glass.'
+---
+
+## Was du ergänzen kannst
+
+Das optionale Paket `@isoline-ui/native` bietet zwei Funktionen:
+
+| Funktion                    | Verfügbar auf                                                                 | Andernfalls                                          |
+| --------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Material-You-Systemfarben   | Android 12 und neuer, wenn das native Isoline-Modul in der App enthalten ist. | Dein übergebenes App-Theme bleibt aktiv.             |
+| Native Liquid-Glass-Flächen | iOS 26 und neuer mit verfügbarer Glas-API.                                    | Eine undurchsichtige Fläche im Theme wird angezeigt. |
+
+Das gemeinsame UI-Paket funktioniert auch ohne diese Funktionen. Ergänze die native Darstellung, wenn sie zu deiner App passt.
+
+## Beide passenden Pakete installieren
+
+Schließe die [UI-Einrichtung](/de/docs/getting-started/installation) ab. Installiere danach beide Archive desselben Releases und das zum SDK passende Expo-Glaspaket:
+
+```sh
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-react-native-0.1.0-alpha.1.tgz https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-native-0.1.0-alpha.1.tgz
+npx expo install expo-glass-effect
+```
+
+Verwende für das Glaspaket `npx expo install`, damit Expo die passende Version für SDK 57 oder 58 auswählt. Eine kopierte Version eines anderen SDK kann zu einem nativen Versionskonflikt führen.
+
+## Systemfarben anbinden
+
+Verwende das zurückgegebene Theme als `theme` des Providers:
+
+```tsx title="NativeAppearance.tsx"
+import { useColorScheme } from 'react-native';
+import type { ReactNode } from 'react';
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+import { useSystemTheme } from '@isoline-ui/native';
+
+export function NativeAppearance({ children }: { children: ReactNode }) {
+  const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = useSystemTheme(themes.inboki[scheme], true);
+  return <IsolineProvider theme={theme}>{children}</IsolineProvider>;
+}
+```
+
+Belasse das Ganze innerhalb deiner vorhandenen Gesten- und Safe-Area-Provider. Ersetze das Argument `true` durch deine gespeicherte Systemfarben-Einstellung. Unter iOS und auf nicht unterstützten Android-Versionen bleibt das übergebene Basistheme unverändert.
+
+## Eine Materialfläche ergänzen
+
+Verwende `MaterialSurface` innerhalb des Providers für ausgewählte schwebende Bedienelemente oder eine kleine Navigationsfläche. Unter [Liquid Glass](/de/docs/native/liquid-glass) findest du ein Beispiel und die Eigenschaften.
+
+## Die App bauen
+
+Die Android-Anbindung besteht aus nativem Code. Die Installation des JavaScript-Pakets allein ergänzt ihn nicht in einer vorhandenen App-Datei. Erstelle einen [neuen nativen Build](/de/docs/native/development-builds) und teste die Funktion auf der passenden Plattform.

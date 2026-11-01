@@ -1,0 +1,31 @@
+---
+title: 'Kompatibilität'
+description: 'Prüfe Abhängigkeiten und Plattformanforderungen vor der Einbindung.'
+---
+
+## Passende Abhängigkeiten
+
+| Expo SDK | React Native | React |
+| -------- | ------------ | ----- |
+| 57       | 0.86         | 19.2  |
+| 58       | 0.88         | 19.3  |
+
+Verwende die nativen Peer-Versionen deines SDK. Das UI-Paket erwartet **NativeWind 4 und Tailwind CSS 3**. Übernimm die Tailwind-4-Einrichtung dieser Dokumentationswebsite nicht in deine native App.
+
+## Native Funktionen
+
+Android-Systemfarben benötigen **Android 12+** und das Isoline-Modul im App-Binary. Natives Liquid Glass benötigt **iOS 26+**, verfügbare Glas-APIs und eine unterstützte App-Darstellung. Andernfalls werden das übergebene Basistheme oder eine undurchsichtige Fläche verwendet. Dein Expo SDK legt die grundlegenden Betriebssystemanforderungen fest. Die Glas-Voraussetzung erhöht nicht die Mindestversion jedes Bildschirms.
+
+## Prüfstand
+
+Die Alpha-Quellen haben Android-Kotlin-Kompilierung und einen vollständigen iOS-Simulator-Build der Showcase-App mit Xcode 26.6 bestanden, zusätzlich zu Paket-, Deklarations- und Metro-Export-Prüfungen. Installierte Release-Archive wurden außerdem gegen SDK-57-/React-Native-0.86-Typen und Android-Autolinking geprüft. Die SDK-57-Prüfung war kein vollständiger nativer App-Build.
+
+Teste vor der Veröffentlichung deine Bildschirme, Tastatur, Gesten, Bedienungshilfen, Farben und Materialien auf unterstützten Geräten.
+
+## Web und Node
+
+Das UI-Paket von Isoline ist für React Native und Metro gedacht. Die Vorschauen sind Web-Illustrationen. Der Import des gesamten UI-Pakets in einem einfachen Node-Skript oder die Verwendung als Browser-Komponentenbibliothek wird nicht unterstützt.
+
+## Aktuelle Version
+
+**0.1.0-alpha.1** ist eine Vorabversion als GitHub-Release-Dateien. Verwende feste Versionen und eine Lockdatei. Lies vor einem Update [Isoline aktualisieren](/de/docs/getting-started/upgrading).

@@ -1,0 +1,65 @@
+---
+title: 'Build appearance settings'
+description: 'Offer system, light, and dark modes alongside Android system colors.'
+---
+
+## A working appearance screen
+
+Complete [native installation](/en/docs/native/overview) first. Keep this inside your app's gesture and safe-area setup.
+
+```tsx title="AppearanceSettings.tsx"
+import { useState } from 'react';
+import { useColorScheme, View } from 'react-native';
+import { IsolineProvider, SelectField, Switch, Text, themes } from '@isoline-ui/react-native';
+import { useSystemTheme } from '@isoline-ui/native';
+type Appearance = 'system' | 'light' | 'dark';
+export function AppearanceSettings() {
+  const systemScheme = useColorScheme();
+  const [appearance, setAppearance] = useState<Appearance>('system');
+  const [systemColors, setSystemColors] = useState(true);
+  const scheme =
+    appearance === 'system' ? (systemScheme === 'dark' ? 'dark' : 'light') : appearance;
+  const theme = useSystemTheme(themes.inboki[scheme], systemColors);
+  return (
+    <IsolineProvider theme={theme}>
+      <View className="flex-1 gap-6 bg-background p-6">
+        <Text variant="title">Appearance</Text>
+        <View className="flex-row items-center justify-between gap-4">
+          <Text>Color mode</Text>
+          <SelectField<Appearance>
+            value={appearance}
+            onChange={setAppearance}
+            accessibilityLabel="Color mode"
+            options={[
+              { id: 'system', label: 'System' },
+              { id: 'light', label: 'Light' },
+              { id: 'dark', label: 'Dark' },
+            ]}
+          />
+        </View>
+        <View className="flex-row items-center justify-between gap-4">
+          <Text>Use system colors</Text>
+          <Switch
+            value={systemColors}
+            onValueChange={setSystemColors}
+            accessibilityLabel="Use Android system colors"
+          />
+        </View>
+        <Text variant="caption">System colors are available on Android 12 and later.</Text>
+      </View>
+    </IsolineProvider>
+  );
+}
+```
+
+## Save the preferences
+
+The example uses local state so you can try it immediately. Replace those values with your existing settings store to remember the choice across launches. Restore saved settings before showing the final theme to avoid a temporary appearance change during startup.
+
+## Apply it to the whole app
+
+Move the preference state and provider to your root layout in a real app. Keep the controls in a settings screen that updates the shared state. A provider around only the settings screen changes only that subtree.
+
+The light/dark choice works on both platforms. System colors require Android 12+ and a rebuilt app containing the bridge; otherwise the base theme remains active. You can hide that row outside Android.
+
+Keep navigation, status bars, and other app-managed surfaces in sync with the resolved appearance. See [Haptics](/en/docs/foundations/haptics) and [Typography](/en/docs/foundations/typography) for other preferences.

@@ -1,0 +1,66 @@
+---
+title: 'Themes und Dunkelmodus'
+description: 'Wähle ein Theme, passe Farbrollen an und berücksichtige die Darstellungseinstellung deiner App.'
+---
+
+<ComponentPreview />
+
+## Ein Theme auswählen
+
+Verwende `themes.inboki`, `themes.yours` oder `themes.atlas`. Jede Familie enthält `.light` und `.dark`. Ein Theme legt Farben und optionale Typografie-Anpassungen fest. Es lädt keine Schriftarten und speichert keine Nutzereinstellung.
+
+## Der Systemdarstellung folgen
+
+Lies die Systemdarstellung aus und übergib das passende Theme:
+
+```tsx title="AppTheme.tsx"
+import { useColorScheme } from 'react-native';
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+import type { ReactNode } from 'react';
+
+export function AppTheme({ children }: { children: ReactNode }) {
+  const systemScheme = useColorScheme();
+  const scheme = systemScheme === 'dark' ? 'dark' : 'light';
+  return <IsolineProvider theme={themes.inboki[scheme]}>{children}</IsolineProvider>;
+}
+```
+
+Für eine manuelle Darstellungseinstellung löst du deine gespeicherte Auswahl `light`, `dark` oder `system` in der App auf und wählst danach das Theme. `StatusBar`, Navigationskopf und andere appweite Flächen sollten dieselbe Auswahl verwenden.
+
+## Ein eigenes Theme erstellen
+
+Beginne mit einem vorhandenen Theme, damit alle benötigten Rollen vorhanden sind. Passe es anschließend mit `extendTheme` an:
+
+```tsx title="theme.ts"
+import { extendTheme, themes } from '@isoline-ui/react-native';
+
+export const lightTheme = extendTheme(themes.inboki.light, {
+  name: 'garden-light',
+  tokens: {
+    '--primary': '145 35% 30%',
+    '--primary-foreground': '0 0% 100%',
+    '--primary-container': '140 40% 90%',
+    '--on-primary-container': '145 45% 15%',
+  },
+});
+```
+
+Token-Werte sind **HSL-Kanalwerte**, zum Beispiel `145 35% 30%`. Verwende in `tokens` weder `hsl(...)` noch Hex-Werte. Passe Vordergrund und Hintergrund gemeinsam an und prüfe den Kontrast.
+
+Erstelle für Dunkel ein eigenes Theme auf Basis von `.dark`. Eine helle Palette mit einem dunklen Namen bleibt eine helle Palette.
+
+## Semantische Klassen verwenden
+
+```tsx
+<View className="rounded-3xl bg-surfaceContainer p-6">
+  <Text className="text-onSurface">Eine Karte im aktuellen Theme</Text>
+</View>
+```
+
+Häufige Rollen sind `bg-background`, `text-foreground`, `bg-primary`, `text-primary-foreground`, `bg-primaryContainer`, `text-onPrimaryContainer`, `border-outline` und die `surfaceContainer`-Abstufungen. Siehe auch die [Farbreferenz](/de/docs/reference/colors).
+
+## Farben außerhalb von NativeWind verwenden
+
+`useThemeColors()` liefert konkrete Farbwerte für native Eigenschaften und SVG. Rufe den Hook innerhalb des Providers auf, zum Beispiel `const colors = useThemeColors()`, und verwende `<YourIcon color={colors.primary} />`.
+
+Für Android-Hintergrundbildfarben siehe [Systemfarben](/de/docs/native/system-colors). Du kannst deine Nutzer zwischen Systemfarben und deinem eigenen Theme wählen lassen.

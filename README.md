@@ -1,14 +1,16 @@
 # Isoline UI
 
+[Read the documentation](https://isoline-ui.github.io/isoline-ui/) · [Deutsch](https://isoline-ui.github.io/isoline-ui/de/docs/)
+
 Shared expressive React Native components for Android and iOS.
 
 Isoline keeps the common interaction and accessibility rules in one place while
 allowing each app to keep its own colours and typography. The first consumer
 themes are Yours, Inboki and Atlas.
 
-**Status:** initial extracted alpha. The npm package and scope have not been
-published or reserved. Existing apps have not yet been migrated to this package.
-Liquid Glass is not implemented in this alpha.
+**Status:** 0.1.0-alpha.1, distributed through GitHub Releases. Isoline is not yet
+published to npm. The optional native package provides Android system colors and
+iOS Liquid Glass surfaces. Existing apps have not yet been migrated.
 
 ## What is here
 
@@ -29,7 +31,7 @@ The alpha package is distributed as an npm-compatible tarball on GitHub Releases
 Install this fixed version from an app directory:
 
 ```sh
-npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.0/isoline-ui-react-native-0.1.0-alpha.0.tgz
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-react-native-0.1.0-alpha.1.tgz
 ```
 
 The import name remains `@isoline-ui/react-native`. Isoline itself is downloaded

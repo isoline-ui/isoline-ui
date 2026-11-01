@@ -1,0 +1,84 @@
+---
+title: 'Ein Formular bauen'
+description: 'Verbinde kontrollierte Eingaben, Validierung und eine verlässliche Absenden-Aktion.'
+---
+
+## Ein vollständiges Formular
+
+Verwalte Feld- und Absendezustand gemeinsam. Übergib deine eigene asynchrone Speicherfunktion. Sie kann eine lokale Datenbank, eine API oder deinen vorhandenen Store verwenden.
+
+```tsx title="ProfileForm.tsx"
+import { useState } from 'react';
+import { View } from 'react-native';
+import { Button, LoadingIndicator, Text, TextField } from '@isoline-ui/react-native';
+type Props = { onSave: (name: string) => Promise<void> };
+export function ProfileForm({ onSave }: Props) {
+  const [name, setName] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  async function submit() {
+    if (saving) return;
+    const value = name.trim();
+    if (!value) {
+      setError('Enter your name.');
+      return;
+    }
+    setError(null);
+    setSaved(false);
+    setSaving(true);
+    try {
+      await onSave(value);
+      setSaved(true);
+    } catch {
+      setError('Could not save. Please try again.');
+    } finally {
+      setSaving(false);
+    }
+  }
+  return (
+    <View className="gap-5 p-6">
+      <Text variant="title">Your profile</Text>
+      <TextField
+        label="Your name"
+        value={name}
+        onChangeText={(value) => {
+          setName(value);
+          setError(null);
+          setSaved(false);
+        }}
+        error={error}
+        editable={!saving}
+        notchClassName="bg-background"
+        autoCapitalize="words"
+        returnKeyType="done"
+        onSubmitEditing={() => void submit()}
+      />
+      <Button
+        label={saving ? 'Saving…' : 'Save changes'}
+        disabled={saving}
+        accessibilityState={{ busy: saving, disabled: saving }}
+        onPress={() => void submit()}
+      />
+      {saving && <LoadingIndicator size={28} />}
+      {saved && <Text accessibilityLiveRegion="polite">Your profile is saved.</Text>}
+    </View>
+  );
+}
+```
+
+## Mit deiner App verbinden
+
+Rendere die Komponente unterhalb von `IsolineProvider`, zum Beispiel mit `<ProfileForm onSave={saveProfile} />`. Dabei ist `saveProfile` die Speicherfunktion deiner App.
+
+## Hilfreiche Validierung
+
+Zeige einen verständlichen Fehler beim betroffenen Feld. Das Beispiel verlangt einen nicht leeren Namen. Verwalte bei mehreren Feldern die Fehler pro Feld, damit die jeweilige Meldung beim zu korrigierenden Wert erscheint. Lösche nach einer fehlgeschlagenen Anfrage keine Eingaben.
+
+Verwende bei `TextField` nach Bedarf `keyboardType`, `autoCapitalize`, `textContentType`, `secureTextEntry` und `returnKeyType`. Bei mehreren Eingaben kannst du den Fokus mit Refs und `onSubmitEditing` weitergeben.
+
+## Während des Speicherns
+
+Verhindere wiederholtes Absenden, mache das Feld bei Bedarf nicht bearbeitbar und zeige eine klare Ladebeschriftung. Lass die Hauptaktion an derselben Stelle, damit das Layout nicht springt. Schließe einen Dialog erst nach Erfolg und entscheide, wie deine App mit Schließen während einer Anfrage umgeht.
+
+Verwende für längere Formulare einen scrollbaren Bildschirm mit Safe-Area- und Tastaturbehandlung. Teste das letzte Feld und die Aktion mit geöffneter Tastatur, großer Schrift und übersetzten Beschriftungen. Für kurze modale Formulare siehe [Overlays mit Formularen](/de/docs/guides/overlays).

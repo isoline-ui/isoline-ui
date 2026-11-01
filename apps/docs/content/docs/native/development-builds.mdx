@@ -1,0 +1,49 @@
+---
+title: 'Native builds and Expo Go'
+description: 'Know when an install needs a new app binary and how to try the showcase.'
+---
+
+## Rebuild after adding native code
+
+The Isoline Android module is included when the native app is built. Adding its `.tgz` to `node_modules` does not change a binary already installed on your phone.
+
+For a local Expo build:
+
+```sh
+npx expo run:android
+# On macOS with Xcode:
+npx expo run:ios
+```
+
+You can also build through your normal EAS Build profiles. Use a development build when you want to keep connecting to Metro while testing native integrations.
+
+## Expo Go
+
+Expo Go does not include the custom Isoline Android palette module. System colors therefore fall back to the base theme there. Liquid Glass depends on the Expo Go version's bundled glass support and the device's iOS version. For a representative test of your own app, use its native development build.
+
+## Existing native projects
+
+For an Expo project that generates native folders, use its normal prebuild workflow after native dependency or app-config changes. If you maintain `android/` or `ios/` manually, follow your existing Gradle and CocoaPods process. Do not overwrite manually maintained native changes just to follow a setup example.
+
+Expo Autolinking discovers the installed `@isoline-ui/native` package automatically. You do not need to copy it into a local `modules/` folder or add it to `nativeModulesDir`. Do not install a second copy of the same Isoline bridge.
+
+## JavaScript updates
+
+An over-the-air update can change JavaScript that uses already installed native APIs. It cannot add a missing native module. Use your app's runtime-version policy to keep updates compatible with the binary; ship a new app build when native code changes.
+
+## Run the showcase
+
+Clone the public repository, install its dependencies, and build the sample app:
+
+```sh
+git clone https://github.com/isoline-ui/isoline-ui.git
+cd isoline-ui
+npm ci
+npm run build
+cd examples/showcase
+npx expo run:android
+# Or, on macOS:
+npx expo run:ios
+```
+
+The showcase lets you change themes and appearance, try controls and overlays, and check system colors and materials on a supported device. Its sources are also a useful reference for composing a complete screen.

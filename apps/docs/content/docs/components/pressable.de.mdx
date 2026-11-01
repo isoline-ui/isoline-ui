@@ -1,0 +1,40 @@
+---
+title: 'Pressable'
+description: 'Baue ein eigenes drückbares Bedienelement mit plattformgerechtem Feedback.'
+---
+
+Verwende das gemeinsame `Pressable` für eine eigene Zeile oder Karte. Es nimmt React-Native-Pressable-Eigenschaften an und erhält deinen Style-Callback. Ergänze Rolle, Beschriftung und passenden Zustand für deine Aktion.
+
+## Eine eigene Zeile
+
+```tsx
+import { Pressable, Text, useRipple } from '@isoline-ui/react-native';
+export function OpenRow({ onOpen }: { onOpen: () => void }) {
+  const ripple = useRipple();
+  return (
+    <Pressable
+      className="rounded-2xl bg-surfaceContainer p-5"
+      android_ripple={{ color: ripple.onNeutral }}
+      accessibilityRole="button"
+      accessibilityLabel="Open collection"
+      onPress={onOpen}
+    >
+      <Text variant="subject">Open collection</Text>
+    </Pressable>
+  );
+}
+```
+
+## Feedback auf jeder Plattform
+
+Übergib unter Android `android_ripple`, wenn du einen Ripple möchtest. Begrenzte Ripples werden an den Rändern der View abgeschnitten. Unter iOS ergänzt das gemeinsame Pressable eine reduzierte Deckkraft beim Drücken und erhält deine eigenen Styles.
+
+Verwende `AnimatedPressable`, wenn das Bedienelement einen animierten Reanimated-Style benötigt. Die [Bewegungshelfer](/de/docs/components/layout-motion) liefern eine kleine Drückreaktion für eigene Karten. Für normale Aktionen nutze `Button` oder `IconButton`, statt Beschriftung und Layout selbst nachzubauen.
+
+## Eigenschaften
+
+| Eigenschaft       | Typ / Standard                 | Verwendung                                                                           |
+| ----------------- | ------------------------------ | ------------------------------------------------------------------------------------ |
+| `Pressable props` | `React Native PressableProps`  | Verwende onPress, disabled, Eigenschaften für Bedienungshilfen, style und className. |
+| `android_ripple`  | `PressableAndroidRippleConfig` | Übergib Ripple-Farbe und Optionen für Android.                                       |
+| `ref`             | `Pressable view ref`           | Wird an die native View weitergegeben.                                               |

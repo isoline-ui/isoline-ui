@@ -1,0 +1,43 @@
+---
+title: 'LoadingIndicator'
+description: 'Zeige Aktivität, wenn der Fortschritt noch nicht bekannt ist.'
+---
+
+<ComponentPreview kind="loading" />
+
+Verwende `LoadingIndicator` für einen laufenden Vorgang ohne sinnvolle Prozentangabe. Ergänze einen kurzen Status, damit erkennbar ist, was passiert.
+
+## Laden mit Kontext
+
+```tsx
+import { View } from 'react-native';
+import { LoadingIndicator, Text } from '@isoline-ui/react-native';
+export function LoadingState() {
+  return (
+    <View
+      className="flex-row items-center gap-3"
+      accessibilityRole="progressbar"
+      accessibilityLabel="Loading your collection"
+      accessibilityState={{ busy: true }}
+    >
+      <LoadingIndicator size={36} contained />
+      <Text>Loading your collection…</Text>
+    </View>
+  );
+}
+```
+
+## Aktivität oder Fortschritt
+
+Verwende [WavyProgress](/de/docs/components/wavy-progress), wenn deine App weiß, wie weit der Vorgang ist. Erfinde keine Prozentangabe für einen Vorgang, der keine melden kann.
+
+Der Ladeindikator nimmt keine beliebigen Eigenschaften für Bedienungshilfen an. Ergänze die Fortschrittsbedeutung wie im Beispiel auf einer umgebenden View. Der dekorative Formwechsel wird bei reduzierter Systembewegung eingeschränkt; Aktivitätsfeedback kann weiterhin laufende Arbeit anzeigen. Entferne den Indikator nach Erfolg oder Fehler.
+
+## Eigenschaften
+
+| Eigenschaft | Typ / Standard                    | Verwendung                                    |
+| ----------- | --------------------------------- | --------------------------------------------- |
+| `size`      | `number · default: 48`            | Gesamtgröße des Indikators in dp.             |
+| `color`     | `string · default: theme.primary` | Überschreibe die Farbe der aktiven Form.      |
+| `contained` | `boolean · default: false`        | Zeige die Form in einer farbigen Kreisfläche. |
+| `className` | `string`                          | Gestalte den äußeren Container.               |

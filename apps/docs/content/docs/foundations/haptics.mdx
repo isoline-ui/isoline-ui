@@ -1,0 +1,54 @@
+---
+title: 'Haptic feedback'
+description: 'Connect Expo Haptics and respect your users’ feedback preferences.'
+---
+
+## Connect your app's feedback
+
+Haptics are disabled until you supply callbacks to `IsolineProvider`. If you use Expo Haptics, install it with your SDK's matching version:
+
+```sh
+npx expo install expo-haptics
+```
+
+```tsx title="AppFeedback.tsx"
+import { useMemo, type ReactNode } from 'react';
+import * as Haptics from 'expo-haptics';
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+
+export function AppFeedback({ enabled, children }: { enabled: boolean; children: ReactNode }) {
+  const haptics = useMemo(
+    () => ({
+      selectionHaptic: () => {
+        if (enabled) void Haptics.selectionAsync().catch(() => {});
+      },
+      impactHaptic: (style: 'light' | 'medium') => {
+        if (!enabled) return;
+        const impact =
+          style === 'light'
+            ? Haptics.ImpactFeedbackStyle.Light
+            : Haptics.ImpactFeedbackStyle.Medium;
+        void Haptics.impactAsync(impact).catch(() => {});
+      },
+    }),
+    [enabled],
+  );
+  return (
+    <IsolineProvider theme={themes.inboki.light} haptics={haptics}>
+      {children}
+    </IsolineProvider>
+  );
+}
+```
+
+Pass your saved preference as `enabled`. Treat a missing or unsupported haptic response as optional feedback; it should not prevent an action from completing.
+
+## Which controls use it?
+
+`Button` can trigger a selection tick on press. Set `haptic={false}` to turn it off for an individual button. Button groups also use the supplied selection callback. Supplying callbacks does not automatically make every control vibrate.
+
+For a custom control, read the configured callbacks with `useHaptics()` and call them after the intended action. Avoid triggering a second vibration on a `Button` that already provides one.
+
+## Try it on a device
+
+A simulator may not reproduce physical feedback. Check the result on a real phone and with feedback disabled in your app's settings.

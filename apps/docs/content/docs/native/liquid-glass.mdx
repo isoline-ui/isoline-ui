@@ -1,0 +1,56 @@
+---
+title: 'Liquid Glass surfaces'
+description: 'Use the native iOS material for selected floating controls and surfaces.'
+---
+
+<ComponentPreview kind="surface" />
+
+## Add a surface
+
+After [native installation](/en/docs/native/overview), render `MaterialSurface` inside `IsolineProvider`:
+
+```tsx title="FloatingActions.tsx"
+import { MaterialSurface } from '@isoline-ui/native';
+import { Button, Text } from '@isoline-ui/react-native';
+import { View } from 'react-native';
+
+export function FloatingActions() {
+  return (
+    <MaterialSurface style={{ borderRadius: 28, padding: 16 }}>
+      <View className="flex-row items-center justify-between gap-4">
+        <Text variant="subject">Your collection</Text>
+        <Button label="Add" size="s" onPress={() => {}} />
+      </View>
+    </MaterialSurface>
+  );
+}
+```
+
+Put the surface over varied content, such as a scrolling list or imagery, when you want the material to be visible. A flat background naturally gives the effect less to work with. The preview above is a web illustration; the iOS app uses Expo's native glass view.
+
+## Choose where to use it
+
+Start with a small floating toolbar or a navigation accessory. Keep your main reading and form surfaces easy to read. `MaterialSurface` draws a material-backed View; it does not create a navigation bar, tab bar, or native button for you.
+
+`interactive` enables the material's native interaction. Add a `Button`, `IconButton`, or your own accessible action to do something when pressed.
+
+## Fallback behavior
+
+Native glass is used on **iOS 26+** when the required APIs are available and the app supports the Liquid Glass appearance. On older iOS versions and other platforms, or when Reduce Transparency is enabled, the component displays a solid theme surface. Even `material="glass"` respects these checks. `material="solid"` always requests the solid alternative.
+
+The glass appearance follows the light/dark scheme of your Isoline theme. Test both schemes and try Reduce Transparency in iOS accessibility settings.
+
+## Styling tips
+
+Use `style` for padding, layout, and corner radius. An opaque background can cover the material. Avoid reducing opacity on the glass or its ancestors, including press-opacity wrappers; use interactive child controls instead. For motion, avoid fading the whole surface as if it were an ordinary opaque view.
+
+## Props
+
+| Prop            | Type / default                             | How to use it                                                          |
+| --------------- | ------------------------------------------ | ---------------------------------------------------------------------- |
+| `material`      | `auto / glass / solid · default: auto`     | Use glass where available, or explicitly choose a solid surface.       |
+| `glassStyle`    | `regular / clear · default: regular`       | Choose the native glass material style.                                |
+| `tintColor`     | `string`                                   | Optional tint for the native glass.                                    |
+| `interactive`   | `boolean · default: false`                 | Enable native material interaction; it does not add an action handler. |
+| `fallbackColor` | `string · default: theme.surfaceContainer` | Background for the solid alternative.                                  |
+| `View props`    | `React Native ViewProps`                   | Set layout, radius, padding, accessibility, and children.              |

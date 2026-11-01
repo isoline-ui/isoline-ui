@@ -1,0 +1,44 @@
+---
+title: 'ExpressiveShape'
+description: 'Frame an icon or a short detail with a distinctive shape.'
+---
+
+<ComponentPreview kind="shapes" />
+
+Use `ExpressiveShape` as a decorative accent in an empty state, onboarding step, or feature card. Choose from `clover`, `cookie`, and `flower`.
+
+## An empty-state detail
+
+```tsx
+import { View } from 'react-native';
+import { ExpressiveShape, Text, useThemeColors } from '@isoline-ui/react-native';
+export function EmptyCollection() {
+  const colors = useThemeColors();
+  return (
+    <View className="items-center gap-4 p-8">
+      <ExpressiveShape shape="flower" size={80} color={colors.primaryContainer}>
+        <Text style={{ color: colors.onPrimaryContainer }} variant="heading">
+          +
+        </Text>
+      </ExpressiveShape>
+      <Text variant="heading">A little room for ideas</Text>
+      <Text>Add your first item to get started.</Text>
+    </View>
+  );
+}
+```
+
+## Keep meaning in the text
+
+A shape is not a button. If the content should be interactive, use a clearly labeled action next to it or a properly configured pressable wrapper. Keep the empty-state heading and instructions readable without the decoration.
+
+The component does not accept a general `className` or `style` prop. Use a wrapping view for spacing and layout. For a shape that communicates ongoing activity, use [LoadingIndicator](/en/docs/components/loading-indicator).
+
+## Props
+
+| Prop       | Type / default                        | How to use it                                     |
+| ---------- | ------------------------------------- | ------------------------------------------------- |
+| `shape`    | `clover / cookie / flower · required` | Choose the outline.                               |
+| `size`     | `number · required`                   | Width and height in dp.                           |
+| `color`    | `string · required`                   | Fill color; use a theme color or a literal value. |
+| `children` | `ReactNode`                           | Content centered over the shape.                  |

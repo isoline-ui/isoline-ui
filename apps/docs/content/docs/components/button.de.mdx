@@ -1,0 +1,57 @@
+---
+title: 'Button'
+description: 'Löse eine Aktion mit klarer Beschriftung, optionalem Icon und passender Betonung aus.'
+---
+
+<ComponentPreview kind="button" />
+
+Verwende einen Button für eine direkte Aktion: ein Formular speichern, einen Ablauf starten oder eine Auswahl bestätigen. Für den Normalfall übergibst du `label`. Für eigene Inhalte kannst du `children` verwenden.
+
+## Einfache Verwendung
+
+Dieser Button zeigt eine kleine Bestätigung im lokalen Zustand an. Ersetze den Callback durch deine eigene Aktion:
+
+```tsx
+import { useState } from 'react';
+import { Button, Text } from '@isoline-ui/react-native';
+
+export function SaveAction() {
+  const [saved, setSaved] = useState(false);
+  return (
+    <>
+      <Button label={saved ? 'Saved' : 'Save changes'} onPress={() => setSaved(true)} />
+      {saved && <Text accessibilityLiveRegion="polite">Your changes are saved.</Text>}
+    </>
+  );
+}
+```
+
+## Varianten und Größen
+
+Nutze `default` für die Hauptaktion, `tonal` oder `secondary` für ergänzende Aktionen, `outline` für eine ruhigere Alternative und `ghost` für untergeordnete Aktionen. Verwende `destructive` gezielt für Aktionen wie das Löschen eines Elements.
+
+```tsx
+<Button label="Weiter" size="l" />
+<Button label="Entwurf speichern" variant="tonal" size="s" />
+<Button label="Abbrechen" variant="ghost" size="s" />
+<Button label="Element löschen" variant="destructive" haptic={false} />
+```
+
+## Speichern und Laden
+
+Es gibt keine Eigenschaft `loading`. Verwende während einer Anfrage `disabled`, ändere die Beschriftung zu „Wird gespeichert…“ und zeige bei Bedarf daneben einen `LoadingIndicator`. Lass Fehler und Wiederholungsmöglichkeiten sichtbar. Das [Formular-Rezept](/de/docs/guides/forms) zeigt einen vollständigen Ablauf.
+
+Die üblichen React-Native-Pressable-Eigenschaften werden ebenfalls unterstützt, einschließlich Beschriftungen für Bedienungshilfen, Zustand und `testID`. Für ein Bedienelement ohne sichtbaren Text verwende bevorzugt [IconButton](/de/docs/components/icon-button).
+
+## Eigenschaften
+
+| Eigenschaft | Typ / Standard                                                                              | Verwendung                                                     |
+| ----------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `label`     | `string`                                                                                    | Sichtbarer Text des Buttons.                                   |
+| `variant`   | `default / secondary / tonal / tertiary / outline / ghost / destructive · default: default` | Wähle die visuelle Betonung.                                   |
+| `size`      | `xs / s / m / l / xl / icon · default: m`                                                   | Wähle die Größe.                                               |
+| `shape`     | `round / square · default: round`                                                           | Wähle die Form im Ruhezustand.                                 |
+| `icon`      | `React.ComponentType<IconProps>`                                                            | Optionale führende Icon-Komponente.                            |
+| `haptic`    | `boolean · default: true`                                                                   | Nutze das Auswahl-Feedback des Providers, sofern eingerichtet. |
+| `disabled`  | `boolean`                                                                                   | Verhindere die Aktion, solange sie nicht verfügbar ist.        |
+| `onPress`   | `Pressable callback`                                                                        | Führe die Aktion in deiner App aus.                            |

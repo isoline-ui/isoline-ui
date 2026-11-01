@@ -1,0 +1,53 @@
+---
+title: 'SearchField'
+description: 'Erfasse einen Suchbegriff mit eingebauter Leeren-Aktion.'
+---
+
+<ComponentPreview kind="fields" />
+
+Verwende `SearchField`, um eine Liste zu filtern oder einen Suchbegriff zu erfassen. Es liefert dir den aktuellen Text. Deine App entscheidet, welche Ergebnisse angezeigt und wann Daten geladen werden.
+
+## Den Suchbegriff im Zustand halten
+
+```tsx
+import { useState } from 'react';
+import { SearchField, Text } from '@isoline-ui/react-native';
+const names = ['Garden notes', 'Weekend plans', 'Reading list'];
+export function SearchExample() {
+  const [query, setQuery] = useState('');
+  const results = names.filter((name) => name.toLowerCase().includes(query.toLowerCase()));
+  return (
+    <>
+      <SearchField
+        value={query}
+        onChangeText={setQuery}
+        placeholder="Search notes"
+        accessibilityLabel="Search notes"
+        clearAccessibilityLabel="Clear search"
+      />
+      {results.map((name) => (
+        <Text key={name}>{name}</Text>
+      ))}
+      {results.length === 0 && <Text>No notes found.</Text>}
+    </>
+  );
+}
+```
+
+## Ergebnisse und entfernte Suche
+
+Bei einer lokalen Liste leitest du die Ergebnisse wie oben aus `value` ab. Bei einer entfernten Suche entprellst du die Anfrage in deiner App, behandelst Abbruch oder veraltete Antworten und zeigst Lade- sowie Leerzustände bei den Ergebnissen an.
+
+Die Leeren-Aktion erscheint nur bei einem nicht leeren Wert. Beide Beschriftungen für Bedienungshilfen sind erforderlich, weil Eingabe und Leeren-Aktion getrennte Bedienelemente sind. In der aktuellen Version nimmt die Komponente keine beliebigen TextInput-Eigenschaften und keinen Absenden-Callback an. Für stärker anpassbare Eingaben verwende `TextField`.
+
+## Eigenschaften
+
+| Eigenschaft               | Typ / Standard                       | Verwendung                                                                      |
+| ------------------------- | ------------------------------------ | ------------------------------------------------------------------------------- |
+| `value`                   | `string · required`                  | Aktueller Suchtext.                                                             |
+| `onChangeText`            | `(value: string) => void · required` | Aktualisiere die Suche. Die Leeren-Aktion übergibt ebenfalls einen leeren Text. |
+| `placeholder`             | `string · required`                  | Hinweis bei leerem Feld.                                                        |
+| `accessibilityLabel`      | `string · required`                  | Gesprochene Beschreibung der Sucheingabe.                                       |
+| `clearAccessibilityLabel` | `string · required`                  | Gesprochene Beschreibung der Leeren-Aktion.                                     |
+| `autoFocus`               | `boolean · default: false`           | Fokussiere das Feld beim Einblenden.                                            |
+| `className`               | `string`                             | Gestalte den umgebenden Container.                                              |

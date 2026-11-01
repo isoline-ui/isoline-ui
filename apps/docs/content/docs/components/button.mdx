@@ -1,0 +1,57 @@
+---
+title: 'Button'
+description: 'Trigger an action with a clear label, optional icon, and the right emphasis.'
+---
+
+<ComponentPreview kind="button" />
+
+Use a button for a direct action: saving a form, starting a flow, or confirming a choice. Pass a `label` for the normal case. Use `children` when you need custom content.
+
+## Basic use
+
+This button keeps a small confirmation in local state. Replace the callback with your own action:
+
+```tsx
+import { useState } from 'react';
+import { Button, Text } from '@isoline-ui/react-native';
+
+export function SaveAction() {
+  const [saved, setSaved] = useState(false);
+  return (
+    <>
+      <Button label={saved ? 'Saved' : 'Save changes'} onPress={() => setSaved(true)} />
+      {saved && <Text accessibilityLiveRegion="polite">Your changes are saved.</Text>}
+    </>
+  );
+}
+```
+
+## Variants and sizes
+
+Use `default` for the main action, `tonal` or `secondary` for supporting actions, `outline` for a quieter alternative, and `ghost` for low-emphasis actions. Reserve `destructive` for an action such as deleting an item.
+
+```tsx
+<Button label="Continue" size="l" />
+<Button label="Save draft" variant="tonal" size="s" />
+<Button label="Cancel" variant="ghost" size="s" />
+<Button label="Delete item" variant="destructive" haptic={false} />
+```
+
+## Saving and loading
+
+There is no `loading` prop. While a request is pending, use `disabled`, change the label to “Saving…”, and optionally show a `LoadingIndicator` nearby. Keep errors and retry actions visible. The [forms recipe](/en/docs/guides/forms) shows a complete submit flow.
+
+Standard React Native Pressable props are also supported, including accessibility labels, state, and `testID`. For an icon-only control, prefer [IconButton](/en/docs/components/icon-button).
+
+## Props
+
+| Prop       | Type / default                                                                              | How to use it                                       |
+| ---------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `label`    | `string`                                                                                    | Visible button text.                                |
+| `variant`  | `default / secondary / tonal / tertiary / outline / ghost / destructive · default: default` | Choose the level of visual emphasis.                |
+| `size`     | `xs / s / m / l / xl / icon · default: m`                                                   | Choose the control size.                            |
+| `shape`    | `round / square · default: round`                                                           | Choose the resting shape.                           |
+| `icon`     | `React.ComponentType<IconProps>`                                                            | Optional leading icon component.                    |
+| `haptic`   | `boolean · default: true`                                                                   | Use the provider’s selection haptic, if configured. |
+| `disabled` | `boolean`                                                                                   | Prevent presses while the action is unavailable.    |
+| `onPress`  | `Pressable callback`                                                                        | Handle the action in your app.                      |

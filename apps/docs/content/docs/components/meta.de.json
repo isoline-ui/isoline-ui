@@ -1,0 +1,22 @@
+{
+  "title": "Komponenten",
+  "pages": [
+    "button",
+    "icon-button",
+    "button-group",
+    "filter-chip",
+    "text-field",
+    "search-field",
+    "select-field",
+    "switch",
+    "text",
+    "bottom-sheet",
+    "dialog",
+    "menu-sheet",
+    "loading-indicator",
+    "wavy-progress",
+    "expressive-shape",
+    "pressable",
+    "layout-motion"
+  ]
+}

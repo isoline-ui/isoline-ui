@@ -1,0 +1,51 @@
+---
+title: 'Layout- und Bewegungshelfer'
+description: 'Verwende gemeinsame Abstände und Drückreaktionen in eigenen Layouts.'
+---
+
+Das Paket enthält einige kleine Helfer für eigene Oberflächen. Verwende vollständige Komponenten, wo sie passen, und diese Helfer, wenn du selbst etwas zusammensetzt.
+
+## Eine kleine Drückreaktion
+
+`useSquish()` liefert Handler für dein Bedienelement und einen Style für dessen animierte Umgebung:
+
+```tsx
+import Animated from 'react-native-reanimated';
+import { Pressable, Text, useSquish } from '@isoline-ui/react-native';
+export function CustomCard({ onOpen }: { onOpen: () => void }) {
+  const feedback = useSquish();
+  return (
+    <Animated.View style={feedback.style}>
+      <Pressable
+        {...feedback.handlers}
+        onPress={onOpen}
+        accessibilityRole="button"
+        accessibilityLabel="Open project"
+        className="rounded-3xl bg-surfaceContainer p-6"
+      >
+        <Text variant="heading">Your next project</Text>
+      </Pressable>
+    </Animated.View>
+  );
+}
+```
+
+## Listenabstände
+
+Verwende `RowGap` als `ItemSeparatorComponent` einer React-Native-Liste, wenn du den gemeinsamen 3-dp-Abstand zwischen Karten möchtest:
+
+```tsx
+<FlatList data={items} renderItem={renderItem} ItemSeparatorComponent={RowGap} />
+```
+
+## Fortgeschrittene Bewegung
+
+Form- und Bewegungskonstanten stehen über `@isoline-ui/react-native/tokens` zur Verfügung. Sie sind für React Native und Metro vorgesehen und enthalten Reanimated-Worklet-Helfer. `useSheetTransition` liefert Styles für Hintergrund und Panel, Layoutmessung, Drag- und Höhenwerte sowie den Zustand für reduzierte Bewegung. Verwende bevorzugt `BottomSheet`, sofern du nicht bewusst ein eigenes Sheet baust und Gesten, Safe Areas, Tastaturverhalten und Barrierefreiheit selbst prüfen kannst.
+
+## Eigenschaften
+
+| Eigenschaft                   | Typ / Standard        | Verwendung                                                                          |
+| ----------------------------- | --------------------- | ----------------------------------------------------------------------------------- |
+| `useSquish()`                 | `{ style, handlers }` | Setze style auf eine Animated.View und verteile handlers auf das drückbare Element. |
+| `RowGap`                      | `Component`           | Ein 3-dp-Abstand für Kartenzeilen.                                                  |
+| `useSheetTransition(visible)` | `SheetTransition`     | Fortgeschrittene Übergangswerte für eine eigene Sheet-Implementierung.              |

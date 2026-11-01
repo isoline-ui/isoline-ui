@@ -1,0 +1,42 @@
+---
+title: 'Switch'
+description: 'Turn a preference on or off using the platform’s native switch.'
+---
+
+<ComponentPreview kind="switch" />
+
+Use `Switch` for a boolean preference that takes effect immediately. Keep the value in your app state and save it using your normal settings storage.
+
+## A labeled setting
+
+```tsx
+import { useState } from 'react';
+import { View } from 'react-native';
+import { Switch, Text } from '@isoline-ui/react-native';
+export function NotificationSetting() {
+  const [enabled, setEnabled] = useState(true);
+  return (
+    <View className="flex-row items-center justify-between gap-4">
+      <Text>Notifications</Text>
+      <Switch value={enabled} onValueChange={setEnabled} accessibilityLabel="Notifications" />
+    </View>
+  );
+}
+```
+
+## Layout and saving
+
+Style a wrapping `View` for spacing, backgrounds, and row borders. `Switch` exposes only the props above; it does not accept `className`, arbitrary native switch props, or a row label.
+
+When an update can fail, decide whether to keep the new value optimistically or restore the old value and show an error. Do not leave the visual switch in a state that differs from the saved preference.
+
+The shape stays native to iOS or Android. Its colors follow the current Isoline theme. See the [settings recipe](/en/docs/guides/settings) for a theme and system-color setting.
+
+## Props
+
+| Prop                 | Type / default                        | How to use it                            |
+| -------------------- | ------------------------------------- | ---------------------------------------- |
+| `value`              | `boolean · required`                  | Current on/off value.                    |
+| `onValueChange`      | `(value: boolean) => void · required` | Store the new value.                     |
+| `disabled`           | `boolean`                             | Make the switch unavailable.             |
+| `accessibilityLabel` | `string`                              | Describe the setting for screen readers. |

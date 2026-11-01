@@ -1,0 +1,93 @@
+---
+title: 'Installation'
+description: 'Installiere die aktuelle Version und binde sie in eine Expo-App ein.'
+---
+
+## Bevor du beginnst
+
+Verwende eine App mit Expo SDK **57 oder 58** und React Native **0.86 oder 0.88**. Wenn du NativeWind 4 bereits nutzt, behalte deine Einrichtung und ergänze die folgenden Änderungen. Übernimm keine fremden Abhängigkeitsversionen ungeprüft.
+
+## 1. Das UI-Paket hinzufügen
+
+Installiere das versionierte Release-Archiv:
+
+```sh
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-react-native-0.1.0-alpha.1.tgz
+```
+
+Der Importname bleibt `@isoline-ui/react-native`. Committe `package.json` und die Lockdatei, damit dein Team und CI dasselbe Archiv installieren. Du brauchst keinen Isoline-npm-Account und keine npm-Organisation. Andere Abhängigkeiten kommen weiterhin aus deiner eingerichteten Registry.
+
+## 2. Peer-Abhängigkeiten installieren
+
+Lass Expo die passenden nativen Versionen für dein SDK auswählen:
+
+```sh
+npx expo install react-native-reanimated react-native-gesture-handler react-native-safe-area-context react-native-svg
+npm install nativewind@^4.2.6 tailwindcss@^3.4.19
+```
+
+Reanimated 4 benötigt zusätzlich eine passende Version von `react-native-worklets`. Behalte die Empfehlung deines Expo SDK und prüfe die Versionen mit `npx expo install --check`. Expos Babel-Preset übernimmt die Worklets-Anbindung.
+
+## 3. NativeWind 4 einrichten
+
+Ergänze das Isoline-Preset und die Quelldateien des installierten Pakets im Content-Scan von Tailwind. Behalte deine vorhandenen Pfade und Theme-Erweiterungen.
+
+```js title="tailwind.config.js"
+const path = require('node:path');
+const ui = path.dirname(require.resolve('@isoline-ui/react-native/package.json'));
+
+module.exports = {
+  content: [
+    './App.{js,jsx,ts,tsx}',
+    './app/**/*.{js,jsx,ts,tsx}',
+    './src/**/*.{js,jsx,ts,tsx}',
+    path.join(ui, 'src/**/*.{ts,tsx}'),
+  ],
+  presets: [require('nativewind/preset'), require('@isoline-ui/react-native/nativewind')],
+};
+```
+
+Verwende die normale Babel- und Metro-Konfiguration von NativeWind 4:
+
+```js title="babel.config.js"
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: [['babel-preset-expo', { jsxImportSource: 'nativewind' }], 'nativewind/babel'],
+  };
+};
+```
+
+```js title="metro.config.js"
+const { getDefaultConfig } = require('expo/metro-config');
+const { withNativeWind } = require('nativewind/metro');
+module.exports = withNativeWind(getDefaultConfig(__dirname), {
+  input: './global.css',
+});
+```
+
+```css title="global.css"
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+Importiere `global.css` einmal am App-Einstieg oder im Root-Layout. Ergänze die TypeScript-Referenz für NativeWind:
+
+```ts title="nativewind-env.d.ts"
+/// <reference types="nativewind/types" />
+```
+
+Wenn deine `package.json` `"type": "module"` enthält, verwende `.cjs` für die oben gezeigten CommonJS-Konfigurationen.
+
+## 4. Die Root-Provider ergänzen
+
+Unter [Dein erster Bildschirm](/de/docs/getting-started/first-screen) findest du die vollständige Einrichtung der Provider und einen funktionierenden Bildschirm.
+
+## 5. Bei Bedarf native Darstellung hinzufügen
+
+Für Android-Systemfarben und iOS Liquid Glass installierst du **beide zueinander passenden Isoline-Archive** und lässt Expo die Glas-Abhängigkeit auswählen. Siehe [Native Darstellung](/de/docs/native/overview).
+
+## Die Einrichtung prüfen
+
+Starte Metro nach Änderungen an Babel, Metro oder Tailwind mit `npx expo start --clear` neu. Fehlen einer Komponente die Styles, prüfe zuerst den Content-Scan des Pakets. Hast du eine native Abhängigkeit ergänzt, [baue die App neu](/de/docs/native/development-builds).

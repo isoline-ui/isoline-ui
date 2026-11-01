@@ -1,0 +1,51 @@
+---
+title: 'Layout and motion helpers'
+description: 'Use shared spacing and press feedback in custom layouts.'
+---
+
+The package includes a few small helpers for custom interfaces. Start with complete components where they fit, and use these helpers when you need your own composition.
+
+## A small press response
+
+`useSquish()` returns handlers for your press target and a style for its animated wrapper:
+
+```tsx
+import Animated from 'react-native-reanimated';
+import { Pressable, Text, useSquish } from '@isoline-ui/react-native';
+export function CustomCard({ onOpen }: { onOpen: () => void }) {
+  const feedback = useSquish();
+  return (
+    <Animated.View style={feedback.style}>
+      <Pressable
+        {...feedback.handlers}
+        onPress={onOpen}
+        accessibilityRole="button"
+        accessibilityLabel="Open project"
+        className="rounded-3xl bg-surfaceContainer p-6"
+      >
+        <Text variant="heading">Your next project</Text>
+      </Pressable>
+    </Animated.View>
+  );
+}
+```
+
+## List spacing
+
+Use `RowGap` as `ItemSeparatorComponent` on a React Native list when you want the shared 3 dp gap between cards:
+
+```tsx
+<FlatList data={items} renderItem={renderItem} ItemSeparatorComponent={RowGap} />
+```
+
+## Advanced motion
+
+Shape and motion constants are available from `@isoline-ui/react-native/tokens`. They are intended for React Native/Metro use and include Reanimated worklet helpers. `useSheetTransition` exposes scrim and panel styles, layout measurement, drag and height values, and reduced-motion state. Prefer `BottomSheet` unless you are deliberately building a custom sheet and can test its gestures, safe areas, keyboard handling, and accessibility yourself.
+
+## Props
+
+| Prop                          | Type / default        | How to use it                                                            |
+| ----------------------------- | --------------------- | ------------------------------------------------------------------------ |
+| `useSquish()`                 | `{ style, handlers }` | Apply style to an Animated.View and spread handlers on the press target. |
+| `RowGap`                      | `Component`           | A 3 dp separator for card rows.                                          |
+| `useSheetTransition(visible)` | `SheetTransition`     | Advanced transition values for a custom sheet implementation.            |

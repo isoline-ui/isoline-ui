@@ -1,0 +1,53 @@
+---
+title: 'TextField'
+description: 'A labeled, controlled input with validation feedback.'
+---
+
+<ComponentPreview kind="fields" />
+
+Use `TextField` for a form value such as a name, email address, or password. It accepts React Native TextInput props, including keyboard configuration and a ref.
+
+## A labeled input
+
+```tsx
+import { useState } from 'react';
+import { TextField } from '@isoline-ui/react-native';
+export function EmailField() {
+  const [email, setEmail] = useState('');
+  const invalid = email.length > 0 && !email.includes('@');
+  return (
+    <TextField
+      label="Email address"
+      value={email}
+      onChangeText={setEmail}
+      error={invalid ? 'Enter an email address.' : undefined}
+      keyboardType="email-address"
+      autoCapitalize="none"
+      autoCorrect={false}
+      notchClassName="bg-background"
+    />
+  );
+}
+```
+
+## Match the label background
+
+Use `notchClassName="bg-background"` on a screen background, `bg-card` on a card, or the class that matches your actual surface. The default `bg-popover` fits shared dialogs and sheets. A mismatch can leave a visible patch behind the floating label.
+
+## Validation and focus
+
+Decide in your app when to show an error: after blur, after submission, or while typing. The simple email example only illustrates feedback; use validation appropriate to your product.
+
+Use a ref to focus the field from a dialog or sheet's `onShow`. The [overlay recipe](/en/docs/guides/overlays) shows that setup. For a non-editable field pass `editable={false}`; this is a TextInput property, not `disabled`.
+
+## Props
+
+| Prop              | Type / default                 | How to use it                                                                                 |
+| ----------------- | ------------------------------ | --------------------------------------------------------------------------------------------- |
+| `label`           | `string · required`            | The visible field label.                                                                      |
+| `value`           | `string`                       | The current value, normally from app state.                                                   |
+| `onChangeText`    | `(value: string) => void`      | Update the controlled value.                                                                  |
+| `error`           | `string or null`               | Show a message and error styling.                                                             |
+| `notchClassName`  | `string · default: bg-popover` | Match the floating label’s background to the field’s surrounding surface.                     |
+| `ref`             | `TextInput ref`                | Focus the input or use native TextInput methods.                                              |
+| `TextInput props` | `React Native TextInputProps`  | Pass keyboardType, secureTextEntry, editable, returnKeyType, and other supported input props. |

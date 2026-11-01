@@ -1,0 +1,53 @@
+---
+title: 'Native appearance'
+description: 'Add Android system colors and iOS Liquid Glass to your Isoline interface.'
+---
+
+## What you can add
+
+The optional `@isoline-ui/native` package gives you two features:
+
+| Feature                      | Where it works                                                            | Otherwise                               |
+| ---------------------------- | ------------------------------------------------------------------------- | --------------------------------------- |
+| Material You system colors   | Android 12 and later, with the Isoline native module included in the app. | Your supplied brand theme stays active. |
+| Native Liquid Glass surfaces | iOS 26 and later, with an available glass API.                            | A solid themed surface is shown.        |
+
+The shared UI package works without these features. Add native appearance when it is useful for your app.
+
+## Install both matching packages
+
+Complete the [UI setup](/en/docs/getting-started/installation), then install both archives from the same release and the SDK-matched Expo glass package:
+
+```sh
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-react-native-0.1.0-alpha.1.tgz https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-native-0.1.0-alpha.1.tgz
+npx expo install expo-glass-effect
+```
+
+Use `npx expo install` for the glass package so Expo selects the correct version for SDK 57 or 58. A copied version from another SDK can cause a native mismatch.
+
+## Connect system colors
+
+Use the returned theme as the provider's `theme`:
+
+```tsx title="NativeAppearance.tsx"
+import { useColorScheme } from 'react-native';
+import type { ReactNode } from 'react';
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+import { useSystemTheme } from '@isoline-ui/native';
+
+export function NativeAppearance({ children }: { children: ReactNode }) {
+  const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+  const theme = useSystemTheme(themes.inboki[scheme], true);
+  return <IsolineProvider theme={theme}>{children}</IsolineProvider>;
+}
+```
+
+Keep this inside your existing gesture and safe-area providers. Replace the `true` argument with your app's saved system-color preference. On iOS and unsupported Android versions, the supplied base theme remains unchanged.
+
+## Add a material surface
+
+Use `MaterialSurface` inside the provider for selected floating controls or a small navigation surface. See [Liquid Glass](/en/docs/native/liquid-glass) for an example and its properties.
+
+## Build the app
+
+The Android bridge is native code. Installing its JavaScript package is not enough to add it to an existing app binary. Make a [new native build](/en/docs/native/development-builds), then test the feature on the appropriate platform.

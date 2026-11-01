@@ -1,0 +1,80 @@
+---
+title: 'Overlays mit Formularen'
+description: 'Öffne einen Dialog, fokussiere ein Feld und trenne Abbrechen und Speichern verständlich.'
+---
+
+## Mit einem Entwurf arbeiten
+
+Verwalte gespeicherten Wert und Entwurf getrennt. Beim Öffnen wird der gespeicherte Wert kopiert. Abbrechen schließt ohne Änderung, Speichern übernimmt den Entwurf.
+
+```tsx title="RenameItem.tsx"
+import { useRef, useState, type ComponentRef } from 'react';
+import { Button, Dialog, DialogActions, Text, TextField } from '@isoline-ui/react-native';
+export function RenameItem() {
+  const [name, setName] = useState('Weekend plans');
+  const [draft, setDraft] = useState(name);
+  const [open, setOpen] = useState(false);
+  const input = useRef<ComponentRef<typeof TextField>>(null);
+  const close = () => setOpen(false);
+  return (
+    <>
+      <Text>{name}</Text>
+      <Button
+        label="Rename"
+        variant="outline"
+        onPress={() => {
+          setDraft(name);
+          setOpen(true);
+        }}
+      />
+      <Dialog visible={open} onClose={close} onShow={() => input.current?.focus()}>
+        <Text variant="heading">Rename item</Text>
+        <TextField
+          ref={input}
+          label="Name"
+          value={draft}
+          onChangeText={setDraft}
+          selectTextOnFocus
+          returnKeyType="done"
+        />
+        <DialogActions>
+          <Button label="Cancel" size="s" variant="ghost" onPress={close} />
+          <Button
+            label="Save"
+            size="s"
+            disabled={!draft.trim()}
+            onPress={() => {
+              setName(draft.trim());
+              close();
+            }}
+          />
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+```
+
+## Nach dem Öffnen fokussieren
+
+Verwende `onShow`, um das Feld nach Erscheinen des nativen Modals zu fokussieren. `TextField` reicht einen TextInput-Ref durch. Nutze `selectTextOnFocus` für kurze Werte, die häufig vollständig ersetzt werden.
+
+## Dialog oder Sheet?
+
+Verwende `Dialog` für eine kurze Frage und `BottomSheet` für eine kleine Gruppe von Optionen oder Bedienelementen. Beide nehmen `visible`, `onClose`, `onShow` und Inhalt an. Ein Dialog hat `DialogActions`; im Sheet ordnest du die Aktionen selbst an.
+
+Ergänze für längere Sheet-Inhalte eine begrenzte Scroll-View:
+
+```tsx
+<BottomSheet visible={open} onClose={close}>
+  <ScrollView style={{ maxHeight: 360 }} keyboardShouldPersistTaps="handled">
+    {/* Deine Felder oder Zeilen */}
+  </ScrollView>
+</BottomSheet>
+```
+
+Teste Scrollen, die Schließgeste am Griff, das letzte Feld mit geöffneter Tastatur, Android-Zurück und die iOS-Escape-Aktion für Bedienungshilfen.
+
+## Asynchrones Speichern
+
+Lass das Overlay bis zum Erfolg geöffnet. Verhindere mehrfaches Absenden und zeige Fehler an. Deine dauerhafte Speicherung bindest du selbst an; das Umbenennen-Beispiel verändert nur lokalen Zustand.

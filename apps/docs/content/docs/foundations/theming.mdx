@@ -1,0 +1,66 @@
+---
+title: 'Themes and dark mode'
+description: 'Choose a preset, customize color roles, and follow your app’s appearance setting.'
+---
+
+<ComponentPreview />
+
+## Choose a theme
+
+Use `themes.inboki`, `themes.yours`, or `themes.atlas`. Every family contains `.light` and `.dark`. A theme defines colors and optional typography overrides; it does not load fonts or save your user's preference.
+
+## Follow the system appearance
+
+Read the system scheme and pass the matching theme:
+
+```tsx title="AppTheme.tsx"
+import { useColorScheme } from 'react-native';
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+import type { ReactNode } from 'react';
+
+export function AppTheme({ children }: { children: ReactNode }) {
+  const systemScheme = useColorScheme();
+  const scheme = systemScheme === 'dark' ? 'dark' : 'light';
+  return <IsolineProvider theme={themes.inboki[scheme]}>{children}</IsolineProvider>;
+}
+```
+
+For a manual appearance setting, resolve your saved `light`, `dark`, or `system` choice in your app, then choose the theme. Your `StatusBar`, navigation header, and other app-level surfaces should use the same choice.
+
+## Make a theme your own
+
+Start from a built-in theme so all required roles are present, then use `extendTheme`:
+
+```tsx title="theme.ts"
+import { extendTheme, themes } from '@isoline-ui/react-native';
+
+export const lightTheme = extendTheme(themes.inboki.light, {
+  name: 'garden-light',
+  tokens: {
+    '--primary': '145 35% 30%',
+    '--primary-foreground': '0 0% 100%',
+    '--primary-container': '140 40% 90%',
+    '--on-primary-container': '145 45% 15%',
+  },
+});
+```
+
+Token values are **HSL channel triplets**, such as `145 35% 30%`. Do not include `hsl(...)` or use a hex value in `tokens`. Set foreground/background pairs together and check their contrast.
+
+Create a separate dark theme using a `.dark` base. A light palette with a dark name is still a light palette.
+
+## Use semantic classes
+
+```tsx
+<View className="rounded-3xl bg-surfaceContainer p-6">
+  <Text className="text-onSurface">A themed card</Text>
+</View>
+```
+
+Common roles include `bg-background`, `text-foreground`, `bg-primary`, `text-primary-foreground`, `bg-primaryContainer`, `text-onPrimaryContainer`, `border-outline`, and the `surfaceContainer` tones. See the [color reference](/en/docs/reference/colors).
+
+## Use colors outside NativeWind
+
+`useThemeColors()` returns literal strings for native properties and SVG. Use it inside your provider, for example `const colors = useThemeColors()` and `<YourIcon color={colors.primary} />`.
+
+For Android wallpaper colors, see [System colors](/en/docs/native/system-colors). You can let users choose between those colors and your brand theme.

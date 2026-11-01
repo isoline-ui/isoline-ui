@@ -1,0 +1,58 @@
+---
+title: 'Dialog'
+description: 'Ask for a short decision or a small piece of information.'
+---
+
+<ComponentPreview kind="overlays" />
+
+Use a dialog when someone needs to confirm an action or enter a small value before continuing. Provide a heading that says what happens next and explicit action buttons.
+
+## A confirmation dialog
+
+```tsx
+import { useState } from 'react';
+import { Button, Dialog, DialogActions, Text } from '@isoline-ui/react-native';
+export function ConfirmExample() {
+  const [open, setOpen] = useState(false);
+  const [archived, setArchived] = useState(false);
+  return (
+    <>
+      <Button label="Archive" onPress={() => setOpen(true)} />
+      <Dialog visible={open} onClose={() => setOpen(false)}>
+        <Text variant="heading">Archive this item?</Text>
+        <Text>You can find it again in your archive.</Text>
+        <DialogActions>
+          <Button label="Cancel" variant="ghost" size="s" onPress={() => setOpen(false)} />
+          <Button
+            label="Archive"
+            size="s"
+            onPress={() => {
+              setArchived(true);
+              setOpen(false);
+            }}
+          />
+        </DialogActions>
+      </Dialog>
+      {archived && <Text accessibilityLiveRegion="polite">Item archived.</Text>}
+    </>
+  );
+}
+```
+
+## Inputs and long content
+
+Dialog content can scroll when needed and accounts for safe areas. For a small form, use a `TextField` and focus it through `onShow`; see [Overlays with forms](/en/docs/guides/overlays). Keep long reading or multi-step work on a full screen.
+
+The dialog dismisses when the backdrop or a platform dismissal action is used. There is no separate prevent-dismiss prop in this release. If losing unfinished work would matter, manage the close callback appropriately in your app and provide clear actions.
+
+For asynchronous work, disable your submit button while pending, keep an error visible on failure, and only close after success. `DialogActions` lays out the actions; it does not submit or close anything itself.
+
+## Props
+
+| Prop                     | Type / default          | How to use it                                  |
+| ------------------------ | ----------------------- | ---------------------------------------------- |
+| `visible`                | `boolean · required`    | Whether the dialog is shown.                   |
+| `onClose`                | `() => void · required` | Close the dialog in your app state.            |
+| `onShow`                 | `() => void`            | Focus an input when the modal is on screen.    |
+| `children`               | `ReactNode · required`  | Heading, content, and actions.                 |
+| `DialogActions.children` | `ReactNode`             | Place action buttons in the shared action row. |

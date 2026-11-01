@@ -1,0 +1,45 @@
+---
+title: 'IconButton'
+description: 'A compact action with a comfortably sized touch target.'
+---
+
+Use `IconButton` for familiar toolbar actions such as Back, Add, or Close. Pass an icon component and a spoken description of the action.
+
+## Add a back action
+
+`HEADER_ICON_BUTTON` sets a 48 dp target with a 22 dp icon. Navigation remains in your callback:
+
+```tsx
+import { BackIcon, HEADER_ICON_BUTTON, IconButton } from '@isoline-ui/react-native';
+
+export function BackAction({ onBack }: { onBack: () => void }) {
+  return (
+    <IconButton
+      {...HEADER_ICON_BUTTON}
+      icon={BackIcon}
+      onPress={onBack}
+      accessibilityLabel="Go back"
+    />
+  );
+}
+```
+
+## Icons and touch targets
+
+The visual symbol can be small while the touch target remains large. Avoid shrinking the target just to make a header look denser. For an icon next to a text label, use `Button` with `icon` instead.
+
+If this action is inside another pressable row, call `event.stopPropagation()` when the inner action should not trigger the row. See [Icons](/en/docs/foundations/icons) for a custom SVG example.
+
+## Props
+
+| Prop                 | Type / default                   | How to use it                                                  |
+| -------------------- | -------------------------------- | -------------------------------------------------------------- |
+| `icon`               | `React.ComponentType · required` | A component accepting size, color, and optional fill.          |
+| `onPress`            | `(event) => void · required`     | Handle the action; the event is available for nested controls. |
+| `size`               | `number · default: 40`           | Diameter of the touch target in dp.                            |
+| `iconSize`           | `number · default: 18`           | Size of the icon inside the target.                            |
+| `color / fill`       | `string`                         | Override the icon’s theme color or fill.                       |
+| `accessibilityLabel` | `string`                         | Describe the action for screen readers.                        |
+| `hitSlop`            | `Pressable hitSlop · default: 8` | Expand the touch area where layout allows it.                  |
+| `disabled`           | `boolean`                        | Disable the action.                                            |
+| `className / style`  | `View styles`                    | Style the button container.                                    |
