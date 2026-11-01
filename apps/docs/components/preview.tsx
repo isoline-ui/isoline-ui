@@ -78,7 +78,7 @@ export function ComponentPreview({
           : kind === 'overlays'
             ? 340
             : kind === 'surface'
-              ? 320
+              ? 460
               : kind === 'button'
                 ? 300
                 : 240;

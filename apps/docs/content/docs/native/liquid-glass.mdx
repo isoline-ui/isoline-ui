@@ -5,23 +5,77 @@ description: 'Use the native iOS material for selected floating controls and sur
 
 <ComponentPreview kind="surface" />
 
+The preview places the glass surface over contrasting color bands and lettering. Use Solid surface to compare the same scene without glass, and switch between Regular and Clear. This example explicitly uses `glassStyle="clear"`; the default remains `regular`. Android and required solid fallbacks remain opaque.
+
 ## Add a surface
 
 After [native installation](/en/docs/native/overview), render `MaterialSurface` inside `IsolineProvider`:
 
 ```tsx title="FloatingActions.tsx"
 import { MaterialSurface } from '@isoline-ui/native';
-import { Button, Text } from '@isoline-ui/react-native';
+import { Button, Text, useThemeColors } from '@isoline-ui/react-native';
 import { View } from 'react-native';
 
 export function FloatingActions() {
+  const colors = useThemeColors();
   return (
-    <MaterialSurface style={{ borderRadius: 28, padding: 16 }}>
-      <View className="flex-row items-center justify-between gap-4">
-        <Text variant="subject">Your collection</Text>
-        <Button label="Add" size="s" onPress={() => {}} />
-      </View>
-    </MaterialSurface>
+    <View
+      style={{
+        height: 240,
+        borderRadius: 24,
+        overflow: 'hidden',
+        backgroundColor: colors.primaryContainer,
+      }}
+    >
+      <View
+        pointerEvents="none"
+        style={{
+          position: 'absolute',
+          left: -24,
+          right: -24,
+          top: 64,
+          height: 104,
+          backgroundColor: colors.primary,
+          transform: [{ rotate: '-16deg' }],
+        }}
+      />
+      <View
+        pointerEvents="none"
+        style={{
+          position: 'absolute',
+          left: '55%',
+          right: -24,
+          top: 0,
+          bottom: 0,
+          backgroundColor: colors.tertiary,
+        }}
+      />
+      <MaterialSurface
+        glassStyle="clear"
+        style={{
+          position: 'absolute',
+          left: 16,
+          right: 16,
+          bottom: 24,
+          borderRadius: 28,
+          padding: 16,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 12,
+          }}
+        >
+          <Text variant="subject" style={{ flex: 1 }}>
+            Your collection
+          </Text>
+          <Button label="New" size="s" onPress={() => {}} />
+        </View>
+      </MaterialSurface>
+    </View>
   );
 }
 ```

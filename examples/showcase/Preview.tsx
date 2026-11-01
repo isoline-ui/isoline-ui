@@ -24,6 +24,7 @@ import {
   BackIcon,
   SelectField,
   useThemeColors,
+  useIsolinePlatform,
   type IsolinePlatform,
 } from '@isoline-ui/react-native';
 import { MaterialSurface } from '@isoline-ui/native';
@@ -106,6 +107,7 @@ function PreviewContent({ kind, de }: { kind: string; de: boolean }) {
       <Button label={de ? 'Deaktiviert' : 'Disabled'} size="s" disabled />
     </View>
   );
+  if (kind === 'surface') return <GlassSurfacePreview de={de} />;
   if (kind === 'toolbar') return <FloatingToolbarPreview de={de} />;
   return (
     <ScrollView
@@ -268,32 +270,6 @@ function PreviewContent({ kind, de }: { kind: string; de: boolean }) {
           ))}
         </View>
       )}
-      {kind === 'surface' && (
-        <View
-          style={{
-            padding: 24,
-            backgroundColor: colors.primaryContainer,
-            borderRadius: 20,
-            gap: 24,
-          }}
-        >
-          <Text variant="title">{de ? 'In deinem Element' : 'In your element'}</Text>
-          <Toolbar>
-            <IconButton
-              icon={BackIcon}
-              accessibilityLabel={de ? 'Zurück' : 'Back'}
-              onPress={say('Back')}
-            />
-            <Text>{de ? 'Dein Projekt' : 'Your project'}</Text>
-            <Button label={de ? 'Neu' : 'New'} size="s" onPress={say('New')} />
-          </Toolbar>
-          <Text variant="caption">
-            {de
-              ? 'Web: CSS-Glas mit solider Alternative.'
-              : 'Web: CSS glass with a solid fallback.'}
-          </Text>
-        </View>
-      )}
       {kind === 'overlays' && (
         <>
           <Button
@@ -392,8 +368,7 @@ function FloatingToolbarPreview({ de }: { de: boolean }) {
                 minHeight: 96,
                 padding: 16,
                 borderRadius: 16,
-                backgroundColor:
-                  index % 2 ? colors.secondaryContainer : colors.primaryContainer,
+                backgroundColor: index % 2 ? colors.tertiaryContainer : colors.primaryContainer,
                 justifyContent: 'center',
                 gap: 6,
               }}
@@ -406,6 +381,14 @@ function FloatingToolbarPreview({ de }: { de: boolean }) {
                   ? 'Scrolle den Inhalt – die Toolbar bleibt erreichbar.'
                   : 'Scroll the content — the toolbar stays within reach.'}
               </Text>
+              <View style={{ flexDirection: 'row', gap: 8 }}>
+                {[colors.primary, colors.tertiary, colors.onPrimaryContainer].map((color) => (
+                  <View
+                    key={color}
+                    style={{ flex: 1, height: 20, borderRadius: 6, backgroundColor: color }}
+                  />
+                ))}
+              </View>
             </View>
           ))}
         </ScrollView>
@@ -451,6 +434,138 @@ function FloatingToolbarPreview({ de }: { de: boolean }) {
           },
         ]}
       />
+    </View>
+  );
+}
+
+function GlassSurfacePreview({ de }: { de: boolean }) {
+  const colors = useThemeColors();
+  const ios = useIsolinePlatform() === 'ios';
+  const [solid, setSolid] = React.useState(false);
+  const [glassStyle, setGlassStyle] = React.useState<'regular' | 'clear'>('clear');
+  const [status, setStatus] = React.useState('');
+  return (
+    <View style={{ flex: 1, padding: 16, gap: 12, backgroundColor: colors.surface }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 8,
+        }}
+      >
+        <Text variant="caption">{de ? 'Solide Darstellung' : 'Solid surface'}</Text>
+        <Switch
+          value={solid}
+          onValueChange={setSolid}
+          accessibilityLabel={de ? 'Solide Darstellung' : 'Solid surface'}
+        />
+      </View>
+      <ButtonGroup
+        value={glassStyle}
+        onChange={setGlassStyle}
+        items={[
+          { id: 'regular', label: de ? 'Regulär' : 'Regular' },
+          { id: 'clear', label: de ? 'Klar' : 'Clear' },
+        ]}
+      />
+      <View
+        testID="glass-scene"
+        style={{
+          flex: 1,
+          minHeight: 220,
+          borderRadius: 20,
+          overflow: 'hidden',
+          backgroundColor: colors.primaryContainer,
+        }}
+      >
+        <View
+          pointerEvents="none"
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
+          style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+        >
+          <View
+            testID="glass-backdrop-color"
+            style={{
+              position: 'absolute',
+              left: -32,
+              right: -32,
+              top: 64,
+              height: 104,
+              backgroundColor: colors.primary,
+              transform: [{ rotate: '-16deg' }],
+            }}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              left: '45%',
+              right: -24,
+              top: 0,
+              bottom: -32,
+              backgroundColor: colors.tertiary,
+              transform: [{ rotate: '24deg' }],
+            }}
+          />
+          <Text
+            style={{
+              position: 'absolute',
+              left: 16,
+              top: 12,
+              fontSize: 94,
+              lineHeight: 110,
+              fontWeight: '700',
+              color: colors.onPrimaryContainer,
+            }}
+          >
+            Aa
+          </Text>
+          <Text
+            style={{
+              position: 'absolute',
+              right: 12,
+              bottom: 12,
+              fontSize: 76,
+              lineHeight: 90,
+              fontWeight: '700',
+              color: colors.onTertiary,
+            }}
+          >
+            42
+          </Text>
+        </View>
+        <MaterialSurface
+          testID="glass-example-surface"
+          material={ios && !solid ? 'auto' : 'solid'}
+          glassStyle={glassStyle}
+          style={{
+            position: 'absolute',
+            left: 12,
+            right: 12,
+            bottom: 24,
+            borderRadius: 24,
+            padding: 16,
+          }}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <Text variant="subject" style={{ flex: 1 }}>
+              {de ? 'Dein Projekt' : 'Your project'}
+            </Text>
+            <Button
+              label={de ? 'Neu' : 'New'}
+              size="s"
+              onPress={() => setStatus(de ? 'Eintrag hinzugefügt' : 'Item added')}
+            />
+          </View>
+        </MaterialSurface>
+      </View>
+      <Text variant="caption" accessibilityLiveRegion="polite">
+        {status ||
+          (de
+            ? 'Vergleiche Glas und solide Fläche über demselben Hintergrund.'
+            : 'Compare glass and a solid surface over the same backdrop.')}
+      </Text>
     </View>
   );
 }

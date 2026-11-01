@@ -5,23 +5,77 @@ description: 'Nutze das native iOS-Material für ausgewählte schwebende Bediene
 
 <ComponentPreview kind="surface" />
 
+Die Vorschau legt die Glasfläche über kontrastreiche Farbbänder und Schrift. Vergleiche mit „Solide Darstellung“ dieselbe Szene ohne Glas und wechsle zwischen „Regulär“ und „Klar“. Das Beispiel verwendet ausdrücklich `glassStyle="clear"`; der Standard bleibt `regular`. Unter Android und bei einer notwendigen soliden Alternative bleibt die Fläche undurchsichtig.
+
 ## Eine Fläche ergänzen
 
 Rendere `MaterialSurface` nach der [nativen Installation](/de/docs/native/overview) innerhalb von `IsolineProvider`:
 
 ```tsx title="FloatingActions.tsx"
 import { MaterialSurface } from '@isoline-ui/native';
-import { Button, Text } from '@isoline-ui/react-native';
+import { Button, Text, useThemeColors } from '@isoline-ui/react-native';
 import { View } from 'react-native';
 
 export function FloatingActions() {
+  const colors = useThemeColors();
   return (
-    <MaterialSurface style={{ borderRadius: 28, padding: 16 }}>
-      <View className="flex-row items-center justify-between gap-4">
-        <Text variant="subject">Your collection</Text>
-        <Button label="Add" size="s" onPress={() => {}} />
-      </View>
-    </MaterialSurface>
+    <View
+      style={{
+        height: 240,
+        borderRadius: 24,
+        overflow: 'hidden',
+        backgroundColor: colors.primaryContainer,
+      }}
+    >
+      <View
+        pointerEvents="none"
+        style={{
+          position: 'absolute',
+          left: -24,
+          right: -24,
+          top: 64,
+          height: 104,
+          backgroundColor: colors.primary,
+          transform: [{ rotate: '-16deg' }],
+        }}
+      />
+      <View
+        pointerEvents="none"
+        style={{
+          position: 'absolute',
+          left: '55%',
+          right: -24,
+          top: 0,
+          bottom: 0,
+          backgroundColor: colors.tertiary,
+        }}
+      />
+      <MaterialSurface
+        glassStyle="clear"
+        style={{
+          position: 'absolute',
+          left: 16,
+          right: 16,
+          bottom: 24,
+          borderRadius: 28,
+          padding: 16,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 12,
+          }}
+        >
+          <Text variant="subject" style={{ flex: 1 }}>
+            Deine Sammlung
+          </Text>
+          <Button label="Neu" size="s" onPress={() => {}} />
+        </View>
+      </MaterialSurface>
+    </View>
   );
 }
 ```
@@ -36,7 +90,7 @@ Beginne mit einer kleinen schwebenden Werkzeugleiste oder einer ergänzenden Nav
 
 ## Alternative Darstellung
 
-Natives Glas wird auf **iOS 26+** verwendet, wenn die benötigten APIs verfügbar sind und die App die Liquid-Glass-Darstellung unterstützt. Auf älteren iOS-Versionen, anderen Plattformen und bei reduzierter Transparenz zeigt die Komponente eine undurchsichtige Theme-Fläche. Auch `material="glass"` berücksichtigt diese Prüfungen. `material="solid"` fordert immer die undurchsichtige Alternative an.
+Natives Glas wird auf **iOS 26+** verwendet, wenn die benötigten APIs verfügbar sind und die App die Liquid-Glass-Darstellung unterstützt. Auf älteren iOS-Versionen, unter Android und bei reduzierter Transparenz zeigt die Komponente eine undurchsichtige Theme-Fläche. Auch `material="glass"` berücksichtigt diese Prüfungen. `material="solid"` fordert immer die undurchsichtige Alternative an.
 
 Die Glasdarstellung folgt dem hellen oder dunklen Isoline-Theme. Teste beide Varianten und die reduzierte Transparenz in den iOS-Bedienungshilfen.
 

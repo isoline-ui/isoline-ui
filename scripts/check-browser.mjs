@@ -360,23 +360,79 @@ try {
               ),
             });
         }
-      await page.goto(`${origin}${base}/en/docs/native/liquid-glass/`, {
-        waitUntil: 'networkidle',
-      });
-      const glassFrame = page.frameLocator('.component-preview iframe').first();
-      await glassFrame.getByText('Your project', { exact: true }).waitFor();
-      const glass = glassFrame.locator('[style*="backdrop-filter"]').first();
-      await glass.waitFor();
-      assert.notEqual(
-        await glass.evaluate(
-          (el) =>
-            getComputedStyle(el).getPropertyValue('backdrop-filter') ||
-            getComputedStyle(el).getPropertyValue('-webkit-backdrop-filter'),
-        ),
+      for (const locale of ['en', 'de'])
+        for (const width of [375, 1280]) {
+          await page.setViewportSize({ width, height: 1000 });
+          await page.goto(`${origin}${base}/${locale}/docs/native/liquid-glass/`, {
+            waitUntil: 'networkidle',
+          });
+          const preview = page.locator('.component-preview').first();
+          const glassFrame = page.frameLocator('.component-preview iframe').first();
+          const glass = glassFrame.getByTestId('glass-example-surface');
+          await glass.waitFor();
+          const filter = () =>
+            glass.evaluate(
+              (el) =>
+                getComputedStyle(el).getPropertyValue('backdrop-filter') ||
+                getComputedStyle(el).getPropertyValue('-webkit-backdrop-filter'),
+            );
+          await eventually(async () => (await filter()) !== 'none', true);
+          const backdrop = await glassFrame.getByTestId('glass-backdrop-color').boundingBox();
+          const surface = await glass.boundingBox();
+          assert.ok(
+            Math.min(backdrop.y + backdrop.height, surface.y + surface.height) >
+              Math.max(backdrop.y, surface.y),
+            'colored background must actually intersect the glass surface',
+          );
+          const clear = await glass.evaluate((el) => getComputedStyle(el).backgroundColor);
+          await glassFrame
+            .getByRole('button', { name: locale === 'de' ? 'Regulär' : 'Regular', exact: true })
+            .click();
+          await eventually(
+            () =>
+              glass.evaluate(
+                (el, clear) => getComputedStyle(el).backgroundColor !== clear,
+                clear,
+              ),
+            true,
+          );
+          const solid = glassFrame.getByRole('switch', {
+            name: locale === 'de' ? 'Solide Darstellung' : 'Solid surface',
+            exact: true,
+          });
+          await solid.check();
+          await eventually(filter, 'none');
+          await solid.uncheck();
+          await eventually(async () => (await filter()) !== 'none', true);
+          await glassFrame
+            .getByRole('button', { name: locale === 'de' ? 'Klar' : 'Clear', exact: true })
+            .click();
+          assert.equal(
+            await glassFrame.locator('html').evaluate((el) => el.scrollWidth <= el.clientWidth),
+            true,
+          );
+          if (process.env.ISOLINE_PREVIEW_SCREENSHOTS && locale === 'de' && width === 375)
+            await preview.screenshot({
+              path: path.join(
+                process.env.ISOLINE_PREVIEW_SCREENSHOTS,
+                `${name}-glass-backdrop.png`,
+              ),
+            });
+        }
+      await page.emulateMedia({ forcedColors: 'active' });
+      await eventually(
+        () =>
+          page
+            .frameLocator('.component-preview iframe')
+            .first()
+            .getByTestId('glass-example-surface')
+            .evaluate(
+              (el) =>
+                getComputedStyle(el).getPropertyValue('backdrop-filter') ||
+                getComputedStyle(el).getPropertyValue('-webkit-backdrop-filter'),
+            ),
         'none',
       );
-      await page.emulateMedia({ forcedColors: 'active' });
-      await glass.waitFor({ state: 'hidden' });
       assert.deepEqual(errors, [], `${name}: browser runtime errors`);
       console.log(
         `${name}: EN/DE, mobile/desktop, themes, platform state, forms, dialog/sheet/menu, floating toolbar and glass fallback passed.`,
