@@ -1,8 +1,14 @@
 'use client';
 import { RootProvider } from 'fumadocs-ui/provider/next';
 import type { ReactNode } from 'react';
+import NextLink from 'next/link';
+import type { Framework } from 'fumadocs-core/framework';
 import DocsSearch from './search';
 import type { Locale } from '@/lib/i18n';
+// Static docs load routes on demand: avoid cancelling speculative RSC fetches
+// during WebKit navigation and leave bandwidth for the interactive previews.
+const DocumentationLink: NonNullable<Framework['Link']> = ({ href, prefetch, ...props }) =>
+  href ? <NextLink {...props} href={href} prefetch={false} /> : <a {...props} />;
 const german = {
   'Search(search trigger)': 'Suchen',
   'Search(search dialog)': 'Dokumentation durchsuchen',
@@ -30,6 +36,7 @@ const german = {
 export function Provider({ locale, children }: { locale: Locale; children: ReactNode }) {
   return (
     <RootProvider
+      components={{ Link: DocumentationLink }}
       i18n={{
         locale,
         defaultLanguage: 'en',
