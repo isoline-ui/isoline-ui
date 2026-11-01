@@ -19,7 +19,7 @@ export function AppearanceSettings() {
   const [systemColors, setSystemColors] = useState(true);
   const scheme =
     appearance === 'system' ? (systemScheme === 'dark' ? 'dark' : 'light') : appearance;
-  const theme = useSystemTheme(themes.inboki[scheme], systemColors);
+  const theme = useSystemTheme(themes.violet[scheme], systemColors);
   return (
     <IsolineProvider theme={theme}>
       <View className="flex-1 gap-6 bg-background p-6">

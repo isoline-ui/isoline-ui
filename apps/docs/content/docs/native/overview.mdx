@@ -37,7 +37,7 @@ import { useSystemTheme } from '@isoline-ui/native';
 
 export function NativeAppearance({ children }: { children: ReactNode }) {
   const scheme = useColorScheme() === 'dark' ? 'dark' : 'light';
-  const theme = useSystemTheme(themes.inboki[scheme], true);
+  const theme = useSystemTheme(themes.violet[scheme], true);
   return <IsolineProvider theme={theme}>{children}</IsolineProvider>;
 }
 ```

@@ -117,9 +117,9 @@ function preset(name: keyof typeof presetTokens, scheme: ColorScheme): IsolineTh
   const theme: IsolineTheme = {
     name,
     scheme,
-    tokens: { ...presetTokens.inboki[scheme], ...presetTokens[name][scheme] },
+    tokens: { ...presetTokens.violet[scheme], ...presetTokens[name][scheme] },
   };
-  if (name === 'atlas')
+  if (name === 'cyan')
     theme.typography = {
       display: {
         fontFamily: 'SpaceGrotesk_700Bold',
@@ -136,10 +136,20 @@ function preset(name: keyof typeof presetTokens, scheme: ColorScheme): IsolineTh
   return theme;
 }
 
+const violet = { light: preset('violet', 'light'), dark: preset('violet', 'dark') };
+const teal = { light: preset('teal', 'light'), dark: preset('teal', 'dark') };
+const cyan = { light: preset('cyan', 'light'), dark: preset('cyan', 'dark') };
+
 export const themes = {
-  yours: { light: preset('yours', 'light'), dark: preset('yours', 'dark') },
-  inboki: { light: preset('inboki', 'light'), dark: preset('inboki', 'dark') },
-  atlas: { light: preset('atlas', 'light'), dark: preset('atlas', 'dark') },
+  violet,
+  teal,
+  cyan,
+  /** @deprecated Use themes.violet. */
+  inboki: violet,
+  /** @deprecated Use themes.teal. */
+  yours: teal,
+  /** @deprecated Use themes.cyan. */
+  atlas: cyan,
 } as const;
 
 export const elevation = {

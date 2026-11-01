@@ -523,11 +523,11 @@ h4 {
   gap: 10px;
   border-bottom: 1px solid var(--home-line);
 }
-.brand-choices {
+.preview-choices {
   display: flex;
   gap: 4px;
 }
-.brand-choices button {
+.preview-choices button {
   color: var(--color-fd-muted-foreground);
   font-size: 10px;
   padding: 5px 10px;
@@ -535,7 +535,7 @@ h4 {
   border-radius: 6px;
   background: none;
 }
-.brand-choices button[aria-pressed='true'] {
+.preview-choices button[aria-pressed='true'] {
   background: var(--color-fd-background);
   border-color: var(--home-line);
   color: var(--color-fd-foreground);
@@ -545,6 +545,26 @@ h4 {
   border: 0;
   color: var(--color-fd-muted-foreground);
   padding: 4px;
+}
+.preview-mode[aria-pressed='true'] {
+  color: var(--color-fd-foreground);
+}
+.preview-platform-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 15px;
+  border-bottom: 1px solid var(--home-line);
+}
+.preview-platform-controls > span {
+  font-size: 10px;
+  color: var(--color-fd-muted-foreground);
+}
+.component-preview :is(button, input):focus-visible {
+  outline: 2px solid var(--color-fd-primary);
+  outline-offset: 3px;
 }
 .preview-canvas {
   background: var(--demo-background);
@@ -1028,6 +1048,93 @@ h4 {
   justify-content: flex-end;
   gap: 8px;
   margin-top: 22px;
+}
+/* Platform layouts are browser illustrations, independent of the color preset. */
+.component-preview[data-platform='ios'] .preview-canvas {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter Variable', sans-serif;
+}
+.component-preview[data-platform='ios'] .demo-screen-heading {
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 12px;
+}
+.component-preview[data-platform='ios'] .demo-screen-heading > button {
+  align-self: flex-end;
+}
+.component-preview[data-platform='ios'] .demo-screen h3 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+.component-preview[data-platform='ios'] .demo-group {
+  gap: 2px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--demo-surface-container-high);
+}
+.component-preview[data-platform='ios'] .demo-group button {
+  border-radius: 7px;
+  background: transparent;
+  color: var(--demo-on-surface);
+}
+.component-preview[data-platform='ios'] .demo-group button.selected {
+  background: var(--demo-background);
+  box-shadow: 0 1px 4px #0002;
+}
+.component-preview[data-platform='ios'] .demo-row {
+  border-radius: 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--demo-outline-variant);
+}
+.component-preview[data-platform='ios'] .demo-button,
+.component-preview[data-platform='ios'] .demo-chip {
+  border-radius: 10px;
+}
+.component-preview[data-platform='ios'] .demo-switch {
+  width: 42px;
+  height: 26px;
+}
+.component-preview[data-platform='ios'] .demo-switch > span {
+  width: 20px;
+  height: 20px;
+  box-shadow: 0 1px 3px #0003;
+}
+.component-preview[data-platform='ios'] .demo-switch[aria-checked='true'] > span {
+  transform: translateX(16px);
+}
+.component-preview[data-platform='ios'] .demo-fields input {
+  background: var(--demo-surface-container-high);
+  border-color: transparent;
+}
+.component-preview[data-platform='ios'] .demo-search {
+  border-radius: 10px;
+}
+.component-preview[data-platform='ios'] .demo-type {
+  text-align: center;
+}
+.component-preview[data-platform='ios'] .demo-loading > .demo-flower {
+  border-radius: 50%;
+  background: transparent;
+  border: 3px solid var(--demo-outline-variant);
+  border-top-color: var(--demo-primary);
+  animation-duration: 1s;
+}
+.component-preview[data-platform='ios'] .demo-loading > .demo-flower svg {
+  display: none;
+}
+.component-preview[data-platform='ios'] .demo-dialog {
+  border-radius: 14px;
+  text-align: center;
+}
+.component-preview[data-platform='ios'] .demo-dialog form > div {
+  justify-content: center;
+}
+.component-preview[data-platform='android'] .demo-glass {
+  border-color: transparent;
+  border-radius: 24px;
+  background: var(--demo-surface-container-high);
+  backdrop-filter: none;
+  box-shadow: 0 4px 12px #0003;
 }
 @media (min-width: 1600px) {
   .home {

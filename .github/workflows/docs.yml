@@ -5,6 +5,7 @@ on:
     paths:
       - 'apps/docs/**'
       - 'packages/react-native/src/preset-tokens.ts'
+      - 'packages/react-native/src/theme.ts'
       - 'scripts/check-docs*.mjs'
       - 'package.json'
       - 'package-lock.json'
@@ -13,6 +14,7 @@ on:
     paths:
       - 'apps/docs/**'
       - 'packages/react-native/src/preset-tokens.ts'
+      - 'packages/react-native/src/theme.ts'
       - 'scripts/check-docs*.mjs'
       - 'package.json'
       - 'package-lock.json'

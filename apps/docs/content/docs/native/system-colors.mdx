@@ -8,7 +8,7 @@ description: 'Follow the colors your user selected in Android’s wallpaper and 
 After [installing native appearance](/en/docs/native/overview) and rebuilding the app, call `useSystemTheme(baseTheme, enabled)` before rendering the provider.
 
 ```tsx
-const baseTheme = themes.yours[scheme];
+const baseTheme = themes.teal[scheme];
 const theme = useSystemTheme(baseTheme, useSystemColors);
 
 return <IsolineProvider theme={theme}>{children}</IsolineProvider>;

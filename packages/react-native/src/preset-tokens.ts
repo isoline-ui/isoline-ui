@@ -1,6 +1,6 @@
-/* App theme role values; no fonts or artwork are bundled. */
+/* Generic theme role values; no fonts or artwork are bundled. */
 export const presetTokens = {
-  inboki: {
+  violet: {
     light: {
       '--background': '268 30% 99%',
       '--foreground': '268 10% 11%',
@@ -90,7 +90,7 @@ export const presetTokens = {
       '--success': '145 45% 65%',
     },
   },
-  yours: {
+  teal: {
     light: {
       '--background': '173 15% 99%',
       '--foreground': '173 8% 10%',
@@ -182,7 +182,7 @@ export const presetTokens = {
       '--snooze': '38 95% 62%',
     },
   },
-  atlas: {
+  cyan: {
     light: {
       '--background': '210 33% 97%',
       '--foreground': '216 30% 10%',

@@ -5,7 +5,7 @@ import { themes } from '../packages/react-native/src/theme.ts';
 import { parseSystemPalette } from '../packages/native/src/dynamic-color.ts';
 
 test('unsupported devices preserve the exact brand theme', () => {
-  assert.equal(applySystemPalette(themes.atlas.dark, null), themes.atlas.dark);
+  assert.equal(applySystemPalette(themes.cyan.dark, null), themes.cyan.dark);
 });
 
 test('system palette overrides visual roles while preserving semantic colors and typography', () => {
@@ -18,7 +18,7 @@ test('system palette overrides visual roles while preserving semantic colors and
     neutral2: stops,
   })!;
   for (const scheme of ['light', 'dark'] as const) {
-    const base = themes.atlas[scheme];
+    const base = themes.cyan[scheme];
     const before = { ...base.tokens };
     const result = applySystemPalette(base, palette);
     assert.equal(result.scheme, scheme);

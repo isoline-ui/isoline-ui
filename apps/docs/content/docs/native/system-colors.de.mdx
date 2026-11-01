@@ -8,7 +8,7 @@ description: 'Verwende die Farben aus den Android-Hintergrundbild- und Theme-Ein
 Rufe nach der [Installation der nativen Darstellung](/de/docs/native/overview) und einem erneuten App-Build `useSystemTheme(baseTheme, enabled)` auf, bevor du den Provider renderst.
 
 ```tsx
-const baseTheme = themes.yours[scheme];
+const baseTheme = themes.teal[scheme];
 const theme = useSystemTheme(baseTheme, useSystemColors);
 
 return <IsolineProvider theme={theme}>{children}</IsolineProvider>;

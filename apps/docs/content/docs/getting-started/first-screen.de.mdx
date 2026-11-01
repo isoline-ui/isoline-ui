@@ -19,7 +19,7 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <IsolineProvider theme={themes.inboki.light} labels={{ close: 'Close' }}>
+        <IsolineProvider theme={themes.violet.light} labels={{ close: 'Close' }}>
           <ProfileScreen />
         </IsolineProvider>
       </SafeAreaProvider>
@@ -55,7 +55,7 @@ function ProfileScreen() {
 
 ## Was du zuerst anpassen kannst
 
-Ersetze `themes.inboki.light` durch `themes.yours.light` oder `themes.atlas.light`, um ein anderes Theme auszuprobieren. Für eine dunkle Oberfläche verwende jeweils `.dark`. [Atlas verwendet eigene Schriftarten](/de/docs/foundations/typography). Lade sie vor der Verwendung oder überschreibe die Schriftfamilien.
+Ersetze `themes.violet.light` durch `themes.teal.light` oder `themes.cyan.light`, um ein anderes Theme auszuprobieren. Für eine dunkle Oberfläche verwende jeweils `.dark`. [Cyan verwendet eigene Schriftarten](/de/docs/foundations/typography). Lade sie vor der Verwendung oder überschreibe die Schriftfamilien.
 
 `TextField` ist kontrolliert: `value` kommt aus deinem Zustand, `onChangeText` aktualisiert ihn. Der Button wird erst aktiv, wenn der Name Text enthält. Das Beispiel speichert das Ergebnis nur im Arbeitsspeicher. Deine dauerhafte Speicherung bindest du selbst an.
 
@@ -66,7 +66,7 @@ Lege die Provider in `app/_layout.tsx` ab und rendere deinen vorhandenen `<Stack
 ```tsx
 <GestureHandlerRootView style={{ flex: 1 }}>
   <SafeAreaProvider>
-    <IsolineProvider theme={themes.inboki.light}>
+    <IsolineProvider theme={themes.violet.light}>
       <Stack />
     </IsolineProvider>
   </SafeAreaProvider>

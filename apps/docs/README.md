@@ -32,7 +32,10 @@ exported function are checked against the actual package declarations.
 
 `ComponentPreview` is an interactive browser illustration using the shared
 package's theme data. It is not the React Native runtime or a native glass view;
-previews are labeled accordingly. Test native behavior in the Expo showcase.
+previews are labeled accordingly. Color presets (Violet, Teal, Cyan), light/dark
+appearance, and Android/iOS layout can be changed independently in every preview.
+The layout switch illustrates platform styling; it does not change the native
+runtime. Test native behavior in the Expo showcase.
 
 ## Check and export
 

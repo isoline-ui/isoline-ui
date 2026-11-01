@@ -28,7 +28,7 @@ test('brand accents stay distinct while the role contract stays identical', () =
 });
 
 test('customisation does not mutate a preset or discard its other roles', () => {
-  const original = themes.inboki.light;
+  const original = themes.violet.light;
   const primary = original.tokens['--primary'];
   const custom = extendTheme(original, {
     tokens: { '--primary': '210 90% 50%' },
@@ -53,7 +53,23 @@ test('ripple contrast changes with appearance', () => {
 });
 
 test('overriding a typography metric retains the brand font', () => {
-  const custom = extendTheme(themes.atlas.light, { typography: { title: { fontSize: 36 } } });
+  const custom = extendTheme(themes.cyan.light, { typography: { title: { fontSize: 36 } } });
   assert.equal(custom.typography?.title?.fontFamily, 'SpaceGrotesk_700Bold');
   assert.equal(custom.typography?.title?.fontSize, 36);
+});
+
+test('generic presets preserve the previous theme contracts through aliases', () => {
+  for (const [name, legacy] of [
+    ['violet', 'inboki'],
+    ['teal', 'yours'],
+    ['cyan', 'atlas'],
+  ] as const) {
+    assert.equal(themes[name], themes[legacy]);
+    for (const scheme of ['light', 'dark'] as const) {
+      assert.equal(themes[name][scheme].name, name);
+      assert.equal(themes[name][scheme].scheme, scheme);
+      assert.ok(themes[name][scheme].tokens['--card']);
+      assert.ok(themes[name][scheme].tokens['--success']);
+    }
+  }
 });
