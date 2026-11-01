@@ -71,3 +71,16 @@ Pure helpers can be imported from `@isoline-ui/react-native/tokens`.
 The package intentionally does not install Expo, native runtimes, app fonts
 or native model/scanner integrations. Native dependency changes require a
 new native app build, not only an OTA update.
+
+## iOS, Android and browsers
+
+Controls follow the native OS automatically. The `platform="ios" | "android"`
+provider prop selects a browser preview style and is inherited by nested providers;
+it never changes the native device platform. Use Expo web with React Native Web,
+React DOM, NativeWind and the normal native peers. The repository showcase includes
+`npm run web --workspace isoline-showcase` and `export:web`.
+
+`Toolbar` and `NavigationBar` use `surfaceComponent={MaterialSurface}` from the
+optional native package for supported iOS Liquid Glass and CSS browser glass.
+Without this adapter they use a solid themed surface. Glass is limited to selected
+floating controls, while forms, dialogs and sheets remain solid.

@@ -11,7 +11,7 @@ import Animated, {
 import { Text } from './text.tsx';
 import { effects, spatial } from '../motion.ts';
 import { corner } from '../shape.ts';
-import { useThemeColors } from '../provider.tsx';
+import { useIsolinePlatform, useThemeColors } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 type TextInputInstance = React.ElementRef<typeof TextInput>;
@@ -64,6 +64,7 @@ export const TextField: React.ForwardRefExoticComponent<
   },
   ref,
 ) {
+  const ios = useIsolinePlatform() === 'ios';
   const colors = useThemeColors();
   const [focused, setFocused] = React.useState(false);
   const floated = focused || Boolean(value);
@@ -115,6 +116,43 @@ export const TextField: React.ForwardRefExoticComponent<
       : interpolateColor(focus.value, [0, 1], [colors.onSurfaceVariant, colors.primary]),
   }));
 
+  if (ios)
+    return (
+      <View className="gap-1.5">
+        <Text variant="label" style={{ color: error ? colors.error : colors.onSurfaceVariant }}>
+          {label}
+        </Text>
+        <TextInput
+          ref={ref}
+          value={value}
+          placeholder={placeholder}
+          placeholderTextColor={colors.onSurfaceVariant}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          accessibilityLabel={accessibilityLabel ?? label}
+          className={cn('text-foreground', className)}
+          style={[
+            {
+              minHeight: 44,
+              paddingHorizontal: 12,
+              paddingVertical: 10,
+              borderRadius: 10,
+              backgroundColor: colors.surfaceContainerHigh,
+              borderWidth: 1,
+              borderColor: error ? colors.error : focused ? colors.primary : 'transparent',
+              fontSize: 17,
+            },
+            style,
+          ]}
+          {...props}
+        />
+        {error ? (
+          <Text variant="caption" accessibilityRole="alert" style={{ color: colors.error }}>
+            {error}
+          </Text>
+        ) : null}
+      </View>
+    );
   return (
     <View className="gap-1.5">
       <View className="relative">

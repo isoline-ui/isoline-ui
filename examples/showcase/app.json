@@ -8,9 +8,15 @@
       "supportsTablet": true,
       "bundleIdentifier": "ui.isoline.showcase"
     },
-    "plugins": ["expo-font"],
+    "plugins": [
+      "expo-font"
+    ],
     "android": {
       "package": "ui.isoline.showcase"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
     }
   }
 }

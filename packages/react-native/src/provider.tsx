@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, type StyleProp, type ViewStyle } from 'react-native';
+import { Platform, View, type ViewProps, type StyleProp, type ViewStyle } from 'react-native';
 import { vars } from 'nativewind';
 
 import {
@@ -11,7 +11,13 @@ import {
   type RippleColors,
 } from './theme.ts';
 
+import { resolvePlatform, type IsolinePlatform } from './platform.ts';
+export type { IsolinePlatform } from './platform.ts';
 export { elevation };
+export interface IsolineSurfaceProps extends ViewProps {
+  material?: 'auto' | 'glass' | 'solid';
+  interactive?: boolean;
+}
 export type { ThemeColors, RippleColors };
 export interface IsolineLabels {
   close: string;
@@ -23,6 +29,8 @@ export interface IsolineHaptics {
 
 const noHaptics: IsolineHaptics = { selectionHaptic: () => {}, impactHaptic: () => {} };
 interface UIContext {
+  platform: IsolinePlatform;
+  surfaceComponent?: React.ComponentType<IsolineSurfaceProps>;
   theme: IsolineTheme;
   colors: ThemeColors;
   ripple: RippleColors;
@@ -32,6 +40,10 @@ interface UIContext {
 
 const Context = React.createContext<UIContext | null>(null);
 export interface IsolineProviderProps {
+  /** Browser design preview; native devices always follow their OS. */
+  platform?: IsolinePlatform;
+  /** Supply MaterialSurface from @isoline-ui/native for native/browser glass. */
+  surfaceComponent?: React.ComponentType<IsolineSurfaceProps>;
   theme: IsolineTheme;
   labels?: Partial<IsolineLabels>;
   haptics?: Partial<IsolineHaptics>;
@@ -47,6 +59,8 @@ export interface IsolineProviderProps {
  */
 export function IsolineProvider({
   theme,
+  platform,
+  surfaceComponent,
   labels,
   haptics,
   children,
@@ -57,12 +71,14 @@ export function IsolineProvider({
   const value = React.useMemo<UIContext>(
     () => ({
       theme,
+      platform: resolvePlatform(Platform.OS, platform, parent?.platform),
+      surfaceComponent: surfaceComponent ?? parent?.surfaceComponent,
       colors: resolveThemeColors(theme),
       ripple: rippleColors(theme.scheme),
       labels: { close: 'Close', ...parent?.labels, ...labels },
       haptics: { ...noHaptics, ...parent?.haptics, ...haptics },
     }),
-    [theme, labels, haptics, parent],
+    [theme, platform, surfaceComponent, labels, haptics, parent],
   );
 
   return (
@@ -93,4 +109,20 @@ export function useLabels() {
 }
 export function useHaptics() {
   return useUI().haptics;
+}
+
+export function useIsolinePlatform() {
+  return useUI().platform;
+}
+/** Surface adapter keeps optional Expo/native dependencies out of the UI package. */
+export function Surface({
+  material = 'auto',
+  interactive,
+  style,
+  ...props
+}: IsolineSurfaceProps) {
+  const { surfaceComponent: Component, colors } = useUI();
+  if (Component)
+    return <Component material={material} interactive={interactive} style={style} {...props} />;
+  return <View {...props} style={[{ backgroundColor: colors.surfaceContainer }, style]} />;
 }

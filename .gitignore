@@ -14,3 +14,5 @@ apps/*/.source/
 apps/*/next-env.d.ts
 apps/*/tsconfig.tsbuildinfo
 .docs-examples-*/
+
+apps/docs/public/previews/

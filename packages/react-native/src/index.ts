@@ -22,3 +22,4 @@ export * from './components/bottom-sheet.tsx';
 export * from './components/sheet-transition.ts';
 export * from './components/search-field.tsx';
 export * from './components/text.tsx';
+export * from './components/toolbar.tsx';

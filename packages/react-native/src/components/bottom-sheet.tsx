@@ -6,7 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Pressable } from './pressable.tsx';
 import { useSheetTransition } from './sheet-transition.ts';
-import { useLabels } from '../provider.tsx';
+import { Text } from './text.tsx';
+import { useThemeColors, useIsolinePlatform, useLabels } from '../provider.tsx';
 import { spatial } from '../motion.ts';
 import { elevation } from '../provider.tsx';
 
@@ -36,8 +37,10 @@ export function BottomSheet({
   onShow,
   children,
 }: BottomSheetProps) {
+  const ios = useIsolinePlatform() === 'ios';
   const insets = useSafeAreaInsets();
   const labels = useLabels();
+  const colors = useThemeColors();
   const { scrimStyle, panelStyle, onPanelLayout, drag, height, reducedMotion } =
     useSheetTransition(visible);
 
@@ -99,12 +102,15 @@ export function BottomSheet({
                 {
                   paddingBottom: insets.bottom + 16,
                   maxHeight,
+                  borderTopLeftRadius: ios ? 20 : 28,
+                  borderTopRightRadius: ios ? 20 : 28,
                   elevation: elevation.level3,
                 },
               ]}
             >
               <GestureDetector gesture={pull}>
-                <View
+                <Pressable
+                  onPress={onClose}
                   className="-mx-4 min-h-11 items-center justify-center"
                   accessible
                   accessibilityRole="button"
@@ -116,8 +122,16 @@ export function BottomSheet({
                   }}
                 >
                   <View className="h-1 w-9 rounded-full bg-outlineVariant" />
-                </View>
+                </Pressable>
               </GestureDetector>
+              <Pressable
+                onPress={onClose}
+                accessibilityRole="button"
+                accessibilityLabel={labels.close}
+                className="self-end px-3 py-2"
+              >
+                <Text style={{ color: colors.primary }}>{labels.close}</Text>
+              </Pressable>
               {children}
             </Animated.View>
           </Animated.View>

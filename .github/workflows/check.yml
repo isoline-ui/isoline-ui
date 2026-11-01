@@ -17,6 +17,7 @@ jobs:
       - run: npm run check
       - run: npm pack --workspace @isoline-ui/react-native --dry-run
       - run: npm run typecheck --workspace isoline-showcase
+      - run: npm run export:web --workspace isoline-showcase
       - run: npm run export:ios --workspace isoline-showcase
         env:
           EXPO_NO_TELEMETRY: 1

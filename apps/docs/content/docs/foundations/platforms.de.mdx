@@ -1,0 +1,60 @@
+---
+title: 'iOS, Android und Web'
+description: 'Plattformgerechte Controls, schwebende Glasnavigation und echte Browser-Vorschauen.'
+---
+
+<ComponentPreview />
+
+## Eine API mit plattformgerechter Darstellung
+
+Auf nativen Geräten folgt Isoline automatisch dem Betriebssystem. iOS verwendet abgerundete Buttons ohne Material-Formwechsel, stabile segmentierte Controls, dauerhafte Feldbeschriftungen, einen Chevron für Zurück, native Switches, Aktivitätsindikatoren, gerade Fortschrittslinien, abgerundete Dialoge und gruppierte Aktionszeilen. Android behält Material 3 Expressive und Ripple-Feedback. Explizite dekorative Formen bleiben auf beiden Plattformen verfügbar.
+
+Es handelt sich um gemeinsame React-Native-Komponenten mit Plattform-Styling, nicht um SwiftUI-Controls. Theme-Farben, Typografie-Anpassungen, barrierefreie Beschriftungen und Aktionen bestimmst du weiterhin selbst.
+
+## Schwebende Navigation und Liquid Glass
+
+Übergib den optionalen `MaterialSurface`-Adapter an den Provider. `Toolbar` und `NavigationBar` verwenden dann Glas auf unterstützten iOS-26+-Geräten und solide Theme-Flächen unter Android. Ohne Adapter bleiben sie als solide Flächen nutzbar. Formulare, Dialoge und Sheet-Inhalte bleiben zugunsten der Lesbarkeit solide.
+
+```tsx title="FloatingNavigation.tsx"
+import {
+  IsolineProvider,
+  NavigationBar,
+  Toolbar,
+  Button,
+  themes,
+} from '@isoline-ui/react-native';
+import { MaterialSurface } from '@isoline-ui/native';
+
+export function FloatingNavigation() {
+  return (
+    <IsolineProvider theme={themes.violet.light} surfaceComponent={MaterialSurface}>
+      <NavigationBar title="Deine Sammlung" />
+      <Toolbar>
+        <Button label="Hinzufügen" size="s" onPress={() => {}} />
+      </Toolbar>
+    </IsolineProvider>
+  );
+}
+```
+
+Positioniere schwebende Flächen über abwechslungsreichem Inhalt. `NavigationBar` bietet einen Titel und optionale `leading`-/`trailing`-Controls, installiert aber keinen Router. `Toolbar` akzeptiert View-Props, Kinder und `material="auto"`, `"glass"` oder `"solid"`. Vermeide deckende Hintergründe und Opacity-Animationen auf Glasflächen und ihren Eltern.
+
+Ältere iOS-Versionen und reduzierte Transparenz verwenden eine solide Alternative. [Liquid Glass](/de/docs/native/liquid-glass) beschreibt Installation und native Verfügbarkeitsprüfungen.
+
+## Die echten Komponenten im Browser ausführen
+
+Die Dokumentationsvorschauen führen denselben Komponentenquelltext mit **React Native Web** aus. Ein iframe isoliert Styles und Tastaturverhalten von der Dokumentation. Theme- und Plattformwechsel erhalten Eingaben und Auswahlzustände. Die Plattformwahl bleibt über Dokumentationsseiten hinweg erhalten.
+
+In Web-Anwendungen wählt `IsolineProvider platform="ios"` oder `platform="android"` die Darstellung. Ein verschachtelter Provider erbt die Auswahl. Native Geräte folgen immer ihrem eigenen Betriebssystem, auch wenn diese Vorschau-Prop gesetzt ist.
+
+Verwende eine Expo-Web-Einrichtung mit React Native Web, React DOM, NativeWind und denselben Peer-Abhängigkeiten wie für native Apps. In diesem Repository:
+
+```sh
+npm ci --ignore-scripts
+npm run build
+npm run web --workspace isoline-showcase
+```
+
+`npm run docs:build` exportiert die Web-Laufzeit und bindet sie mit dem korrekten Hosting-Basispfad ein. Nach Komponentenänderungen während der Dokumentationsentwicklung aktualisiert `npm run docs:preview` das eingebettete Bundle.
+
+Interaktionstests decken moderne Chromium-, Firefox- und WebKit-Browser ab. Web-Glas ist eine **CSS-Annäherung**, kein natives Apple Liquid Glass. Ohne Backdrop-Filter-Unterstützung, im Modus für erzwungene Farben und bei gemeldeter reduzierter Transparenz verwenden Browser eine solide Alternative. Native Systempaletten und Haptik erfordern weiterhin ein natives Gerät. Tastatur-, Screenreader- und Gerätetests bleiben Teil deiner App-Prüfung.

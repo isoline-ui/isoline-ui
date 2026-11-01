@@ -23,7 +23,7 @@ export default async function Layout({
           active: 'nested-url',
         },
       ]}
-      sidebar={{ defaultOpenLevel: 1 }}
+      sidebar={{ defaultOpenLevel: 1, prefetch: false }}
     >
       {children}
     </DocsLayout>

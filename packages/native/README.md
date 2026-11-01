@@ -4,6 +4,7 @@ Native system appearance for Isoline UI, distributed as an Expo module.
 
 - Android 12+: reads the device's five Material You tonal palettes.
 - iOS 26+: `MaterialSurface` uses native Liquid Glass through `expo-glass-effect`.
+- Web: CSS backdrop-filter approximation with solid fallbacks for unsupported browsers, reduced transparency and forced colors.
 - Unsupported devices, a missing Android bridge and reduced transparency use solid theme surfaces.
 
 Install **both** Isoline archives from the same GitHub prerelease, then let Expo
@@ -71,3 +72,11 @@ Expo Go does not contain the custom Isoline Android module and uses the fallback
 The showcase and CI test source types, palette mapping, installed-tarball
 Autolinking and Metro exports. These checks do not establish device rendering,
 accessibility behavior or native compilation; see `docs/native.md`.
+
+## Shared navigation surfaces
+
+Pass `surfaceComponent={MaterialSurface}` to `IsolineProvider` to enable materials
+for `Toolbar` and `NavigationBar`. On iOS these use the native surface when
+available; Android keeps solid Material surfaces. The browser uses the web adapter.
+The core UI package remains independent of Expo and works with solid fallbacks
+without an adapter. Reading surfaces, forms, alerts and sheet content stay solid.

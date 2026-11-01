@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import Animated, {
   Easing,
   cancelAnimation,
@@ -12,7 +12,7 @@ import Animated, {
 import Svg, { Path } from 'react-native-svg';
 
 import { KEEP_MOTION, useReducedMotion } from '../reduced-motion.ts';
-import { useThemeColors } from '../provider.tsx';
+import { useIsolinePlatform, useThemeColors } from '../provider.tsx';
 import { blendRadii, radiiToPath, shapeRadii, type ShapeSpec } from '../shape.ts';
 import { cn } from '../utils.ts';
 
@@ -66,6 +66,7 @@ export function LoadingIndicator({
   contained = false,
   className,
 }: LoadingIndicatorProps) {
+  const ios = useIsolinePlatform() === 'ios';
   const theme = useThemeColors();
   const resolvedColor = color ?? theme.primary;
   const progress = useSharedValue(0);
@@ -81,6 +82,7 @@ export function LoadingIndicator({
   const reducedMotion = useReducedMotion();
 
   React.useEffect(() => {
+    if (ios) return;
     progress.value = 0;
     if (!reducedMotion) {
       progress.value = withRepeat(
@@ -108,7 +110,7 @@ export function LoadingIndicator({
       cancelAnimation(progress);
       cancelAnimation(spin);
     };
-  }, [progress, reducedMotion, spin]);
+  }, [ios, progress, reducedMotion, spin]);
 
   const inset = contained ? size * 0.24 : 0;
   const canvas = size;
@@ -140,6 +142,26 @@ export function LoadingIndicator({
     transform: [{ rotate: `${spin.value}deg` }],
   }));
 
+  if (ios)
+    return (
+      <View
+        className={className}
+        style={{
+          width: size,
+          height: size,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: size / 2,
+          backgroundColor: contained ? theme.surfaceContainerHigh : 'transparent',
+        }}
+      >
+        <ActivityIndicator
+          size={size <= 24 ? 'small' : 'large'}
+          color={resolvedColor}
+          accessibilityLabel="Loading"
+        />
+      </View>
+    );
   return (
     <View
       className={cn('items-center justify-center', contained && 'rounded-full', className)}

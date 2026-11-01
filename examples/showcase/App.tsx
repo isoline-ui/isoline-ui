@@ -1,6 +1,7 @@
 import './global.css';
+import { BrowserPreview } from './Preview';
 import * as React from 'react';
-import { ScrollView, View, Text as NativeText } from 'react-native';
+import { Platform, ScrollView, View, Text as NativeText } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
@@ -11,6 +12,10 @@ import {
 } from '@expo-google-fonts/jetbrains-mono';
 import {
   IsolineProvider,
+  Toolbar,
+  NavigationBar,
+  IconButton,
+  type IsolinePlatform,
   themes,
   Text,
   Button,
@@ -47,7 +52,13 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <Showcase />
+        {Platform.OS === 'web' &&
+        typeof window !== 'undefined' &&
+        new URLSearchParams(window.location.search).get('preview') === '1' ? (
+          <BrowserPreview />
+        ) : (
+          <Showcase />
+        )}
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
@@ -55,6 +66,7 @@ export default function App() {
 
 function Showcase() {
   const insets = useSafeAreaInsets();
+  const [platform, setPlatform] = React.useState<IsolinePlatform>('ios');
   const [brand, setBrand] = React.useState<Brand>('violet');
   const [scheme, setScheme] = React.useState<ColorScheme>('light');
   const [query, setQuery] = React.useState('');
@@ -67,7 +79,12 @@ function Showcase() {
   const [systemColors, setSystemColors] = React.useState(true);
   const theme = useSystemTheme(themes[brand][scheme], systemColors);
   return (
-    <IsolineProvider theme={theme} labels={{ close: 'Close' }}>
+    <IsolineProvider
+      theme={theme}
+      platform={platform}
+      surfaceComponent={MaterialSurface}
+      labels={{ close: 'Close' }}
+    >
       <ScrollView
         className="flex-1 bg-background"
         contentContainerStyle={{
@@ -78,6 +95,26 @@ function Showcase() {
         }}
         keyboardShouldPersistTaps="handled"
       >
+        {Platform.OS === 'web' && (
+          <ButtonGroup
+            value={platform}
+            onChange={setPlatform}
+            items={[
+              { id: 'ios', label: 'iOS' },
+              { id: 'android', label: 'Android' },
+            ]}
+          />
+        )}
+        <NavigationBar
+          title="Isoline UI"
+          leading={
+            <IconButton
+              icon={BackIcon}
+              accessibilityLabel="Go back"
+              onPress={() => setStatus('Back pressed.')}
+            />
+          }
+        />
         <Text variant="display">Isoline UI</Text>
         <Text variant="body">
           One component system. Three identities. Platform-aware interaction.
@@ -108,14 +145,24 @@ function Showcase() {
             accessibilityLabel="Use Android system colors"
           />
         </View>
-        <MaterialSurface style={{ padding: 20, borderRadius: 24, gap: 12 }}>
+        <View
+          style={{ padding: 20, borderRadius: 24, gap: 12 }}
+          className="bg-primaryContainer"
+        >
           <Text variant="heading">Platform material</Text>
-          <Text>Native Liquid Glass on supported iOS; a themed surface elsewhere.</Text>
+          <Text>
+            Native Liquid Glass on supported iOS. Browsers approximate it with CSS blur; reduced
+            transparency uses a solid surface.
+          </Text>
           <Button
             label="Material action"
             onPress={() => setStatus('Material action pressed.')}
           />
-        </MaterialSurface>
+          <Toolbar>
+            <Text>Floating toolbar</Text>
+            <Button label="Add" size="s" onPress={() => setStatus('Added from toolbar.')} />
+          </Toolbar>
+        </View>
         <Text variant="heading">Actions</Text>
         <Button label="Primary action" onPress={() => setStatus('Primary action pressed.')} />
         <Button

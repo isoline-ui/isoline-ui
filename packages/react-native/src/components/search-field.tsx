@@ -3,7 +3,7 @@ import { TextInput, View } from 'react-native';
 
 import { IconButton } from './icon-button.tsx';
 import { Search, X } from './icons.tsx';
-import { useThemeColors } from '../provider.tsx';
+import { useIsolinePlatform, useThemeColors } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 export interface SearchFieldProps {
@@ -35,6 +35,7 @@ export function SearchField({
   autoFocus = false,
   className,
 }: SearchFieldProps) {
+  const ios = useIsolinePlatform() === 'ios';
   const colors = useThemeColors();
 
   return (
@@ -43,6 +44,7 @@ export function SearchField({
         'h-12 flex-row items-center gap-2 rounded-full bg-surfaceContainerHigh pl-4 pr-1.5',
         className,
       )}
+      style={ios ? { borderRadius: 10, height: 44 } : undefined}
     >
       <Search size={18} color={colors.onSurfaceVariant} />
 

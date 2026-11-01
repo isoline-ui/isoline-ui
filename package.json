@@ -16,8 +16,10 @@
     "showcase": "npm run start --workspace isoline-showcase",
     "check:native": "node scripts/check-native.mjs",
     "docs:dev": "npm run dev --workspace isoline-docs",
-    "docs:build": "npm run build --workspace isoline-docs",
-    "docs:check": "npm run typecheck --workspace isoline-docs && node scripts/check-docs.mjs"
+    "docs:build": "node scripts/build-docs-preview.mjs && npm run build --workspace isoline-docs",
+    "docs:check": "npm run typecheck --workspace isoline-docs && node scripts/check-docs.mjs",
+    "docs:preview": "node scripts/build-docs-preview.mjs",
+    "docs:test": "node scripts/check-browser.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
@@ -25,6 +27,7 @@
     "@types/react": "~19.3.0",
     "babel-preset-expo": "~58.0.0",
     "nativewind": "^4.2.6",
+    "playwright": "^1.64.1",
     "prettier": "^3.9.6",
     "react": "19.3.0",
     "react-native": "0.88.0",

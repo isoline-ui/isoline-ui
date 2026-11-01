@@ -30,12 +30,16 @@ options, and common mistakes. Check prop names against the source. Keep internal
 design discussions out of the usage guides. Full TypeScript examples with an
 exported function are checked against the actual package declarations.
 
-`ComponentPreview` is an interactive browser illustration using the shared
-package's theme data. It is not the React Native runtime or a native glass view;
-previews are labeled accordingly. Color presets (Violet, Teal, Cyan), light/dark
-appearance, and Android/iOS layout can be changed independently in every preview.
-The layout switch illustrates platform styling; it does not change the native
-runtime. Test native behavior in the Expo showcase.
+`ComponentPreview` embeds the actual UI components through React Native Web in an
+isolated static Expo bundle. Theme, appearance and platform changes use same-origin
+messages and preserve component state. Platform selection persists across pages.
+Browser glass uses CSS blur with solid accessibility/feature fallbacks; it is not
+Apple's native Liquid Glass. Test native materials in the Expo showcase.
+
+`npm run docs:build` builds and copies the preview runtime before the Next export.
+For development, run `npm run docs:preview` after runtime changes, then `npm run docs:dev`.
+To check browser behavior after building, install Playwright browsers and run
+`npm run docs:test` (Chromium, Firefox and WebKit).
 
 ## Check and export
 

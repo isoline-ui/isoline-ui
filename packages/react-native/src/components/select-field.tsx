@@ -5,7 +5,7 @@ import { Check, ChevronDown } from './icons.tsx';
 import { Pressable } from './pressable.tsx';
 import { Text } from './text.tsx';
 import { elevation, useRipple, useThemeColors } from '../provider.tsx';
-import { useLabels } from '../provider.tsx';
+import { useIsolinePlatform, useLabels } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 /**
@@ -36,6 +36,7 @@ export function SelectField<T extends string>({
   onChange,
   accessibilityLabel,
 }: SelectFieldProps<T>) {
+  const ios = useIsolinePlatform() === 'ios';
   const labels = useLabels();
   const [open, setOpen] = React.useState(false);
   const colors = useThemeColors();
@@ -47,6 +48,17 @@ export function SelectField<T extends string>({
       <Pressable
         onPress={() => setOpen(true)}
         android_ripple={{ color: ripple.onNeutral }}
+        style={
+          ios
+            ? {
+                borderWidth: 0,
+                borderRadius: 10,
+                backgroundColor: colors.surfaceContainerHigh,
+                minHeight: 44,
+              }
+            : { minHeight: 44 }
+        }
+        accessibilityState={{ expanded: open }}
         accessibilityRole="button"
         accessibilityLabel={accessibilityLabel}
         className="flex-row items-center gap-1 rounded-full border border-outline px-3 py-2"
@@ -70,7 +82,7 @@ export function SelectField<T extends string>({
           <Pressable
             onPress={() => undefined}
             className="w-full max-w-xs overflow-hidden rounded-3xl bg-surfaceContainerHigh py-2"
-            style={{ elevation: elevation.level3 }}
+            style={{ elevation: ios ? 0 : elevation.level3, borderRadius: ios ? 14 : 24 }}
           >
             {options.map((option) => {
               const isSelected = option.id === value;
