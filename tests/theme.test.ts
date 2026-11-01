@@ -73,3 +73,10 @@ test('generic presets preserve the previous theme contracts through aliases', ()
     }
   }
 });
+
+test('sheet interaction can be overridden without changing the reusable preset', () => {
+  const theme = extendTheme(themes.cyan.light, { sheetGesture: 'handle' });
+  assert.equal(themes.cyan.light.sheetGesture, 'panel');
+  assert.equal(theme.sheetGesture, 'handle');
+  assert.equal(extendTheme(themes.cyan.light, {}).sheetGesture, 'panel');
+});

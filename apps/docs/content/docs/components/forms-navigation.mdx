@@ -1,0 +1,53 @@
+---
+title: 'Forms, settings and navigation'
+description: 'Use labelled inputs, settings rows and shared headers.'
+---
+
+## Passwords, hints and errors
+
+`Input` forwards native `TextInput` props and its ref. Add `label`, `hint`, and `error` (string or null). With `secureTextEntry` it includes a reveal button. Provide `labels.showPassword` and `labels.hidePassword` to `IsolineProvider` for your app language. The field derives its accessible label and hint from the visible text unless overridden.
+
+```tsx
+import { Input, KeyboardInsetView } from '@isoline-ui/react-native';
+export function SignInFields() {
+  return (
+    <KeyboardInsetView className="flex-1 gap-4">
+      <Input label="Email" keyboardType="email-address" autoComplete="email" />
+      <Input label="Password" secureTextEntry autoComplete="current-password" />
+    </KeyboardInsetView>
+  );
+}
+```
+
+`KeyboardInsetView` gives up the keyboard-covered area, including Android edge-to-edge layouts. Use it around the scrolling viewport of a full-screen form. Do not add it to `PanelSheet`, which already follows the keyboard.
+
+## Navigation
+
+`BackButton` accepts `onPress` and an optional `label`; its fallback label is `labels.back`. `TopBar` takes a required `onBack`, optional `backLabel`, `center`, `actions`, and `className`. It does not import a router: the app chooses how to navigate, including a fallback for deep links. `ScreenTitle` takes `title`, optional `caption` (text or React content), and `className`.
+
+## Settings
+
+Use `SettingsSection`, `SettingsGroup`, and `SettingsCard` to group settings. `SettingsNavRow` opens another screen/picker (`label`, `onPress`, optional `value`, `description`, `icon`, `leading`, `destructive`, `accessibilityLabel`). `SettingsChoiceRow` exposes a selection; `SettingsSwitchRow` accepts `value`, `onValueChange`, optional `disabled`, label and description. `SettingsSelectRow` combines a label and typed select options. These components do not persist values.
+
+```tsx
+import { SettingsSection, SettingsGroup, SettingsSwitchRow } from '@isoline-ui/react-native';
+export function NotificationsSetting({
+  enabled,
+  onChange,
+}: {
+  enabled: boolean;
+  onChange: (value: boolean) => void;
+}) {
+  return (
+    <SettingsSection title="Notifications">
+      <SettingsGroup>
+        <SettingsSwitchRow label="Reminders" value={enabled} onValueChange={onChange} />
+      </SettingsGroup>
+    </SettingsSection>
+  );
+}
+```
+
+`SettingsRow` provides an alternative leading-icon-circle presentation with `first`, `label`, `description`, `icon`, and either `onPress` or `value` plus `onValueChange`.
+
+`RefreshControl` forwards **all** native refresh-control props, including `children` and `style`, and supplies theme colours only when you omit them. Use it in React Native list/scroll-view `refreshControl` as usual.

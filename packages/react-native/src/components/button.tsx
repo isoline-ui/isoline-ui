@@ -1,3 +1,4 @@
+import type { PressableStateCallbackType } from 'react-native';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { Platform, View } from 'react-native';
@@ -134,7 +135,8 @@ const METRICS: Record<NonNullable<ButtonProps['size']>, { height: number; square
 
 export type ButtonProps = Omit<React.ComponentProps<typeof Pressable>, 'children'> &
   VariantProps<typeof buttonVariants> & {
-    children?: React.ReactNode;
+    children?: React.ComponentProps<typeof Pressable>['children'];
+    pressableClassName?: string;
     label?: string;
     /** A leading symbol, drawn in the label's color. */
     icon?: React.ComponentType<IconProps>;
@@ -153,6 +155,7 @@ export type ButtonProps = Omit<React.ComponentProps<typeof Pressable>, 'children
  */
 export function Button({
   className,
+  pressableClassName,
   style,
   variant,
   size,
@@ -203,8 +206,8 @@ export function Button({
       className={cn('overflow-hidden', className)}
     >
       <Control
-        className={cn(buttonVariants({ variant, size }), props.disabled && 'opacity-50')}
-        style={[
+        className={cn(buttonVariants({ variant, size }), props.disabled && 'opacity-50', pressableClassName)}
+        style={(state: PressableStateCallbackType) => [
           web
             ? {
                 borderRadius: webPressed ? active : rest,
@@ -218,7 +221,7 @@ export function Button({
             borderWidth: resolvedVariant === 'outline' ? 0 : undefined,
           },
           alertAction && { backgroundColor: 'transparent', borderWidth: 0, borderRadius: 0 },
-          style,
+          typeof style === 'function' ? style(state) : style,
         ]}
         android_ripple={{ color: rippleByVariant(ripple)[resolvedVariant] }}
         onPressIn={(event) => {
@@ -239,6 +242,7 @@ export function Button({
         accessibilityState={{ disabled: props.disabled ?? false }}
         {...props}
       >
+        {(state: PressableStateCallbackType) => <>
         {Icon ? (
           <Icon
             size={ICON_SIZE[resolvedSize]}
@@ -264,8 +268,9 @@ export function Button({
             {label}
           </Text>
         ) : (
-          children
+          typeof children === 'function' ? children(state) : children
         )}
+        </>}
       </Control>
     </Container>
   );

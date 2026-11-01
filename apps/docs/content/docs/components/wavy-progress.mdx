@@ -33,15 +33,28 @@ export function ImportProgress({ completed, total }: { completed: number; total:
 
 ## Give it room
 
-The indicator measures its containing width. Place it in a view with a usable width; in a row you may need a wrapper with `flex: 1`. It has no `className`, height, or style prop in this release.
+The indicator measures its containing width. Place it in a view with a usable width; in a row you may need a wrapper with `flex: 1`. Use `height` to set its height in dp (default 12). It has no `className` or style prop.
 
 Use a text status and accessible progress values on the surrounding view. Set `animated={false}` for a quiet preview or where motion would distract. System reduced-motion settings also affect its animation. For an unknown duration use [LoadingIndicator](/en/docs/components/loading-indicator).
 
 ## Props
 
-| Prop         | Type / default                    | How to use it                       |
-| ------------ | --------------------------------- | ----------------------------------- |
-| `progress`   | `number · required`               | Completion value between 0 and 1.   |
-| `color`      | `string · default: theme.primary` | Color of the completed section.     |
-| `trackColor` | `string`                          | Override the remaining track color. |
-| `animated`   | `boolean · default: true`         | Set false to keep the wave still.   |
+| Prop         | Type / default                             | How to use it                       |
+| ------------ | ------------------------------------------ | ----------------------------------- |
+| `progress`   | `number or SharedValue<number> · required` | Completion value between 0 and 1.   |
+| `color`      | `string · default: theme.primary`          | Color of the completed section.     |
+| `trackColor` | `string`                                   | Override the remaining track color. |
+| `animated`   | `boolean · default: true`                  | Set false to keep the wave still.   |
+
+## Progress on the UI thread
+
+Pass a Reanimated `SharedValue<number>` directly when progress changes outside React. Do not read `.value` during render. The track observes it on the UI thread and updates the accessible percentage. Under Reduce Motion the track is flat and its travelling animation stops.
+
+```tsx
+import { useSharedValue } from 'react-native-reanimated';
+import { WavyProgress } from '@isoline-ui/react-native';
+export function LiveProgress() {
+  const progress = useSharedValue(0.4);
+  return <WavyProgress progress={progress} height={8} />;
+}
+```

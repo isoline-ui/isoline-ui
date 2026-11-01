@@ -1,0 +1,51 @@
+---
+title: 'Formulare und Scrollen in Sheets'
+description: 'Eingaben erreichbar halten und Listen scrollen.'
+---
+
+Nutze `PanelSheet` für ein Formular innerhalb des aktuellen Screens. Rendere es zuletzt in einem Screen mit voller Höhe, über dem übrigen Inhalt. Das Panel folgt der animierten Tastaturhöhe, begrenzt sich auf den verbleibenden Platz, enthält eine `SheetScrollView` und behandelt Android Zurück. Es benötigt den Gesture-Root und Safe-Area-Provider der App.
+
+```tsx
+import * as React from 'react';
+import { View } from 'react-native';
+import { Button, Input, PanelSheet } from '@isoline-ui/react-native';
+export function RenamePanel() {
+  const [visible, setVisible] = React.useState(false);
+  return (
+    <View className="flex-1">
+      <Button label="Umbenennen" onPress={() => setVisible(true)} />
+      <PanelSheet visible={visible} onClose={() => setVisible(false)}>
+        <Input label="Name" placeholder="Neuer Name" />
+        <Button label="Fertig" onPress={() => setVisible(false)} />
+      </PanelSheet>
+    </View>
+  );
+}
+```
+
+`PanelSheet` akzeptiert `visible`, `onClose` und `children`. Soll ein Formular bei jedem Öffnen frisch starten, binde seine eigene Komponente pro Sitzung neu ein. Entwürfe, die das Schließen überleben sollen, bleiben im Zustand der App.
+
+## Lange Listen im Modal
+
+`BottomSheet` öffnet ein natives Modal; `PanelSheet` liegt im Screen. Lege lange Listen in eine `SheetScrollView` und begrenze das Modal über `BottomSheet.maxHeight`. Die Liste reicht React-Native-`ScrollViewProps` einschließlich Scroll-/Layout-Callbacks und Container-Stilen weiter.
+
+```tsx
+import { BottomSheet, SheetScrollView, Text } from '@isoline-ui/react-native';
+export function LongList({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  return (
+    <BottomSheet visible={visible} onClose={onClose} maxHeight="85%">
+      <SheetScrollView keyboardShouldPersistTaps="handled" style={{ flexGrow: 0 }}>
+        {Array.from({ length: 50 }, (_, index) => (
+          <Text key={index}>Eintrag {index + 1}</Text>
+        ))}
+      </SheetScrollView>
+    </BottomSheet>
+  );
+}
+```
+
+## Eigene Sheet-Rahmen
+
+`useSheet(visible, onClose)` liefert `mounted`, `panelStyle`, `scrimStyle`, `onPanelLayout`, `pull` und `scrollContext`. Übergib das Ergebnis als `sheet` an `SheetFrame`, dazu `visible`, `onClose` und `children`. Optional positionieren `lift` und `panelStyle` einen Rahmen im Screen. Nutze `mounted`, damit der Rahmen bis zum Ende der Schließanimation erhalten bleibt. `useSheetTransition` bleibt für vorhandene eigene Öffnungsanimationen verfügbar, verwaltet aber nicht den gesamten Lebenszyklus.
+
+`SheetFrame.dragFrom` überschreibt `theme.sheetGesture` (`handle` oder `panel`). Gesten am ganzen Panel stimmen sich mit `SheetScrollView` ab; horizontale Inhaltsgesten behalten ihre Richtung. Die Breite ist auf 640dp begrenzt. Der Griff ist ein echter Schließen-Button, auch VoiceOver Escape schließt. Prüfe Scroll-Übergabe, abgebrochene Gesten, Tastatur, Rotation, große Schrift und reduzierte Bewegung auf beiden Plattformen.

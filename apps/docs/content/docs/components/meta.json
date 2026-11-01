@@ -17,6 +17,9 @@
     "wavy-progress",
     "expressive-shape",
     "pressable",
-    "layout-motion"
+    "layout-motion",
+    "forms-navigation",
+    "toolbars-feedback",
+    "advanced-sheets"
   ]
 }

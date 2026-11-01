@@ -101,3 +101,5 @@ export function useSheetTransition(visible: boolean): SheetTransition {
 
   return { scrimStyle, panelStyle, onPanelLayout, drag, height, reducedMotion };
 }
+
+export { useSheet, type Sheet, type SheetScrollContextValue } from './sheet-lifecycle.ts';

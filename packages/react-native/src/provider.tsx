@@ -21,6 +21,9 @@ export interface IsolineSurfaceProps extends ViewProps {
 export type { ThemeColors, RippleColors };
 export interface IsolineLabels {
   close: string;
+  back: string;
+  showPassword: string;
+  hidePassword: string;
 }
 export interface IsolineHaptics {
   selectionHaptic: () => void;
@@ -28,6 +31,13 @@ export interface IsolineHaptics {
 }
 
 const noHaptics: IsolineHaptics = { selectionHaptic: () => {}, impactHaptic: () => {} };
+export interface IsolineSurfaceProps extends ViewProps {
+  fallbackColor?: string;
+}
+function SolidSurface({ fallbackColor, style, ...props }: IsolineSurfaceProps) {
+  return <View {...props} style={[{ backgroundColor: fallbackColor }, style]} />;
+}
+
 interface UIContext {
   platform: IsolinePlatform;
   surfaceComponent?: React.ComponentType<IsolineSurfaceProps>;
@@ -45,6 +55,7 @@ export interface IsolineProviderProps {
   /** Supply MaterialSurface from @isoline-ui/native for native/browser glass. */
   surfaceComponent?: React.ComponentType<IsolineSurfaceProps>;
   theme: IsolineTheme;
+  surface?: React.ComponentType<IsolineSurfaceProps>;
   labels?: Partial<IsolineLabels>;
   haptics?: Partial<IsolineHaptics>;
   children: React.ReactNode;
@@ -60,6 +71,7 @@ export interface IsolineProviderProps {
 export function IsolineProvider({
   theme,
   platform,
+  surface,
   surfaceComponent,
   labels,
   haptics,
@@ -72,13 +84,20 @@ export function IsolineProvider({
     () => ({
       theme,
       platform: resolvePlatform(Platform.OS, platform, parent?.platform),
-      surfaceComponent: surfaceComponent ?? parent?.surfaceComponent,
+      surfaceComponent: surfaceComponent ?? surface ?? parent?.surfaceComponent,
       colors: resolveThemeColors(theme),
       ripple: rippleColors(theme.scheme),
-      labels: { close: 'Close', ...parent?.labels, ...labels },
+      labels: {
+        close: 'Close',
+        back: 'Back',
+        showPassword: 'Show password',
+        hidePassword: 'Hide password',
+        ...parent?.labels,
+        ...labels,
+      },
       haptics: { ...noHaptics, ...parent?.haptics, ...haptics },
     }),
-    [theme, platform, surfaceComponent, labels, haptics, parent],
+    [theme, platform, surface, surfaceComponent, labels, haptics, parent],
   );
 
   return (
@@ -118,15 +137,17 @@ export function useIsolinePlatform() {
 export function Surface({
   material = 'auto',
   interactive,
+  fallbackColor,
   style,
   ...props
 }: IsolineSurfaceProps) {
   const { surfaceComponent: Component, colors } = useUI();
   if (Component)
-    return <Component material={material} interactive={interactive} style={style} {...props} />;
-  return <View {...props} style={[{ backgroundColor: colors.surfaceContainer }, style]} />;
+    return <Component material={material} interactive={interactive} fallbackColor={fallbackColor} style={style} {...props} />;
+  return <View {...props} style={[{ backgroundColor: fallbackColor ?? colors.surfaceContainer }, style]} />;
 }
 
+export function useSurface() { return Surface; }
 /** Reapply CSS variables inside web modal portals, outside the provider DOM node. */
 export function ThemeScope({ style, ...props }: ViewProps) {
   const { theme } = useUI();

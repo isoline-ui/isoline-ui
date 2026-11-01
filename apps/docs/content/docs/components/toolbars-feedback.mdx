@@ -1,0 +1,29 @@
+---
+title: 'Toolbars and feedback'
+description: 'Compose actions, empty states and transient feedback.'
+---
+
+## Toolbar
+
+`Toolbar` accepts `items`, optional `compact`, `className` and animated `style`. An item has `id`, `icon`, `label`, `onPress`, and optional `color`, `fill`, `active`, `rule`, `prominent`, `badge`. Use at most one prominent primary action. Consumer icons may use `ruleColor` to colour an existing underline. `useToolbarAutoHide(travel)` returns the scroll callbacks and animated style for hiding the toolbar as content moves.
+
+`SplitButton` groups one main action (`label`, `icon`, `onPress`) with `actions` (each `id`, `label`, `icon`, `onPress`). Pass a translated `optionsLabel` for its menu trigger. Alternatives are displayed in an anchored modal. `ExpandIndicator` is decorative, taking `expanded` and optional `color`; the parent control should expose its expanded state.
+
+## Feedback
+
+`Badge` accepts `label`, optional hex `color`, and `className`. `EmptyState` accepts `icon`, `shape`, `title`, optional `body`, and `tone` (`primary` or `tertiary`). Keep its text actionable.
+
+`Snackbar` is presentation only: pass `message`, optional `bottom` offset, and an `actionLabel` / `onAction` pair. The app owns visibility, replacement, timing and undo; never put persistence in the UI component.
+
+```tsx
+import { Snackbar } from '@isoline-ui/react-native';
+export function SavedNotice({ onUndo }: { onUndo: () => void }) {
+  return <Snackbar message="Saved" bottom={96} actionLabel="Undo" onAction={onUndo} />;
+}
+```
+
+`FabMenu` accepts `bottom`, an accessible `label`, and `actions` (each `id`, `label`, `icon`, `run`). It supplies open/close animation, the scrim, Android Back, and haptics from the provider. The app chooses which actions exist. Allow room above it for all actions and include safe-area space in `bottom`.
+
+## Native surfaces
+
+Install the paired optional native package and its Expo glass peer, then pass `surface={MaterialSurface}` to `IsolineProvider`. `TopBar` and `Toolbar` use that surface for their background. On supported iOS it renders glass, with a solid fallback for Reduce Transparency or unsupported systems; Android retains the requested tonal/transparent colour. It does not change app data or navigation. Haptics remain provider callbacks and should honour the user's setting.

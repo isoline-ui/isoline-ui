@@ -24,6 +24,8 @@ export interface TypographyRole {
   lineHeight?: number;
   fontWeight?: '400' | '500' | '600' | '700' | '800';
   letterSpacing?: number;
+  textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
+  includeFontPadding?: boolean;
 }
 
 export interface IsolineTheme {
@@ -32,6 +34,7 @@ export interface IsolineTheme {
   /** HSL channel triplets, e.g. "268 75% 82%", matching the NativeWind preset. */
   tokens: Readonly<Record<string, string>>;
   typography?: Partial<Record<TextVariant, TypographyRole>>;
+  sheetGesture?: 'handle' | 'panel';
 }
 
 export const ROLE_VARIABLES = {
@@ -97,6 +100,7 @@ export function extendTheme(
     name?: string;
     tokens?: Readonly<Record<string, string>>;
     typography?: IsolineTheme['typography'];
+    sheetGesture?: IsolineTheme['sheetGesture'];
   },
 ): IsolineTheme {
   const typography = { ...base.typography };
@@ -109,6 +113,7 @@ export function extendTheme(
     name: overrides.name ?? base.name,
     tokens: { ...base.tokens, ...overrides.tokens },
     typography,
+    sheetGesture: overrides.sheetGesture ?? base.sheetGesture,
   };
 }
 
@@ -119,20 +124,33 @@ function preset(name: keyof typeof presetTokens, scheme: ColorScheme): IsolineTh
     scheme,
     tokens: { ...presetTokens.violet[scheme], ...presetTokens[name][scheme] },
   };
-  if (name === 'cyan')
+  if (name === 'teal')
+    theme.typography = {
+      label: { textTransform: 'uppercase', fontWeight: '700', letterSpacing: 1.12 },
+    };
+  if (name === 'cyan') {
+    theme.sheetGesture = 'panel';
     theme.typography = {
       display: {
         fontFamily: 'SpaceGrotesk_700Bold',
         fontWeight: '700',
         fontSize: 44,
         lineHeight: 48,
+        letterSpacing: -1.32,
       },
-      title: { fontFamily: 'SpaceGrotesk_700Bold', fontWeight: '700', lineHeight: 38 },
-      heading: { fontFamily: 'SpaceGrotesk_700Bold', fontWeight: '700' },
-      mono: { fontFamily: 'JetBrainsMono_500Medium' },
+      title: {
+        fontFamily: 'SpaceGrotesk_700Bold',
+        fontWeight: '700',
+        lineHeight: 38,
+        letterSpacing: -0.64,
+      },
+      heading: { fontFamily: 'SpaceGrotesk_700Bold', fontWeight: '700', letterSpacing: -0.22 },
+      label: { letterSpacing: 0 },
+      mono: { fontFamily: 'JetBrainsMono_500Medium', fontSize: 13 },
       value: { fontFamily: 'JetBrainsMono_500Medium' },
-      valueLarge: { fontFamily: 'JetBrainsMono_700Bold' },
+      valueLarge: { fontFamily: 'JetBrainsMono_700Bold', letterSpacing: -0.22 },
     };
+  }
   return theme;
 }
 

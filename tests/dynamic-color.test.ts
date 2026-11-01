@@ -5,6 +5,9 @@ import {
   PALETTE_TONES,
   dynamicRoles,
   hexToHslTriplet,
+  hexToRgb,
+  hexToLab,
+  hexToHsl,
   paletteTone,
   parseSystemPalette,
   samePalette,
@@ -184,4 +187,12 @@ test('hex converts to the HSL triplet global.css holds', () => {
   assert.equal(hexToHslTriplet('#000000'), '0 0% 0%');
   assert.equal(hexToHslTriplet('#ff0000'), '0 100% 50%');
   assert.equal(hexToHslTriplet('#1f8f82'), '173 64.4% 34.1%');
+});
+
+test('colour inspection retains RGB, unrounded HSL and Lab conversions', () => {
+  assert.deepEqual(hexToRgb('#ff8000'), [255, 128, 0]);
+  assert.deepEqual(hexToHsl('#ff0000'), [0, 100, 50]);
+  assert.deepEqual(hexToHsl('#808080'), [0, 0, (128 / 255) * 100]);
+  assert.ok(Math.abs(hexToLab('#ffffff')[0] - 100) < 0.01);
+  assert.deepEqual(hexToLab('#000000'), [0, 0, 0]);
 });
