@@ -1,0 +1,110 @@
+---
+title: 'Floating Toolbar'
+description: 'Gemeinsame Bildschirmaktionen bleiben über scrollendem Inhalt erreichbar.'
+---
+
+<ComponentPreview kind="toolbar" />
+
+`Toolbar` ist die gemeinsame Fläche für die schwebende Aktionsleiste. Sie ordnet deine `Button`- und `IconButton`-Controls an; du bestimmst die Aktionen und positionierst sie über dem Bildschirminhalt. Scrolle in der Vorschau die Sammlung, probiere Neu und Mehr aus, wechsle iOS/Android oder wähle eine solide Fläche.
+
+## Über dem Inhalt schweben lassen
+
+Platziere die Toolbar außerhalb des `ScrollView` und oberhalb des unteren sicheren Bereichs. Reserviere im scrollenden Inhalt ausreichend Abstand nach unten, damit auch der letzte Eintrag erreichbar bleibt.
+
+```tsx title="CollectionScreen.tsx"
+import { useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  BackIcon,
+  Button,
+  IconButton,
+  IsolineProvider,
+  Text,
+  Toolbar,
+  themes,
+  useThemeColors,
+} from '@isoline-ui/react-native';
+import { MaterialSurface } from '@isoline-ui/native';
+
+export function CollectionScreen() {
+  return (
+    <SafeAreaProvider>
+      <IsolineProvider theme={themes.violet.light} surfaceComponent={MaterialSurface}>
+        <CollectionContent />
+      </IsolineProvider>
+    </SafeAreaProvider>
+  );
+}
+
+function CollectionContent() {
+  const insets = useSafeAreaInsets();
+  const colors = useThemeColors();
+  const [status, setStatus] = useState('Deine Sammlung');
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.surface }}>
+      <ScrollView
+        contentContainerStyle={{
+          padding: 16,
+          paddingTop: insets.top + 16,
+          paddingBottom: insets.bottom + 104,
+        }}
+      >
+        <Text variant="title">{status}</Text>
+        {Array.from({ length: 12 }, (_, index) => (
+          <View key={index} style={{ paddingVertical: 24 }}>
+            <Text>Projekt {index + 1}</Text>
+          </View>
+        ))}
+      </ScrollView>
+      <Toolbar
+        style={{
+          position: 'absolute',
+          left: insets.left + 16,
+          right: insets.right + 16,
+          bottom: insets.bottom + 16,
+        }}
+      >
+        <IconButton
+          icon={BackIcon}
+          accessibilityLabel="Zurück"
+          onPress={() => setStatus('Zurück ausgewählt')}
+        />
+        <Button label="Neu" size="s" onPress={() => setStatus('Eintrag hinzugefügt')} />
+        <Button
+          label="Mehr"
+          size="s"
+          variant="ghost"
+          onPress={() => setStatus('Mehr ausgewählt')}
+        />
+      </Toolbar>
+    </View>
+  );
+}
+```
+
+Wenn die App `SafeAreaProvider` und `IsolineProvider` bereits bereitstellt, verwende diese weiter. Verbinde die Aktionen mit deiner Navigation und deinem Bildschirmzustand. Für weitere Aktionen verwende [MenuSheet](/de/docs/components/menu-sheet); das Modal gehört neben den Bildschirm und außerhalb des scrollenden Inhalts.
+
+## iOS, Android und Web
+
+Unter iOS verwendet die Toolbar eine abgerundete Kapsel. Mit `surfaceComponent={MaterialSurface}` verwenden unterstützte iOS-26+-Geräte natives Liquid Glass. Ältere Geräte und reduzierte Transparenz verwenden eine solide Theme-Fläche. Android verwendet eine solide Material-Fläche mit eigener Geometrie. Ohne Surface-Adapter bleibt die Toolbar als solide Theme-Fläche nutzbar.
+
+Die Browser-Vorschau führt dieselbe `Toolbar` mit React Native Web aus. Glas im iOS-Stil verwendet eine CSS-Annäherung mit solider Alternative bei fehlenden Backdrop-Filtern, reduzierter Transparenz oder erzwungenen Farben. `material="solid"` wählt ausdrücklich die solide Alternative. [Liquid Glass](/de/docs/native/liquid-glass) beschreibt Einrichtung und Verfügbarkeit.
+
+## Aktionen auswählen
+
+Halte die Hauptaktion sichtbar und verschiebe seltene Aktionen in ein Menü. Gib reinen Symbol-Controls sinnvolle barrierefreie Beschriftungen. Verringere für gedrückte Aktionen nicht die Opacity der Toolbar oder ihrer Eltern; überlasse das Feedback den enthaltenen Controls. Vermeide deckende Hintergründe, die das Glasmaterial verdecken.
+
+`Toolbar` liefert die Fläche und horizontale Anordnung. Positionierung, sichere Abstände, Tastaturvermeidung, Auswahlzustand, Navigation und scrollabhängige Sichtbarkeit bleiben Aufgaben des Bildschirms. Die Toolbar hängt sich nicht automatisch an den Viewport und bildet kein appspezifisches Verhalten nach.
+
+## Props
+
+| Prop        | Typ / Standard                          | Zweck                                                 |
+| ----------- | --------------------------------------- | ----------------------------------------------------- |
+| `children`  | `ReactNode`                             | Aktionen wie `Button` und `IconButton`.               |
+| `material`  | `auto / glass / solid · Standard: auto` | Materialwunsch unter iOS; Android bleibt solide.      |
+| `style`     | `StyleProp<ViewStyle>`                  | Toolbar positionieren und Layout anpassen.            |
+| `className` | `string`                                | Zusätzliches NativeWind-Styling.                      |
+| View-Props  | `ViewProps`                             | Barrierefreiheit und weitere Container-Eigenschaften. |
+
+Für einen Titel mit vor- und nachgestellten Navigationsaktionen verwende `NavigationBar`, beschrieben unter [Plattformen und Navigation](/de/docs/foundations/platforms).

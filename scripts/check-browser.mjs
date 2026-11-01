@@ -277,6 +277,89 @@ try {
       await overlays.getByText('Actions', { exact: true }).waitFor();
       await overlays.getByText('Back', { exact: true }).click();
       await overlays.getByText('Actions', { exact: true }).waitFor({ state: 'hidden' });
+      for (const locale of ['en', 'de'])
+        for (const width of [375, 1280]) {
+          await page.setViewportSize({ width, height: 1000 });
+          await page.goto(`${origin}${base}/${locale}/docs/components/floating-toolbar/`, {
+            waitUntil: 'networkidle',
+          });
+          const preview = page.locator('.component-preview').first();
+          const frame = page.frameLocator('.component-preview iframe').first();
+          const toolbar = frame.getByTestId('floating-toolbar');
+          await toolbar.waitFor();
+          for (const platform of ['iOS', 'Android']) {
+            await preview.getByRole('button', { name: platform, exact: true }).click();
+            await eventually(
+              () => toolbar.evaluate((el) => getComputedStyle(el).borderRadius),
+              platform === 'iOS' ? '28px' : '20px',
+            );
+            const before = await toolbar.boundingBox();
+            const scroll = frame.getByTestId('toolbar-scroll');
+            const position = await scroll.evaluate((el) => {
+              el.scrollTop = 200;
+              return el.scrollTop;
+            });
+            assert.ok(position > 0, 'collection must scroll independently');
+            const after = await toolbar.boundingBox();
+            assert.ok(
+              Math.abs(after.y - before.y) < 1,
+              'floating toolbar must stay in place while content scrolls',
+            );
+            const gap = await toolbar.evaluate((el) => {
+              const scene = el.closest('[data-testid=toolbar-scene]');
+              return scene.getBoundingClientRect().bottom - el.getBoundingClientRect().bottom;
+            });
+            assert.ok(Math.abs(gap - 12) < 1, 'toolbar must retain its bottom inset');
+            await frame
+              .getByRole('button', { name: locale === 'de' ? 'Neu' : 'New', exact: true })
+              .click();
+            await frame
+              .getByText(locale === 'de' ? 'Eintrag hinzugefügt' : 'Item added', {
+                exact: true,
+              })
+              .waitFor();
+            await frame
+              .getByRole('button', { name: locale === 'de' ? 'Mehr' : 'More', exact: true })
+              .click();
+            await frame
+              .getByText(locale === 'de' ? 'Weitere Aktionen' : 'More actions', { exact: true })
+              .waitFor();
+            await frame
+              .getByRole('button', {
+                name: locale === 'de' ? 'Schließen' : 'Close',
+                exact: true,
+              })
+              .last()
+              .click();
+            await frame
+              .getByRole('switch', {
+                name: locale === 'de' ? 'Solide Darstellung' : 'Solid surface',
+                exact: true,
+              })
+              .check();
+            assert.equal(
+              await toolbar.evaluate(
+                (el) =>
+                  getComputedStyle(el).getPropertyValue('backdrop-filter') ||
+                  getComputedStyle(el).getPropertyValue('-webkit-backdrop-filter'),
+              ),
+              'none',
+            );
+            await frame.getByRole('switch').uncheck();
+          }
+          await preview.getByRole('button', { name: 'iOS', exact: true }).click();
+          await eventually(
+            () => toolbar.evaluate((el) => getComputedStyle(el).borderRadius),
+            '28px',
+          );
+          if (process.env.ISOLINE_PREVIEW_SCREENSHOTS && locale === 'de' && width === 375)
+            await preview.screenshot({
+              path: path.join(
+                process.env.ISOLINE_PREVIEW_SCREENSHOTS,
+                `${name}-floating-toolbar.png`,
+              ),
+            });
+        }
       await page.goto(`${origin}${base}/en/docs/native/liquid-glass/`, {
         waitUntil: 'networkidle',
       });
@@ -296,7 +379,7 @@ try {
       await glass.waitFor({ state: 'hidden' });
       assert.deepEqual(errors, [], `${name}: browser runtime errors`);
       console.log(
-        `${name}: EN/DE, mobile/desktop, themes, platform state, forms, dialog/sheet/menu and glass fallback passed.`,
+        `${name}: EN/DE, mobile/desktop, themes, platform state, forms, dialog/sheet/menu, floating toolbar and glass fallback passed.`,
       );
     } finally {
       await browser.close();

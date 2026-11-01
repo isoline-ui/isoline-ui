@@ -3,6 +3,7 @@
   "pages": [
     "button",
     "icon-button",
+    "floating-toolbar",
     "button-group",
     "filter-chip",
     "text-field",

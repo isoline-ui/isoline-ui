@@ -106,6 +106,7 @@ function PreviewContent({ kind, de }: { kind: string; de: boolean }) {
       <Button label={de ? 'Deaktiviert' : 'Disabled'} size="s" disabled />
     </View>
   );
+  if (kind === 'toolbar') return <FloatingToolbarPreview de={de} />;
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.surface }}
@@ -344,5 +345,112 @@ function PreviewContent({ kind, de }: { kind: string; de: boolean }) {
         ]}
       />
     </ScrollView>
+  );
+}
+
+function FloatingToolbarPreview({ de }: { de: boolean }) {
+  const colors = useThemeColors();
+  const [solid, setSolid] = React.useState(false);
+  const [menu, setMenu] = React.useState(false);
+  const [status, setStatus] = React.useState('');
+  return (
+    <View style={{ flex: 1, padding: 16, gap: 12, backgroundColor: colors.surface }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 8,
+        }}
+      >
+        <Text variant="caption">{de ? 'Solide Darstellung' : 'Solid surface'}</Text>
+        <Switch
+          value={solid}
+          onValueChange={setSolid}
+          accessibilityLabel={de ? 'Solide Darstellung' : 'Solid surface'}
+        />
+      </View>
+      <View
+        testID="toolbar-scene"
+        style={{
+          flex: 1,
+          minHeight: 260,
+          borderRadius: 16,
+          overflow: 'hidden',
+          backgroundColor: colors.surfaceContainer,
+        }}
+      >
+        <ScrollView
+          testID="toolbar-scroll"
+          contentContainerStyle={{ padding: 12, paddingBottom: 104, gap: 12 }}
+        >
+          <Text variant="title">{de ? 'Deine Sammlung' : 'Your collection'}</Text>
+          {Array.from({ length: 6 }, (_, index) => (
+            <View
+              key={index}
+              style={{
+                minHeight: 96,
+                padding: 16,
+                borderRadius: 16,
+                backgroundColor:
+                  index % 2 ? colors.secondaryContainer : colors.primaryContainer,
+                justifyContent: 'center',
+                gap: 6,
+              }}
+            >
+              <Text variant="subject">
+                {de ? 'Projekt' : 'Project'} {index + 1}
+              </Text>
+              <Text variant="caption">
+                {de
+                  ? 'Scrolle den Inhalt – die Toolbar bleibt erreichbar.'
+                  : 'Scroll the content — the toolbar stays within reach.'}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+        <Toolbar
+          testID="floating-toolbar"
+          material={solid ? 'solid' : 'auto'}
+          style={{ position: 'absolute', left: 12, right: 12, bottom: 12 }}
+        >
+          <IconButton
+            icon={BackIcon}
+            accessibilityLabel={de ? 'Zurück' : 'Back'}
+            onPress={() => setStatus(de ? 'Zurück ausgewählt' : 'Back selected')}
+          />
+          <Button
+            label={de ? 'Neu' : 'New'}
+            size="s"
+            onPress={() => setStatus(de ? 'Eintrag hinzugefügt' : 'Item added')}
+          />
+          <Button
+            label={de ? 'Mehr' : 'More'}
+            variant="ghost"
+            size="s"
+            onPress={() => setMenu(true)}
+          />
+        </Toolbar>
+      </View>
+      <Text variant="caption" accessibilityLiveRegion="polite">
+        {status ||
+          (de
+            ? 'Scrolle die Sammlung und probiere die Aktionen aus.'
+            : 'Scroll the collection and try the actions.')}
+      </Text>
+      <MenuSheet
+        visible={menu}
+        onClose={() => setMenu(false)}
+        title={de ? 'Weitere Aktionen' : 'More actions'}
+        items={[
+          {
+            id: 'example',
+            icon: BackIcon,
+            label: de ? 'Zur Übersicht' : 'Go to overview',
+            onPress: () => setStatus(de ? 'Übersicht ausgewählt' : 'Overview selected'),
+          },
+        ]}
+      />
+    </View>
   );
 }
