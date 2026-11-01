@@ -45,3 +45,7 @@ Remove old local modules only after all imports are migrated. Add MaterialSurfac
 to selected UI surfaces; native stack navigation and tabs remain separate
 platform integrations. The three production apps are not automatically migrated
 by installing these packages.
+
+### Alpha.1 build evidence
+
+The published 0.1.0-alpha.1 package sources passed [native and package CI](https://github.com/isoline-ui/isoline-ui/actions/runs/41301672372): Android Kotlin compilation and the complete unsigned iOS simulator showcase build on macOS 26 / Xcode 26.6, alongside the package and Metro checks. The installed release archives were also checked against Expo SDK 57 / React Native 0.86 source types and Android autolinking. That SDK 57 check was not a native app build. Physical-device behavior remains to be verified.
