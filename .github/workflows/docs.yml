@@ -4,8 +4,11 @@ on:
     branches: [main]
     paths:
       - 'apps/docs/**'
-      - 'packages/react-native/src/preset-tokens.ts'
-      - 'packages/react-native/src/theme.ts'
+      - 'packages/react-native/**'
+      - 'packages/native/**'
+      - 'examples/showcase/**'
+      - 'scripts/build-docs-preview.mjs'
+      - 'scripts/check-browser.mjs'
       - 'scripts/check-docs*.mjs'
       - 'package.json'
       - 'package-lock.json'
@@ -13,8 +16,11 @@ on:
   pull_request:
     paths:
       - 'apps/docs/**'
-      - 'packages/react-native/src/preset-tokens.ts'
-      - 'packages/react-native/src/theme.ts'
+      - 'packages/react-native/**'
+      - 'packages/native/**'
+      - 'examples/showcase/**'
+      - 'scripts/build-docs-preview.mjs'
+      - 'scripts/check-browser.mjs'
       - 'scripts/check-docs*.mjs'
       - 'package.json'
       - 'package-lock.json'
@@ -50,6 +56,8 @@ jobs:
       - run: node scripts/check-docs-export.mjs
         env:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run docs:test
       - run: touch apps/docs/out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:

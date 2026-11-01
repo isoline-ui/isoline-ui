@@ -26,7 +26,7 @@ export function FloatingActions() {
 }
 ```
 
-Put the surface over varied content, such as a scrolling list or imagery, when you want the material to be visible. A flat background naturally gives the effect less to work with. The preview above is a web illustration; the iOS app uses Expo's native glass view.
+Put the surface over varied content, such as a scrolling list or imagery, when you want the material to be visible. A flat background naturally gives the effect less to work with. The preview above uses the actual components through React Native Web with CSS glass; the iOS app uses Expo's native glass view.
 
 ## Choose where to use it
 
@@ -36,7 +36,7 @@ Start with a small floating toolbar or a navigation accessory. Keep your main re
 
 ## Fallback behavior
 
-Native glass is used on **iOS 26+** when the required APIs are available and the app supports the Liquid Glass appearance. On older iOS versions and other platforms, or when Reduce Transparency is enabled, the component displays a solid theme surface. Even `material="glass"` respects these checks. `material="solid"` always requests the solid alternative.
+Native glass is used on **iOS 26+** when the required APIs are available and the app supports the Liquid Glass appearance. On older iOS versions, Android, or when Reduce Transparency is enabled, the component displays a solid theme surface. Even `material="glass"` respects these checks. `material="solid"` always requests the solid alternative.
 
 The glass appearance follows the light/dark scheme of your Isoline theme. Test both schemes and try Reduce Transparency in iOS accessibility settings.
 

@@ -6,7 +6,7 @@ import { Pressable } from './pressable.tsx';
 import { useSquish } from './squish.ts';
 import { Text } from './text.tsx';
 import { corner } from '../shape.ts';
-import { useRipple, useThemeColors } from '../provider.tsx';
+import { useIsolinePlatform, useRipple, useThemeColors } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 /**
@@ -86,6 +86,7 @@ export function FilterChip({
   trailingIcon: Trailing,
   surface = 'background',
 }: FilterChipProps) {
+  const ios = useIsolinePlatform() === 'ios';
   const colors = useThemeColors();
   const ripple = useRipple();
 
@@ -98,7 +99,7 @@ export function FilterChip({
   return (
     <Animated.View
       className="shrink-0 overflow-hidden"
-      style={[{ borderRadius: corner.large }, squish.style]}
+      style={[{ borderRadius: ios ? 10 : corner.large }, squish.style]}
     >
       <Pressable
         {...squish.handlers}
@@ -115,7 +116,7 @@ export function FilterChip({
             ? 'border-primaryContainer bg-primaryContainer'
             : cn('border-outline', SURFACE_FILL[surface]),
         )}
-        style={{ borderRadius: corner.large }}
+        style={{ borderRadius: ios ? 10 : corner.large }}
       >
         {Icon ? <Icon size={16} color={foreground} /> : null}
 

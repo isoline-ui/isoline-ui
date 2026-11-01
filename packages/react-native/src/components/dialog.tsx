@@ -8,9 +8,10 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { DialogActionContext } from './dialog-context.ts';
 import { Pressable } from './pressable.tsx';
 import { effects, spatial } from '../motion.ts';
-import { elevation } from '../provider.tsx';
+import { useIsolinePlatform, elevation } from '../provider.tsx';
 import { useReducedMotion } from '../reduced-motion.ts';
 
 /** How long the scrim takes to dim — matches the bottom sheet's own fade. */
@@ -68,6 +69,7 @@ export interface DialogProps {
  */
 export function Dialog({ visible, onClose, onShow, children }: DialogProps) {
   const { scrimStyle, panelStyle } = useDialogTransition(visible);
+  const ios = useIsolinePlatform() === 'ios';
   const insets = useSafeAreaInsets();
 
   return (
@@ -97,7 +99,15 @@ export function Dialog({ visible, onClose, onShow, children }: DialogProps) {
             accessibilityViewIsModal
             onAccessibilityEscape={onClose}
             className="w-full max-w-sm rounded-[28px] bg-popover"
-            style={[panelStyle, { maxHeight: '100%', elevation: elevation.level3 }]}
+            style={[
+              panelStyle,
+              {
+                maxHeight: '100%',
+                elevation: ios ? 0 : elevation.level3,
+                borderRadius: ios ? 14 : 28,
+                maxWidth: ios ? 320 : 384,
+              },
+            ]}
           >
             <ScrollView
               style={{ flexGrow: 0 }}
@@ -116,5 +126,12 @@ export function Dialog({ visible, onClose, onShow, children }: DialogProps) {
 
 /** A dialog's row of text actions, right-aligned per M3. */
 export function DialogActions({ children }: { children: React.ReactNode }) {
-  return <View className="flex-row justify-end gap-2">{children}</View>;
+  const ios = useIsolinePlatform() === 'ios';
+  return (
+    <DialogActionContext.Provider value={ios}>
+      <View className={ios ? 'flex-row justify-center' : 'flex-row justify-end gap-2'}>
+        {children}
+      </View>
+    </DialogActionContext.Provider>
+  );
 }

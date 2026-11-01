@@ -1,4 +1,12 @@
 {
   "title": "Foundations",
-  "pages": ["provider", "theming", "typography", "icons", "haptics", "accessibility"]
+  "pages": [
+    "provider",
+    "platforms",
+    "theming",
+    "typography",
+    "icons",
+    "haptics",
+    "accessibility"
+  ]
 }

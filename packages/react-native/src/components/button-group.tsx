@@ -7,9 +7,9 @@ import Animated, {
   type SharedValue,
 } from 'react-native-reanimated';
 
-import { AnimatedPressable } from './pressable.tsx';
+import { Pressable, AnimatedPressable } from './pressable.tsx';
 import { Text } from './text.tsx';
-import { useHaptics } from '../provider.tsx';
+import { useIsolineTheme, useIsolinePlatform, useHaptics } from '../provider.tsx';
 import { corner } from '../shape.ts';
 import { spatial } from '../motion.ts';
 import { useRipple, useThemeColors } from '../provider.tsx';
@@ -65,10 +65,79 @@ export function ButtonGroup<T extends string>({
   className,
   compact,
 }: ButtonGroupProps<T>) {
+  const ios = useIsolinePlatform() === 'ios';
+  const colors = useThemeColors();
+  const { scheme } = useIsolineTheme();
+  const { selectionHaptic } = useHaptics();
   // Which button is under a finger, as an index. -1 is "none", and lives on
   // the UI thread so the squeeze never waits on a React render.
   const pressed = useSharedValue(-1);
 
+  if (ios)
+    return (
+      <View
+        className={className}
+        style={{
+          flexDirection: 'row',
+          gap: 2,
+          padding: 3,
+          borderRadius: 12,
+          backgroundColor: colors.surfaceContainerHigh,
+        }}
+      >
+        {items.map((item) => {
+          const selected = item.id === value;
+          const Icon = item.icon;
+          return (
+            <Pressable
+              key={item.id}
+              accessibilityRole="button"
+              accessibilityLabel={item.label}
+              accessibilityState={{ selected }}
+              onPress={() => {
+                if (!selected) selectionHaptic();
+                onChange(item.id);
+              }}
+              style={{
+                flex: 1,
+                minWidth: 0,
+                minHeight: 36,
+                paddingVertical: 8,
+                paddingHorizontal: 6,
+                borderRadius: 9,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4,
+                backgroundColor: selected
+                  ? scheme === 'dark'
+                    ? colors.surfaceContainerHighest
+                    : colors.surfaceContainerLowest
+                  : 'transparent',
+                boxShadow: selected ? '0px 1px 4px rgba(0,0,0,0.15)' : undefined,
+              }}
+            >
+              {Icon ? <Icon size={16} color={colors.onSurface} /> : null}
+              <Text
+                numberOfLines={1}
+                style={{
+                  fontSize: 13,
+                  lineHeight: 18,
+                  fontWeight: '600',
+                  color: colors.onSurface,
+                  flexShrink: 1,
+                }}
+              >
+                {item.label}
+              </Text>
+              {item.badge !== undefined ? (
+                <Text style={{ fontSize: 12, color: colors.onSurface }}>{item.badge}</Text>
+              ) : null}
+            </Pressable>
+          );
+        })}
+      </View>
+    );
   return (
     <View className={cn('flex-row gap-1', className)}>
       {items.map((item, index) => (

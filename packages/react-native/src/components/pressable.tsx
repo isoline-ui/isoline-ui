@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import Animated, { type AnimatedProps } from 'react-native-reanimated';
 
+import { useIsolinePlatform, useThemeColors } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 /**
@@ -17,13 +18,24 @@ type PressableRef = React.ElementRef<typeof RNPressable>;
 export const Pressable: React.ForwardRefExoticComponent<
   PressableProps & React.RefAttributes<PressableRef>
 > = React.forwardRef<React.ElementRef<typeof RNPressable>, PressableProps>(function Pressable(
-  { className, android_ripple, style, disabled, ...props },
+  { className, android_ripple, style, disabled, onFocus, onBlur, ...props },
   ref,
 ) {
+  const ios = useIsolinePlatform() === 'ios';
+  const colors = useThemeColors();
+  const [focused, setFocused] = React.useState(false);
   return (
     <RNPressable
       ref={ref}
       disabled={disabled}
+      onFocus={(event) => {
+        setFocused(true);
+        onFocus?.(event);
+      }}
+      onBlur={(event) => {
+        setFocused(false);
+        onBlur?.(event);
+      }}
       android_ripple={android_ripple}
       className={cn(
         Platform.OS === 'android' &&
@@ -33,7 +45,7 @@ export const Pressable: React.ForwardRefExoticComponent<
         className,
       )}
       style={
-        Platform.OS === 'ios'
+        ios || Platform.OS === 'web'
           ? (state) => {
               const resolved = typeof style === 'function' ? style(state) : style;
               const opacity = StyleSheet.flatten(resolved)?.opacity;
@@ -44,6 +56,13 @@ export const Pressable: React.ForwardRefExoticComponent<
                   : undefined;
               return [
                 resolved,
+                Platform.OS === 'web' &&
+                  focused && {
+                    outlineWidth: 2,
+                    outlineStyle: 'solid',
+                    outlineColor: colors.primary,
+                    outlineOffset: 2,
+                  },
                 state.pressed && !disabled && pressedOpacity !== undefined
                   ? { opacity: pressedOpacity }
                   : undefined,

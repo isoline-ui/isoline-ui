@@ -14,7 +14,7 @@ import Animated, {
 
 import { Pressable } from './pressable.tsx';
 import { spatial } from '../motion.ts';
-import { useRipple, useThemeColors } from '../provider.tsx';
+import { useIsolinePlatform, useRipple, useThemeColors } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 export interface IconButtonProps {
@@ -61,6 +61,7 @@ export function IconButton({
   style,
   disabled,
 }: IconButtonProps) {
+  const ios = useIsolinePlatform() === 'ios';
   const colors = useThemeColors();
   const ripple = useRipple();
   // The symbol gives a little under the finger, as the ripple spreads round it.
@@ -93,7 +94,7 @@ export function IconButton({
       <Animated.View style={iconStyle}>
         <Icon
           size={iconSize}
-          color={color ?? colors.onSurfaceVariant}
+          color={color ?? (ios ? colors.primary : colors.onSurfaceVariant)}
           {...(fill ? { fill } : null)}
         />
       </Animated.View>

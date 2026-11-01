@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { Text as RNText } from 'react-native';
 
-import { useIsolineTheme } from '../provider.tsx';
+import { useIsolinePlatform, useIsolineTheme } from '../provider.tsx';
 import { cn } from '../utils.ts';
 import type { TextVariant } from '../theme.ts';
 
@@ -32,10 +32,25 @@ const textVariants = cva('text-foreground', {
 export type TextProps = React.ComponentProps<typeof RNText> & VariantProps<typeof textVariants>;
 export function Text({ className, variant, style, ...props }: TextProps) {
   const theme = useIsolineTheme();
+  const ios = useIsolinePlatform() === 'ios';
+  const role = variant ?? 'default';
+  const iosType = {
+    default: { fontSize: 17, lineHeight: 22 },
+    body: { fontSize: 17, lineHeight: 22 },
+    display: { fontSize: 34, lineHeight: 41, fontWeight: '700' as const },
+    title: { fontSize: 28, lineHeight: 34, fontWeight: '700' as const },
+    heading: { fontSize: 22, lineHeight: 28, fontWeight: '600' as const },
+    caption: { fontSize: 13, lineHeight: 18 },
+    label: { fontSize: 13, lineHeight: 18 },
+  };
   return (
     <RNText
       className={cn(textVariants({ variant }), className)}
-      style={[theme.typography?.[(variant ?? 'default') as TextVariant], style]}
+      style={[
+        ios && iosType[role as keyof typeof iosType],
+        theme.typography?.[(variant ?? 'default') as TextVariant],
+        style,
+      ]}
       {...props}
     />
   );

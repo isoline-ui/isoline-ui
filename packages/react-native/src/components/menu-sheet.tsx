@@ -5,7 +5,7 @@ import { BottomSheet } from './bottom-sheet.tsx';
 import type { IconProps } from './icons.tsx';
 import { Pressable } from './pressable.tsx';
 import { Text } from './text.tsx';
-import { useRipple, useThemeColors } from '../provider.tsx';
+import { useIsolinePlatform, useRipple, useThemeColors } from '../provider.tsx';
 
 export interface MenuSheetItem {
   id: string;
@@ -61,11 +61,23 @@ export function MenuSheetRows({
   items: MenuSheetItem[];
   onClose: () => void;
 }) {
+  const ios = useIsolinePlatform() === 'ios';
   const colors = useThemeColors();
   const ripple = useRipple();
 
   return (
-    <View className="gap-1">
+    <View
+      className="gap-1"
+      style={
+        ios
+          ? {
+              borderRadius: 14,
+              overflow: 'hidden',
+              backgroundColor: colors.surfaceContainerLowest,
+            }
+          : undefined
+      }
+    >
       {items.map((item) => {
         const Icon = item.icon;
 
@@ -79,6 +91,15 @@ export function MenuSheetRows({
                 item.onPress();
               }}
               android_ripple={{ color: ripple.onNeutral }}
+              style={
+                ios
+                  ? {
+                      borderRadius: 0,
+                      borderBottomWidth: 1,
+                      borderBottomColor: colors.outlineVariant,
+                    }
+                  : undefined
+              }
               accessibilityRole="button"
               className="flex-row items-center gap-3 rounded-2xl px-4 py-4 active:bg-accent"
             >

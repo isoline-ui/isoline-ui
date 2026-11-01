@@ -13,7 +13,7 @@ import Svg, { Path } from 'react-native-svg';
 
 import { spatial } from '../motion.ts';
 import { useReducedMotion } from '../reduced-motion.ts';
-import { useThemeColors } from '../provider.tsx';
+import { useIsolinePlatform, useThemeColors } from '../provider.tsx';
 
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 
@@ -45,12 +45,13 @@ export function WavyProgress({
   /** A still wave, for small previews where motion would only distract. */
   animated?: boolean;
 }) {
+  const ios = useIsolinePlatform() === 'ios';
   const colors = useThemeColors();
   const reduced = useReducedMotion();
   const [width, setWidth] = React.useState(0);
   const value = useSharedValue(progress);
   const phase = useSharedValue(0);
-  const moving = animated && !reduced;
+  const moving = animated && !reduced && !ios;
 
   React.useEffect(() => {
     value.value = moving ? withSpring(progress, spatial.slow) : progress;
@@ -69,7 +70,7 @@ export function WavyProgress({
   const wave = useAnimatedProps(() => {
     const p = Math.max(0, Math.min(1, value.value));
     const end = Math.max(0, (width - STROKE) * p);
-    const amplitude = 3 * Math.min(1, p * 6, (1 - p) * 6);
+    const amplitude = (ios ? 0 : 3) * Math.min(1, p * 6, (1 - p) * 6);
     const mid = HEIGHT / 2;
     const shift = phase.value * WAVELENGTH;
     let d = `M ${STROKE / 2} ${mid}`;

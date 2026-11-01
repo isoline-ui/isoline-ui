@@ -1,11 +1,12 @@
 import { I18nManager, Platform } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
+import { useIsolinePlatform } from '../provider.tsx';
 import { ArrowLeft, type IconProps } from './icons.tsx';
 
 /** Navigation uses the iOS chevron; directional/content arrows stay unchanged. */
 export function BackIcon({ size = 24, color = '#000000', style, ...props }: IconProps) {
-  if (Platform.OS !== 'ios') {
+  if (useIsolinePlatform() !== 'ios') {
     return <ArrowLeft size={size} color={color} style={style} {...props} />;
   }
 

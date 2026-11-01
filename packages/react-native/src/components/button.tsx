@@ -6,10 +6,11 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
+import { DialogActionContext } from './dialog-context.ts';
 import type { IconProps } from './icons.tsx';
 import { AnimatedPressable, Pressable } from './pressable.tsx';
 import { Text } from './text.tsx';
-import { useHaptics } from '../provider.tsx';
+import { useIsolinePlatform, useHaptics } from '../provider.tsx';
 import { spatial } from '../motion.ts';
 import { corner } from '../shape.ts';
 import {
@@ -164,6 +165,8 @@ export function Button({
   onPress,
   ...props
 }: ButtonProps) {
+  const ios = useIsolinePlatform() === 'ios';
+  const alertAction = React.useContext(DialogActionContext) && ios;
   const { selectionHaptic } = useHaptics();
   const ripple = useRipple();
   const colors = useThemeColors();
@@ -172,8 +175,8 @@ export function Button({
   const resolvedSize = size ?? 'm';
   const metrics = METRICS[resolvedSize];
 
-  const rest = shape === 'round' ? metrics.height / 2 : metrics.square;
-  const active = shape === 'round' ? metrics.square : metrics.height / 2;
+  const rest = ios ? 12 : shape === 'round' ? metrics.height / 2 : metrics.square;
+  const active = ios ? rest : shape === 'round' ? metrics.square : metrics.height / 2;
 
   // Radius is shared with the wrapper below so the ripple's own clip morphs
   // in lockstep with the visible shape — a Pressable can only self-clip its
@@ -187,10 +190,23 @@ export function Button({
   }));
 
   return (
-    <Animated.View style={radiusStyle} className={cn('overflow-hidden', className)}>
+    <Animated.View
+      style={[radiusStyle, alertAction && { flex: 1 }]}
+      className={cn('overflow-hidden', className)}
+    >
       <AnimatedPressable
         className={cn(buttonVariants({ variant, size }), props.disabled && 'opacity-50')}
-        style={[radiusStyle, scaleStyle, style]}
+        style={[
+          radiusStyle,
+          scaleStyle,
+          ios && {
+            minHeight: 44,
+            height: { xs: 44, s: 44, m: 50, l: 64, xl: 80, icon: 44 }[resolvedSize],
+            borderWidth: resolvedVariant === 'outline' ? 0 : undefined,
+          },
+          alertAction && { backgroundColor: 'transparent', borderWidth: 0, borderRadius: 0 },
+          style,
+        ]}
         android_ripple={{ color: rippleByVariant(ripple)[resolvedVariant] }}
         onPressIn={(event) => {
           pressed.value = withSpring(1, spatial.fast);
@@ -209,10 +225,27 @@ export function Button({
         {...props}
       >
         {Icon ? (
-          <Icon size={ICON_SIZE[resolvedSize]} color={iconColor(colors, resolvedVariant)} />
+          <Icon
+            size={ICON_SIZE[resolvedSize]}
+            color={
+              alertAction
+                ? resolvedVariant === 'destructive'
+                  ? colors.error
+                  : colors.primary
+                : iconColor(colors, resolvedVariant)
+            }
+          />
         ) : null}
         {label ? (
-          <Text className={cn(labelVariants({ variant, size }))} numberOfLines={1}>
+          <Text
+            className={cn(labelVariants({ variant, size }))}
+            style={
+              alertAction
+                ? { color: resolvedVariant === 'destructive' ? colors.error : colors.primary }
+                : undefined
+            }
+            numberOfLines={1}
+          >
             {label}
           </Text>
         ) : (
