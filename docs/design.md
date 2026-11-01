@@ -9,8 +9,11 @@ Keep the three product identities distinct through theme values and typography.
 - Sheet dismissal has an accessible Close action and an explicit handle gesture.
 - Dialogs support safe areas, keyboard avoidance and scrollable form contents.
 - Honour system text scaling, reduced motion and platform accessibility.
-- Liquid Glass is a future optional material adapter. Solid surfaces must remain
-  available on unsupported systems and when Reduce Transparency is enabled.
+- The optional `@isoline-ui/native` package provides native Liquid Glass through
+  `MaterialSurface`. Solid surfaces remain available on unsupported systems and
+  when Reduce Transparency is enabled.
+- Android system palettes are provided by the same native package through
+  `useSystemTheme`; app preferences and persistence remain consumer contracts.
 
 A successful bundle is not a device interaction test. Before release, verify
 VoiceOver/TalkBack focus, keyboard placement, large text, interrupted gestures,
