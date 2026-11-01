@@ -1,9 +1,11 @@
 'use client';
-import { useRef, useState, type CSSProperties } from 'react';
+import { useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
 import {
   ArrowLeft,
   Check,
   ChevronDown,
+  ChevronRight,
+  ChevronLeft,
   Folder,
   Inbox,
   Moon,
@@ -20,6 +22,36 @@ import { themes } from '../../../packages/react-native/src/theme';
 const previewThemes = ['violet', 'teal', 'cyan'] as const;
 type PreviewTheme = (typeof previewThemes)[number];
 type PreviewPlatform = 'ios' | 'android';
+const platformKey = 'isoline-preview-platform';
+let currentPlatform: PreviewPlatform = 'android';
+function readPlatform(): PreviewPlatform {
+  try {
+    const saved = localStorage.getItem(platformKey);
+    if (saved === 'ios' || saved === 'android') return saved;
+  } catch {
+    /* Storage may be unavailable in private browsing. */
+  }
+  return currentPlatform;
+}
+function subscribePlatform(callback: () => void) {
+  window.addEventListener('storage', callback);
+  window.addEventListener('isoline-platform-change', callback);
+  return () => {
+    window.removeEventListener('storage', callback);
+    window.removeEventListener('isoline-platform-change', callback);
+  };
+}
+function setPlatform(platform: PreviewPlatform) {
+  currentPlatform = platform;
+  try {
+    localStorage.setItem(platformKey, platform);
+  } catch {
+    /* Keep the in-memory preference. */
+  }
+  window.dispatchEvent(new Event('isoline-platform-change'));
+}
+const serverPlatform = (): PreviewPlatform => 'android';
+
 export function ComponentPreview({
   kind = 'default',
   hero = false,
@@ -30,7 +62,7 @@ export function ComponentPreview({
   const { locale } = useI18n();
   const de = locale === 'de';
   const [theme, setTheme] = useState<PreviewTheme>('violet');
-  const [platform, setPlatform] = useState<PreviewPlatform>('android');
+  const platform = useSyncExternalStore(subscribePlatform, readPlatform, serverPlatform);
   const [dark, setDark] = useState(false);
   const [selected, setSelected] = useState('all');
   const [enabled, setEnabled] = useState(true);
@@ -143,7 +175,7 @@ export function ComponentPreview({
         </div>
       </div>
       <div className={`preview-canvas preview-${kind}`}>
-        {kind === 'default' && (
+        {kind === 'default' && platform === 'android' && (
           <div className="demo-screen">
             <div className="demo-screen-heading">
               <div>
@@ -221,6 +253,87 @@ export function ComponentPreview({
               >
                 <Plus size={16} />
                 {de ? 'Etwas Neues' : 'Create something'}
+              </button>
+            </div>
+          </div>
+        )}
+        {kind === 'default' && platform === 'ios' && (
+          <div className="demo-ios-screen">
+            <div className="demo-ios-navigation">
+              <button
+                type="button"
+                onClick={() => setStatus(de ? 'Übersicht ausgewählt' : 'Overview selected')}
+              >
+                <ChevronLeft size={20} /> {de ? 'Übersicht' : 'Overview'}
+              </button>
+              <button
+                type="button"
+                aria-label={de ? 'Einstellungen öffnen' : 'Open settings'}
+                onClick={() =>
+                  setStatus(de ? 'Alles nach deinem Geschmack.' : 'Make yourself at home.')
+                }
+              >
+                <Settings2 size={20} />
+              </button>
+            </div>
+            <h3>{de ? 'Dein Bereich' : 'Your space'}</h3>
+            <p className="demo-ios-subtitle">
+              {de ? 'Platz für deine Ideen.' : 'Room for your ideas.'}
+            </p>
+            {chips}
+            <p className="demo-ios-section-label">
+              {de ? 'DEINE SAMMLUNG' : 'YOUR COLLECTION'}
+            </p>
+            <div className="demo-ios-list">
+              {[
+                {
+                  icon: Inbox,
+                  label:
+                    selected === 'saved'
+                      ? de
+                        ? 'Gespeicherte Ideen'
+                        : 'Saved ideas'
+                      : selected === 'recent'
+                        ? de
+                          ? 'Zuletzt geöffnet'
+                          : 'Recently opened'
+                        : de
+                          ? 'Alle Ideen'
+                          : 'All ideas',
+                  count: selected === 'saved' ? '6' : selected === 'recent' ? '3' : '12',
+                },
+                { icon: Folder, label: de ? 'Projekte' : 'Projects', count: '2' },
+              ].map(({ icon: Icon, label, count }) => (
+                <button
+                  type="button"
+                  className="demo-ios-list-row"
+                  key={label}
+                  onClick={() => setStatus(de ? `${label} geöffnet` : `${label} opened`)}
+                >
+                  <span className="demo-ios-list-icon">
+                    <Icon size={17} />
+                  </span>
+                  <span>{label}</span>
+                  <span className="demo-ios-detail">{count}</span>
+                  <ChevronRight size={15} />
+                </button>
+              ))}
+            </div>
+            <p className="demo-ios-section-label">{de ? 'EINSTELLUNGEN' : 'PREFERENCES'}</p>
+            <div className="demo-ios-list demo-ios-notifications">
+              <span>{de ? 'Benachrichtigungen' : 'Notifications'}</span>
+              {toggle}
+            </div>
+            <div className="demo-ios-toolbar">
+              <span>{de ? 'Alles auf einen Blick' : 'Everything in one place'}</span>
+              <button
+                type="button"
+                aria-label={de ? 'Etwas Neues' : 'Create something'}
+                onClick={() =>
+                  setStatus(de ? 'Bereit für deine nächste Idee.' : 'Ready for your next idea.')
+                }
+              >
+                <Plus size={22} />
               </button>
             </div>
           </div>
