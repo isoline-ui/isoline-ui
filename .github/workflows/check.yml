@@ -1,0 +1,27 @@
+name: Check
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: npm pack --workspace @isoline-ui/react-native --dry-run
+      - run: npm run typecheck --workspace isoline-showcase
+      - run: npm run export:ios --workspace isoline-showcase
+        env:
+          EXPO_NO_TELEMETRY: 1
+          EXPO_OFFLINE: 1
+      - run: npm run export:android --workspace isoline-showcase
+        env:
+          EXPO_NO_TELEMETRY: 1
+          EXPO_OFFLINE: 1

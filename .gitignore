@@ -1,0 +1,8 @@
+node_modules/
+packages/*/dist/
+*.tgz
+.expo/
+coverage/
+.DS_Store
+.env*
+examples/*/dist/

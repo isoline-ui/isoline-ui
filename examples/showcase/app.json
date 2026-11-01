@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Isoline UI Showcase",
+    "slug": "isoline-ui-showcase",
+    "version": "0.1.0",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true
+    },
+    "plugins": ["expo-font"]
+  }
+}

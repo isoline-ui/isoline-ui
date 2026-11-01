@@ -1,0 +1,66 @@
+# @isoline-ui/react-native
+
+Expressive shared UI with platform-aware interaction. Initial alpha; not yet
+published to npm. The package name does not reserve the npm organisation.
+
+## Consumer setup
+
+After an authorised release, install the package and the peer dependencies
+matching your Expo SDK. Use `npx expo install` for native peers; do not install
+a second React or React Native runtime.
+
+Keep the usual NativeWind Babel/Metro configuration. Add the Isoline preset and
+package source to Tailwind's content scan:
+
+```js
+const path = require('node:path');
+const ui = path.dirname(require.resolve('@isoline-ui/react-native/package.json'));
+
+module.exports = {
+  presets: [require('@isoline-ui/react-native/nativewind')],
+  content: ['./app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}', path.join(ui, 'src/**/*.{ts,tsx}')],
+};
+```
+
+Do not overwrite an app's custom fonts or additional semantic roles; extend
+the preset in the consumer. Atlas loads its fonts itself.
+
+```tsx
+import { IsolineProvider, Button, themes } from '@isoline-ui/react-native';
+
+export function App() {
+  return (
+    <IsolineProvider theme={themes.inboki.light} labels={{ close: 'Schließen' }}>
+      <Button
+        label="Speichern"
+        onPress={() => {
+          /* app action */
+        }}
+      />
+    </IsolineProvider>
+  );
+}
+```
+
+Place the provider inside the app's SafeAreaProvider and GestureHandlerRootView.
+It paints CSS roles for NativeWind and supplies matching colours for native/SVG
+props. Use a theme matching the app's light/dark preference.
+
+`extendTheme` returns a new theme from token and typography overrides. Token
+values are HSL channel triplets, not full CSS colour expressions. Dynamic
+Material You roles and Yours' text preferences still require app adapters.
+
+Haptics are opt-in: pass `haptics={{ selectionHaptic, impactHaptic }}` from the
+app so its saved preference is honoured. Labels are similarly supplied from
+the app's translations. There is no navigation or persistence dependency.
+
+## Packaging
+
+`react-native` and default exports point to TypeScript source for Metro.
+`types` point to generated declarations. This is a React Native/Metro package;
+plain Node/browser UI imports are not a supported distribution target.
+Pure helpers can be imported from `@isoline-ui/react-native/tokens`.
+
+The package intentionally does not install Expo, native runtimes, app fonts
+or native model/scanner integrations. Native dependency changes require a
+new native app build, not only an OTA update.
