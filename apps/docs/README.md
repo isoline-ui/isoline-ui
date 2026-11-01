@@ -50,8 +50,8 @@ examples, exported routes/assets, the search index, and sitemap. The output is
 
 The Documentation workflow builds, checks, and deploys the exported files to
 GitHub Pages after relevant changes on `main`. Pull requests build and validate
-without deploying. It selects GitHub Actions as the existing Pages site's build
-source and uses the repository's built-in token. No npm publish token or custom
+without deploying. Select **GitHub Actions** once in the repository’s Settings → Pages → Build and
+deployment → Source. The workflow uses the repository’s built-in token. No npm publish token or custom
 hosting account is needed.
 
 The workflow supplies `NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_SITE_ORIGIN` from
