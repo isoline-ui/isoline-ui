@@ -7,7 +7,11 @@ description: 'Wähle ein Theme, passe Farbrollen an und berücksichtige die Dars
 
 ## Ein Theme auswählen
 
-Verwende `themes.inboki`, `themes.yours` oder `themes.atlas`. Jede Familie enthält `.light` und `.dark`. Ein Theme legt Farben und optionale Typografie-Anpassungen fest. Es lädt keine Schriftarten und speichert keine Nutzereinstellung.
+Verwende `themes.violet`, `themes.teal` oder `themes.cyan`. Jede Familie enthält `.light` und `.dark`. Ein Theme legt Farben und optionale Typografie-Anpassungen fest. Es lädt keine Schriftarten und speichert keine Nutzereinstellung.
+
+In der Vorschau kannst du Farbtheme, Hell/Dunkel und das Layout für Android oder iOS unabhängig voneinander umschalten. Die Vorschau ist eine Web-Illustration; prüfe natives Verhalten im Expo-Showcase.
+
+Die bisherigen Namen `themes.inboki`, `themes.yours` und `themes.atlas` bleiben als Aliase für `themes.violet`, `themes.teal` und `themes.cyan` verfügbar.
 
 ## Der Systemdarstellung folgen
 
@@ -21,7 +25,7 @@ import type { ReactNode } from 'react';
 export function AppTheme({ children }: { children: ReactNode }) {
   const systemScheme = useColorScheme();
   const scheme = systemScheme === 'dark' ? 'dark' : 'light';
-  return <IsolineProvider theme={themes.inboki[scheme]}>{children}</IsolineProvider>;
+  return <IsolineProvider theme={themes.violet[scheme]}>{children}</IsolineProvider>;
 }
 ```
 
@@ -34,7 +38,7 @@ Beginne mit einem vorhandenen Theme, damit alle benötigten Rollen vorhanden sin
 ```tsx title="theme.ts"
 import { extendTheme, themes } from '@isoline-ui/react-native';
 
-export const lightTheme = extendTheme(themes.inboki.light, {
+export const lightTheme = extendTheme(themes.violet.light, {
   name: 'garden-light',
   tokens: {
     '--primary': '145 35% 30%',

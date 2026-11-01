@@ -15,9 +15,11 @@ import {
   X,
 } from 'lucide-react';
 import { useI18n } from 'fumadocs-ui/contexts/i18n';
-import { presetTokens } from '../../../packages/react-native/src/preset-tokens';
+import { themes } from '../../../packages/react-native/src/theme';
 
-type BrandName = keyof typeof presetTokens;
+const previewThemes = ['violet', 'teal', 'cyan'] as const;
+type PreviewTheme = (typeof previewThemes)[number];
+type PreviewPlatform = 'ios' | 'android';
 export function ComponentPreview({
   kind = 'default',
   hero = false,
@@ -27,14 +29,15 @@ export function ComponentPreview({
 }) {
   const { locale } = useI18n();
   const de = locale === 'de';
-  const [brand, setBrand] = useState<BrandName>('inboki');
+  const [theme, setTheme] = useState<PreviewTheme>('violet');
+  const [platform, setPlatform] = useState<PreviewPlatform>('android');
   const [dark, setDark] = useState(false);
   const [selected, setSelected] = useState('all');
   const [enabled, setEnabled] = useState(true);
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('');
   const modal = useRef<HTMLDialogElement>(null);
-  const tokens = presetTokens[brand][dark ? 'dark' : 'light'];
+  const tokens = themes[theme][dark ? 'dark' : 'light'].tokens;
   const style = Object.fromEntries(
     Object.entries(tokens).map(([key, value]) => [`--demo${key.slice(1)}`, `hsl(${value})`]),
   ) as CSSProperties;
@@ -80,15 +83,23 @@ export function ComponentPreview({
     </div>
   );
   return (
-    <div className={`component-preview ${hero ? 'hero-preview' : ''}`} style={style}>
+    <div
+      className={`component-preview ${hero ? 'hero-preview' : ''}`}
+      data-platform={platform}
+      style={style}
+    >
       <div className="preview-controls">
-        <div className="brand-choices" aria-label={de ? 'Theme auswählen' : 'Choose a theme'}>
-          {(['inboki', 'yours', 'atlas'] as const).map((name) => (
+        <div
+          className="preview-choices"
+          role="group"
+          aria-label={de ? 'Theme auswählen' : 'Choose a theme'}
+        >
+          {previewThemes.map((name) => (
             <button
               key={name}
               type="button"
-              aria-pressed={brand === name}
-              onClick={() => setBrand(name)}
+              aria-pressed={theme === name}
+              onClick={() => setTheme(name)}
             >
               {name[0].toUpperCase() + name.slice(1)}
             </button>
@@ -97,6 +108,7 @@ export function ComponentPreview({
         <button
           type="button"
           className="preview-mode"
+          aria-pressed={dark}
           aria-label={
             dark
               ? de
@@ -110,6 +122,25 @@ export function ComponentPreview({
         >
           {dark ? <Sun size={16} /> : <Moon size={16} />}
         </button>
+      </div>
+      <div className="preview-platform-controls">
+        <span>Layout</span>
+        <div
+          className="preview-choices"
+          role="group"
+          aria-label={de ? 'Plattform auswählen' : 'Choose a platform'}
+        >
+          {(['android', 'ios'] as const).map((name) => (
+            <button
+              key={name}
+              type="button"
+              aria-pressed={platform === name}
+              onClick={() => setPlatform(name)}
+            >
+              {name === 'ios' ? 'iOS' : 'Android'}
+            </button>
+          ))}
+        </div>
       </div>
       <div className={`preview-canvas preview-${kind}`}>
         {kind === 'default' && (
@@ -351,9 +382,10 @@ export function ComponentPreview({
       </div>
       <div className="preview-caption">
         <span className="preview-dot" />
+        {platform === 'ios' ? 'iOS' : 'Android'} ·{' '}
         {de ? 'Interaktive Web-Illustration' : 'Interactive web illustration'}
         <span className="preview-caption-extra">
-          {kind === 'surface'
+          {kind === 'surface' && platform === 'ios'
             ? de
               ? 'Natives Glas: iOS 26+'
               : 'Native glass: iOS 26+'

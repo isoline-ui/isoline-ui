@@ -23,7 +23,7 @@ import { MaterialSurface, useSystemTheme } from '@isoline-ui/native';
 
 function AppContent() {
   // Supply your app's persisted preference and its active light/dark scheme.
-  const theme = useSystemTheme(themes.yours.light, true);
+  const theme = useSystemTheme(themes.teal.light, true);
   return (
     <IsolineProvider theme={theme}>
       <MaterialSurface style={{ borderRadius: 24, padding: 20 }}>

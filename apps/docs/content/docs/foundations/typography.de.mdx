@@ -12,7 +12,7 @@ Verwende `Text` mit einer Rolle, die zum Inhalt passt: `title` für einen Bildsc
 Übergib `typography`-Anpassungen an `extendTheme`. Du kannst `fontFamily`, `fontSize`, `lineHeight`, `fontWeight` und `letterSpacing` setzen. Die Werte sind React-Native-Styles, keine CSS-Zeichenketten.
 
 ```tsx
-const theme = extendTheme(themes.inboki.light, {
+const theme = extendTheme(themes.violet.light, {
   typography: {
     title: { fontFamily: 'YourFont_700Bold', fontSize: 32, lineHeight: 38 },
     body: { fontSize: 17, lineHeight: 27 },
@@ -22,16 +22,16 @@ const theme = extendTheme(themes.inboki.light, {
 
 Verwende exakt den Namen, unter dem du die Schriftart in deiner App registriert hast. Lade sie, bevor du das Theme anzeigst. Enthalten deine Schriftdateien getrennte Gewichte, registriere sie unter den passenden Familiennamen.
 
-## Die Atlas-Schriftarten laden
+## Die Cyan-Schriftarten laden
 
-Das eingebaute Atlas-Theme verwendet Space Grotesk und JetBrains Mono. Installiere die Schriftpakete und lade sie in deiner App:
+Das eingebaute Cyan-Theme verwendet Space Grotesk und JetBrains Mono. Installiere die Schriftpakete und lade sie in deiner App:
 
 ```sh
 npx expo install expo-font
 npm install @expo-google-fonts/space-grotesk @expo-google-fonts/jetbrains-mono
 ```
 
-```tsx title="AtlasExample.tsx"
+```tsx title="CyanExample.tsx"
 import { useFonts } from 'expo-font';
 import { SpaceGrotesk_700Bold } from '@expo-google-fonts/space-grotesk';
 import {
@@ -40,7 +40,7 @@ import {
 } from '@expo-google-fonts/jetbrains-mono';
 import { IsolineProvider, Text, themes } from '@isoline-ui/react-native';
 
-export function AtlasExample() {
+export function CyanExample() {
   const [ready, error] = useFonts({
     SpaceGrotesk_700Bold,
     JetBrainsMono_500Medium,
@@ -49,7 +49,7 @@ export function AtlasExample() {
   if (error) throw error;
   if (!ready) return null;
   return (
-    <IsolineProvider theme={themes.atlas.light}>
+    <IsolineProvider theme={themes.cyan.light}>
       <Text variant="display">Make room for ideas.</Text>
       <Text variant="value">42.00</Text>
     </IsolineProvider>
@@ -57,7 +57,7 @@ export function AtlasExample() {
 }
 ```
 
-Zeige während des Ladens deinen vorhandenen Ladebildschirm. Behandle Ladefehler über deine Fehlergrenze oder eine alternative Ansicht. Du kannst die Atlas-Schriftfamilien auch durch bereits geladene Schriftarten ersetzen.
+Zeige während des Ladens deinen vorhandenen Ladebildschirm. Behandle Ladefehler über deine Fehlergrenze oder eine alternative Ansicht. Du kannst die Cyan-Schriftfamilien auch durch bereits geladene Schriftarten ersetzen.
 
 ## Texte angenehm lesbar halten
 

@@ -37,7 +37,7 @@ import { IsolineProvider, Button, themes } from '@isoline-ui/react-native';
 
 export function App() {
   return (
-    <IsolineProvider theme={themes.inboki.light} labels={{ close: 'Schließen' }}>
+    <IsolineProvider theme={themes.violet.light} labels={{ close: 'Schließen' }}>
       <Button
         label="Speichern"
         onPress={() => {

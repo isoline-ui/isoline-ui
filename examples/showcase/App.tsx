@@ -55,7 +55,7 @@ export default function App() {
 
 function Showcase() {
   const insets = useSafeAreaInsets();
-  const [brand, setBrand] = React.useState<Brand>('inboki');
+  const [brand, setBrand] = React.useState<Brand>('violet');
   const [scheme, setScheme] = React.useState<ColorScheme>('light');
   const [query, setQuery] = React.useState('');
   const [value, setValue] = React.useState('');
@@ -87,9 +87,9 @@ function Showcase() {
           onChange={setBrand}
           accessibilityLabel="Theme"
           options={[
-            { id: 'inboki', label: 'Inboki' },
-            { id: 'yours', label: 'Yours' },
-            { id: 'atlas', label: 'Atlas' },
+            { id: 'violet', label: 'Violet' },
+            { id: 'teal', label: 'Teal' },
+            { id: 'cyan', label: 'Cyan' },
           ]}
         />
         <ButtonGroup<ColorScheme>

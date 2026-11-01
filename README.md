@@ -5,8 +5,8 @@
 Shared expressive React Native components for Android and iOS.
 
 Isoline keeps the common interaction and accessibility rules in one place while
-allowing each app to keep its own colours and typography. The first consumer
-themes are Yours, Inboki and Atlas.
+allowing each app to keep its own colours and typography. The built-in
+themes are Violet, Teal and Cyan.
 
 **Status:** 0.1.0-alpha.1, distributed through GitHub Releases. Isoline is not yet
 published to npm. The optional native package provides Android system colors and

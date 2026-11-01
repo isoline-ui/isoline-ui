@@ -12,7 +12,7 @@ Use `Text` with a role that describes the content: `title` for a screen title, `
 Pass `typography` overrides to `extendTheme`. You can set `fontFamily`, `fontSize`, `lineHeight`, `fontWeight`, and `letterSpacing`. Values are React Native style values, not CSS strings.
 
 ```tsx
-const theme = extendTheme(themes.inboki.light, {
+const theme = extendTheme(themes.violet.light, {
   typography: {
     title: { fontFamily: 'YourFont_700Bold', fontSize: 32, lineHeight: 38 },
     body: { fontSize: 17, lineHeight: 27 },
@@ -22,16 +22,16 @@ const theme = extendTheme(themes.inboki.light, {
 
 Use the exact font name you registered with your app's font loader. Load it before displaying the theme. If your font files provide separate weights, register those files with the appropriate family names.
 
-## Load the Atlas fonts
+## Load the Cyan fonts
 
-The built-in Atlas theme refers to Space Grotesk and JetBrains Mono. Install the font packages and load them in your app:
+The built-in Cyan theme refers to Space Grotesk and JetBrains Mono. Install the font packages and load them in your app:
 
 ```sh
 npx expo install expo-font
 npm install @expo-google-fonts/space-grotesk @expo-google-fonts/jetbrains-mono
 ```
 
-```tsx title="AtlasExample.tsx"
+```tsx title="CyanExample.tsx"
 import { useFonts } from 'expo-font';
 import { SpaceGrotesk_700Bold } from '@expo-google-fonts/space-grotesk';
 import {
@@ -40,7 +40,7 @@ import {
 } from '@expo-google-fonts/jetbrains-mono';
 import { IsolineProvider, Text, themes } from '@isoline-ui/react-native';
 
-export function AtlasExample() {
+export function CyanExample() {
   const [ready, error] = useFonts({
     SpaceGrotesk_700Bold,
     JetBrainsMono_500Medium,
@@ -49,7 +49,7 @@ export function AtlasExample() {
   if (error) throw error;
   if (!ready) return null;
   return (
-    <IsolineProvider theme={themes.atlas.light}>
+    <IsolineProvider theme={themes.cyan.light}>
       <Text variant="display">Make room for ideas.</Text>
       <Text variant="value">42.00</Text>
     </IsolineProvider>
@@ -57,7 +57,7 @@ export function AtlasExample() {
 }
 ```
 
-Keep your app's existing loading screen while fonts load. Handle a loading failure in your own error boundary or fallback screen. Alternatively, override Atlas' font families with fonts you already load.
+Keep your app's existing loading screen while fonts load. Handle a loading failure in your own error boundary or fallback screen. Alternatively, override Cyan' font families with fonts you already load.
 
 ## Keep text comfortable to read
 
