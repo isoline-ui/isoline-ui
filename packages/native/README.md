@@ -11,7 +11,7 @@ Install **both** Isoline archives from the same GitHub prerelease, then let Expo
 select the glass dependency for the app's SDK:
 
 ```sh
-npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-react-native-0.1.0-alpha.1.tgz https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-native-0.1.0-alpha.1.tgz
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-react-native-0.1.0-alpha.2.tgz https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-native-0.1.0-alpha.2.tgz
 npx expo install expo-glass-effect
 ```
 

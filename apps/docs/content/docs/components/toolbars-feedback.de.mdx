@@ -1,0 +1,31 @@
+---
+title: 'Werkzeugleisten und Rückmeldungen'
+description: 'Aktionen, Leerzustände und vorübergehende Rückmeldungen.'
+---
+
+## Werkzeugleisten
+
+`Toolbar` akzeptiert `items`, optional `compact`, `className` und animiertes `style`. Ein Eintrag enthält `id`, `icon`, `label`, `onPress` und optional `color`, `fill`, `active`, `rule`, `prominent`, `badge`. Verwende höchstens eine hervorgehobene Hauptaktion. App-Symbole können mit `ruleColor` eine vorhandene Unterstreichung färben. `useToolbarAutoHide(travel)` liefert Scroll-Callbacks und den animierten Stil zum Ausblenden beim Scrollen.
+
+`SplitButton` verbindet eine Hauptaktion (`label`, `icon`, `onPress`) mit `actions` (je `id`, `label`, `icon`, `onPress`). Übergib ein übersetztes `optionsLabel` für den Menübutton. Alternativen erscheinen in einem verankerten Modal. `ExpandIndicator` ist dekorativ und erhält `expanded` sowie optional `color`; das übergeordnete Bedienelement benennt seinen aufgeklappten Zustand.
+
+## Rückmeldungen
+
+`Badge` akzeptiert `label`, optional eine Hex-Farbe `color` und `className`. `EmptyState` erhält `icon`, `shape`, `title`, optional `body` und `tone` (`primary` oder `tertiary`). Der Text sollte einen nächsten Schritt ermöglichen.
+
+`Snackbar` stellt nur dar: Übergib `message`, optional den unteren Abstand `bottom` und das Paar `actionLabel` / `onAction`. Sichtbarkeit, Ersetzen, Zeitsteuerung und Undo bleiben bei der App.
+
+```tsx
+import { Snackbar } from '@isoline-ui/react-native';
+export function SavedNotice({ onUndo }: { onUndo: () => void }) {
+  return (
+    <Snackbar message="Gespeichert" bottom={96} actionLabel="Rückgängig" onAction={onUndo} />
+  );
+}
+```
+
+`FabMenu` erhält `bottom`, eine zugängliche Beschriftung `label` und `actions` (je `id`, `label`, `icon`, `run`). Es übernimmt Animation, Hintergrund, Android Zurück und die Haptik aus dem Provider. Die App bestimmt die verfügbaren Aktionen. Lass darüber genug Platz und berücksichtige den sicheren unteren Abstand in `bottom`.
+
+## Native Oberflächen
+
+Installiere das passende native Paket und dessen Expo-Glass-Peer. Übergib dann `surface={MaterialSurface}` an den `IsolineProvider`. `TopBar` und `Toolbar` verwenden diese Oberfläche als Hintergrund. Auf unterstütztem iOS erscheint Glas; bei reduzierter Transparenz oder älteren Systemen eine solide Fläche. Android behält die angeforderte getönte oder transparente Farbe. Haptik bleibt ein Provider-Callback, der die Nutzer-Einstellung respektieren sollte.

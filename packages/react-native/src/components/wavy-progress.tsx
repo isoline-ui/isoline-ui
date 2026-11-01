@@ -5,11 +5,14 @@ import Animated, {
   Easing,
   useAnimatedProps,
   useSharedValue,
+  useAnimatedReaction,
+  runOnJS,
+  type SharedValue,
   withRepeat,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Circle, Path } from 'react-native-svg';
 
 import { spatial } from '../motion.ts';
 import { useReducedMotion } from '../reduced-motion.ts';
@@ -32,29 +35,46 @@ const GAP = 6;
  * While something is underway the wave travels slowly; under "Remove
  * animations" it stands still, and a change of progress arrives at once.
  */
+export interface WavyProgressProps {
+  /** 0 to 1. */
+  progress: number | SharedValue<number>;
+  height?: number;
+  color?: string;
+  trackColor?: string;
+  /** A still wave, for small previews where motion would only distract. */
+  animated?: boolean;
+}
+
 export function WavyProgress({
   progress,
   color,
   trackColor,
   animated = true,
-}: {
-  /** 0 to 1. */
-  progress: number;
-  color?: string;
-  trackColor?: string;
-  /** A still wave, for small previews where motion would only distract. */
-  animated?: boolean;
-}) {
+  height = HEIGHT,
+}: WavyProgressProps) {
   const ios = useIsolinePlatform() === 'ios';
   const colors = useThemeColors();
   const reduced = useReducedMotion();
   const [width, setWidth] = React.useState(0);
-  const value = useSharedValue(progress);
+  const numeric = typeof progress === 'number';
+  const value = useSharedValue(numeric ? progress : 0);
+  const source = numeric ? value : progress;
+  const [announced, setAnnounced] = React.useState<number | undefined>(
+    numeric ? Math.round(progress * 100) : undefined,
+  );
+  useAnimatedReaction(
+    () => Math.round(Math.max(0, Math.min(1, source.value)) * 100),
+    (now, before) => {
+      if (now !== before) runOnJS(setAnnounced)(now);
+    },
+    [source],
+  );
   const phase = useSharedValue(0);
   const moving = animated && !reduced && !ios;
 
   React.useEffect(() => {
-    value.value = moving ? withSpring(progress, spatial.slow) : progress;
+    if (typeof progress === 'number')
+      value.value = moving ? withSpring(progress, spatial.slow) : progress;
   }, [moving, progress, value]);
 
   React.useEffect(() => {
@@ -68,10 +88,12 @@ export function WavyProgress({
   }, [moving, phase]);
 
   const wave = useAnimatedProps(() => {
-    const p = Math.max(0, Math.min(1, value.value));
-    const end = Math.max(0, (width - STROKE) * p);
-    const amplitude = (ios ? 0 : 3) * Math.min(1, p * 6, (1 - p) * 6);
-    const mid = HEIGHT / 2;
+    const p = Math.max(0, Math.min(1, source.value));
+    const end = Math.max(0, (width - STROKE - GAP) * p);
+    const amplitude =
+      (reduced || ios ? 0 : Math.max(0, Math.min(3, (height - STROKE) / 2))) *
+      Math.min(1, p * 6, (1 - p) * 6);
+    const mid = height / 2;
     const shift = phase.value * WAVELENGTH;
     let d = `M ${STROKE / 2} ${mid}`;
     for (let x = 2; x <= end; x += 2) {
@@ -82,24 +104,24 @@ export function WavyProgress({
   });
 
   const track = useAnimatedProps(() => {
-    const p = Math.max(0, Math.min(1, value.value));
-    const start = (width - STROKE) * p + (p > 0 ? GAP : 0) + STROKE / 2;
-    const end = width - STROKE / 2;
+    const p = Math.max(0, Math.min(1, source.value));
+    const start = (width - STROKE - GAP) * p + (p > 0 ? GAP : 0) + STROKE / 2;
+    const end = width - STROKE - GAP / 2;
     return {
-      d: `M ${Math.min(start, end)} ${HEIGHT / 2} L ${end} ${HEIGHT / 2}`,
+      d: `M ${Math.min(start, end)} ${height / 2} L ${end} ${height / 2}`,
       strokeOpacity: start >= end ? 0 : 1,
     };
   });
 
   return (
     <View
-      style={{ height: HEIGHT }}
+      style={{ height }}
       onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
       accessibilityRole="progressbar"
-      accessibilityValue={{ min: 0, max: 100, now: Math.round(progress * 100) }}
+      accessibilityValue={{ min: 0, max: 100, now: announced }}
     >
       {width > 0 ? (
-        <Svg width={width} height={HEIGHT}>
+        <Svg width={width} height={height}>
           <AnimatedPath
             animatedProps={track}
             stroke={trackColor ?? colors.secondaryContainer}
@@ -114,6 +136,12 @@ export function WavyProgress({
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
+          />
+          <Circle
+            cx={width - STROKE / 2}
+            cy={height / 2}
+            r={STROKE / 2}
+            fill={color ?? colors.primary}
           />
         </Svg>
       ) : null}

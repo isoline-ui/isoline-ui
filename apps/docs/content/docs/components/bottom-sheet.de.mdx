@@ -51,3 +51,7 @@ Gemeinsame Overlays nutzen die `popover`-Fläche. Der Standard-Hintergrund eines
 | `onShow`    | `() => void`                    | Wird nach Erscheinen des nativen Modals ausgeführt, zum Beispiel zum Fokussieren eines Feldes. |
 | `maxHeight` | `DimensionValue · default: 90%` | Begrenze die Panelhöhe.                                                                        |
 | `children`  | `ReactNode · required`          | Ergänze Inhalt und Aktionen.                                                                   |
+
+## Lange Listen und Texteingabe
+
+Nutze [SheetScrollView und PanelSheet](/de/docs/components/advanced-sheets) für abgestimmtes Scrollen und Formulare mit Tastaturanpassung im Screen. Standardmäßig beginnt die Geste am Griff. `theme.sheetGesture = "panel"` erlaubt das Ziehen am ganzen Panel mit Scroll-Koordination; das cyan-Preset wählt diese Option. Das Modal bleibt bis zum Ende der Schließanimation eingebunden und behält dabei seinen vorherigen Inhalt.

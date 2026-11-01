@@ -169,10 +169,10 @@ export function paletteTone(stops: readonly string[], tone: number): string {
   return stops[stops.length - 1];
 }
 
-type Rgb = [number, number, number];
-type Lab = [number, number, number];
+export type Rgb = [number, number, number];
+export type Lab = [number, number, number];
 
-function hexToRgb(hex: string): Rgb {
+export function hexToRgb(hex: string): Rgb {
   const value = parseInt(hex.slice(1), 16);
   return [(value >> 16) & 0xff, (value >> 8) & 0xff, value & 0xff];
 }
@@ -206,7 +206,7 @@ function labFInverse(t: number): number {
   return t ** 3 > 216 / 24389 ? t ** 3 : (116 * t - 16) / (24389 / 27);
 }
 
-function hexToLab(hex: string): Lab {
+export function hexToLab(hex: string): Lab {
   const [r, g, b] = hexToRgb(hex).map(toLinear);
   const x = (0.4124 * r + 0.3576 * g + 0.1805 * b) * 100;
   const y = (0.2126 * r + 0.7152 * g + 0.0722 * b) * 100;
@@ -232,6 +232,13 @@ function labToHex([l, a, b]: Lab): string {
 
 /** `#rrggbb` to the `H S% L%` triplet a `global.css` variable holds, one decimal place each. */
 export function hexToHslTriplet(hex: string): string {
+  const round = (value: number) => Math.round(value * 10) / 10;
+  const [hue, saturation, lightness] = hexToHsl(hex);
+  return `${round(hue)} ${round(saturation)}% ${round(lightness)}%`;
+}
+
+/** `#rrggbb` to hue in degrees, saturation and lightness in percent, unrounded. */
+export function hexToHsl(hex: string): [number, number, number] {
   const [r, g, b] = hexToRgb(hex).map((channel) => channel / 255);
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
@@ -247,6 +254,5 @@ export function hexToHslTriplet(hex: string): string {
     hue *= 60;
     if (hue < 0) hue += 360;
   }
-  const round = (value: number) => Math.round(value * 10) / 10;
-  return `${round(hue)} ${round(saturation * 100)}% ${round(lightness * 100)}%`;
+  return [hue, saturation * 100, lightness * 100];
 }

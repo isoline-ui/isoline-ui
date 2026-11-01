@@ -51,3 +51,7 @@ Shared overlays use the `popover` surface, so the default TextField label backgr
 | `onShow`    | `() => void`                    | Run after the native modal appears, for example to focus an input. |
 | `maxHeight` | `DimensionValue · default: 90%` | Limit the panel height.                                            |
 | `children`  | `ReactNode · required`          | Provide the content and your actions.                              |
+
+## Long lists and typing
+
+Use [SheetScrollView and PanelSheet](/en/docs/components/advanced-sheets) for coordinated scrolling and inline keyboard-aware forms. The default gesture starts on the handle. `theme.sheetGesture = "panel"` enables whole-panel pulling with scroll coordination; the cyan preset selects it. The modal remains mounted until its exit finishes, and its previous content stays visible during the transition.

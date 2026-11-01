@@ -8,7 +8,7 @@ Isoline keeps the common interaction and accessibility rules in one place while
 allowing each app to keep its own colours and typography. The built-in
 themes are Violet, Teal and Cyan.
 
-**Status:** 0.1.0-alpha.1, distributed through GitHub Releases. Isoline is not yet
+**Status:** 0.1.0-alpha.2, distributed through GitHub Releases. Isoline is not yet
 published to npm. The optional native package provides Android system colors and
 iOS Liquid Glass surfaces. Existing apps have not yet been migrated.
 
@@ -31,7 +31,7 @@ The alpha package is distributed as an npm-compatible tarball on GitHub Releases
 Install this fixed version from an app directory:
 
 ```sh
-npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-react-native-0.1.0-alpha.1.tgz
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-react-native-0.1.0-alpha.2.tgz
 ```
 
 The import name remains `@isoline-ui/react-native`. Isoline itself is downloaded

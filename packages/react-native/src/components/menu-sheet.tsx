@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 
+import { SheetScrollView } from './sheet-frame.tsx';
 import { BottomSheet } from './bottom-sheet.tsx';
 import type { IconProps } from './icons.tsx';
 import { Pressable } from './pressable.tsx';
@@ -38,17 +39,19 @@ export interface MenuSheetProps {
  */
 export function MenuSheet({ visible, onClose, title, subject, items }: MenuSheetProps) {
   return (
-    <BottomSheet visible={visible} onClose={onClose}>
-      <View className="mb-2 gap-1 px-2">
-        <Text variant="heading">{title}</Text>
-        {subject ? (
-          <Text variant="caption" numberOfLines={1}>
-            {subject}
-          </Text>
-        ) : null}
-      </View>
+    <BottomSheet visible={visible} onClose={onClose} maxHeight="85%">
+      <SheetScrollView style={{ flexGrow: 0 }} keyboardShouldPersistTaps="handled">
+        <View className="mb-2 gap-1 px-2">
+          <Text variant="heading">{title}</Text>
+          {subject ? (
+            <Text variant="caption" numberOfLines={1}>
+              {subject}
+            </Text>
+          ) : null}
+        </View>
 
-      <MenuSheetRows items={items} onClose={onClose} />
+        <MenuSheetRows items={items} onClose={onClose} />
+      </SheetScrollView>
     </BottomSheet>
   );
 }

@@ -2,8 +2,6 @@ import * as React from 'react';
 import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-import { lobedRadii, radiiToPath } from '../shape.ts';
-
 /**
  * A still member of the Expressive shape library, with something inside it.
  *
@@ -14,23 +12,8 @@ import { lobedRadii, radiiToPath } from '../shape.ts';
  * one family.
  */
 
-const SHAPES = {
-  clover: { lobes: 4, depth: 0.22, rotation: Math.PI / 4 },
-  cookie: { lobes: 9, depth: 0.1, rotation: 0 },
-  flower: { lobes: 6, depth: 0.16, rotation: Math.PI / 6 },
-} as const;
-
-export type ExpressiveShapeName = keyof typeof SHAPES;
-
-/** Sampled densely: a still shape is drawn once, so smoothness is free. */
-const SAMPLES = 96;
-
-const PATHS = Object.fromEntries(
-  Object.entries(SHAPES).map(([name, shape]) => [
-    name,
-    radiiToPath(lobedRadii(shape.lobes, shape.depth, SAMPLES, shape.rotation), 50, 50),
-  ]),
-) as Record<ExpressiveShapeName, string>;
+export { type ExpressiveShapeName } from '../expressive-shapes.ts';
+import { EXPRESSIVE_SHAPES as PATHS, type ExpressiveShapeName } from '../expressive-shapes.ts';
 
 export function ExpressiveShape({
   shape,

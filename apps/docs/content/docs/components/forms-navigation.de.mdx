@@ -1,0 +1,53 @@
+---
+title: 'Formulare, Einstellungen und Navigation'
+description: 'Beschriftete Eingaben, Einstellungszeilen und gemeinsame Kopfzeilen.'
+---
+
+## Passwörter, Hinweise und Fehler
+
+`Input` reicht native `TextInput`-Props und seine Ref weiter. Ergänze `label`, `hint` und `error` (Text oder null). Bei `secureTextEntry` erscheint ein Button zum Anzeigen des Passworts. Übersetze dafür `labels.showPassword` und `labels.hidePassword` am `IsolineProvider`. Zugänglicher Name und Hinweis werden aus den sichtbaren Texten abgeleitet, sofern du sie nicht explizit setzt.
+
+```tsx
+import { Input, KeyboardInsetView } from '@isoline-ui/react-native';
+export function SignInFields() {
+  return (
+    <KeyboardInsetView className="flex-1 gap-4">
+      <Input label="E-Mail" keyboardType="email-address" autoComplete="email" />
+      <Input label="Passwort" secureTextEntry autoComplete="current-password" />
+    </KeyboardInsetView>
+  );
+}
+```
+
+`KeyboardInsetView` gibt den von der Tastatur verdeckten Bereich frei, auch bei Android Edge-to-edge. Verwende es um den Scrollbereich eines Vollbildformulars. `PanelSheet` folgt der Tastatur bereits selbst und benötigt es nicht zusätzlich.
+
+## Navigation
+
+`BackButton` akzeptiert `onPress` und optional `label`; ohne Label gilt `labels.back`. `TopBar` benötigt `onBack` und bietet `backLabel`, `center`, `actions` und `className`. Den Router und das Ziel bei direkten Einstiegslinks bestimmt die App. `ScreenTitle` akzeptiert `title`, optional `caption` (Text oder React-Inhalt) und `className`.
+
+## Einstellungen
+
+Gruppiere Einstellungen mit `SettingsSection`, `SettingsGroup` und `SettingsCard`. `SettingsNavRow` öffnet einen Screen/Picker (`label`, `onPress`, optional `value`, `description`, `icon`, `leading`, `destructive`, `accessibilityLabel`). `SettingsChoiceRow` zeigt eine Auswahl, `SettingsSwitchRow` akzeptiert `value`, `onValueChange`, optional `disabled`, Beschriftung und Beschreibung. `SettingsSelectRow` kombiniert eine Beschriftung mit typisierten Auswahloptionen. Die Komponenten speichern keine Werte.
+
+```tsx
+import { SettingsSection, SettingsGroup, SettingsSwitchRow } from '@isoline-ui/react-native';
+export function NotificationsSetting({
+  enabled,
+  onChange,
+}: {
+  enabled: boolean;
+  onChange: (value: boolean) => void;
+}) {
+  return (
+    <SettingsSection title="Benachrichtigungen">
+      <SettingsGroup>
+        <SettingsSwitchRow label="Erinnerungen" value={enabled} onValueChange={onChange} />
+      </SettingsGroup>
+    </SettingsSection>
+  );
+}
+```
+
+`SettingsRow` bietet eine Variante mit Symbol im farbigen Kreis: `first`, `label`, `description`, `icon` und entweder `onPress` oder `value` mit `onValueChange`.
+
+`RefreshControl` reicht **alle** nativen Props einschließlich `children` und `style` weiter und setzt Theme-Farben nur, wenn du keine vorgibst. Setze es wie gewohnt als `refreshControl` einer React-Native-Liste oder Scroll-View ein.

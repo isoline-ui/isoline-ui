@@ -33,15 +33,28 @@ export function ImportProgress({ completed, total }: { completed: number; total:
 
 ## Ausreichend Platz geben
 
-Der Indikator misst die verfügbare Breite. Platziere ihn in einer View mit nutzbarer Breite. In einer Zeile kann eine umgebende View mit `flex: 1` nötig sein. In dieser Version gibt es keine Eigenschaften `className`, Höhe oder `style`.
+Der Indikator misst die verfügbare Breite. Platziere ihn in einer View mit nutzbarer Breite. In einer Zeile kann eine umgebende View mit `flex: 1` nötig sein. Mit `height` setzt du die Höhe in dp (Standard 12). `className` und `style` sind nicht vorgesehen.
 
 Ergänze einen Textstatus und zugängliche Fortschrittswerte auf der umgebenden View. Verwende `animated={false}` für eine ruhige Vorschau oder dort, wo Bewegung ablenken würde. Auch die Systemeinstellung für reduzierte Bewegung beeinflusst die Animation. Bei unbekannter Dauer verwende [LoadingIndicator](/de/docs/components/loading-indicator).
 
 ## Eigenschaften
 
-| Eigenschaft  | Typ / Standard                    | Verwendung                                           |
-| ------------ | --------------------------------- | ---------------------------------------------------- |
-| `progress`   | `number · required`               | Fortschrittswert zwischen 0 und 1.                   |
-| `color`      | `string · default: theme.primary` | Farbe des abgeschlossenen Abschnitts.                |
-| `trackColor` | `string`                          | Überschreibe die Farbe des verbleibenden Abschnitts. |
-| `animated`   | `boolean · default: true`         | Setze false für eine unbewegte Welle.                |
+| Eigenschaft  | Typ / Standard                             | Verwendung                                           |
+| ------------ | ------------------------------------------ | ---------------------------------------------------- |
+| `progress`   | `number or SharedValue<number> · required` | Fortschrittswert zwischen 0 und 1.                   |
+| `color`      | `string · default: theme.primary`          | Farbe des abgeschlossenen Abschnitts.                |
+| `trackColor` | `string`                                   | Überschreibe die Farbe des verbleibenden Abschnitts. |
+| `animated`   | `boolean · default: true`                  | Setze false für eine unbewegte Welle.                |
+
+## Fortschritt auf dem UI-Thread
+
+Übergib einen Reanimated-`SharedValue<number>` direkt, wenn der Fortschritt außerhalb von React aktualisiert wird. Lies `.value` nicht im Render aus. Die Linie beobachtet den Wert auf dem UI-Thread und aktualisiert den zugänglichen Prozentwert. Bei reduzierter Bewegung bleibt die Linie flach und ihre laufende Animation stoppt.
+
+```tsx
+import { useSharedValue } from 'react-native-reanimated';
+import { WavyProgress } from '@isoline-ui/react-native';
+export function LiveProgress() {
+  const progress = useSharedValue(0.4);
+  return <WavyProgress progress={progress} height={8} />;
+}
+```

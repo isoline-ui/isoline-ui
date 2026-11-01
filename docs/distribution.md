@@ -7,7 +7,7 @@ GitHub source archive of the entire monorepo.
 ## Install
 
 ```sh
-npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-react-native-0.1.0-alpha.1.tgz https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.1/isoline-ui-native-0.1.0-alpha.1.tgz
+npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-react-native-0.1.0-alpha.2.tgz https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-native-0.1.0-alpha.2.tgz
 npx expo install expo-glass-effect
 ```
 
@@ -22,7 +22,7 @@ selected by the consuming Expo SDK.
 A downloaded archive also works:
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-0.1.0-alpha.1.tgz
+npm install ./vendor/isoline-ui-react-native-0.1.0-alpha.2.tgz
 ```
 
 For a local-file dependency, commit the archive or otherwise make the same path

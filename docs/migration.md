@@ -1,6 +1,6 @@
 # Consumer migration
 
-The initial package is extracted locally; no consumer imports are switched yet.
+Use the paired versioned UI/native archives from GitHub Releases. Keep existing app imports as thin forwarding modules during migration.
 
 1. Add the versioned package, NativeWind preset/content scan and a theme adapter.
 2. Start with simple shared primitives and keep existing app import paths as
