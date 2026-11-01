@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Pressable } from './pressable.tsx';
 import { useSheetTransition } from './sheet-transition.ts';
 import { Text } from './text.tsx';
-import { useThemeColors, useIsolinePlatform, useLabels } from '../provider.tsx';
+import { ThemeScope, useThemeColors, useIsolinePlatform, useLabels } from '../provider.tsx';
 import { spatial } from '../motion.ts';
 import { elevation } from '../provider.tsx';
 
@@ -39,6 +39,8 @@ export function BottomSheet({
 }: BottomSheetProps) {
   const ios = useIsolinePlatform() === 'ios';
   const insets = useSafeAreaInsets();
+  const web = Platform.OS === 'web';
+  const Box = (web ? View : Animated.View) as typeof Animated.View;
   const labels = useLabels();
   const colors = useThemeColors();
   const { scrimStyle, panelStyle, onPanelLayout, drag, height, reducedMotion } =
@@ -80,63 +82,76 @@ export function BottomSheet({
       onRequestClose={onClose}
       onShow={onShow}
     >
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior="padding"
-          enabled={Platform.OS === 'ios'}
-        >
-          <Animated.View
-            style={[scrimStyle, { paddingTop: insets.top + 8 }]}
-            className="flex-1 bg-black/60"
+      <ThemeScope style={{ flex: 1 }}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior="padding"
+            enabled={Platform.OS === 'ios'}
           >
-            <Pressable className="flex-1" onPress={onClose} accessible={false} />
-
-            <Animated.View
-              onLayout={onPanelLayout}
-              accessibilityViewIsModal
-              onAccessibilityEscape={onClose}
-              className="rounded-t-[28px] bg-popover px-4"
+            <Box
               style={[
-                panelStyle,
-                {
-                  paddingBottom: insets.bottom + 16,
-                  maxHeight,
-                  borderTopLeftRadius: ios ? 20 : 28,
-                  borderTopRightRadius: ios ? 20 : 28,
-                  elevation: elevation.level3,
-                },
+                !web && scrimStyle,
+                { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', paddingTop: insets.top + 8 },
               ]}
+              className="flex-1 bg-black/60"
             >
-              <GestureDetector gesture={pull}>
+              <Pressable
+                testID="isoline-sheet-backdrop"
+                className="flex-1"
+                onPress={onClose}
+                accessible={false}
+              />
+
+              <Box
+                testID="isoline-sheet-panel"
+                onLayout={onPanelLayout}
+                accessibilityViewIsModal
+                onAccessibilityEscape={onClose}
+                className="rounded-t-[28px] bg-popover px-4"
+                style={[
+                  !web && panelStyle,
+                  {
+                    ...(web ? { backgroundColor: colors.surfaceContainerLow } : {}),
+                    paddingHorizontal: 16,
+                    paddingBottom: insets.bottom + 16,
+                    maxHeight,
+                    borderTopLeftRadius: ios ? 20 : 28,
+                    borderTopRightRadius: ios ? 20 : 28,
+                    elevation: elevation.level3,
+                  },
+                ]}
+              >
+                <GestureDetector gesture={pull}>
+                  <Pressable
+                    onPress={onClose}
+                    className="-mx-4 min-h-11 items-center justify-center"
+                    accessible
+                    accessibilityRole="button"
+                    accessibilityLabel={labels.close}
+                    onAccessibilityTap={onClose}
+                    accessibilityActions={[{ name: 'activate' }]}
+                    onAccessibilityAction={({ nativeEvent }) => {
+                      if (nativeEvent.actionName === 'activate') onClose();
+                    }}
+                  >
+                    <View className="h-1 w-9 rounded-full bg-outlineVariant" />
+                  </Pressable>
+                </GestureDetector>
                 <Pressable
                   onPress={onClose}
-                  className="-mx-4 min-h-11 items-center justify-center"
-                  accessible
                   accessibilityRole="button"
                   accessibilityLabel={labels.close}
-                  onAccessibilityTap={onClose}
-                  accessibilityActions={[{ name: 'activate' }]}
-                  onAccessibilityAction={({ nativeEvent }) => {
-                    if (nativeEvent.actionName === 'activate') onClose();
-                  }}
+                  className="self-end px-3 py-2"
                 >
-                  <View className="h-1 w-9 rounded-full bg-outlineVariant" />
+                  <Text style={{ color: colors.primary }}>{labels.close}</Text>
                 </Pressable>
-              </GestureDetector>
-              <Pressable
-                onPress={onClose}
-                accessibilityRole="button"
-                accessibilityLabel={labels.close}
-                className="self-end px-3 py-2"
-              >
-                <Text style={{ color: colors.primary }}>{labels.close}</Text>
-              </Pressable>
-              {children}
-            </Animated.View>
-          </Animated.View>
-        </KeyboardAvoidingView>
-      </GestureHandlerRootView>
+                {children}
+              </Box>
+            </Box>
+          </KeyboardAvoidingView>
+        </GestureHandlerRootView>
+      </ThemeScope>
     </Modal>
   );
 }

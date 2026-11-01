@@ -4,6 +4,7 @@ import {
   Pressable as RNPressable,
   StyleSheet,
   type PressableProps,
+  type ViewStyle,
 } from 'react-native';
 import Animated, { type AnimatedProps } from 'react-native-reanimated';
 
@@ -22,6 +23,14 @@ export const Pressable: React.ForwardRefExoticComponent<
   ref,
 ) {
   const ios = useIsolinePlatform() === 'ios';
+  const web = Platform.OS === 'web';
+  const classNames = cn(
+    Platform.OS === 'android' &&
+      android_ripple &&
+      !android_ripple.borderless &&
+      'overflow-hidden',
+    className,
+  );
   const colors = useThemeColors();
   const [focused, setFocused] = React.useState(false);
   return (
@@ -37,13 +46,9 @@ export const Pressable: React.ForwardRefExoticComponent<
         onBlur?.(event);
       }}
       android_ripple={android_ripple}
-      className={cn(
-        Platform.OS === 'android' &&
-          android_ripple &&
-          !android_ripple.borderless &&
-          'overflow-hidden',
-        className,
-      )}
+      // NativeWind's web adapter cannot merge className into a style callback.
+      // Supply RN Web's compiled-class marker inside the callback instead.
+      className={web ? undefined : classNames}
       style={
         ios || Platform.OS === 'web'
           ? (state) => {
@@ -55,6 +60,9 @@ export const Pressable: React.ForwardRefExoticComponent<
                   ? (opacity ?? 1) * 0.65
                   : undefined;
               return [
+                web && classNames
+                  ? ({ $$css: true, [classNames]: classNames } as ViewStyle)
+                  : undefined,
                 resolved,
                 Platform.OS === 'web' &&
                   focused && {

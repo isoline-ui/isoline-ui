@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Platform, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { type IconProps } from './icons.tsx';
@@ -87,6 +88,8 @@ export function FilterChip({
   surface = 'background',
 }: FilterChipProps) {
   const ios = useIsolinePlatform() === 'ios';
+  const web = Platform.OS === 'web';
+  const Container = (web ? View : Animated.View) as typeof Animated.View;
   const colors = useThemeColors();
   const ripple = useRipple();
 
@@ -97,9 +100,9 @@ export function FilterChip({
   // inside it, so the contained ripple is clipped to the pill rather than to
   // its bounding box.
   return (
-    <Animated.View
+    <Container
       className="shrink-0 overflow-hidden"
-      style={[{ borderRadius: ios ? 10 : corner.large }, squish.style]}
+      style={[{ borderRadius: ios ? 10 : corner.large }, !web && squish.style]}
     >
       <Pressable
         {...squish.handlers}
@@ -128,6 +131,6 @@ export function FilterChip({
         </Text>
         {Trailing ? <Trailing size={16} color={foreground} /> : null}
       </Pressable>
-    </Animated.View>
+    </Container>
   );
 }

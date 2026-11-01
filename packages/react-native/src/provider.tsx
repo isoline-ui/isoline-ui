@@ -126,3 +126,9 @@ export function Surface({
     return <Component material={material} interactive={interactive} style={style} {...props} />;
   return <View {...props} style={[{ backgroundColor: colors.surfaceContainer }, style]} />;
 }
+
+/** Reapply CSS variables inside web modal portals, outside the provider DOM node. */
+export function ThemeScope({ style, ...props }: ViewProps) {
+  const { theme } = useUI();
+  return <View {...props} style={[vars(theme.tokens), style]} />;
+}

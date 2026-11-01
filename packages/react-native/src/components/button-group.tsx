@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -174,6 +174,9 @@ function GroupButton<T extends string>({
   onPress: () => void;
 }) {
   const { selectionHaptic } = useHaptics();
+  const web = Platform.OS === 'web';
+  const Container = (web ? View : Animated.View) as typeof Animated.View;
+  const Control = (web ? Pressable : AnimatedPressable) as typeof AnimatedPressable;
   const colors = useThemeColors();
   const ripple = useRipple();
   const Icon = item.icon;
@@ -230,11 +233,11 @@ function GroupButton<T extends string>({
     : { flex: 1 };
 
   return (
-    <Animated.View
-      style={[staticFlexStyle, flexStyle, radiusStyle]}
+    <Container
+      style={[staticFlexStyle, !web && flexStyle, web ? { overflow: 'hidden' } : radiusStyle]}
       className="overflow-hidden"
     >
-      <AnimatedPressable
+      <Control
         onPressIn={() => {
           pressed.set(index);
         }}
@@ -253,7 +256,24 @@ function GroupButton<T extends string>({
           'h-12 flex-row items-center justify-center gap-1.5 px-3',
           selected ? 'bg-primaryContainer' : 'bg-surfaceContainerHigh',
         )}
-        style={radiusStyle}
+        style={
+          web
+            ? {
+                borderTopLeftRadius: selected ? corner.extraExtraLarge : first ? outer : inner,
+                borderBottomLeftRadius: selected
+                  ? corner.extraExtraLarge
+                  : first
+                    ? outer
+                    : inner,
+                borderTopRightRadius: selected ? corner.extraExtraLarge : last ? outer : inner,
+                borderBottomRightRadius: selected
+                  ? corner.extraExtraLarge
+                  : last
+                    ? outer
+                    : inner,
+              }
+            : radiusStyle
+        }
       >
         {Icon ? (
           <Icon
@@ -281,7 +301,7 @@ function GroupButton<T extends string>({
             </Text>
           </View>
         ) : null}
-      </AnimatedPressable>
-    </Animated.View>
+      </Control>
+    </Container>
   );
 }
