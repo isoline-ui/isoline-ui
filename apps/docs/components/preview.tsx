@@ -69,17 +69,19 @@ export function ComponentPreview({
     return () => window.removeEventListener('message', ready);
   }, [platform, theme, dark]);
   const height =
-    kind === 'default'
-      ? 540
-      : kind === 'fields'
-        ? 360
-        : kind === 'overlays'
-          ? 340
-          : kind === 'surface'
-            ? 320
-            : kind === 'button'
-              ? 300
-              : 240;
+    kind === 'toolbar'
+      ? 460
+      : kind === 'default'
+        ? 540
+        : kind === 'fields'
+          ? 360
+          : kind === 'overlays'
+            ? 340
+            : kind === 'surface'
+              ? 460
+              : kind === 'button'
+                ? 300
+                : 240;
   return (
     <div className={`component-preview ${hero ? 'hero-preview' : ''}`} data-platform={platform}>
       <div className="preview-controls">

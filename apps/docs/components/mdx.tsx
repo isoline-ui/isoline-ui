@@ -12,7 +12,9 @@ export function getMDXComponents(components?: MDXComponents) {
     Step,
     Steps,
     ComponentPreview,
-    a: ({ href = '', ...props }: React.ComponentProps<'a'>) => <Link href={href} {...props} />,
+    a: ({ href = '', ...props }: React.ComponentProps<'a'>) => (
+      <Link href={href} {...props} prefetch={false} />
+    ),
     ...components,
   } satisfies MDXComponents;
 }
