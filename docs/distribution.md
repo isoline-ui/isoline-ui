@@ -40,3 +40,15 @@ preferences remain consumer responsibilities. See the package README.
 - Attach the archive and SHA256SUMS to a prerelease targeting its source commit.
 - Do not replace a published archive or move a release tag.
 - This distribution step is independent of npm publishing.
+
+## Automated prereleases
+
+The Publish prerelease workflow builds and checks a selected source ref, packs
+the package, uploads the archive and SHA256SUMS, then publishes the prerelease.
+It uses GitHub's repository token; no npm account or stored upload token is
+needed. The initial workflow push bootstraps the first release. Later releases
+are started from Actions → Publish prerelease → Run workflow after a version bump.
+
+Only prerelease versions are accepted. A published version is left unchanged.
+If an upload partially fails, the workflow does not replace existing assets;
+inspect the draft before retrying.
