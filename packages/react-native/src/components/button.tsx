@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
+import { Platform, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -165,6 +166,10 @@ export function Button({
   onPress,
   ...props
 }: ButtonProps) {
+  const web = Platform.OS === 'web';
+  const Container = (web ? View : Animated.View) as typeof Animated.View;
+  const Control = (web ? Pressable : AnimatedPressable) as typeof AnimatedPressable;
+  const [webPressed, setWebPressed] = React.useState(false);
   const ios = useIsolinePlatform() === 'ios';
   const alertAction = React.useContext(DialogActionContext) && ios;
   const { selectionHaptic } = useHaptics();
@@ -190,15 +195,23 @@ export function Button({
   }));
 
   return (
-    <Animated.View
-      style={[radiusStyle, alertAction && { flex: 1 }]}
+    <Container
+      style={[
+        web ? { borderRadius: alertAction ? 0 : webPressed ? active : rest } : radiusStyle,
+        alertAction && { flex: 1 },
+      ]}
       className={cn('overflow-hidden', className)}
     >
-      <AnimatedPressable
+      <Control
         className={cn(buttonVariants({ variant, size }), props.disabled && 'opacity-50')}
         style={[
-          radiusStyle,
-          scaleStyle,
+          web
+            ? {
+                borderRadius: webPressed ? active : rest,
+                transform: [{ scale: webPressed ? 0.97 : 1 }],
+              }
+            : radiusStyle,
+          !web && scaleStyle,
           ios && {
             minHeight: 44,
             height: { xs: 44, s: 44, m: 50, l: 64, xl: 80, icon: 44 }[resolvedSize],
@@ -209,10 +222,12 @@ export function Button({
         ]}
         android_ripple={{ color: rippleByVariant(ripple)[resolvedVariant] }}
         onPressIn={(event) => {
+          if (web) setWebPressed(true);
           pressed.value = withSpring(1, spatial.fast);
           onPressIn?.(event);
         }}
         onPressOut={(event) => {
+          if (web) setWebPressed(false);
           pressed.value = withSpring(0, spatial.default);
           onPressOut?.(event);
         }}
@@ -251,8 +266,8 @@ export function Button({
         ) : (
           children
         )}
-      </AnimatedPressable>
-    </Animated.View>
+      </Control>
+    </Container>
   );
 }
 

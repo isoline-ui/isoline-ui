@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput, View } from 'react-native';
+import { Platform, Text as RNText, TextInput, View } from 'react-native';
 import Animated, {
   interpolate,
   interpolateColor,
@@ -65,6 +65,9 @@ export const TextField: React.ForwardRefExoticComponent<
   ref,
 ) {
   const ios = useIsolinePlatform() === 'ios';
+  const web = Platform.OS === 'web';
+  const Box = (web ? View : Animated.View) as typeof Animated.View;
+  const Label = (web ? RNText : Animated.Text) as typeof Animated.Text;
   const colors = useThemeColors();
   const [focused, setFocused] = React.useState(false);
   const floated = focused || Boolean(value);
@@ -168,9 +171,17 @@ export const TextField: React.ForwardRefExoticComponent<
           {...props}
         />
 
-        <Animated.View
+        <Box
           pointerEvents="none"
-          style={[borderStyle, { borderRadius: corner.extraSmall }]}
+          style={[
+            web
+              ? {
+                  borderWidth: focused ? 2 : 1,
+                  borderColor: error ? colors.error : focused ? colors.primary : colors.outline,
+                }
+              : borderStyle,
+            { borderRadius: corner.extraSmall },
+          ]}
           className="absolute inset-0"
         />
 
@@ -181,14 +192,37 @@ export const TextField: React.ForwardRefExoticComponent<
           style={{ height: FIELD_HEIGHT }}
           className="absolute left-3 top-0 justify-center"
         >
-          <Animated.View
-            style={[labelWrapStyle, { transformOrigin: 'left center' }]}
+          <Box
+            style={[
+              web
+                ? {
+                    transform: [
+                      { translateY: floated ? -FIELD_HEIGHT / 2 : 0 },
+                      { scale: floated ? 0.75 : 1 },
+                    ],
+                  }
+                : labelWrapStyle,
+              { transformOrigin: 'left center' },
+            ]}
             className={cn('rounded px-1', notchClassName ?? 'bg-popover')}
           >
-            <Animated.Text style={labelTextStyle} className="text-base">
+            <Label
+              style={
+                web
+                  ? {
+                      color: error
+                        ? colors.error
+                        : focused
+                          ? colors.primary
+                          : colors.onSurfaceVariant,
+                    }
+                  : labelTextStyle
+              }
+              className="text-base"
+            >
               {label}
-            </Animated.Text>
-          </Animated.View>
+            </Label>
+          </Box>
         </View>
       </View>
 

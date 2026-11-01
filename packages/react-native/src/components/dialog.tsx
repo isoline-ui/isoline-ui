@@ -11,7 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DialogActionContext } from './dialog-context.ts';
 import { Pressable } from './pressable.tsx';
 import { effects, spatial } from '../motion.ts';
-import { useIsolinePlatform, elevation } from '../provider.tsx';
+import { ThemeScope, useThemeColors, useIsolinePlatform, elevation } from '../provider.tsx';
 import { useReducedMotion } from '../reduced-motion.ts';
 
 /** How long the scrim takes to dim — matches the bottom sheet's own fade. */
@@ -71,6 +71,9 @@ export function Dialog({ visible, onClose, onShow, children }: DialogProps) {
   const { scrimStyle, panelStyle } = useDialogTransition(visible);
   const ios = useIsolinePlatform() === 'ios';
   const insets = useSafeAreaInsets();
+  const web = Platform.OS === 'web';
+  const Box = (web ? View : Animated.View) as typeof Animated.View;
+  const colors = useThemeColors();
 
   return (
     <Modal
@@ -81,45 +84,63 @@ export function Dialog({ visible, onClose, onShow, children }: DialogProps) {
       onRequestClose={onClose}
       onShow={onShow}
     >
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior="padding"
-        enabled={Platform.OS === 'ios'}
-      >
-        <Animated.View
-          style={[
-            scrimStyle,
-            { paddingTop: insets.top + 24, paddingBottom: insets.bottom + 24 },
-          ]}
-          className="flex-1 items-center justify-center bg-black/60 px-6"
+      <ThemeScope style={{ flex: 1 }}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior="padding"
+          enabled={Platform.OS === 'ios'}
         >
-          <Pressable className="absolute inset-0" onPress={onClose} accessible={false} />
-
-          <Animated.View
-            accessibilityViewIsModal
-            onAccessibilityEscape={onClose}
-            className="w-full max-w-sm rounded-[28px] bg-popover"
+          <Box
             style={[
-              panelStyle,
+              !web && scrimStyle,
               {
-                maxHeight: '100%',
-                elevation: ios ? 0 : elevation.level3,
-                borderRadius: ios ? 14 : 28,
-                maxWidth: ios ? 320 : 384,
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingHorizontal: 24,
+                backgroundColor: 'rgba(0,0,0,0.6)',
+                paddingTop: insets.top + 24,
+                paddingBottom: insets.bottom + 24,
               },
             ]}
+            className="flex-1 items-center justify-center bg-black/60 px-6"
           >
-            <ScrollView
-              style={{ flexGrow: 0 }}
-              contentContainerStyle={{ padding: 24, gap: 16 }}
-              keyboardShouldPersistTaps="handled"
-              keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
+            <Pressable
+              testID="isoline-dialog-backdrop"
+              className="absolute inset-0"
+              onPress={onClose}
+              accessible={false}
+            />
+
+            <Box
+              testID="isoline-dialog-panel"
+              accessibilityViewIsModal
+              onAccessibilityEscape={onClose}
+              className="w-full max-w-sm rounded-[28px] bg-popover"
+              style={[
+                !web && panelStyle,
+                {
+                  width: '100%',
+                  ...(web ? { backgroundColor: colors.surfaceContainerLow } : {}),
+                  maxHeight: '100%',
+                  elevation: ios ? 0 : elevation.level3,
+                  borderRadius: ios ? 14 : 28,
+                  maxWidth: ios ? 320 : 384,
+                },
+              ]}
             >
-              {children}
-            </ScrollView>
-          </Animated.View>
-        </Animated.View>
-      </KeyboardAvoidingView>
+              <ScrollView
+                style={{ flexGrow: 0 }}
+                contentContainerStyle={{ padding: 24, gap: 16 }}
+                keyboardShouldPersistTaps="handled"
+                keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
+              >
+                {children}
+              </ScrollView>
+            </Box>
+          </Box>
+        </KeyboardAvoidingView>
+      </ThemeScope>
     </Modal>
   );
 }

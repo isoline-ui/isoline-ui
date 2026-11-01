@@ -5,7 +5,7 @@ import { Check, ChevronDown } from './icons.tsx';
 import { Pressable } from './pressable.tsx';
 import { Text } from './text.tsx';
 import { elevation, useRipple, useThemeColors } from '../provider.tsx';
-import { useIsolinePlatform, useLabels } from '../provider.tsx';
+import { ThemeScope, useIsolinePlatform, useLabels } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 /**
@@ -73,45 +73,47 @@ export function SelectField<T extends string>({
         animationType="fade"
         onRequestClose={() => setOpen(false)}
       >
-        <Pressable
-          className="flex-1 items-center justify-center bg-black/40 px-8"
-          onPress={() => setOpen(false)}
-          accessibilityLabel={labels.close}
-        >
-          {/* Swallows the close-on-backdrop press so tapping the menu itself does not dismiss it. */}
+        <ThemeScope style={{ flex: 1 }}>
           <Pressable
-            onPress={() => undefined}
-            className="w-full max-w-xs overflow-hidden rounded-3xl bg-surfaceContainerHigh py-2"
-            style={{ elevation: ios ? 0 : elevation.level3, borderRadius: ios ? 14 : 24 }}
+            className="flex-1 items-center justify-center bg-black/40 px-8"
+            onPress={() => setOpen(false)}
+            accessibilityLabel={labels.close}
           >
-            {options.map((option) => {
-              const isSelected = option.id === value;
-              return (
-                <Pressable
-                  key={option.id}
-                  onPress={() => {
-                    setOpen(false);
-                    onChange(option.id);
-                  }}
-                  android_ripple={{ color: ripple.onNeutral }}
-                  accessibilityRole="menuitem"
-                  accessibilityState={{ selected: isSelected }}
-                  className="flex-row items-center justify-between gap-3 px-5 py-3.5"
-                >
-                  <Text
-                    className={cn(
-                      'text-[15px]',
-                      isSelected ? 'font-semibold text-primary' : 'text-onSurface',
-                    )}
+            {/* Swallows the close-on-backdrop press so tapping the menu itself does not dismiss it. */}
+            <Pressable
+              onPress={() => undefined}
+              className="w-full max-w-xs overflow-hidden rounded-3xl bg-surfaceContainerHigh py-2"
+              style={{ elevation: ios ? 0 : elevation.level3, borderRadius: ios ? 14 : 24 }}
+            >
+              {options.map((option) => {
+                const isSelected = option.id === value;
+                return (
+                  <Pressable
+                    key={option.id}
+                    onPress={() => {
+                      setOpen(false);
+                      onChange(option.id);
+                    }}
+                    android_ripple={{ color: ripple.onNeutral }}
+                    accessibilityRole="menuitem"
+                    accessibilityState={{ selected: isSelected }}
+                    className="flex-row items-center justify-between gap-3 px-5 py-3.5"
                   >
-                    {option.label}
-                  </Text>
-                  {isSelected ? <Check size={16} color={colors.primary} /> : null}
-                </Pressable>
-              );
-            })}
+                    <Text
+                      className={cn(
+                        'text-[15px]',
+                        isSelected ? 'font-semibold text-primary' : 'text-onSurface',
+                      )}
+                    >
+                      {option.label}
+                    </Text>
+                    {isSelected ? <Check size={16} color={colors.primary} /> : null}
+                  </Pressable>
+                );
+              })}
+            </Pressable>
           </Pressable>
-        </Pressable>
+        </ThemeScope>
       </Modal>
     </>
   );

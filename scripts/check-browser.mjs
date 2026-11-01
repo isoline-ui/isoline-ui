@@ -63,6 +63,125 @@ try {
         errors.push(error.message);
         if (process.env.ISOLINE_BROWSER) console.error(error.stack);
       });
+      // Fresh documents must be correct before any platform toggle or press.
+      for (const width of [375, 1280])
+        for (const platform of ['ios', 'android']) {
+          await page.setViewportSize({ width, height: 1000 });
+          await page.goto(`${origin}${base}/en/docs/components/dialog/`, {
+            waitUntil: 'networkidle',
+          });
+          await page.evaluate(
+            (platform) => localStorage.setItem('isoline-preview-platform', platform),
+            platform,
+          );
+          await page.reload({ waitUntil: 'networkidle' });
+          const frame = page.frameLocator('.component-preview iframe').first();
+          const open = frame.getByRole('button', { name: 'Open dialog', exact: true });
+          await eventually(
+            () => open.evaluate((el) => getComputedStyle(el).borderRadius),
+            platform === 'ios' ? '12px' : '28px',
+          );
+          await open.click();
+          const panel = frame.getByTestId('isoline-dialog-panel');
+          await panel.waitFor();
+          const layout = await panel.evaluate((el) => {
+            const box = el.getBoundingClientRect();
+            const style = getComputedStyle(el);
+            return {
+              x: box.x,
+              y: box.y,
+              width: box.width,
+              height: box.height,
+              viewportWidth: innerWidth,
+              viewportHeight: innerHeight,
+              background: style.backgroundColor,
+              text: getComputedStyle(el.querySelector('[dir=auto]')).color,
+            };
+          });
+          assert.ok(
+            Math.abs(layout.x + layout.width / 2 - layout.viewportWidth / 2) < 2,
+            'dialog must be horizontally centered',
+          );
+          assert.ok(
+            Math.abs(layout.y + layout.height / 2 - layout.viewportHeight / 2) < 2,
+            'dialog must be vertically centered',
+          );
+          assert.notEqual(
+            layout.background,
+            'rgba(0, 0, 0, 0)',
+            'portal panel must have a themed background',
+          );
+          assert.notEqual(
+            layout.background,
+            layout.text,
+            'portal text must contrast with the surface',
+          );
+          if (platform === 'ios')
+            assert.notEqual(
+              await frame
+                .getByRole('textbox', { name: 'Project name', exact: true })
+                .evaluate((el) => getComputedStyle(el).backgroundColor),
+              layout.background,
+              'filled input must remain distinguishable from its panel',
+            );
+          const sheetTrigger = frame.getByRole('button', { name: 'Open sheet', exact: true });
+          const blocked = await sheetTrigger.click({ trial: true, timeout: 500 }).then(
+            () => false,
+            () => true,
+          );
+          assert.ok(blocked, 'dialog backdrop must intercept clicks on underlying controls');
+          await page.locator('.component-preview').first().locator('.preview-mode').click();
+          await eventually(
+            () =>
+              panel.evaluate(
+                (el, original) => getComputedStyle(el).backgroundColor !== original,
+                layout.background,
+              ),
+            true,
+          );
+          assert.notEqual(
+            await panel
+              .locator('[dir=auto]')
+              .first()
+              .evaluate((el) => getComputedStyle(el).color),
+            layout.text,
+            'portal text must update with dark mode',
+          );
+          await frame.getByRole('textbox', { name: 'Project name', exact: true }).focus();
+          await page.keyboard.press('Escape');
+          await panel.waitFor({ state: 'hidden' });
+          await frame.getByRole('button', { name: 'Open sheet', exact: true }).click();
+          const sheet = frame.getByTestId('isoline-sheet-panel');
+          await sheet.waitFor();
+          const bounds = await sheet.evaluate((el) => {
+            const b = el.getBoundingClientRect();
+            return {
+              bottom: b.bottom,
+              width: b.width,
+              viewportWidth: innerWidth,
+              viewportHeight: innerHeight,
+              background: getComputedStyle(el).backgroundColor,
+            };
+          });
+          assert.ok(
+            Math.abs(bounds.bottom - bounds.viewportHeight) < 2,
+            'sheet must be anchored to the viewport bottom',
+          );
+          assert.ok(
+            Math.abs(bounds.width - bounds.viewportWidth) < 2,
+            'sheet must fill the viewport width',
+          );
+          assert.notEqual(bounds.background, 'rgba(0, 0, 0, 0)');
+          if (process.env.ISOLINE_PREVIEW_SCREENSHOTS)
+            await page.locator('.component-preview').screenshot({
+              path: path.join(
+                process.env.ISOLINE_PREVIEW_SCREENSHOTS,
+                `${name}-${platform}-${width}-sheet.png`,
+              ),
+            });
+          await frame.getByRole('button', { name: 'Close', exact: true }).last().click();
+        }
+      await page.evaluate(() => localStorage.setItem('isoline-preview-platform', 'ios'));
       for (const locale of ['en', 'de'])
         for (const width of [375, 1280]) {
           await page.setViewportSize({ width, height: 1000 });
