@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Animated, { type AnimatedProps } from 'react-native-reanimated';
 
-import { useIsolinePlatform, useThemeColors } from '../provider.tsx';
+import { useIsolinePlatform } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 /**
@@ -19,30 +19,22 @@ type PressableRef = React.ElementRef<typeof RNPressable>;
 export const Pressable: React.ForwardRefExoticComponent<
   PressableProps & React.RefAttributes<PressableRef>
 > = React.forwardRef<React.ElementRef<typeof RNPressable>, PressableProps>(function Pressable(
-  {
-    className,
-    android_ripple,
-    style,
-    disabled,
-    onFocus,
-    onBlur,
-    onKeyDown,
-    accessibilityState,
-    ...props
-  },
+  { className, android_ripple, style, disabled, onKeyDown, accessibilityState, ...props },
   ref,
 ) {
   const ios = useIsolinePlatform() === 'ios';
   const web = Platform.OS === 'web';
   const classNames = cn(
+    // Use browser modality detection, including keyboard use after a tap. Keep
+    // the ring inside shaped/connected controls so clipping cannot cut it off.
+    web &&
+      'outline-0 focus-visible:[outline-style:solid] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-primary',
     Platform.OS === 'android' &&
       android_ripple &&
       !android_ripple.borderless &&
       'overflow-hidden',
     className,
   );
-  const colors = useThemeColors();
-  const [focused, setFocused] = React.useState(false);
   return (
     <RNPressable
       ref={ref}
@@ -79,14 +71,6 @@ export const Pressable: React.ForwardRefExoticComponent<
             'aria-selected': accessibilityState?.selected,
           }
         : { accessibilityState })}
-      onFocus={(event) => {
-        setFocused(true);
-        onFocus?.(event);
-      }}
-      onBlur={(event) => {
-        setFocused(false);
-        onBlur?.(event);
-      }}
       android_ripple={android_ripple}
       // NativeWind's web adapter cannot merge className into a style callback.
       // Supply RN Web's compiled-class marker inside the callback instead.
@@ -106,13 +90,6 @@ export const Pressable: React.ForwardRefExoticComponent<
                   ? ({ $$css: true, [classNames]: classNames } as ViewStyle)
                   : undefined,
                 resolved,
-                Platform.OS === 'web' &&
-                  focused && {
-                    outlineWidth: 2,
-                    outlineStyle: 'solid',
-                    outlineColor: colors.primary,
-                    outlineOffset: 2,
-                  },
                 state.pressed && !disabled && pressedOpacity !== undefined
                   ? { opacity: pressedOpacity }
                   : undefined,
