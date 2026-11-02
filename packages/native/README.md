@@ -75,8 +75,25 @@ accessibility behavior or native compilation; see `docs/native.md`.
 
 ## Shared navigation surfaces
 
-Pass `surfaceComponent={MaterialSurface}` to `IsolineProvider` to enable materials
-for `Toolbar` and `NavigationBar`. On iOS these use the native surface when
-available; Android keeps solid Material surfaces. The browser uses the web adapter.
-The core UI package remains independent of Expo and works with solid fallbacks
-without an adapter. Reading surfaces, forms, alerts and sheet content stay solid.
+Register `surfaceComponent={MaterialSurface}` and
+`surfaceGroupComponent={MaterialGroup}` on `IsolineProvider` using the optional
+`@isoline-ui/native` adapters. Core UI works without Expo using solid fallbacks.
+
+The shared `MaterialOptions` contract (`material`, `glassStyle`, `tintColor`,
+`fallbackColor`, `interactive`) supports buttons/icon buttons, search, segmented
+controls, pickers, floating/split actions, toolbars, navigation, tabs, popovers,
+context menus and optional overlay surfaces. `TabBar` is controlled; routing
+remains in the app. `Popover` anchors, flips and clamps a scrollable panel.
+Context menus and pickers support disabled and selected options. Action menus
+also support destructive actions.
+
+Navigation and anchored menus default to automatic material. Form/action controls,
+dialogs, sheets and snackbars default to solid; opt in per surface. Android stays
+solid Material UI. iOS uses native glass where available and respects Reduce
+Transparency. `SurfaceGroup` uses native `GlassContainer` to blend nearby glass
+surfaces and can animate `gap`, respecting reduced motion. Browser groups animate
+spacing only: CSS backdrop blur approximates glass without native merging or
+refraction. Use a contrasting background to make translucency visible.
+
+The new controls require native/device verification in consumer builds; browser
+checks and Metro exports do not verify UIKit rendering or accessibility.

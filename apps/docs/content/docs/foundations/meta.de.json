@@ -3,6 +3,7 @@
   "pages": [
     "provider",
     "platforms",
+    "materials",
     "theming",
     "typography",
     "icons",

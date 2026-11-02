@@ -1,120 +1,104 @@
 import * as React from 'react';
-import { Modal } from 'react-native';
-
-import { Check, ChevronDown } from './icons.tsx';
+import { View } from 'react-native';
+import { ChevronDown } from './icons.tsx';
+import { Popover } from './popover.tsx';
+import { ContextMenuRows } from './context-menu.tsx';
 import { Pressable } from './pressable.tsx';
 import { Text } from './text.tsx';
-import { elevation, useRipple, useThemeColors } from '../provider.tsx';
-import { ThemeScope, useIsolinePlatform, useLabels } from '../provider.tsx';
-import { cn } from '../utils.ts';
-
-/**
- * A settings row's value picker: a pill showing the current choice that opens
- * a short list of the alternatives.
- *
- * Exists for a setting with more options than a `ButtonGroup` row can hold
- * without becoming a squeeze — a handful of named values, one of which is
- * always selected, is a poor fit for a `Switch` and too many labels for a
- * segmented control to stay legible on a phone width.
- */
-
+import {
+  Surface,
+  useIsolinePlatform,
+  useThemeColors,
+  useRipple,
+  type MaterialOptions,
+} from '../provider.tsx';
 export interface SelectOption<T extends string> {
   id: T;
   label: string;
+  disabled?: boolean;
 }
-
-export interface SelectFieldProps<T extends string> {
+export interface SelectFieldProps<T extends string> extends MaterialOptions {
   value: T;
   options: SelectOption<T>[];
   onChange: (value: T) => void;
   accessibilityLabel: string;
+  menuMaterial?: MaterialOptions['material'];
+  disabled?: boolean;
 }
-
 export function SelectField<T extends string>({
   value,
   options,
   onChange,
   accessibilityLabel,
+  disabled,
+  material = 'solid',
+  menuMaterial = 'auto',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive = false,
 }: SelectFieldProps<T>) {
-  const ios = useIsolinePlatform() === 'ios';
-  const labels = useLabels();
-  const [open, setOpen] = React.useState(false);
+  const platform = useIsolinePlatform();
+  const ios = platform === 'ios';
+  const glass = ios && material !== 'solid';
   const colors = useThemeColors();
   const ripple = useRipple();
+  const [open, setOpen] = React.useState(false);
+  const anchor = React.useRef<React.ComponentRef<typeof View>>(null);
   const selected = options.find((option) => option.id === value);
-
+  const Container = glass ? Surface : View;
   return (
-    <>
-      <Pressable
-        onPress={() => setOpen(true)}
-        android_ripple={{ color: ripple.onNeutral }}
-        style={
-          ios
-            ? {
-                borderWidth: 0,
-                borderRadius: 10,
-                backgroundColor: colors.surfaceContainerHigh,
-                minHeight: 44,
-              }
-            : { minHeight: 44 }
-        }
-        accessibilityState={{ expanded: open }}
-        accessibilityRole="button"
-        accessibilityLabel={accessibilityLabel}
-        className="flex-row items-center gap-1 rounded-full border border-outline px-3 py-2"
+    <View ref={anchor} collapsable={false}>
+      <Container
+        {...(glass ? { material, glassStyle, tintColor, fallbackColor, interactive } : {})}
+        style={{ borderRadius: ios ? 10 : 24 }}
       >
-        <Text className="text-sm font-medium">{selected?.label ?? value}</Text>
-        <ChevronDown size={16} color={colors.onSurfaceVariant} />
-      </Pressable>
-
-      <Modal
+        <Pressable
+          disabled={disabled}
+          accessibilityRole="button"
+          accessibilityLabel={accessibilityLabel}
+          accessibilityState={{ expanded: open, disabled }}
+          onPress={() => setOpen(true)}
+          android_ripple={{ color: ripple.onNeutral }}
+          style={{
+            minHeight: 44,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            borderRadius: ios ? 10 : 24,
+            borderWidth: ios ? 0 : 1,
+            borderColor: colors.outline,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 6,
+            ...(!glass && ios ? { backgroundColor: colors.surfaceContainerHigh } : {}),
+            opacity: disabled ? 0.4 : 1,
+          }}
+        >
+          <Text style={{ fontSize: 15, color: colors.onSurface }}>
+            {selected?.label ?? value}
+          </Text>
+          <ChevronDown size={16} color={colors.onSurfaceVariant} />
+        </Pressable>
+      </Container>
+      <Popover
         visible={open}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setOpen(false)}
+        onClose={() => setOpen(false)}
+        anchorRef={anchor}
+        accessibilityLabel={accessibilityLabel}
+        material={menuMaterial}
+        glassStyle={glassStyle}
+        tintColor={tintColor}
+        fallbackColor={fallbackColor}
       >
-        <ThemeScope style={{ flex: 1 }}>
-          <Pressable
-            className="flex-1 items-center justify-center bg-black/40 px-8"
-            onPress={() => setOpen(false)}
-            accessibilityLabel={labels.close}
-          >
-            {/* Swallows the close-on-backdrop press so tapping the menu itself does not dismiss it. */}
-            <Pressable
-              onPress={() => undefined}
-              className="w-full max-w-xs overflow-hidden rounded-3xl bg-surfaceContainerHigh py-2"
-              style={{ elevation: ios ? 0 : elevation.level3, borderRadius: ios ? 14 : 24 }}
-            >
-              {options.map((option) => {
-                const isSelected = option.id === value;
-                return (
-                  <Pressable
-                    key={option.id}
-                    onPress={() => {
-                      setOpen(false);
-                      onChange(option.id);
-                    }}
-                    android_ripple={{ color: ripple.onNeutral }}
-                    accessibilityRole="menuitem"
-                    accessibilityState={{ selected: isSelected }}
-                    className="flex-row items-center justify-between gap-3 px-5 py-3.5"
-                  >
-                    <Text
-                      className={cn(
-                        'text-[15px]',
-                        isSelected ? 'font-semibold text-primary' : 'text-onSurface',
-                      )}
-                    >
-                      {option.label}
-                    </Text>
-                    {isSelected ? <Check size={16} color={colors.primary} /> : null}
-                  </Pressable>
-                );
-              })}
-            </Pressable>
-          </Pressable>
-        </ThemeScope>
-      </Modal>
-    </>
+        <ContextMenuRows
+          items={options.map((option) => ({
+            ...option,
+            selected: option.id === value,
+            onPress: () => onChange(option.id),
+          }))}
+          onClose={() => setOpen(false)}
+        />
+      </Popover>
+    </View>
   );
 }

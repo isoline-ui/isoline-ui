@@ -1,0 +1,19 @@
+---
+title: 'Floating Actions'
+description: 'Schwebende Hauptaktionen und Split-Buttons mit gemeinsamen Materialoptionen.'
+---
+
+<ComponentPreview kind="floating-actions" />
+
+`FloatingActionButton` ist die wiederverwendbare schwebende Hauptaktion mit `icon`, `accessibilityLabel`, `onPress`, optional sichtbarem `label`, `disabled`, `size` (56/64), `style` und Materialoptionen. Die Platzierung bleibt beim Bildschirm.
+
+`FabMenu` behält `bottom`, `label` und `actions` (`id`, `label`, `icon`, `run`). Aktionen können deaktiviert oder destruktiv sein. Die bisherigen nativen soliden Menüs bleiben erhalten; iOS-Glas und Browser verwenden eine verankerte Menüfläche.
+
+`SplitButton` verbindet die Hauptaktion mit Alternativen in `actions`. `menuMaterial` steuert das Material des Menüs separat; `optionsLabel` benennt den zweiten Trigger. Die Materialoptionen gelten für die Buttonflächen und werden an das Menü weitergereicht. Standardmäßig bleibt der Button solide, während das Menü das automatische Material verwendet.
+
+```tsx
+<FloatingActionButton icon={AddIcon} accessibilityLabel="Erstellen" label="Neu" onPress={create} material="auto" />
+<SplitButton icon={AddIcon} label="Erstellen" onPress={create} optionsLabel="Erstelloptionen" actions={actions} material="auto" menuMaterial="auto" />
+```
+
+Routen, Berechtigungen, Bestätigungen und Erfassungslogik gehören in die App. Die [Materialeinrichtung](/de/docs/foundations/materials) und [Popover-Grenzen](/de/docs/components/popover) gelten auch hier.

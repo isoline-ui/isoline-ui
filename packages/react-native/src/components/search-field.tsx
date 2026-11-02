@@ -3,10 +3,15 @@ import { TextInput, View } from 'react-native';
 
 import { IconButton } from './icon-button.tsx';
 import { Search, X } from './icons.tsx';
-import { useIsolinePlatform, useThemeColors } from '../provider.tsx';
+import {
+  Surface,
+  type MaterialOptions,
+  useIsolinePlatform,
+  useThemeColors,
+} from '../provider.tsx';
 import { cn } from '../utils.ts';
 
-export interface SearchFieldProps {
+export interface SearchFieldProps extends MaterialOptions {
   value: string;
   onChangeText: (value: string) => void;
   placeholder: string;
@@ -34,14 +39,26 @@ export function SearchField({
   clearAccessibilityLabel,
   autoFocus = false,
   className,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive = false,
 }: SearchFieldProps) {
-  const ios = useIsolinePlatform() === 'ios';
+  const platform = useIsolinePlatform();
+  const ios = platform === 'ios';
+  const materialActive = platform === 'ios' && material !== 'solid';
+  const Container = materialActive ? Surface : View;
   const colors = useThemeColors();
 
   return (
-    <View
+    <Container
+      {...(materialActive
+        ? { material, glassStyle, tintColor, fallbackColor, interactive }
+        : {})}
       className={cn(
-        'h-12 flex-row items-center gap-2 rounded-full bg-surfaceContainerHigh pl-4 pr-1.5',
+        'h-12 flex-row items-center gap-2 rounded-full pl-4 pr-1.5',
+        !materialActive && 'bg-surfaceContainerHigh',
         className,
       )}
       style={ios ? { borderRadius: 10, height: 44 } : undefined}
@@ -70,6 +87,6 @@ export function SearchField({
           accessibilityLabel={clearAccessibilityLabel}
         />
       ) : null}
-    </View>
+    </Container>
   );
 }

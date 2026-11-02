@@ -9,7 +9,13 @@ import Animated, {
 
 import { Pressable, AnimatedPressable } from './pressable.tsx';
 import { Text } from './text.tsx';
-import { useIsolineTheme, useIsolinePlatform, useHaptics } from '../provider.tsx';
+import {
+  Surface,
+  type MaterialOptions,
+  useIsolineTheme,
+  useIsolinePlatform,
+  useHaptics,
+} from '../provider.tsx';
 import { corner } from '../shape.ts';
 import { spatial } from '../motion.ts';
 import { useRipple, useThemeColors } from '../provider.tsx';
@@ -39,13 +45,14 @@ const NEIGHBOUR_SQUEEZE = 0.09;
 
 export interface ButtonGroupItem<T extends string> {
   id: T;
+  disabled?: boolean;
   label: string;
   icon?: React.ComponentType<{ size?: number; color?: string }>;
   /** Optional trailing count, e.g. unread mail in that view. */
   badge?: number;
 }
 
-export interface ButtonGroupProps<T extends string> {
+export interface ButtonGroupProps<T extends string> extends MaterialOptions {
   items: ButtonGroupItem<T>[];
   value: T;
   onChange: (value: T) => void;
@@ -64,8 +71,14 @@ export function ButtonGroup<T extends string>({
   onChange,
   className,
   compact,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive = false,
 }: ButtonGroupProps<T>) {
   const ios = useIsolinePlatform() === 'ios';
+  const Group = material !== 'solid' ? Surface : View;
   const colors = useThemeColors();
   const { scheme } = useIsolineTheme();
   const { selectionHaptic } = useHaptics();
@@ -75,14 +88,17 @@ export function ButtonGroup<T extends string>({
 
   if (ios)
     return (
-      <View
+      <Group
+        {...(material !== 'solid'
+          ? { material, glassStyle, tintColor, fallbackColor, interactive }
+          : {})}
         className={className}
         style={{
           flexDirection: 'row',
           gap: 2,
           padding: 3,
           borderRadius: 12,
-          backgroundColor: colors.surfaceContainerHigh,
+          ...(material === 'solid' ? { backgroundColor: colors.surfaceContainerHigh } : {}),
         }}
       >
         {items.map((item) => {
@@ -93,12 +109,14 @@ export function ButtonGroup<T extends string>({
               key={item.id}
               accessibilityRole="button"
               accessibilityLabel={item.label}
-              accessibilityState={{ selected }}
+              disabled={item.disabled}
+              accessibilityState={{ selected, disabled: item.disabled }}
               onPress={() => {
                 if (!selected) selectionHaptic();
                 onChange(item.id);
               }}
               style={{
+                opacity: item.disabled ? 0.4 : 1,
                 flex: 1,
                 minWidth: 0,
                 minHeight: 36,
@@ -136,7 +154,7 @@ export function ButtonGroup<T extends string>({
             </Pressable>
           );
         })}
-      </View>
+      </Group>
     );
   return (
     <View className={cn('flex-row gap-1', className)}>
@@ -251,7 +269,8 @@ function GroupButton<T extends string>({
         android_ripple={{ color: selected ? ripple.onTonal : ripple.onNeutral }}
         accessibilityRole="button"
         accessibilityLabel={item.label}
-        accessibilityState={{ selected }}
+        disabled={item.disabled}
+        accessibilityState={{ selected, disabled: item.disabled }}
         className={cn(
           'h-12 flex-row items-center justify-center gap-1.5 px-3',
           selected ? 'bg-primaryContainer' : 'bg-surfaceContainerHigh',

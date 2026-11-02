@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { BackHandler, useWindowDimensions, View } from 'react-native';
+import { Platform, BackHandler, useWindowDimensions, View } from 'react-native';
 import { useAnimatedKeyboard, useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { SheetFrame, SheetScrollView } from './sheet-frame.tsx';
 import { useSheet } from './sheet-transition.ts';
-import { elevation } from '../provider.tsx';
+import { BottomSheet as WebSheet } from './bottom-sheet-web.tsx';
+import { type MaterialOptions, elevation } from '../provider.tsx';
 
 /** Room left above a sheet that has grown to the top, so the scrim still shows. */
 const TOP_GAP = 24;
@@ -21,15 +22,16 @@ const TOP_GAP = 24;
  * rides up on the keyboard as it opens. Its content scrolls once the keyboard
  * leaves it too little room. Sheets without a text field use `BottomSheet`.
  */
-export function PanelSheet({
+function NativePanelSheet({
   visible,
   onClose,
   children,
+  ...materialOptions
 }: {
   visible: boolean;
   onClose: () => void;
   children: React.ReactNode;
-}) {
+} & MaterialOptions) {
   const insets = useSafeAreaInsets();
   const window = useWindowDimensions();
   const keyboard = useAnimatedKeyboard();
@@ -59,6 +61,7 @@ export function PanelSheet({
     // Above the screen's own elevated views: on Android, elevation also orders.
     <View className="absolute inset-0" style={{ zIndex: 50, elevation: elevation.level3 }}>
       <SheetFrame
+        {...materialOptions}
         sheet={sheet}
         visible={visible}
         onClose={onClose}
@@ -75,4 +78,13 @@ export function PanelSheet({
       </SheetFrame>
     </View>
   );
+}
+
+export interface PanelSheetProps extends MaterialOptions {
+  visible: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
+export function PanelSheet(props: PanelSheetProps) {
+  return Platform.OS === 'web' ? <WebSheet {...props} /> : <NativePanelSheet {...props} />;
 }

@@ -11,7 +11,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DialogActionContext } from './dialog-context.ts';
 import { Pressable } from './pressable.tsx';
 import { effects, spatial } from '../motion.ts';
-import { ThemeScope, useThemeColors, useIsolinePlatform, elevation } from '../provider.tsx';
+import {
+  Surface,
+  type MaterialOptions,
+  ThemeScope,
+  useThemeColors,
+  useIsolinePlatform,
+  elevation,
+} from '../provider.tsx';
 import { useReducedMotion } from '../reduced-motion.ts';
 
 /** How long the scrim takes to dim — matches the bottom sheet's own fade. */
@@ -23,7 +30,7 @@ const SCRIM_FADE_MS = 120;
  * a dialog is anchored to the middle of the screen, so nothing here has an
  * edge to travel from.
  */
-function useDialogTransition(visible: boolean) {
+function useDialogTransition(visible: boolean, preserveOpacity: boolean) {
   const reducedMotion = useReducedMotion();
   const dim = useSharedValue(0);
   const scale = useSharedValue(0.85);
@@ -46,14 +53,14 @@ function useDialogTransition(visible: boolean) {
 
   const scrimStyle = useAnimatedStyle(() => ({ opacity: dim.value }));
   const panelStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
+    opacity: preserveOpacity ? 1 : opacity.value,
     transform: [{ scale: scale.value }],
   }));
 
   return { scrimStyle, panelStyle };
 }
 
-export interface DialogProps {
+export interface DialogProps extends MaterialOptions {
   visible: boolean;
   onClose: () => void;
   /** Runs once the dialog is actually on screen — for one that focuses an input. */
@@ -67,9 +74,20 @@ export interface DialogProps {
  * something, confirming an action — where a bottom sheet's list-of-options
  * shape would be the wrong read.
  */
-export function Dialog({ visible, onClose, onShow, children }: DialogProps) {
-  const { scrimStyle, panelStyle } = useDialogTransition(visible);
+export function Dialog({
+  visible,
+  onClose,
+  onShow,
+  children,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive = false,
+}: DialogProps) {
   const ios = useIsolinePlatform() === 'ios';
+  const glass = ios && material !== 'solid';
+  const { scrimStyle, panelStyle } = useDialogTransition(visible, glass);
   const insets = useSafeAreaInsets();
   const web = Platform.OS === 'web';
   const Box = (web ? View : Animated.View) as typeof Animated.View;
@@ -92,19 +110,31 @@ export function Dialog({ visible, onClose, onShow, children }: DialogProps) {
         >
           <Box
             style={[
-              !web && scrimStyle,
               {
                 flex: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingHorizontal: 24,
-                backgroundColor: 'rgba(0,0,0,0.6)',
                 paddingTop: insets.top + 24,
                 paddingBottom: insets.bottom + 24,
               },
             ]}
-            className="flex-1 items-center justify-center bg-black/60 px-6"
+            className="flex-1 items-center justify-center px-6"
           >
+            <Box
+              pointerEvents="none"
+              style={[
+                {
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  bottom: 0,
+                  left: 0,
+                  backgroundColor: 'rgba(0,0,0,0.6)',
+                },
+                !web && scrimStyle,
+              ]}
+            />
             <Pressable
               testID="isoline-dialog-backdrop"
               className="absolute inset-0"
@@ -121,7 +151,11 @@ export function Dialog({ visible, onClose, onShow, children }: DialogProps) {
                 !web && panelStyle,
                 {
                   width: '100%',
-                  ...(web ? { backgroundColor: colors.surfaceContainerLow } : {}),
+                  ...(glass
+                    ? { backgroundColor: 'transparent' }
+                    : web
+                      ? { backgroundColor: colors.surfaceContainerLow }
+                      : {}),
                   maxHeight: '100%',
                   elevation: ios ? 0 : elevation.level3,
                   borderRadius: ios ? 14 : 28,
@@ -129,6 +163,24 @@ export function Dialog({ visible, onClose, onShow, children }: DialogProps) {
                 },
               ]}
             >
+              {glass ? (
+                <Surface
+                  material={material}
+                  glassStyle={glassStyle}
+                  tintColor={tintColor}
+                  fallbackColor={fallbackColor}
+                  interactive={interactive}
+                  pointerEvents="none"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                    borderRadius: ios ? 14 : 28,
+                  }}
+                />
+              ) : null}
               <ScrollView
                 style={{ flexGrow: 0 }}
                 contentContainerStyle={{ padding: 24, gap: 16 }}

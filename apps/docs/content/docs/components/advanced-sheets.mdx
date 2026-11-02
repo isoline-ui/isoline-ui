@@ -49,3 +49,7 @@ export function LongList({ visible, onClose }: { visible: boolean; onClose: () =
 `useSheet(visible, onClose)` returns `mounted`, `panelStyle`, `scrimStyle`, `onPanelLayout`, `pull`, and `scrollContext`. Pass its result as `sheet` to `SheetFrame`, together with `visible`, `onClose`, and `children`. Optional `lift` and `panelStyle` position an inline frame. Use `mounted` to retain the frame until the exit finishes. Keep `useSheetTransition` only for existing custom opening transitions; it does not own the complete lifecycle.
 
 `SheetFrame.dragFrom` overrides the theme's `sheetGesture` (`handle` or `panel`). Whole-panel gestures coordinate with `SheetScrollView`; horizontal content gestures retain their own direction. The width is capped at 640dp. The handle is a real Close button; VoiceOver Escape also closes. Test scroll handoff, cancelled drags, keyboard, rotation, large text and reduced motion on both platforms.
+
+## Material options
+
+Suitable controls and overlay surfaces support the shared material contract, including `glassStyle`, `tintColor`, `fallbackColor`, and `interactive`. See [Materials and Liquid Glass](/en/docs/foundations/materials) for defaults, adapters, states, and fallbacks.

@@ -1,4 +1,5 @@
 import './global.css';
+import { MaterialExamples } from './MaterialExamples';
 import { BrowserPreview } from './Preview';
 import * as React from 'react';
 import { Platform, ScrollView, View, Text as NativeText } from 'react-native';
@@ -34,7 +35,7 @@ import {
   type ColorScheme,
 } from '@isoline-ui/react-native';
 
-import { MaterialSurface, useSystemTheme } from '@isoline-ui/native';
+import { MaterialSurface, MaterialGroup, useSystemTheme } from '@isoline-ui/native';
 
 type Brand = keyof typeof themes;
 export default function App() {
@@ -83,6 +84,7 @@ function Showcase() {
       theme={theme}
       platform={platform}
       surfaceComponent={MaterialSurface}
+      surfaceGroupComponent={MaterialGroup}
       labels={{ close: 'Close' }}
     >
       <ScrollView
@@ -162,6 +164,9 @@ function Showcase() {
             <Text>Floating toolbar</Text>
             <Button label="Add" size="s" onPress={() => setStatus('Added from toolbar.')} />
           </Toolbar>
+        </View>
+        <View style={{ height: 1000 }}>
+          <MaterialExamples />
         </View>
         <Text variant="heading">Actions</Text>
         <Button label="Primary action" onPress={() => setStatus('Primary action pressed.')} />

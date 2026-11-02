@@ -7,7 +7,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Pressable } from './pressable.tsx';
 import { useSheetTransition } from './sheet-transition.ts';
 import { Text } from './text.tsx';
-import { ThemeScope, useThemeColors, useIsolinePlatform, useLabels } from '../provider.tsx';
+import {
+  Surface,
+  type MaterialOptions,
+  ThemeScope,
+  useThemeColors,
+  useIsolinePlatform,
+  useLabels,
+} from '../provider.tsx';
 import { spatial } from '../motion.ts';
 import { elevation } from '../provider.tsx';
 
@@ -15,7 +22,7 @@ const CLOSE_SHARE = 0.3;
 const CLOSE_VELOCITY = 900;
 const LEAVE_MS = 160;
 
-export interface BottomSheetProps {
+export interface BottomSheetProps extends MaterialOptions {
   visible: boolean;
   onClose: () => void;
   /** Caps long lists; the default leaves space for the status bar. */
@@ -36,8 +43,14 @@ export function BottomSheet({
   maxHeight = '90%',
   onShow,
   children,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive = false,
 }: BottomSheetProps) {
   const ios = useIsolinePlatform() === 'ios';
+  const glass = ios && material !== 'solid';
   const insets = useSafeAreaInsets();
   const web = Platform.OS === 'web';
   const Box = (web ? View : Animated.View) as typeof Animated.View;
@@ -112,7 +125,11 @@ export function BottomSheet({
                 style={[
                   !web && panelStyle,
                   {
-                    ...(web ? { backgroundColor: colors.surfaceContainerLow } : {}),
+                    ...(glass
+                      ? { backgroundColor: 'transparent' }
+                      : web
+                        ? { backgroundColor: colors.surfaceContainerLow }
+                        : {}),
                     paddingHorizontal: 16,
                     paddingBottom: insets.bottom + 16,
                     maxHeight,
@@ -122,6 +139,25 @@ export function BottomSheet({
                   },
                 ]}
               >
+                {glass ? (
+                  <Surface
+                    material={material}
+                    glassStyle={glassStyle}
+                    tintColor={tintColor}
+                    fallbackColor={fallbackColor}
+                    interactive={interactive}
+                    pointerEvents="none"
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      borderTopLeftRadius: ios ? 20 : 28,
+                      borderTopRightRadius: ios ? 20 : 28,
+                    }}
+                  />
+                ) : null}
                 <GestureDetector gesture={pull}>
                   <Pressable
                     onPress={onClose}

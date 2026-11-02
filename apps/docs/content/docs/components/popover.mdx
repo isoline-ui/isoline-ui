@@ -1,0 +1,46 @@
+---
+title: 'Popover and context menu'
+description: 'Anchored menus with viewport bounds, disabled actions and solid fallbacks.'
+---
+
+<ComponentPreview kind="popover" />
+
+`Popover` is a controlled overlay. Supply `visible`, `onClose`, `accessibilityLabel`, and either `anchorRef` or `anchor={{ x, y, width, height }}`. `placement="top"` or `"bottom"` is a preference: the surface flips and clamps to safe window bounds when space is limited. Long content scrolls.
+
+`ContextMenu` owns open state for its trigger. Actions support `disabled`, `destructive`, `selected`, optional `icon`, and `onPress`. A press or long press opens the menu. Backdrop, Escape, and Android Back dismiss it.
+
+```tsx title="Actions.tsx"
+import { useState } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ContextMenu, IsolineProvider, Text, themes } from '@isoline-ui/react-native';
+import { MaterialSurface } from '@isoline-ui/native';
+
+export function Actions() {
+  const [status, setStatus] = useState('Choose an action');
+  return (
+    <SafeAreaProvider>
+      <IsolineProvider theme={themes.violet.light} surfaceComponent={MaterialSurface}>
+        <ContextMenu
+          accessibilityLabel="Item actions"
+          material="auto"
+          items={[
+            { id: 'rename', label: 'Rename', onPress: () => setStatus('Rename selected') },
+            { id: 'locked', label: 'Unavailable', disabled: true, onPress: () => {} },
+            {
+              id: 'delete',
+              label: 'Delete',
+              destructive: true,
+              onPress: () => setStatus('Delete selected'),
+            },
+          ]}
+        >
+          <Text>More actions</Text>
+        </ContextMenu>
+        <Text>{status}</Text>
+      </IsolineProvider>
+    </SafeAreaProvider>
+  );
+}
+```
+
+Menu surfaces default to `material="auto"`; the shared [adapters and fallbacks](/en/docs/foundations/materials) apply. A custom `Popover` additionally accepts `width`, `style`, `placement`, and `onShow`. Confirmation, authorization, and navigation remain app responsibilities. This is a shared React Native menu, not a UIKit context-menu controller.

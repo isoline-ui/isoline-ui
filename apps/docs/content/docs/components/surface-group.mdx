@@ -1,0 +1,53 @@
+---
+title: 'Grouped glass surfaces'
+description: 'Combine nearby native glass and change spacing with reduced-motion support.'
+---
+
+<ComponentPreview kind="surface-group" />
+
+`SurfaceGroup` is the UI contract for related surfaces. The optional `MaterialGroup` adapter uses the native `GlassContainer` on supported iOS. `spacing` controls the distance at which native surfaces affect each other; `gap` controls layout spacing. Changes to `gap` animate with `animate={true}` unless reduced motion is enabled.
+
+```tsx title="RelatedActions.tsx"
+import { useState } from 'react';
+import { View } from 'react-native';
+import { Button, IsolineProvider, SurfaceGroup, themes } from '@isoline-ui/react-native';
+import { MaterialSurface, MaterialGroup } from '@isoline-ui/native';
+
+export function RelatedActions() {
+  const [joined, setJoined] = useState(false);
+  return (
+    <IsolineProvider
+      theme={themes.violet.light}
+      surfaceComponent={MaterialSurface}
+      surfaceGroupComponent={MaterialGroup}
+    >
+      <View
+        style={{
+          height: 260,
+          backgroundColor: '#e4d4fa',
+          padding: 20,
+          justifyContent: 'center',
+        }}
+      >
+        <View
+          pointerEvents="none"
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 80,
+            height: 72,
+            backgroundColor: '#7842ae',
+          }}
+        />
+        <SurfaceGroup spacing={28} gap={joined ? 4 : 24} style={{ flexDirection: 'row' }}>
+          <Button material="auto" label="First" size="s" onPress={() => setJoined(!joined)} />
+          <Button material="auto" label="Second" size="s" onPress={() => setJoined(!joined)} />
+        </SurfaceGroup>
+      </View>
+    </IsolineProvider>
+  );
+}
+```
+
+Without an adapter the layout group remains usable. Older iOS and Reduce Transparency show solid surfaces. Browsers animate spacing while retaining separate CSS surfaces; native merging and refraction are not reproduced. Use `animate={false}` for immediate layout changes. Arbitrary SwiftUI matched-geometry transitions are not part of this API.

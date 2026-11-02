@@ -19,7 +19,7 @@ type PressableRef = React.ElementRef<typeof RNPressable>;
 export const Pressable: React.ForwardRefExoticComponent<
   PressableProps & React.RefAttributes<PressableRef>
 > = React.forwardRef<React.ElementRef<typeof RNPressable>, PressableProps>(function Pressable(
-  { className, android_ripple, style, disabled, onFocus, onBlur, ...props },
+  { className, android_ripple, style, disabled, onFocus, onBlur, accessibilityState, ...props },
   ref,
 ) {
   const ios = useIsolinePlatform() === 'ios';
@@ -37,6 +37,15 @@ export const Pressable: React.ForwardRefExoticComponent<
     <RNPressable
       ref={ref}
       disabled={disabled}
+      {...(web
+        ? {
+            'aria-busy': accessibilityState?.busy,
+            'aria-checked': accessibilityState?.checked,
+            'aria-disabled': disabled || accessibilityState?.disabled,
+            'aria-expanded': accessibilityState?.expanded,
+            'aria-selected': accessibilityState?.selected,
+          }
+        : { accessibilityState })}
       onFocus={(event) => {
         setFocused(true);
         onFocus?.(event);

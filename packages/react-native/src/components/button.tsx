@@ -8,6 +8,8 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
+import { Surface, type MaterialOptions } from '../provider.tsx';
+import { usesPlatformMaterial } from '../material.ts';
 import { DialogActionContext } from './dialog-context.ts';
 import type { IconProps } from './icons.tsx';
 import { AnimatedPressable, Pressable } from './pressable.tsx';
@@ -134,7 +136,8 @@ const METRICS: Record<NonNullable<ButtonProps['size']>, { height: number; square
 };
 
 export type ButtonProps = Omit<React.ComponentProps<typeof Pressable>, 'children'> &
-  VariantProps<typeof buttonVariants> & {
+  VariantProps<typeof buttonVariants> &
+  MaterialOptions & {
     children?: React.ComponentProps<typeof Pressable>['children'];
     pressableClassName?: string;
     label?: string;
@@ -155,6 +158,11 @@ export type ButtonProps = Omit<React.ComponentProps<typeof Pressable>, 'children
  */
 export function Button({
   className,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive = true,
   pressableClassName,
   style,
   variant,
@@ -170,8 +178,14 @@ export function Button({
   ...props
 }: ButtonProps) {
   const web = Platform.OS === 'web';
-  const Container = (web ? View : Animated.View) as typeof Animated.View;
-  const Control = (web ? Pressable : AnimatedPressable) as typeof AnimatedPressable;
+  const platform = useIsolinePlatform();
+  const materialActive = usesPlatformMaterial(platform, material);
+  const Container = (
+    materialActive ? Surface : web ? View : Animated.View
+  ) as typeof Animated.View;
+  const Control = (
+    web || materialActive ? Pressable : AnimatedPressable
+  ) as typeof AnimatedPressable;
   const [webPressed, setWebPressed] = React.useState(false);
   const ios = useIsolinePlatform() === 'ios';
   const alertAction = React.useContext(DialogActionContext) && ios;
@@ -199,27 +213,45 @@ export function Button({
 
   return (
     <Container
+      {...(materialActive
+        ? { material, glassStyle, tintColor, fallbackColor, interactive }
+        : {})}
       style={[
-        web ? { borderRadius: alertAction ? 0 : webPressed ? active : rest } : radiusStyle,
+        web || materialActive
+          ? {
+              borderRadius: alertAction
+                ? 0
+                : materialActive
+                  ? rest
+                  : webPressed
+                    ? active
+                    : rest,
+            }
+          : radiusStyle,
         alertAction && { flex: 1 },
       ]}
-      className={cn('overflow-hidden', className)}
+      className={cn(!materialActive && 'overflow-hidden', className)}
     >
       <Control
-        className={cn(buttonVariants({ variant, size }), props.disabled && 'opacity-50', pressableClassName)}
+        className={cn(
+          buttonVariants({ variant, size }),
+          props.disabled && 'opacity-50',
+          pressableClassName,
+        )}
         style={(state: PressableStateCallbackType) => [
-          web
+          web || materialActive
             ? {
                 borderRadius: webPressed ? active : rest,
                 transform: [{ scale: webPressed ? 0.97 : 1 }],
               }
             : radiusStyle,
-          !web && scaleStyle,
+          !web && !materialActive && scaleStyle,
           ios && {
             minHeight: 44,
             height: { xs: 44, s: 44, m: 50, l: 64, xl: 80, icon: 44 }[resolvedSize],
             borderWidth: resolvedVariant === 'outline' ? 0 : undefined,
           },
+          materialActive && { backgroundColor: 'transparent', borderWidth: 0 },
           alertAction && { backgroundColor: 'transparent', borderWidth: 0, borderRadius: 0 },
           typeof style === 'function' ? style(state) : style,
         ]}
@@ -242,35 +274,42 @@ export function Button({
         accessibilityState={{ disabled: props.disabled ?? false }}
         {...props}
       >
-        {(state: PressableStateCallbackType) => <>
-        {Icon ? (
-          <Icon
-            size={ICON_SIZE[resolvedSize]}
-            color={
-              alertAction
-                ? resolvedVariant === 'destructive'
-                  ? colors.error
-                  : colors.primary
-                : iconColor(colors, resolvedVariant)
-            }
-          />
-        ) : null}
-        {label ? (
-          <Text
-            className={cn(labelVariants({ variant, size }))}
-            style={
-              alertAction
-                ? { color: resolvedVariant === 'destructive' ? colors.error : colors.primary }
-                : undefined
-            }
-            numberOfLines={1}
-          >
-            {label}
-          </Text>
-        ) : (
-          typeof children === 'function' ? children(state) : children
+        {(state: PressableStateCallbackType) => (
+          <>
+            {Icon ? (
+              <Icon
+                size={ICON_SIZE[resolvedSize]}
+                color={
+                  alertAction || materialActive
+                    ? resolvedVariant === 'destructive'
+                      ? colors.error
+                      : colors.primary
+                    : iconColor(colors, resolvedVariant)
+                }
+              />
+            ) : null}
+            {label ? (
+              <Text
+                className={cn(labelVariants({ variant, size }))}
+                style={
+                  alertAction || materialActive
+                    ? {
+                        color:
+                          resolvedVariant === 'destructive' ? colors.error : colors.primary,
+                      }
+                    : undefined
+                }
+                numberOfLines={1}
+              >
+                {label}
+              </Text>
+            ) : typeof children === 'function' ? (
+              children(state)
+            ) : (
+              children
+            )}
+          </>
         )}
-        </>}
       </Control>
     </Container>
   );

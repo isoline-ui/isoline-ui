@@ -6,7 +6,12 @@ import { BottomSheet } from './bottom-sheet.tsx';
 import type { IconProps } from './icons.tsx';
 import { Pressable } from './pressable.tsx';
 import { Text } from './text.tsx';
-import { useIsolinePlatform, useRipple, useThemeColors } from '../provider.tsx';
+import {
+  type MaterialOptions,
+  useIsolinePlatform,
+  useRipple,
+  useThemeColors,
+} from '../provider.tsx';
 
 export interface MenuSheetItem {
   id: string;
@@ -19,7 +24,7 @@ export interface MenuSheetItem {
   fill?: string;
 }
 
-export interface MenuSheetProps {
+export interface MenuSheetProps extends MaterialOptions {
   visible: boolean;
   onClose: () => void;
   title: string;
@@ -37,9 +42,16 @@ export interface MenuSheetProps {
  * as the pickers' (`SnoozeSheet`, `MoveSheet`), so an action list and a value
  * list do not read as two different kinds of sheet.
  */
-export function MenuSheet({ visible, onClose, title, subject, items }: MenuSheetProps) {
+export function MenuSheet({
+  visible,
+  onClose,
+  title,
+  subject,
+  items,
+  ...materialOptions
+}: MenuSheetProps) {
   return (
-    <BottomSheet visible={visible} onClose={onClose} maxHeight="85%">
+    <BottomSheet {...materialOptions} visible={visible} onClose={onClose} maxHeight="85%">
       <SheetScrollView style={{ flexGrow: 0 }} keyboardShouldPersistTaps="handled">
         <View className="mb-2 gap-1 px-2">
           <Text variant="heading">{title}</Text>

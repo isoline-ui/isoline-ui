@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { checkMaterials } from './check-material-browser.mjs';
 import http from 'node:http';
 import { mkdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
@@ -44,6 +45,29 @@ const server = http.createServer(async (req, res) => {
 });
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
+async function checkForcedColors(page) {
+  await page.goto(`${origin}${base}/en/docs/native/liquid-glass/`, {
+    waitUntil: 'networkidle',
+  });
+  await page
+    .locator('.component-preview iframe')
+    .first()
+    .evaluate((el) => el.scrollIntoView({ behavior: 'instant', block: 'center' }));
+  await page.emulateMedia({ forcedColors: 'active' });
+  await eventually(
+    () =>
+      page
+        .frameLocator('.component-preview iframe')
+        .first()
+        .getByTestId('glass-example-surface')
+        .evaluate(
+          (el) =>
+            getComputedStyle(el).getPropertyValue('backdrop-filter') ||
+            getComputedStyle(el).getPropertyValue('-webkit-backdrop-filter'),
+        ),
+    'none',
+  );
+}
 const engines = { chromium, firefox, webkit };
 const selected = process.env.ISOLINE_BROWSER
   ? { [process.env.ISOLINE_BROWSER]: engines[process.env.ISOLINE_BROWSER] }
@@ -63,6 +87,17 @@ try {
         errors.push(error.message);
         if (process.env.ISOLINE_BROWSER) console.error(error.stack);
       });
+      if (process.env.ISOLINE_MATERIAL_ONLY) {
+        await checkMaterials({ page, origin, base, name, eventually });
+        assert.deepEqual(errors, [], `${name}: material browser runtime errors`);
+        continue;
+      }
+      if (process.env.ISOLINE_FORCED_COLORS_ONLY) {
+        await checkForcedColors(page);
+        assert.deepEqual(errors, [], `${name}: forced-colors runtime errors`);
+        console.log(`${name}: forced-colors glass fallback passed.`);
+        continue;
+      }
       // Fresh documents must be correct before any platform toggle or press.
       for (const width of [375, 1280])
         for (const platform of ['ios', 'android']) {
@@ -419,20 +454,8 @@ try {
               ),
             });
         }
-      await page.emulateMedia({ forcedColors: 'active' });
-      await eventually(
-        () =>
-          page
-            .frameLocator('.component-preview iframe')
-            .first()
-            .getByTestId('glass-example-surface')
-            .evaluate(
-              (el) =>
-                getComputedStyle(el).getPropertyValue('backdrop-filter') ||
-                getComputedStyle(el).getPropertyValue('-webkit-backdrop-filter'),
-            ),
-        'none',
-      );
+      await checkMaterials({ page, origin, base, name, eventually });
+      await checkForcedColors(page);
       assert.deepEqual(errors, [], `${name}: browser runtime errors`);
       console.log(
         `${name}: EN/DE, mobile/desktop, themes, platform state, forms, dialog/sheet/menu, floating toolbar and glass fallback passed.`,

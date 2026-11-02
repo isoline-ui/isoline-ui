@@ -4,7 +4,12 @@ import { View } from 'react-native';
 import { BackIcon } from './back-icon.tsx';
 import { HEADER_ICON_BUTTON, IconButton } from './icon-button.tsx';
 import { Text } from './text.tsx';
-import { useLabels, useSurface } from '../provider.tsx';
+import {
+  type MaterialOptions,
+  useIsolinePlatform,
+  useLabels,
+  useSurface,
+} from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 /**
@@ -14,23 +19,43 @@ import { cn } from '../utils.ts';
  * inset, so moving between screens moves nothing at the top. The status
  * bar's room is the screen's: it knows whether it draws under it.
  */
-export interface TopBarProps {
+export interface TopBarProps extends MaterialOptions {
   onBack: () => void;
   backLabel?: string;
   center?: React.ReactNode;
   actions?: React.ReactNode;
   className?: string;
 }
-export function TopBar({ onBack, center, actions, backLabel, className }: TopBarProps) {
+export function TopBar({
+  onBack,
+  center,
+  actions,
+  backLabel,
+  className,
+  material = 'auto',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive,
+}: TopBarProps) {
   const labels = useLabels();
+  const ios = useIsolinePlatform() === 'ios';
   const Surface = useSurface();
   return (
-    <View className={cn('h-14 flex-row items-center px-2', className)}>
-      <Surface
-        pointerEvents="none"
-        style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
-        fallbackColor="transparent"
-      />
+    <Surface
+      material={ios ? material : 'solid'}
+      glassStyle={glassStyle}
+      tintColor={tintColor}
+      fallbackColor={fallbackColor}
+      interactive={interactive}
+      className={className}
+      style={{
+        minHeight: 56,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 8,
+      }}
+    >
       <IconButton
         {...HEADER_ICON_BUTTON}
         icon={BackIcon}
@@ -39,7 +64,7 @@ export function TopBar({ onBack, center, actions, backLabel, className }: TopBar
       />
       <View className="flex-1 items-center px-2">{center}</View>
       {actions}
-    </View>
+    </Surface>
   );
 }
 

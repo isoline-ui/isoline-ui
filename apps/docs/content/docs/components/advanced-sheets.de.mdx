@@ -49,3 +49,7 @@ export function LongList({ visible, onClose }: { visible: boolean; onClose: () =
 `useSheet(visible, onClose)` liefert `mounted`, `panelStyle`, `scrimStyle`, `onPanelLayout`, `pull` und `scrollContext`. Übergib das Ergebnis als `sheet` an `SheetFrame`, dazu `visible`, `onClose` und `children`. Optional positionieren `lift` und `panelStyle` einen Rahmen im Screen. Nutze `mounted`, damit der Rahmen bis zum Ende der Schließanimation erhalten bleibt. `useSheetTransition` bleibt für vorhandene eigene Öffnungsanimationen verfügbar, verwaltet aber nicht den gesamten Lebenszyklus.
 
 `SheetFrame.dragFrom` überschreibt `theme.sheetGesture` (`handle` oder `panel`). Gesten am ganzen Panel stimmen sich mit `SheetScrollView` ab; horizontale Inhaltsgesten behalten ihre Richtung. Die Breite ist auf 640dp begrenzt. Der Griff ist ein echter Schließen-Button, auch VoiceOver Escape schließt. Prüfe Scroll-Übergabe, abgebrochene Gesten, Tastatur, Rotation, große Schrift und reduzierte Bewegung auf beiden Plattformen.
+
+## Materialoptionen
+
+Die passenden Controls und Overlay-Flächen unterstützen den gemeinsamen Materialvertrag einschließlich `glassStyle`, `tintColor`, `fallbackColor` und `interactive`. Siehe [Materialien und Liquid Glass](/de/docs/foundations/materials) für Standards, Adapter, Zustände und Alternativen.
