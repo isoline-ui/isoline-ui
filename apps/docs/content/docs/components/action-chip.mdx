@@ -1,0 +1,68 @@
+---
+title: 'Action Chip'
+description: 'A semantic action chip for short actions, separate from filter selection.'
+---
+
+<ComponentPreview kind="catalog-action-chip" />
+
+A semantic action chip for short actions, separate from filter selection.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="ActionChipExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function ActionChipExample({ de = false }: StoryProps) {
+  const [status, setStatus] = React.useState('');
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <View style={{ gap: 12 }}>
+      <UI.ActionChip
+        label={t('Add action', 'Aktion hinzufügen')}
+        icon={UI.BackIcon}
+        tone="primary"
+        onPress={() => setStatus(t('Action selected', 'Aktion ausgewählt'))}
+      />
+      <UI.ActionChip
+        label={t('Secondary action', 'Zweite Aktion')}
+        tone="tertiary"
+        onPress={() => setStatus(t('Secondary selected', 'Zweite ausgewählt'))}
+      />
+      <UI.ActionChip
+        label={t('Disabled action', 'Deaktivierte Aktion')}
+        disabled
+        onPress={() => {}}
+      />
+      <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <ActionChipExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `ActionChip`.
+
+Key props: `label`, `icon`, `tone`, `onPress`, `disabled`, `material`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.

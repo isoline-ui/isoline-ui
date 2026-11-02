@@ -10,12 +10,18 @@ themes are Violet, Teal and Cyan.
 
 **Status:** 0.1.0-alpha.2, distributed through GitHub Releases. Isoline is not yet
 published to npm. The optional native package provides Android system colors and
-iOS Liquid Glass surfaces. Existing apps have not yet been migrated.
+iOS Liquid Glass surfaces. The three apps already use shared primitives through
+forwarding modules and vendored archives. The expanded component catalogue is
+part of the paired 0.1.0-alpha.3 development snapshots; older alpha.2 archives
+do not contain it.
 
 ## What is here
 
 - Buttons, button groups, chips, icon buttons and native switches.
-- Text, text fields, search and selection controls.
+- Text, text fields, search, checkbox, slider, avatar and action chips.
+- Calendar/date/time/color pickers and localized amount fields.
+- Banners, controlled undo feedback, swipeable rows and image zoom.
+- List selection/section controls and router-independent settings layouts.
 - Bottom sheets, dialogs and action menus.
 - Expressive loading indicators, progress, shapes and motion tokens.
 - An explicit theme/labels/haptics provider with no app store or router imports.

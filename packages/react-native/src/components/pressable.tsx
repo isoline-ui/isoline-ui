@@ -19,7 +19,17 @@ type PressableRef = React.ElementRef<typeof RNPressable>;
 export const Pressable: React.ForwardRefExoticComponent<
   PressableProps & React.RefAttributes<PressableRef>
 > = React.forwardRef<React.ElementRef<typeof RNPressable>, PressableProps>(function Pressable(
-  { className, android_ripple, style, disabled, onFocus, onBlur, accessibilityState, ...props },
+  {
+    className,
+    android_ripple,
+    style,
+    disabled,
+    onFocus,
+    onBlur,
+    onKeyDown,
+    accessibilityState,
+    ...props
+  },
   ref,
 ) {
   const ios = useIsolinePlatform() === 'ios';
@@ -37,6 +47,29 @@ export const Pressable: React.ForwardRefExoticComponent<
     <RNPressable
       ref={ref}
       disabled={disabled}
+      onKeyDown={
+        web
+          ? (event) => {
+              if (disabled) return;
+              onKeyDown?.(event);
+              const role = props.role ?? props.accessibilityRole;
+              // RN Web's PressResponder only treats role=button as space-activatable.
+              // Semantic toggles still need the standard Space behavior on the web.
+              if (
+                !event.defaultPrevented &&
+                event.nativeEvent.key === ' ' &&
+                role &&
+                ['checkbox', 'switch', 'radio', 'menuitemradio', 'menuitemcheckbox'].includes(
+                  role,
+                )
+              ) {
+                event.preventDefault();
+                const target = event.currentTarget as unknown as { click?: () => void };
+                target.click?.();
+              }
+            }
+          : onKeyDown
+      }
       {...(web
         ? {
             'aria-busy': accessibilityState?.busy,

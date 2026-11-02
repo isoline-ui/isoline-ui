@@ -1,0 +1,84 @@
+---
+title: 'Swipeable row'
+description: 'Reveal row actions on native. A visible action button provides keyboard, screen-reader and browser access. Disabled actions cannot execute.'
+---
+
+<ComponentPreview kind="catalog-swipeable-row" />
+
+Reveal row actions on native. A visible action button provides keyboard, screen-reader and browser access. Disabled actions cannot execute.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="SwipeablerowExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function SwipeableRowExample({ de = false }: StoryProps) {
+  const [status, setStatus] = React.useState('');
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.SwipeableRow
+        accessibilityLabel={t('Example row', 'Beispielzeile')}
+        actionsLabel={t('Show row actions', 'Zeilenaktionen anzeigen')}
+        startActions={[
+          {
+            id: 'done',
+            label: t('Mark done', 'Erledigen'),
+            onPress: () => setStatus(t('Done selected', 'Erledigen ausgewählt')),
+          },
+        ]}
+        endActions={[
+          {
+            id: 'delete',
+            label: t('Delete row', 'Zeile löschen'),
+            destructive: true,
+            onPress: () => setStatus(t('Delete selected', 'Löschen ausgewählt')),
+          },
+          {
+            id: 'locked',
+            label: t('Unavailable action', 'Nicht verfügbare Aktion'),
+            disabled: true,
+            onPress: () => {},
+          },
+        ]}
+      >
+        <UI.Text>
+          {t(
+            'Swipe on native or open the visible action control.',
+            'Nativ wischen oder die sichtbaren Aktionen öffnen.',
+          )}
+        </UI.Text>
+      </UI.SwipeableRow>
+      <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <SwipeableRowExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `SwipeableRow`.
+
+Key props: `children`, `startActions`, `endActions`, `actionsLabel`, `accessibilityLabel`, `disabled`, `onSwipeStart`, `onSwipeEnd`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.

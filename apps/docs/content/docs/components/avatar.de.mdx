@@ -1,0 +1,76 @@
+---
+title: 'Avatar'
+description: 'Bild, Initialen und Badge ohne Kontakt- oder Netzwerkabhängigkeiten darstellen.'
+---
+
+<ComponentPreview kind="catalog-avatar" />
+
+Bild, Initialen und Badge ohne Kontakt- oder Netzwerkabhängigkeiten darstellen.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="AvatarExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function AvatarExample({ de = false }: StoryProps) {
+  const [fallback, setFallback] = React.useState(false);
+  const image =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAIAAACGBWc0AAAAk0lEQVR4nO3QQQ3AIAAEQbxgow7qAGF9IwJXmKiJe10mWQM7Yz0n0tw70v3eSKmvAQgQIECAAAECBAgQIECAAAECBAgQIECAAAECBKgCqHUs9QUIECBAgAABAgQIECBAgAABAgQIECBAgAABAgSoA6h1LPUFCBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIEqALoByp/Q1kKfgjjAAAAAElFTkSuQmCC';
+  return (
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 24 }}>
+      <UI.Avatar
+        initials="AL"
+        source={{ uri: fallback ? 'data:image/png;base64,invalid' : image }}
+        accessibilityLabel="Alex Lee"
+      />
+      <UI.Avatar
+        initials="JS"
+        accessibilityLabel="Jamie Smith"
+        size={64}
+        accent="#8161c3"
+        badge={<UI.Badge label="3" />}
+      />
+      <UI.Avatar initials="RK" accessibilityLabel="Robin Kim" size={80} />
+      <UI.Text>
+        {de
+          ? 'Bild, Initialen und Badge kommen aus der App.'
+          : 'The app supplies images, initials and badges.'}
+      </UI.Text>
+      <UI.Button
+        size="s"
+        variant="ghost"
+        label={de ? 'Bild wechseln' : 'Toggle image'}
+        onPress={() => setFallback((value) => !value)}
+      />
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <AvatarExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `Avatar`.
+
+Wichtige Props: `initials`, `source`, `renderImage`, `size`, `accent`, `badge`, `accessibilityLabel`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.

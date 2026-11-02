@@ -1,0 +1,80 @@
+---
+title: 'Navigation bars'
+description: 'Shared back actions, titles and navigation accessories. Routing remains app-owned.'
+---
+
+<ComponentPreview kind="catalog-feedback" />
+
+Shared back actions, titles and navigation accessories. Routing remains app-owned.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="NavigationbarsExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function FeedbackExample({ de = false }: StoryProps) {
+  const [status, setStatus] = React.useState('');
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.NavigationBar
+        title={t('Library', 'Bibliothek')}
+        leading={
+          <UI.BackButton
+            label={t('Back', 'Zurück')}
+            onPress={() => setStatus(t('Back selected', 'Zurück ausgewählt'))}
+          />
+        }
+      />
+      <UI.ScreenTitle title={t('Overview', 'Übersicht')} />
+      <UI.TopBar
+        onBack={() => setStatus(t('Back selected', 'Zurück ausgewählt'))}
+        center={<UI.Text>{t('Collection', 'Sammlung')}</UI.Text>}
+      />
+      <UI.Toolbar>
+        <UI.Button
+          size="s"
+          label={t('Create', 'Erstellen')}
+          onPress={() => setStatus(t('Create selected', 'Erstellen ausgewählt'))}
+        />
+      </UI.Toolbar>
+      <View style={{ minHeight: 90 }}>
+        <UI.Snackbar
+          message={t('Changes saved', 'Änderungen gespeichert')}
+          actionLabel={t('Undo', 'Rückgängig')}
+          onAction={() => setStatus(t('Undo selected', 'Rückgängig ausgewählt'))}
+        />
+      </View>
+      <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <FeedbackExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `NavigationBar`, `TopBar`, `BackButton`, `BackIcon`, `ScreenTitle`.
+
+Key props: `title`, `leading`, `trailing`, `center`, `onBack`, `onPress`, `material`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.

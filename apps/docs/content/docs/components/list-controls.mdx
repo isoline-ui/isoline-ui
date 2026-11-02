@@ -1,0 +1,76 @@
+---
+title: 'List controls'
+description: 'Selection, section headings and a return-to-top action with app-supplied labels and callbacks.'
+---
+
+<ComponentPreview kind="catalog-list-controls" />
+
+Selection, section headings and a return-to-top action with app-supplied labels and callbacks.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="ListcontrolsExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function ListControlsExample({ de = false }: StoryProps) {
+  const [count, setCount] = React.useState(2),
+    [status, setStatus] = React.useState('');
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.SelectionHeader
+        count={count}
+        countLabel={t(`${count} selected`, `${count} ausgewählt`)}
+        allSelected={count === 4}
+        onClear={() => setCount(0)}
+        onToggleAll={() => setCount((value) => (value === 4 ? 0 : 4))}
+        clearLabel={t('Clear selection', 'Auswahl aufheben')}
+        selectAllLabel={t('Select all', 'Alle auswählen')}
+        deselectAllLabel={t('Select none', 'Keine auswählen')}
+      />
+      <UI.ListSectionHeader
+        title={t('Recent items', 'Letzte Einträge')}
+        first
+        trailing={<UI.Badge label="4" />}
+      />
+      <UI.Text>
+        {t('The app supplies the list and selection.', 'Die App liefert Liste und Auswahl.')}
+      </UI.Text>
+      <UI.JumpToTopPill
+        label={t('Back to top', 'Nach oben')}
+        count={3}
+        onPress={() => setStatus(t('Top requested', 'Nach oben angefordert'))}
+      />
+      <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <ListControlsExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `SelectionHeader`, `ListSectionHeader`, `JumpToTopPill`.
+
+Key props: `count`, `countLabel`, `allSelected`, `onClear`, `onToggleAll`, `title`, `label`, `onPress`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.

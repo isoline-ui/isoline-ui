@@ -22,7 +22,9 @@ appearance](native.md).
 - The package typecheck, declaration build, pure tests and boundary tests pass
   with the Expo 58 / React Native 0.88 dependency set.
 - The Expo 58 showcase bundles for both iOS and Android.
-- Package sources are also checked against Yours' Expo 57 native peer type
+- The earlier alpha.2 package sources were checked against Yours' Expo 57 native peer type
   definitions. This does not replace an Expo 57 native build or device test.
-- The package has not been installed in the three apps yet. Migration PRs and
-  a reviewed npm release remain follow-up work after repository access is ready.
+- The three apps already install paired vendored alpha.2 archives and forward
+  their shared primitives to Isoline. The alpha.3 catalogue requires refreshed
+  paired archives, adapter updates and consumer checks. Native device validation
+  remains necessary; an app dependency update is not a native interaction test.

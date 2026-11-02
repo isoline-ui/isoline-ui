@@ -1,0 +1,82 @@
+---
+title: 'Color swatches'
+description: 'An accessible palette with selected and disabled swatches and a sheet presentation. The app supplies colors and names.'
+---
+
+<ComponentPreview kind="catalog-color-picker" />
+
+An accessible palette with selected and disabled swatches and a sheet presentation. The app supplies colors and names.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="ColorswatchesExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function ColorPickerExample({ de = false }: StoryProps) {
+  const [color, setColor] = React.useState<string | null>('#7c4ab1');
+  const [open, setOpen] = React.useState(false);
+  const t = (en: string, german: string) => (de ? german : en);
+  const swatches = [
+    { value: '#7c4ab1', label: t('Violet', 'Violett') },
+    { value: '#008577', label: t('Teal', 'Türkis') },
+    { value: '#dc8045', label: t('Orange', 'Orange') },
+    {
+      value: '#777777',
+      label: t('Unavailable color', 'Nicht verfügbare Farbe'),
+      disabled: true,
+    },
+  ];
+  return (
+    <View style={{ gap: 20 }}>
+      <UI.ColorSwatchPicker
+        value={color}
+        onChange={setColor}
+        swatches={swatches}
+        accessibilityLabel={t('Colors', 'Farben')}
+      />
+      <UI.Button
+        label={t('Open color picker', 'Farbauswahl öffnen')}
+        onPress={() => setOpen(true)}
+      />
+      <UI.Text accessibilityLiveRegion="polite">{color}</UI.Text>
+      <UI.ColorPickerSheet
+        visible={open}
+        onClose={() => setOpen(false)}
+        title={t('Choose color', 'Farbe wählen')}
+        value={color}
+        onChange={setColor}
+        swatches={swatches}
+        accessibilityLabel={t('Sheet colors', 'Farben im Sheet')}
+      />
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <ColorPickerExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `ColorSwatchPicker`, `ColorPickerSheet`.
+
+Key props: `value`, `onChange`, `swatches`, `accessibilityLabel`, `visible`, `onClose`, `title`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.

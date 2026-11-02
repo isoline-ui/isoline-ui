@@ -68,25 +68,25 @@ export function ComponentPreview({
     window.addEventListener('message', ready);
     return () => window.removeEventListener('message', ready);
   }, [platform, theme, dark]);
-  const height = ['materials', 'material-controls', 'navigation', 'material-overlays'].includes(
-    kind,
-  )
+  const height = kind.startsWith('catalog-')
     ? 660
-    : ['tab-bar', 'surface-group', 'popover', 'floating-actions'].includes(kind)
-      ? 480
-      : kind === 'toolbar'
-        ? 460
-        : kind === 'default'
-          ? 540
-          : kind === 'fields'
-            ? 360
-            : kind === 'overlays'
-              ? 340
-              : kind === 'surface'
-                ? 460
-                : kind === 'button'
-                  ? 300
-                  : 240;
+    : ['materials', 'material-controls', 'navigation', 'material-overlays'].includes(kind)
+      ? 660
+      : ['tab-bar', 'surface-group', 'popover', 'floating-actions'].includes(kind)
+        ? 480
+        : kind === 'toolbar'
+          ? 460
+          : kind === 'default'
+            ? 540
+            : kind === 'fields'
+              ? 360
+              : kind === 'overlays'
+                ? 340
+                : kind === 'surface'
+                  ? 460
+                  : kind === 'button'
+                    ? 300
+                    : 240;
   return (
     <div className={`component-preview ${hero ? 'hero-preview' : ''}`} data-platform={platform}>
       <div className="preview-controls">
@@ -149,7 +149,7 @@ export function ComponentPreview({
         title={`${platform === 'ios' ? 'iOS' : 'Android'} – ${de ? 'Interaktive Komponentenvorschau' : 'Interactive component preview'}`}
         src={`${base}/previews/?preview=1&kind=${encodeURIComponent(kind)}&locale=${de ? 'de' : 'en'}`}
         height={height}
-        loading={hero ? 'eager' : 'lazy'}
+        loading="eager"
         onLoad={send}
       />
       <div className="preview-caption">

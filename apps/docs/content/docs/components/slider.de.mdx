@@ -1,0 +1,71 @@
+---
+title: 'Slider'
+description: 'Ein numerischer Wert mit Zeiger-, Tastatur- und barrierefreier Bedienung.'
+---
+
+<ComponentPreview kind="catalog-slider" />
+
+Ein numerischer Wert mit Zeiger-, Tastatur- und barrierefreier Bedienung.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="SliderExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function SliderExample({ de = false }: StoryProps) {
+  const [value, setValue] = React.useState(40);
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <View style={{ gap: 20 }}>
+      <UI.Slider
+        value={value}
+        onValueChange={setValue}
+        minimumValue={0}
+        maximumValue={100}
+        step={5}
+        accessibilityLabel={t('Intensity', 'Intensität')}
+        valueLabel={`${value}%`}
+        leadingLabel="0%"
+        trailingLabel="100%"
+      />
+      <UI.Text>{value}%</UI.Text>
+      <UI.Slider
+        value={25}
+        onValueChange={() => {}}
+        disabled
+        accessibilityLabel={t('Unavailable slider', 'Nicht verfügbarer Regler')}
+        minimumValue={0}
+        maximumValue={100}
+      />
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <SliderExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `Slider`.
+
+Wichtige Props: `value`, `onValueChange`, `minimumValue`, `maximumValue`, `step`, `disabled`, `onSlidingComplete`, `hapticStep`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.

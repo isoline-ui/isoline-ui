@@ -1,0 +1,82 @@
+---
+title: 'Refresh control'
+description: 'Themed native pull-to-refresh. The browser demo runs the same callback from a visible button because React Native Web has no native pull gesture.'
+---
+
+<ComponentPreview kind="catalog-refresh" />
+
+Themed native pull-to-refresh. The browser demo runs the same callback from a visible button because React Native Web has no native pull gesture.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="RefreshcontrolExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function RefreshExample({ de = false }: StoryProps) {
+  const [refreshing, setRefreshing] = React.useState(false),
+    [count, setCount] = React.useState(0);
+  const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  React.useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
+  const refresh = () => {
+    if (refreshing) return;
+    setRefreshing(true);
+    timer.current = setTimeout(() => {
+      setCount((value) => value + 1);
+      setRefreshing(false);
+    }, 500);
+  };
+  return (
+    <ScrollView
+      style={{ minHeight: 240 }}
+      refreshControl={<UI.RefreshControl refreshing={refreshing} onRefresh={refresh} />}
+    >
+      <UI.Button
+        label={de ? 'Aktualisieren' : 'Refresh'}
+        disabled={refreshing}
+        onPress={refresh}
+      />
+      <UI.Text accessibilityLiveRegion="polite">
+        {de ? `Aktualisierungen: ${count}` : `Refreshes: ${count}`}
+      </UI.Text>
+      <UI.Text>
+        {de
+          ? 'Nativ zum Aktualisieren ziehen. Im Browser denselben Callback per Button auslösen.'
+          : 'Pull to refresh on native. The browser button runs the same callback.'}
+      </UI.Text>
+    </ScrollView>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <RefreshExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `RefreshControl`.
+
+Key props: `refreshing`, `onRefresh`, `tintColor`, `colors`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.

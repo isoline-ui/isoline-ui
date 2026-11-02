@@ -1,0 +1,79 @@
+---
+title: 'Empty state'
+description: 'A shape, icon, title and explanation for an empty collection.'
+---
+
+<ComponentPreview kind="catalog-layout" />
+
+A shape, icon, title and explanation for an empty collection.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="EmptystateExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function LayoutExample({ de = false }: StoryProps) {
+  const [expanded, setExpanded] = React.useState(false),
+    [value, setValue] = React.useState('');
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <UI.KeyboardInsetView>
+      <View style={{ gap: 16 }}>
+        <View>
+          <UI.Text>{t('First row', 'Erste Zeile')}</UI.Text>
+          <UI.RowGap />
+          <UI.Text>{t('Second row', 'Zweite Zeile')}</UI.Text>
+        </View>
+        <UI.Button
+          label={t('Expand details', 'Details aufklappen')}
+          onPress={() => setExpanded((value) => !value)}
+        />
+        <UI.ExpandIndicator expanded={expanded} />
+        <UI.Badge label="3" />
+        <UI.Input
+          accessibilityLabel={t('Example input', 'Beispieleingabe')}
+          value={value}
+          onChangeText={setValue}
+        />
+        <UI.EmptyState
+          icon={UI.BackIcon}
+          shape="cookie"
+          title={t('Nothing here yet', 'Noch keine Einträge')}
+          body={t(
+            'An empty state keeps the next action clear.',
+            'Ein leerer Zustand zeigt die nächste Aktion.',
+          )}
+        />
+      </View>
+    </UI.KeyboardInsetView>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <LayoutExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `EmptyState`.
+
+Key props: `icon`, `shape`, `title`, `body`, `tone`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.

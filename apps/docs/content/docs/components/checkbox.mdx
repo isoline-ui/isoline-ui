@@ -1,0 +1,74 @@
+---
+title: 'Checkbox'
+description: 'Controlled checked, mixed and disabled selection.'
+---
+
+<ComponentPreview kind="catalog-checkbox" />
+
+Controlled checked, mixed and disabled selection.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="CheckboxExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function CheckboxExample({ de = false }: StoryProps) {
+  const [checked, setChecked] = React.useState(false);
+  const [mixed, setMixed] = React.useState<boolean | 'mixed'>('mixed');
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <View style={{ gap: 12 }}>
+      <UI.Checkbox
+        checked={checked}
+        onCheckedChange={setChecked}
+        accessibilityLabel={t('Select item', 'Eintrag auswählen')}
+        label={t('Select item', 'Eintrag auswählen')}
+      />
+      <UI.Checkbox
+        checked={mixed}
+        onCheckedChange={setMixed}
+        accessibilityLabel={t('Mixed selection', 'Teilweise ausgewählt')}
+        label={t('Mixed selection', 'Teilweise ausgewählt')}
+      />
+      <UI.Checkbox
+        checked
+        disabled
+        onCheckedChange={() => {}}
+        accessibilityLabel={t('Unavailable selection', 'Nicht verfügbare Auswahl')}
+        label={t('Unavailable selection', 'Nicht verfügbare Auswahl')}
+      />
+      <UI.Text>
+        {checked ? t('Selected', 'Ausgewählt') : t('Not selected', 'Nicht ausgewählt')}
+      </UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <CheckboxExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `Checkbox`.
+
+Key props: `checked`, `onCheckedChange`, `accessibilityLabel`, `label`, `disabled`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
