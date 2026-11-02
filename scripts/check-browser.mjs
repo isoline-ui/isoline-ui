@@ -54,6 +54,12 @@ async function checkForcedColors(page) {
     .locator('.component-preview iframe')
     .first()
     .evaluate((el) => el.scrollIntoView({ behavior: 'instant', block: 'center' }));
+  // Let the preview finish mounting before changing its media environment.
+  await page
+    .frameLocator('.component-preview iframe')
+    .first()
+    .getByTestId('glass-example-surface')
+    .waitFor({ state: 'visible' });
   await page.emulateMedia({ forcedColors: 'active' });
   await eventually(
     () =>

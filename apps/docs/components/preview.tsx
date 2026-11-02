@@ -149,7 +149,7 @@ export function ComponentPreview({
         title={`${platform === 'ios' ? 'iOS' : 'Android'} – ${de ? 'Interaktive Komponentenvorschau' : 'Interactive component preview'}`}
         src={`${base}/previews/?preview=1&kind=${encodeURIComponent(kind)}&locale=${de ? 'de' : 'en'}`}
         height={height}
-        loading={hero ? 'eager' : 'lazy'}
+        loading="eager"
         onLoad={send}
       />
       <div className="preview-caption">
