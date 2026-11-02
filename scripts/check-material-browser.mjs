@@ -276,17 +276,12 @@ export async function checkMaterials({ page, origin, base, name, eventually }) {
         await eventually(groupGap, '24px');
       }
   // Overlay options share the same material contract; verify their public examples too.
-  const frame = await visit('foundations/materials', 'en', 'ios', 375);
-  // Reuse the same exported runtime with the compact overlay scene. This avoids
-  // WebKit's offscreen iframe scroll limitations in the full component catalogue.
-  await page
-    .locator('.component-preview iframe')
-    .first()
-    .evaluate((el) => {
-      const url = new URL(el.src);
-      url.searchParams.set('kind', 'material-overlays');
-      el.src = url.href;
-    });
+  // Exercise the compact scene through its exported URL, without mutating a
+  // React-owned iframe's src behind the documentation host's back.
+  await page.goto(`${origin}${base}/previews/?preview=1&kind=material-overlays&locale=en`, {
+    waitUntil: 'domcontentloaded',
+  });
+  const frame = page;
   // Pointer dismissal and placement are covered by the existing overlay suite;
   // exercise keyboard activation with the explicit material option here.
   for (const kind of ['dialog', 'sheet', 'panel']) {

@@ -10,24 +10,42 @@ export async function checkCatalog({ page, origin, base, name, eventually }) {
     await page.goto(`${origin}${base}/en/`, { waitUntil: 'networkidle' });
   const frame = () => page.frameLocator('.component-preview iframe').first();
   async function visit(slug, locale = 'en', platform = 'ios', width = 375) {
-    await page.emulateMedia({ forcedColors: 'none', reducedMotion: 'no-preference' });
-    await page.setViewportSize({ width, height: 1000 });
-    await page.evaluate((p) => localStorage.setItem('isoline-preview-platform', p), platform);
-    await page.goto(`${origin}${base}/${locale}/docs/components/${slug}/`, {
-      waitUntil: 'domcontentloaded',
-    });
-    const iframe = page.locator('.component-preview iframe').first();
-    await iframe.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
-    const f = frame();
-    await f.locator(`#preview-root-${platform}`).waitFor();
-    await eventually(
-      () =>
-        f
-          .getByTestId('preview-root')
-          .evaluate((el) => el.children.length > 0 && el.getBoundingClientRect().height > 100),
-      true,
-    );
-    return f;
+    console.log(`${name}: catalog ${locale}/${slug} (${platform})`);
+    try {
+      await page.emulateMedia({ forcedColors: 'none', reducedMotion: 'no-preference' });
+      await page.setViewportSize({ width, height: 1000 });
+      await page.evaluate((p) => localStorage.setItem('isoline-preview-platform', p), platform);
+      await page.goto(`${origin}${base}/${locale}/docs/components/${slug}/`, {
+        waitUntil: 'domcontentloaded',
+      });
+      const iframe = page.locator('.component-preview iframe').first();
+      await iframe.evaluate((el) =>
+        el.scrollIntoView({ block: 'center', behavior: 'instant' }),
+      );
+      const f = frame();
+      await f.locator(`#preview-root-${platform}`).waitFor();
+      await eventually(
+        () =>
+          f
+            .getByTestId('preview-root')
+            .evaluate(
+              (el) => el.children.length > 0 && el.getBoundingClientRect().height > 100,
+            ),
+        true,
+      );
+      return f;
+    } catch (error) {
+      console.error({
+        browser: name,
+        slug,
+        locale,
+        platform,
+        url: page.url(),
+        frames: page.frames().map((frame) => frame.url()),
+      });
+      console.error((await page.content()).slice(0, 2000));
+      throw error;
+    }
   }
   for (const locale of ['en', 'de'])
     for (const slug of pages) {
