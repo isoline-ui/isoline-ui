@@ -30,6 +30,8 @@ try {
     'android/build.gradle',
     'android/src/main/java/isoline/modules/systemcolors/IsolineSystemColorsModule.kt',
     'src/MaterialSurface.ios.tsx',
+    'src/MaterialGroup.ios.tsx',
+    'src/glass-support.ios.ts',
     'dist/index.d.ts',
   ]) {
     assert.ok(

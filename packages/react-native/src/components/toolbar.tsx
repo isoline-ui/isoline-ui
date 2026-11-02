@@ -16,8 +16,10 @@ import Animated, {
 import type { IconProps } from './icons.tsx';
 import { Pressable } from './pressable.tsx';
 import { Text } from './text.tsx';
-import { Surface, useIsolinePlatform, useHaptics, useSurface } from '../provider.tsx';
-import { effects, spatial } from '../motion.ts';
+import { Platform } from 'react-native';
+import { Surface, type MaterialOptions, useIsolinePlatform, useHaptics } from '../provider.tsx';
+import { useReducedMotion } from '../reduced-motion.ts';
+import { spatial } from '../motion.ts';
 import { elevation, useRipple, useThemeColors } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
@@ -57,6 +59,7 @@ const COMPACT_HIT_SLOP = (MINIMUM_TARGET - COMPACT_TOOLBAR_HEIGHT) / 2;
 
 export interface ToolbarItem {
   id: string;
+  disabled?: boolean;
   icon: React.ComponentType<IconProps>;
   label: string;
   onPress: () => void;
@@ -86,7 +89,7 @@ export interface ToolbarItem {
   badge?: number;
 }
 
-export interface ToolbarProps {
+export interface ToolbarProps extends MaterialOptions {
   items: ToolbarItem[];
   children?: React.ReactNode;
   material?: 'auto' | 'glass' | 'solid';
@@ -98,39 +101,54 @@ export interface ToolbarProps {
 }
 
 export function Toolbar(props: ToolbarProps | ToolbarContainerProps) {
-  const Surface = useSurface();
   const colors = useThemeColors();
+  const ios = useIsolinePlatform() === 'ios';
   if (!('items' in props)) return <ContainerToolbar {...props} />;
-  const {items, className, style, compact} = props;
+  const {
+    items,
+    className,
+    style,
+    compact,
+    material = 'auto',
+    glassStyle,
+    tintColor,
+    fallbackColor,
+    interactive = false,
+  } = props;
+  const Root = (Platform.OS === 'web' ? View : Animated.View) as typeof Animated.View;
   return (
-    <Animated.View
+    <Root
+      className={className}
       style={[
-        {
-          height: compact ? COMPACT_TOOLBAR_HEIGHT : TOOLBAR_HEIGHT,
-          elevation: elevation.level2,
-        },
+        { height: compact ? COMPACT_TOOLBAR_HEIGHT : TOOLBAR_HEIGHT, flexDirection: 'row' },
         style,
       ]}
-      className={cn(
-        'flex-row items-center gap-1 overflow-hidden rounded-full',
-        compact ? 'px-3' : 'px-2',
-        className,
-      )}
       accessibilityRole="toolbar"
     >
       <Surface
-        pointerEvents="none"
-        style={{ position: 'absolute', inset: 0 }}
-        fallbackColor={colors.surfaceContainerHigh}
-      />
-      {items.map((item) =>
-        item.prominent ? (
-          <ProminentButton key={item.id} item={item} />
-        ) : (
-          <ToolbarButton key={item.id} item={item} compact={compact} />
-        ),
-      )}
-    </Animated.View>
+        material={ios ? material : 'solid'}
+        glassStyle={glassStyle}
+        tintColor={tintColor}
+        fallbackColor={fallbackColor ?? colors.surfaceContainerHigh}
+        interactive={interactive}
+        style={{
+          height: '100%',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 4,
+          paddingHorizontal: compact ? 12 : 8,
+          borderRadius: compact ? 20 : 32,
+        }}
+      >
+        {items.map((item) =>
+          item.prominent ? (
+            <ProminentButton key={item.id} item={item} />
+          ) : (
+            <ToolbarButton key={item.id} item={item} compact={compact} />
+          ),
+        )}
+      </Surface>
+    </Root>
   );
 }
 
@@ -157,6 +175,7 @@ function ToolbarButton({ item, compact }: { item: ToolbarItem; compact?: boolean
   const colors = useThemeColors();
   const ripple = useRipple();
   const { style, handlers } = usePressScale();
+  const Box = (Platform.OS === 'web' ? View : Animated.View) as typeof Animated.View;
   const Icon = item.icon;
   const iconColor =
     item.color ?? (item.active ? colors.onSecondaryContainer : colors.onSurfaceVariant);
@@ -165,8 +184,13 @@ function ToolbarButton({ item, compact }: { item: ToolbarItem; compact?: boolean
     // An active item is a filled shape, so its ripple has to be clipped to
     // that shape rather than spreading past it the way a borderless one over
     // a bare icon is meant to.
-    <Animated.View style={style} className={cn(item.active && 'overflow-hidden rounded-xl')}>
+    <Box
+      style={Platform.OS === 'web' ? undefined : style}
+      className={cn(item.active && 'overflow-hidden rounded-xl')}
+    >
       <Pressable
+        disabled={item.disabled}
+        style={{ opacity: item.disabled ? 0.4 : 1 }}
         {...handlers}
         onPress={() => {
           selectionHaptic();
@@ -183,7 +207,7 @@ function ToolbarButton({ item, compact }: { item: ToolbarItem; compact?: boolean
         // (Input focus only; a screen reader still reaches them.)
         focusable={!compact}
         accessibilityRole="button"
-        accessibilityState={item.active === undefined ? undefined : { selected: item.active }}
+        accessibilityState={{ selected: item.active, disabled: item.disabled }}
         accessibilityLabel={item.label}
         className={cn(
           'items-center justify-center',
@@ -199,7 +223,7 @@ function ToolbarButton({ item, compact }: { item: ToolbarItem; compact?: boolean
         />
         <Badge count={item.badge} />
       </Pressable>
-    </Animated.View>
+    </Box>
   );
 }
 
@@ -216,11 +240,17 @@ function ProminentButton({ item }: { item: ToolbarItem }) {
   const colors = useThemeColors();
   const ripple = useRipple();
   const { style, handlers } = usePressScale();
+  const Box = (Platform.OS === 'web' ? View : Animated.View) as typeof Animated.View;
   const Icon = item.icon;
 
   return (
-    <Animated.View style={style} className="overflow-hidden rounded-full">
+    <Box
+      style={Platform.OS === 'web' ? undefined : style}
+      className="overflow-hidden rounded-full"
+    >
       <Pressable
+        disabled={item.disabled}
+        style={{ opacity: item.disabled ? 0.4 : 1 }}
         {...handlers}
         onPress={() => {
           impactHaptic('light');
@@ -234,7 +264,7 @@ function ProminentButton({ item }: { item: ToolbarItem }) {
         <Icon size={20} color={colors.onPrimaryContainer} />
         <Text className="text-[15px] font-semibold text-onPrimaryContainer">{item.label}</Text>
       </Pressable>
-    </Animated.View>
+    </Box>
   );
 }
 
@@ -271,6 +301,8 @@ export interface ToolbarAutoHide {
 }
 export function useToolbarAutoHide(travel: number): ToolbarAutoHide {
   const hidden = useSharedValue(0);
+  const [webHidden, setWebHidden] = React.useState(false);
+  const reducedMotion = useReducedMotion();
   // Where the last decision was made, not the last frame: comparing against
   // the previous frame turns any jitter into a flicker.
   const anchor = useSharedValue(0);
@@ -286,7 +318,9 @@ export function useToolbarAutoHide(travel: number): ToolbarAutoHide {
 
       // The first rows are still "the top of the inbox": nothing hides there,
       // however the list is being dragged.
-      hidden.value = delta > 0 && y > TOOLBAR_HEIGHT ? 1 : 0;
+      const away = delta > 0 && y > TOOLBAR_HEIGHT;
+      hidden.value = away ? 1 : 0;
+      if (Platform.OS === 'web') setWebHidden(away);
     },
     [anchor, hidden],
   );
@@ -296,23 +330,46 @@ export function useToolbarAutoHide(travel: number): ToolbarAutoHide {
 
     return {
       transform: [{ translateY: withSpring(away * travel, spatial.default) }],
-      opacity: withSpring(1 - away, effects.default),
+      // Translate the material off-screen; opacity would flatten native glass.
     };
   });
 
-  return { onScroll, style };
+  return {
+    onScroll,
+    style:
+      Platform.OS === 'web'
+        ? ({
+            transform: [{ translateY: webHidden ? travel : 0 }],
+            transitionProperty: 'transform',
+            transitionDuration: reducedMotion ? '0ms' : '180ms',
+          } as ViewStyle)
+        : style,
+  };
 }
 
-export interface ToolbarContainerProps extends ViewProps {
+export interface ToolbarContainerProps extends ViewProps, MaterialOptions {
   /** Floating navigation uses glass on supported iOS when a surface adapter is supplied. */
   material?: 'auto' | 'glass' | 'solid';
 }
-function ContainerToolbar({ material = 'auto', style, className, ...props }: ToolbarContainerProps) {
+function ContainerToolbar({
+  material = 'auto',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive,
+  style,
+  className,
+  ...props
+}: ToolbarContainerProps) {
   const ios = useIsolinePlatform() === 'ios';
   return (
     <Surface
       {...props}
       material={ios ? material : 'solid'}
+      glassStyle={glassStyle}
+      tintColor={tintColor}
+      fallbackColor={fallbackColor}
+      interactive={interactive}
       className={cn('flex-row items-center justify-between gap-3', className)}
       style={[
         {

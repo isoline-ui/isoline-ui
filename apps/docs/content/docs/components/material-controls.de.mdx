@@ -1,0 +1,19 @@
+---
+title: 'Controls mit Material'
+description: 'Glasoptionen für Aktionen, Suche und segmentierte Controls.'
+---
+
+<ComponentPreview kind="material-controls" />
+
+`Button`, `IconButton`, `SearchField` und `ButtonGroup` unterstützen denselben Materialvertrag. Ihre bisherigen soliden Standards bleiben erhalten. Die Vorschau liegt über farbigem Inhalt und erlaubt den direkten Vergleich.
+
+```tsx
+<Button material="auto" glassStyle="regular" label="Speichern" onPress={save} />
+<IconButton material="auto" interactive icon={AddIcon} accessibilityLabel="Hinzufügen" onPress={add} />
+<SearchField material="auto" value={query} onChangeText={setQuery} placeholder="Suchen" accessibilityLabel="Suche" clearAccessibilityLabel="Suche leeren" />
+<ButtonGroup material="auto" value={view} onChange={setView} items={views} />
+```
+
+Stelle die [Materialadapter](/de/docs/foundations/materials) am Provider bereit. `Button` und `IconButton` aktivieren bei Glas standardmäßig Materialinteraktion. Ihre gedrückten und deaktivierten Inhalte ändern sich, ohne die gesamte Glasfläche zu verblassen. Deaktivierte Segmente führen keine Auswahlaktion aus.
+
+`SelectField` akzeptiert dieselben Optionen sowie `menuMaterial` und `disabled`. Optionen können selbst `disabled` sein. Der Picker verwendet eine verankerte, innerhalb des Viewports gehaltene Menüfläche.

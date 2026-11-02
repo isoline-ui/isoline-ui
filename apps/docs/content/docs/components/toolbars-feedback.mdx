@@ -27,3 +27,7 @@ export function SavedNotice({ onUndo }: { onUndo: () => void }) {
 ## Native surfaces
 
 Install the paired optional native package and its Expo glass peer, then pass `surface={MaterialSurface}` to `IsolineProvider`. `TopBar` and `Toolbar` use that surface for their background. On supported iOS it renders glass, with a solid fallback for Reduce Transparency or unsupported systems; Android retains the requested tonal/transparent colour. It does not change app data or navigation. Haptics remain provider callbacks and should honour the user's setting.
+
+## Material options
+
+Suitable controls and overlay surfaces support the shared material contract, including `glassStyle`, `tintColor`, `fallbackColor`, and `interactive`. See [Materials and Liquid Glass](/en/docs/foundations/materials) for defaults, adapters, states, and fallbacks.

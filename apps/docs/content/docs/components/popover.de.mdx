@@ -1,0 +1,46 @@
+---
+title: 'Popover und Kontextmenü'
+description: 'Verankerte Menüs mit Grenzen, deaktivierten Aktionen und soliden Alternativen.'
+---
+
+<ComponentPreview kind="popover" />
+
+`Popover` ist eine kontrollierte überlagerte Fläche. Übergib `visible`, `onClose`, `accessibilityLabel` und entweder `anchorRef` oder ein Rechteck `anchor={{ x, y, width, height }}`. `placement="top"` oder `"bottom"` ist ein Wunsch: Die Fläche wechselt die Seite und wird an die sicheren Bildschirmgrenzen angepasst, wenn Platz fehlt. Lange Inhalte scrollen.
+
+`ContextMenu` verwaltet den Öffnungszustand für seinen Trigger selbst. Aktionen unterstützen `disabled`, `destructive`, `selected`, ein optionales `icon` und `onPress`. Ein Druck oder langer Druck öffnet das Menü. Schließen über Hintergrund, Escape oder Android-Zurück wird unterstützt.
+
+```tsx title="Actions.tsx"
+import { useState } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ContextMenu, IsolineProvider, Text, themes } from '@isoline-ui/react-native';
+import { MaterialSurface } from '@isoline-ui/native';
+
+export function Actions() {
+  const [status, setStatus] = useState('Choose an action');
+  return (
+    <SafeAreaProvider>
+      <IsolineProvider theme={themes.violet.light} surfaceComponent={MaterialSurface}>
+        <ContextMenu
+          accessibilityLabel="Item actions"
+          material="auto"
+          items={[
+            { id: 'rename', label: 'Rename', onPress: () => setStatus('Rename selected') },
+            { id: 'locked', label: 'Unavailable', disabled: true, onPress: () => {} },
+            {
+              id: 'delete',
+              label: 'Delete',
+              destructive: true,
+              onPress: () => setStatus('Delete selected'),
+            },
+          ]}
+        >
+          <Text>More actions</Text>
+        </ContextMenu>
+        <Text>{status}</Text>
+      </IsolineProvider>
+    </SafeAreaProvider>
+  );
+}
+```
+
+Die Menüfläche verwendet standardmäßig `material="auto"`; [Adapter und Alternativen](/de/docs/foundations/materials) gelten auch hier. Ein eigener `Popover` akzeptiert zusätzlich `width`, `style`, `placement` und `onShow`. Bestätigung, Berechtigungen und Navigation bleiben Aufgaben der App. Es handelt sich um ein gemeinsames React-Native-Menü, keinen UIKit-Kontextmenü-Controller.

@@ -1,0 +1,34 @@
+---
+title: 'Tab-Bar'
+description: 'Kontrollierte Navigation mit Auswahl, Badges und Tastaturbedienung.'
+---
+
+<ComponentPreview kind="tab-bar" />
+
+`TabBar` stellt die Navigation dar und meldet über `onChange` die Auswahl. Routen und Bildschirmwechsel bleiben in der App. Einträge enthalten `id`, `label`, optional `icon`, `badge` und `disabled`.
+
+```tsx title="Tabs.tsx"
+import { useState } from 'react';
+import { IsolineProvider, TabBar, themes } from '@isoline-ui/react-native';
+import { MaterialSurface } from '@isoline-ui/native';
+
+export function Tabs() {
+  const [tab, setTab] = useState('home');
+  return (
+    <IsolineProvider theme={themes.violet.light} surfaceComponent={MaterialSurface}>
+      <TabBar
+        value={tab}
+        onChange={setTab}
+        accessibilityLabel="Main navigation"
+        items={[
+          { id: 'home', label: 'Home' },
+          { id: 'search', label: 'Search', badge: 2 },
+        ]}
+        material="auto"
+      />
+    </IsolineProvider>
+  );
+}
+```
+
+Im Web wechseln Pfeiltasten, Home und End zwischen verfügbaren Tabs. Deaktivierte Einträge werden übersprungen. Die ausgewählte Registerkarte ist der Tastatureinstieg. Platziere eine schwebende Tab-Bar selbst oberhalb der Safe Area und halte Platz im Inhalt frei. `style` steuert das Containerlayout; die Materialoptionen sind unter [Materialien](/de/docs/foundations/materials) beschrieben.

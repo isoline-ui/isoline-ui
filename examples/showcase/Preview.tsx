@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { MaterialExamples } from './MaterialExamples';
 import { ScrollView, View } from 'react-native';
 import {
   IsolineProvider,
@@ -27,7 +28,7 @@ import {
   useIsolinePlatform,
   type IsolinePlatform,
 } from '@isoline-ui/react-native';
-import { MaterialSurface } from '@isoline-ui/native';
+import { MaterialSurface, MaterialGroup } from '@isoline-ui/native';
 
 type Config = { platform: IsolinePlatform; theme: 'violet' | 'teal' | 'cyan'; dark: boolean };
 /** Same components as native; only the host and material implementation differ. */
@@ -66,6 +67,7 @@ export function BrowserPreview() {
       theme={themes[config.theme][config.dark ? 'dark' : 'light']}
       platform={config.platform}
       surfaceComponent={MaterialSurface}
+      surfaceGroupComponent={MaterialGroup}
       labels={{ close: de ? 'Schließen' : 'Close' }}
     >
       <PreviewContent kind={kind} de={de} />
@@ -107,6 +109,19 @@ function PreviewContent({ kind, de }: { kind: string; de: boolean }) {
       <Button label={de ? 'Deaktiviert' : 'Disabled'} size="s" disabled />
     </View>
   );
+  if (
+    [
+      'materials',
+      'material-controls',
+      'tab-bar',
+      'surface-group',
+      'popover',
+      'floating-actions',
+      'navigation',
+      'material-overlays',
+    ].includes(kind)
+  )
+    return <MaterialExamples kind={kind} de={de} />;
   if (kind === 'surface') return <GlassSurfacePreview de={de} />;
   if (kind === 'toolbar') return <FloatingToolbarPreview de={de} />;
   return (

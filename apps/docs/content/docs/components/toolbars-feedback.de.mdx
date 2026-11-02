@@ -29,3 +29,7 @@ export function SavedNotice({ onUndo }: { onUndo: () => void }) {
 ## Native Oberflächen
 
 Installiere das passende native Paket und dessen Expo-Glass-Peer. Übergib dann `surface={MaterialSurface}` an den `IsolineProvider`. `TopBar` und `Toolbar` verwenden diese Oberfläche als Hintergrund. Auf unterstütztem iOS erscheint Glas; bei reduzierter Transparenz oder älteren Systemen eine solide Fläche. Android behält die angeforderte getönte oder transparente Farbe. Haptik bleibt ein Provider-Callback, der die Nutzer-Einstellung respektieren sollte.
+
+## Materialoptionen
+
+Die passenden Controls und Overlay-Flächen unterstützen den gemeinsamen Materialvertrag einschließlich `glassStyle`, `tintColor`, `fallbackColor` und `interactive`. Siehe [Materialien und Liquid Glass](/de/docs/foundations/materials) für Standards, Adapter, Zustände und Alternativen.

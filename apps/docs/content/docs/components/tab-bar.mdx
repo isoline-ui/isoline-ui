@@ -1,0 +1,34 @@
+---
+title: 'Tab-Bar'
+description: 'Controlled navigation with selection, badges and keyboard support.'
+---
+
+<ComponentPreview kind="tab-bar" />
+
+`TabBar` renders navigation and reports selection through `onChange`. Routes and screen changes remain in the app. Items contain `id`, `label`, and optional `icon`, `badge`, and `disabled`.
+
+```tsx title="Tabs.tsx"
+import { useState } from 'react';
+import { IsolineProvider, TabBar, themes } from '@isoline-ui/react-native';
+import { MaterialSurface } from '@isoline-ui/native';
+
+export function Tabs() {
+  const [tab, setTab] = useState('home');
+  return (
+    <IsolineProvider theme={themes.violet.light} surfaceComponent={MaterialSurface}>
+      <TabBar
+        value={tab}
+        onChange={setTab}
+        accessibilityLabel="Main navigation"
+        items={[
+          { id: 'home', label: 'Home' },
+          { id: 'search', label: 'Search', badge: 2 },
+        ]}
+        material="auto"
+      />
+    </IsolineProvider>
+  );
+}
+```
+
+On web, arrow keys, Home and End move among enabled tabs. Disabled entries are skipped. The selected tab is the keyboard entry point. Position a floating tab bar above the safe area and reserve content space yourself. `style` controls container layout; see [materials](/en/docs/foundations/materials) for material options.

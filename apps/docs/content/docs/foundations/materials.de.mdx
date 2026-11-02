@@ -1,0 +1,59 @@
+---
+title: 'Materialien und Liquid Glass'
+description: 'Gemeinsame Materialoptionen, native Glasgruppen und lesbare Alternativen.'
+---
+
+<ComponentPreview kind="materials" />
+
+## Adapter einrichten
+
+Das UI-Paket bleibt unabhängig von Expo. Übergib die optionalen Adapter aus `@isoline-ui/native` an den Provider. Ohne Adapter funktionieren die Controls mit soliden Theme-Flächen. `surface` bleibt als älterer Alias für `surfaceComponent` verfügbar.
+
+```tsx title="MaterialRoot.tsx"
+import type { ReactNode } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+import { MaterialSurface, MaterialGroup } from '@isoline-ui/native';
+
+export function MaterialRoot({ children }: { children: ReactNode }) {
+  return (
+    <SafeAreaProvider>
+      <IsolineProvider
+        theme={themes.violet.light}
+        surfaceComponent={MaterialSurface}
+        surfaceGroupComponent={MaterialGroup}
+      >
+        {children}
+      </IsolineProvider>
+    </SafeAreaProvider>
+  );
+}
+```
+
+## Gemeinsamer Materialvertrag
+
+| Prop            | Bedeutung                                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------------------- |
+| `material`      | `auto`, `glass` oder `solid`. Native Geräte folgen ihrer Plattform; Android-Controls bleiben solide. |
+| `glassStyle`    | `regular` oder `clear`. `regular` bleibt der Standard.                                               |
+| `tintColor`     | Optionale Tönung der Glasfläche. Eine deckende Farbe kann den Hintergrund verdecken.                 |
+| `fallbackColor` | Farbe der soliden Alternative.                                                                       |
+| `interactive`   | Native Materialinteraktion; ersetzt keinen `onPress`-Handler.                                        |
+
+Controls wie `Button`, `IconButton`, `FloatingActionButton`, `FabMenu`, `SplitButton`, `SearchField` und `ButtonGroup` behalten standardmäßig ihre solide Darstellung. Mit `material="auto"` oder `material="glass"` verwenden passende iOS-Flächen Glas. `Toolbar` (beide APIs), `NavigationBar`, `TopBar`, `TabBar`, `Popover` und `ContextMenu` fragen standardmäßig das automatische Material an. `SelectField` hält seinen Trigger solide und verwendet für das Menü `menuMaterial="auto"`.
+
+`Dialog`, `BottomSheet`, `PanelSheet`, `MenuSheet` und `Snackbar` bleiben standardmäßig solide; ihre Materialwahl ist explizit. Formulare, Einstellungen, längere Texte und leere Zustände benötigen keine pauschale Glasfläche. Für Menüs von `SplitButton` steuert `menuMaterial` die überlagerte Fläche unabhängig vom Button.
+
+## Zustände und Bewegung
+
+Glasflächen liegen außerhalb des Press-Opacity-Feedbacks ihrer Kinder. Deaktivierte Controls bleiben nicht bedienbar. Die Tab-Leiste animiert ihre Auswahl auf nativen Geräten; Tastatur, ausgewählte und deaktivierte Zustände sind im Web vorhanden. Die Toolbar blendet das Material beim automatischen Verstecken nicht über Opacity aus, sondern bewegt es aus dem Bild.
+
+`SurfaceGroup` mit `gap` verbindet Layoutänderungen mit einem nativen `GlassContainer`; reduzierte Bewegung überspringt die Übergänge. Der Browser animiert Abstände und zeigt separate CSS-Flächen. Er simuliert weder native Verschmelzung noch Brechung. SwiftUI-Matched-Geometry und anwendungsbezogene Navigation gehören nicht zu diesem React-Native-Vertrag.
+
+## Plattformen und Alternativen
+
+Natives Liquid Glass benötigt iOS 26+, verfügbare APIs und deaktivierte reduzierte Transparenz. Die Adapter verwenden sonst solide Flächen. Im Browser kommen CSS-Glas und solide Alternativen bei fehlenden Filtern, erzwungenen Farben oder gemeldeter reduzierter Transparenz zum Einsatz. Zeige die Beispiele über abwechslungsreichem Inhalt; passe nicht die globale Opacity des Glases an.
+
+Die Browser-Vorschauen ersetzen keine Tests auf iOS-Geräten. Prüfe Hell/Dunkel, VoiceOver, größere Schrift, reduzierte Bewegung, reduzierte Transparenz und Tastaturverhalten in deinen tatsächlichen Bildschirmen.
+
+Weiter: [Controls](/de/docs/components/material-controls), [Tab-Bar](/de/docs/components/tab-bar), [Popover und Kontextmenü](/de/docs/components/popover), [Glasgruppen](/de/docs/components/surface-group), [Floating Actions](/de/docs/components/floating-actions).

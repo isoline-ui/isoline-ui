@@ -1,37 +1,97 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { Text } from './text.tsx';
 import { Pressable } from './pressable.tsx';
-import { elevation } from '../provider.tsx';
-export interface SnackbarProps {
+import {
+  Surface,
+  useIsolinePlatform,
+  useThemeColors,
+  elevation,
+  type MaterialOptions,
+} from '../provider.tsx';
+export interface SnackbarProps extends MaterialOptions {
   message: string;
   bottom?: number;
   actionLabel?: string;
   onAction?: () => void;
 }
-/** Visibility, replacement, duration and undo state belong to the caller. */
-export function Snackbar({ message, bottom = 12, actionLabel, onAction }: SnackbarProps) {
+/** Visibility, duration and undo state belong to the caller. Solid is the reading-safe default. */
+export function Snackbar({
+  message,
+  bottom = 12,
+  actionLabel,
+  onAction,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive = false,
+}: SnackbarProps) {
+  const colors = useThemeColors();
+  const glass = useIsolinePlatform() === 'ios' && material !== 'solid';
+  const web = Platform.OS === 'web';
+  const Box = (glass ? Surface : web ? View : Animated.View) as typeof Animated.View;
   return (
-    <View pointerEvents="box-none" className="absolute left-0 right-0 px-4" style={{ bottom }}>
-      <Animated.View
-        entering={FadeInDown.springify().damping(20)}
-        exiting={FadeOutDown.duration(120)}
+    <View
+      pointerEvents="box-none"
+      style={{ position: 'absolute', left: 0, right: 0, paddingHorizontal: 16, bottom }}
+    >
+      <Box
+        {...(glass
+          ? { material, glassStyle, tintColor, fallbackColor, interactive }
+          : !web
+            ? {
+                entering: FadeInDown.springify().damping(20),
+                exiting: FadeOutDown.duration(120),
+              }
+            : {})}
         accessibilityLiveRegion="polite"
-        className="min-h-12 flex-row items-center gap-2 rounded-2xl bg-inverseSurface py-1.5 pl-4 pr-1.5"
-        style={{ elevation: elevation.level3 }}
+        style={{
+          minHeight: 48,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+          borderRadius: 16,
+          paddingVertical: 6,
+          paddingLeft: 16,
+          paddingRight: 6,
+          elevation: elevation.level3,
+          ...(!glass ? { backgroundColor: colors.inverseSurface } : {}),
+        }}
       >
-        <Text className="flex-1 py-2 text-sm text-inverseOnSurface">{message}</Text>
+        <Text
+          style={{
+            flex: 1,
+            fontSize: 14,
+            color: glass ? colors.onSurface : colors.inverseOnSurface,
+          }}
+        >
+          {message}
+        </Text>
         {onAction && actionLabel ? (
           <Pressable
             onPress={onAction}
             accessibilityRole="button"
-            className="h-10 justify-center rounded-full px-3"
+            style={{
+              minHeight: 44,
+              justifyContent: 'center',
+              borderRadius: 22,
+              paddingHorizontal: 12,
+            }}
           >
-            <Text className="text-sm font-bold text-inversePrimary">{actionLabel}</Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: '700',
+                color: glass ? colors.primary : colors.inversePrimary,
+              }}
+            >
+              {actionLabel}
+            </Text>
           </Pressable>
         ) : null}
-      </Animated.View>
+      </Box>
     </View>
   );
 }

@@ -5,3 +5,5 @@ export { useSystemPalette, useSystemTheme } from './hooks.ts';
 export { applySystemPalette } from './theme.ts';
 export { parseSystemPalette, dynamicRoles, PALETTE_TONES } from './dynamic-color.ts';
 export type { SystemPalette, DynamicRoles } from './dynamic-color.ts';
+export { MaterialGroup } from './MaterialGroup';
+export type { MaterialGroupProps } from './material-types.ts';

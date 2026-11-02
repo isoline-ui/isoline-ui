@@ -1,0 +1,53 @@
+---
+title: 'Gruppierte Glasflächen'
+description: 'Nahe Glasflächen nativ verbinden und Abstände bewegungsarm verändern.'
+---
+
+<ComponentPreview kind="surface-group" />
+
+`SurfaceGroup` ist der UI-Vertrag für zusammengehörige Flächen. Der optionale `MaterialGroup`-Adapter verwendet unter unterstütztem iOS den nativen `GlassContainer`. `spacing` bestimmt die Nähe, bei der native Flächen einander beeinflussen; `gap` bestimmt den Layoutabstand. Änderungen von `gap` werden mit `animate={true}` animiert, sofern reduzierte Bewegung nicht aktiv ist.
+
+```tsx title="RelatedActions.tsx"
+import { useState } from 'react';
+import { View } from 'react-native';
+import { Button, IsolineProvider, SurfaceGroup, themes } from '@isoline-ui/react-native';
+import { MaterialSurface, MaterialGroup } from '@isoline-ui/native';
+
+export function RelatedActions() {
+  const [joined, setJoined] = useState(false);
+  return (
+    <IsolineProvider
+      theme={themes.violet.light}
+      surfaceComponent={MaterialSurface}
+      surfaceGroupComponent={MaterialGroup}
+    >
+      <View
+        style={{
+          height: 260,
+          backgroundColor: '#e4d4fa',
+          padding: 20,
+          justifyContent: 'center',
+        }}
+      >
+        <View
+          pointerEvents="none"
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 80,
+            height: 72,
+            backgroundColor: '#7842ae',
+          }}
+        />
+        <SurfaceGroup spacing={28} gap={joined ? 4 : 24} style={{ flexDirection: 'row' }}>
+          <Button material="auto" label="First" size="s" onPress={() => setJoined(!joined)} />
+          <Button material="auto" label="Second" size="s" onPress={() => setJoined(!joined)} />
+        </SurfaceGroup>
+      </View>
+    </IsolineProvider>
+  );
+}
+```
+
+Ohne Adapter bleibt die Layoutgruppe nutzbar. Ältere iOS-Versionen und reduzierte Transparenz zeigen solide Flächen. Browser animieren den Abstand, behalten aber separate CSS-Flächen; native Verschmelzung und Brechung werden nicht nachgebildet. Verwende `animate={false}` für sofortige Layoutänderungen. Beliebige SwiftUI-Matched-Geometry-Übergänge sind kein Teil dieser API.

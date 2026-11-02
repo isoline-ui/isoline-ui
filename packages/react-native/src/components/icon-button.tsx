@@ -12,12 +12,14 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
+import { Surface, type MaterialOptions } from '../provider.tsx';
+import { usesPlatformMaterial } from '../material.ts';
 import { Pressable } from './pressable.tsx';
 import { spatial } from '../motion.ts';
 import { useIsolinePlatform, useRipple, useThemeColors } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
-export interface IconButtonProps {
+export interface IconButtonProps extends MaterialOptions {
   icon: React.ComponentType<{ size?: number; color?: string; fill?: string }>;
   /**
    * Receives the press event, for a button nested inside a pressable row that
@@ -60,8 +62,16 @@ export function IconButton({
   className,
   style,
   disabled,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive = true,
 }: IconButtonProps) {
-  const ios = useIsolinePlatform() === 'ios';
+  const platform = useIsolinePlatform();
+  const ios = platform === 'ios';
+  const materialActive = usesPlatformMaterial(platform, material);
+  const extent = materialActive ? Math.max(size, 44) : size;
   const colors = useThemeColors();
   const ripple = useRipple();
   // The symbol gives a little under the finger, as the ripple spreads round it.
@@ -70,7 +80,7 @@ export function IconButton({
     transform: [{ scale: 1 - pressed.value * 0.14 }],
   }));
 
-  return (
+  const control = (
     <Pressable
       onPress={onPress}
       onPressIn={() => {
@@ -89,7 +99,7 @@ export function IconButton({
         disabled && 'opacity-50',
         className,
       )}
-      style={[{ width: size, height: size }, style]}
+      style={[{ width: extent, height: extent }, !materialActive && style]}
     >
       <Animated.View style={iconStyle}>
         <Icon
@@ -99,5 +109,19 @@ export function IconButton({
         />
       </Animated.View>
     </Pressable>
+  );
+  return materialActive ? (
+    <Surface
+      material={material}
+      glassStyle={glassStyle}
+      tintColor={tintColor}
+      fallbackColor={fallbackColor}
+      interactive={interactive}
+      style={[{ borderRadius: extent / 2 }, style]}
+    >
+      {control}
+    </Surface>
+  ) : (
+    control
   );
 }

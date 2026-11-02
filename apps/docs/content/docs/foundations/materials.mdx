@@ -1,0 +1,59 @@
+---
+title: 'Materials and Liquid Glass'
+description: 'Shared material options, native glass groups and readable fallbacks.'
+---
+
+<ComponentPreview kind="materials" />
+
+## Install the adapters
+
+The UI package remains independent of Expo. Supply optional adapters from `@isoline-ui/native` to the provider. Without adapters, controls work with solid themed surfaces. The older `surface` prop remains an alias for `surfaceComponent`.
+
+```tsx title="MaterialRoot.tsx"
+import type { ReactNode } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { IsolineProvider, themes } from '@isoline-ui/react-native';
+import { MaterialSurface, MaterialGroup } from '@isoline-ui/native';
+
+export function MaterialRoot({ children }: { children: ReactNode }) {
+  return (
+    <SafeAreaProvider>
+      <IsolineProvider
+        theme={themes.violet.light}
+        surfaceComponent={MaterialSurface}
+        surfaceGroupComponent={MaterialGroup}
+      >
+        {children}
+      </IsolineProvider>
+    </SafeAreaProvider>
+  );
+}
+```
+
+## Shared material contract
+
+| Prop            | Meaning                                                                                         |
+| --------------- | ----------------------------------------------------------------------------------------------- |
+| `material`      | `auto`, `glass`, or `solid`. Native devices follow their platform; Android controls stay solid. |
+| `glassStyle`    | `regular` or `clear`. The default remains `regular`.                                            |
+| `tintColor`     | Optional glass tint. An opaque color can cover the backdrop.                                    |
+| `fallbackColor` | Color of the solid alternative.                                                                 |
+| `interactive`   | Native material interaction; does not replace an `onPress` handler.                             |
+
+`Button`, `IconButton`, `FloatingActionButton`, `FabMenu`, `SplitButton`, `SearchField`, and `ButtonGroup` keep their solid appearance by default. Opt into suitable iOS glass surfaces with `material="auto"` or `material="glass"`. Both `Toolbar` APIs, `NavigationBar`, `TopBar`, `TabBar`, `Popover`, and `ContextMenu` default to automatic material. `SelectField` keeps its trigger solid and uses `menuMaterial="auto"` for its menu.
+
+`Dialog`, `BottomSheet`, `PanelSheet`, `MenuSheet`, and `Snackbar` retain solid defaults with explicit material options. Forms, settings, long text, and empty states do not need blanket glass. For `SplitButton`, `menuMaterial` controls the overlay independently of the button.
+
+## States and motion
+
+Glass surfaces stay outside their children's press-opacity feedback. Disabled controls cannot run actions. The tab bar animates selection on native devices and exposes keyboard, selected, and disabled states on web. Toolbar auto-hide translates the material off-screen instead of fading glass opacity.
+
+`SurfaceGroup` with `gap` connects layout changes to a native `GlassContainer`; reduced motion skips transitions. Browsers animate spacing while keeping separate CSS surfaces. They do not simulate native merging or refraction. SwiftUI matched geometry and application routing are not part of this React Native contract.
+
+## Platforms and fallbacks
+
+Native Liquid Glass requires iOS 26+, available APIs, and Reduce Transparency disabled. The adapters otherwise render solid surfaces. Browsers use CSS glass with solid alternatives for missing filters, forced colors, or reported reduced transparency. Place examples above varied content rather than changing the glass container's opacity.
+
+Browser previews do not replace iOS device checks. Test light/dark appearance, VoiceOver, larger text, reduced motion, reduced transparency, and keyboard behavior in actual screens.
+
+Continue with [controls](/en/docs/components/material-controls), [TabBar](/en/docs/components/tab-bar), [popovers and context menus](/en/docs/components/popover), [surface groups](/en/docs/components/surface-group), and [floating actions](/en/docs/components/floating-actions).

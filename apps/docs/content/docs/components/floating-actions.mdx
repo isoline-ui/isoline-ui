@@ -1,0 +1,19 @@
+---
+title: 'Floating Actions'
+description: 'Floating primary actions and split buttons with shared material options.'
+---
+
+<ComponentPreview kind="floating-actions" />
+
+`FloatingActionButton` is the reusable floating primary action with `icon`, `accessibilityLabel`, `onPress`, optional visible `label`, `disabled`, `size` (56/64), `style`, and material options. Placement remains with the screen.
+
+`FabMenu` retains `bottom`, `label`, and `actions` (`id`, `label`, `icon`, `run`). Actions can be disabled or destructive. Existing solid native menus are preserved; iOS glass and browsers use an anchored menu surface.
+
+`SplitButton` combines a primary action with alternatives in `actions`. `menuMaterial` controls menu material independently; `optionsLabel` names its second trigger. Material options apply to the button surfaces and propagate to the menu. The button stays solid by default while its menu uses automatic material.
+
+```tsx
+<FloatingActionButton icon={AddIcon} accessibilityLabel="Create" label="New" onPress={create} material="auto" />
+<SplitButton icon={AddIcon} label="Create" onPress={create} optionsLabel="Create options" actions={actions} material="auto" menuMaterial="auto" />
+```
+
+Routes, permissions, confirmations, and capture logic belong to the app. Shared [material setup](/en/docs/foundations/materials) and [popover bounds](/en/docs/components/popover) apply here too.

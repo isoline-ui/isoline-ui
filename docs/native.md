@@ -13,8 +13,13 @@ literal native/SVG colors derive from the same resolved theme.
 On iOS we reuse Expo's native glass implementation. We do not add a redundant
 Swift implementation. The `.ios.tsx` surface checks native API availability,
 Liquid Glass availability and Reduce Transparency. Other platforms use the
-solid implementation. All components retain their ordinary shared appearance
-unless the consumer explicitly uses a MaterialSurface.
+solid implementation. Register `MaterialSurface` with `surfaceComponent` and
+`MaterialGroup` with `surfaceGroupComponent` on the UI provider. Navigation and
+anchored menus use automatic materials; form/action controls and reading overlays
+keep solid defaults with explicit opt-in. Core UI has no Expo dependency.
+`SurfaceGroup` drives native GlassContainer blending and reduced-motion-aware gap
+transitions. The web adapter approximates blur and animates spacing only.
+See the package README and documentation material guide for the shared APIs.
 
 ## Verification
 

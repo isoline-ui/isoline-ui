@@ -11,12 +11,16 @@ import {
   type RippleColors,
 } from './theme.ts';
 
+import type { MaterialOptions } from './material.ts';
+export type { MaterialOptions } from './material.ts';
 import { resolvePlatform, type IsolinePlatform } from './platform.ts';
 export type { IsolinePlatform } from './platform.ts';
 export { elevation };
-export interface IsolineSurfaceProps extends ViewProps {
-  material?: 'auto' | 'glass' | 'solid';
-  interactive?: boolean;
+export interface IsolineSurfaceProps extends ViewProps, MaterialOptions {}
+export interface IsolineSurfaceGroupProps extends ViewProps {
+  spacing?: number;
+  gap?: number;
+  animate?: boolean;
 }
 export type { ThemeColors, RippleColors };
 export interface IsolineLabels {
@@ -31,16 +35,11 @@ export interface IsolineHaptics {
 }
 
 const noHaptics: IsolineHaptics = { selectionHaptic: () => {}, impactHaptic: () => {} };
-export interface IsolineSurfaceProps extends ViewProps {
-  fallbackColor?: string;
-}
-function SolidSurface({ fallbackColor, style, ...props }: IsolineSurfaceProps) {
-  return <View {...props} style={[{ backgroundColor: fallbackColor }, style]} />;
-}
 
 interface UIContext {
   platform: IsolinePlatform;
   surfaceComponent?: React.ComponentType<IsolineSurfaceProps>;
+  surfaceGroupComponent?: React.ComponentType<IsolineSurfaceGroupProps>;
   theme: IsolineTheme;
   colors: ThemeColors;
   ripple: RippleColors;
@@ -54,6 +53,7 @@ export interface IsolineProviderProps {
   platform?: IsolinePlatform;
   /** Supply MaterialSurface from @isoline-ui/native for native/browser glass. */
   surfaceComponent?: React.ComponentType<IsolineSurfaceProps>;
+  surfaceGroupComponent?: React.ComponentType<IsolineSurfaceGroupProps>;
   theme: IsolineTheme;
   surface?: React.ComponentType<IsolineSurfaceProps>;
   labels?: Partial<IsolineLabels>;
@@ -73,6 +73,7 @@ export function IsolineProvider({
   platform,
   surface,
   surfaceComponent,
+  surfaceGroupComponent,
   labels,
   haptics,
   children,
@@ -85,6 +86,7 @@ export function IsolineProvider({
       theme,
       platform: resolvePlatform(Platform.OS, platform, parent?.platform),
       surfaceComponent: surfaceComponent ?? surface ?? parent?.surfaceComponent,
+      surfaceGroupComponent: surfaceGroupComponent ?? parent?.surfaceGroupComponent,
       colors: resolveThemeColors(theme),
       ripple: rippleColors(theme.scheme),
       labels: {
@@ -97,7 +99,16 @@ export function IsolineProvider({
       },
       haptics: { ...noHaptics, ...parent?.haptics, ...haptics },
     }),
-    [theme, platform, surface, surfaceComponent, labels, haptics, parent],
+    [
+      theme,
+      platform,
+      surface,
+      surfaceComponent,
+      surfaceGroupComponent,
+      labels,
+      haptics,
+      parent,
+    ],
   );
 
   return (
@@ -137,19 +148,54 @@ export function useIsolinePlatform() {
 export function Surface({
   material = 'auto',
   interactive,
+  glassStyle,
+  tintColor,
   fallbackColor,
   style,
   ...props
 }: IsolineSurfaceProps) {
   const { surfaceComponent: Component, colors } = useUI();
   if (Component)
-    return <Component material={material} interactive={interactive} fallbackColor={fallbackColor} style={style} {...props} />;
-  return <View {...props} style={[{ backgroundColor: fallbackColor ?? colors.surfaceContainer }, style]} />;
+    return (
+      <Component
+        material={material}
+        interactive={interactive}
+        glassStyle={glassStyle}
+        tintColor={tintColor}
+        fallbackColor={fallbackColor}
+        style={style}
+        {...props}
+      />
+    );
+  return (
+    <View
+      {...props}
+      style={[{ backgroundColor: fallbackColor ?? colors.surfaceContainer }, style]}
+    />
+  );
 }
 
-export function useSurface() { return Surface; }
+export function useSurface() {
+  return Surface;
+}
 /** Reapply CSS variables inside web modal portals, outside the provider DOM node. */
 export function ThemeScope({ style, ...props }: ViewProps) {
   const { theme } = useUI();
   return <View {...props} style={[vars(theme.tokens), style]} />;
+}
+
+/** Native adapters can merge neighboring glass; solid/web adapters retain layout. */
+export function SurfaceGroup({
+  spacing,
+  gap,
+  animate = true,
+  style,
+  ...props
+}: IsolineSurfaceGroupProps) {
+  const { surfaceGroupComponent: Component } = useUI();
+  return Component ? (
+    <Component spacing={spacing} gap={gap} animate={animate} style={style} {...props} />
+  ) : (
+    <View {...props} style={[gap !== undefined && { gap }, style]} />
+  );
 }

@@ -15,7 +15,13 @@ import Animated, { type AnimatedStyle } from 'react-native-reanimated';
 import { Text } from './text.tsx';
 import { Pressable } from './pressable.tsx';
 import type { Sheet, SheetScrollContextValue } from './sheet-transition.ts';
-import { useLabels, useIsolineTheme, useIsolinePlatform } from '../provider.tsx';
+import {
+  Surface,
+  type MaterialOptions,
+  useLabels,
+  useIsolineTheme,
+  useIsolinePlatform,
+} from '../provider.tsx';
 import { elevation, useThemeColors } from '../provider.tsx';
 
 /** M3's scrim: black at 32%, enough to set the sheet apart, not to hide the photo under it. */
@@ -51,6 +57,11 @@ export function SheetFrame({
   panelStyle,
   children,
   dragFrom,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive = false,
 }: {
   dragFrom?: 'handle' | 'panel';
   sheet: Sheet;
@@ -59,10 +70,11 @@ export function SheetFrame({
   lift?: StyleProp<AnimatedStyle<ViewStyle>>;
   panelStyle?: StyleProp<AnimatedStyle<ViewStyle>>;
   children: React.ReactNode;
-}) {
+} & MaterialOptions) {
   const labels = useLabels();
   const theme = useIsolineTheme();
   const ios = useIsolinePlatform() === 'ios';
+  const glass = ios && material !== 'solid';
   const colors = useThemeColors();
   const shown = useKeptChildren(visible, children);
 
@@ -88,13 +100,40 @@ export function SheetFrame({
             onLayout={sheet.onPanelLayout}
             accessibilityViewIsModal
             onAccessibilityEscape={onClose}
-            className={ios ? 'w-full rounded-t-[20px] bg-surfaceContainerLow px-4 pt-2' : 'w-full rounded-t-4xl bg-surfaceContainerLow px-4 pt-3'}
+            className={
+              ios
+                ? 'w-full rounded-t-[20px] bg-surfaceContainerLow px-4 pt-2'
+                : 'w-full rounded-t-4xl bg-surfaceContainerLow px-4 pt-3'
+            }
             style={[
               sheet.panelStyle,
-              { maxWidth: MAX_WIDTH, elevation: elevation.level1 },
+              {
+                maxWidth: MAX_WIDTH,
+                elevation: elevation.level1,
+                ...(glass ? { backgroundColor: 'transparent' } : {}),
+              },
               panelStyle,
             ]}
           >
+            {glass ? (
+              <Surface
+                material={material}
+                glassStyle={glassStyle}
+                tintColor={tintColor}
+                fallbackColor={fallbackColor}
+                interactive={interactive}
+                pointerEvents="none"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  borderTopLeftRadius: ios ? 20 : 32,
+                  borderTopRightRadius: ios ? 20 : 32,
+                }}
+              />
+            ) : null}
             {/* Below the panel, out of sight until a pull up lifts it off the edge. */}
             <View
               pointerEvents="none"
@@ -116,7 +155,16 @@ export function SheetFrame({
               </Pressable>
             </GestureDetector>
 
-            {ios ? <Pressable onPress={onClose} accessibilityRole="button" accessibilityLabel={labels.close} className="min-h-11 self-end justify-center px-2"><Text style={{color: colors.primary, fontWeight: '600'}}>{labels.close}</Text></Pressable> : null}
+            {ios ? (
+              <Pressable
+                onPress={onClose}
+                accessibilityRole="button"
+                accessibilityLabel={labels.close}
+                className="min-h-11 self-end justify-center px-2"
+              >
+                <Text style={{ color: colors.primary, fontWeight: '600' }}>{labels.close}</Text>
+              </Pressable>
+            ) : null}
             <SheetScrollContext.Provider value={sheet.scrollContext}>
               {shown}
             </SheetScrollContext.Provider>
