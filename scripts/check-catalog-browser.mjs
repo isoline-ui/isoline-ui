@@ -14,7 +14,7 @@ export async function checkCatalog({ page, origin, base, name, eventually }) {
     await page.setViewportSize({ width, height: 1000 });
     await page.evaluate((p) => localStorage.setItem('isoline-preview-platform', p), platform);
     await page.goto(`${origin}${base}/${locale}/docs/components/${slug}/`, {
-      waitUntil: 'networkidle',
+      waitUntil: 'domcontentloaded',
     });
     const iframe = page.locator('.component-preview iframe').first();
     await iframe.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
