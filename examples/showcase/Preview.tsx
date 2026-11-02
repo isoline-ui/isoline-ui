@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { CatalogExamples } from './CatalogExamples';
 import { MaterialExamples } from './MaterialExamples';
 import { ScrollView, View } from 'react-native';
 import {
@@ -70,7 +71,13 @@ export function BrowserPreview() {
       surfaceGroupComponent={MaterialGroup}
       labels={{ close: de ? 'Schließen' : 'Close' }}
     >
-      <PreviewContent kind={kind} de={de} />
+      <View
+        testID="preview-root"
+        nativeID={`preview-root-${config.platform}`}
+        style={{ flex: 1 }}
+      >
+        <PreviewContent kind={kind} de={de} />
+      </View>
     </IsolineProvider>
   );
 }
@@ -109,6 +116,7 @@ function PreviewContent({ kind, de }: { kind: string; de: boolean }) {
       <Button label={de ? 'Deaktiviert' : 'Disabled'} size="s" disabled />
     </View>
   );
+  if (kind.startsWith('catalog-')) return <CatalogExamples kind={kind} de={de} />;
   if (
     [
       'materials',

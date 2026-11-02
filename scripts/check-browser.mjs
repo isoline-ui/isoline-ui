@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { checkCatalog } from './check-catalog-browser.mjs';
 import { checkMaterials } from './check-material-browser.mjs';
 import http from 'node:http';
 import { mkdir, readFile, stat } from 'node:fs/promises';
@@ -96,6 +97,11 @@ try {
         await checkForcedColors(page);
         assert.deepEqual(errors, [], `${name}: forced-colors runtime errors`);
         console.log(`${name}: forced-colors glass fallback passed.`);
+        continue;
+      }
+      if (process.env.ISOLINE_CATALOG_ONLY) {
+        await checkCatalog({ page, origin, base, name, eventually });
+        assert.deepEqual(errors, [], `${name}: catalogue runtime errors`);
         continue;
       }
       // Fresh documents must be correct before any platform toggle or press.
@@ -455,6 +461,8 @@ try {
             });
         }
       await checkMaterials({ page, origin, base, name, eventually });
+      if (!process.env.ISOLINE_SKIP_CATALOG)
+        await checkCatalog({ page, origin, base, name, eventually });
       await checkForcedColors(page);
       assert.deepEqual(errors, [], `${name}: browser runtime errors`);
       console.log(

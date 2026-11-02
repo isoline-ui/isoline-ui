@@ -1,0 +1,66 @@
+---
+title: 'Bildzoom'
+description: 'Bildzoom mit Pinch, Verschieben, Doppeltippen, Schließgeste und zugänglichen Zoom-Aktionen. Ein eigener Bildrenderer ist optional.'
+---
+
+<ComponentPreview kind="catalog-image-viewer" />
+
+Bildzoom mit Pinch, Verschieben, Doppeltippen, Schließgeste und zugänglichen Zoom-Aktionen. Ein eigener Bildrenderer ist optional.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="ImagezoomExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function ImageViewerExample({ de = false }: StoryProps) {
+  const [status, setStatus] = React.useState('');
+  const t = (en: string, german: string) => (de ? german : en);
+  const uri =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAIAAACGBWc0AAAAk0lEQVR4nO3QQQ3AIAAEQbxgow7qAGF9IwJXmKiJe10mWQM7Yz0n0tw70v3eSKmvAQgQIECAAAECBAgQIECAAAECBAgQIECAAAECBKgCqHUs9QUIECBAgAABAgQIECBAgAABAgQIECBAgAABAgSoA6h1LPUFCBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIEqALoByp/Q1kKfgjjAAAAAElFTkSuQmCC';
+  return (
+    <View style={{ height: 380, gap: 12 }}>
+      <UI.ZoomableImage
+        uri={uri}
+        accessibilityLabel={t('Color study', 'Farbstudie')}
+        onTap={() => setStatus(t('Image tapped', 'Bild angetippt'))}
+        onDismiss={() => setStatus(t('Dismiss requested', 'Schließen angefordert'))}
+        labels={{
+          zoomIn: t('Zoom in', 'Vergrößern'),
+          zoomOut: t('Zoom out', 'Verkleinern'),
+          reset: t('Reset zoom', 'Zoom zurücksetzen'),
+          error: t('Image unavailable', 'Bild nicht verfügbar'),
+        }}
+      />
+      <UI.Text>{status}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <ImageViewerExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `ZoomableImage`.
+
+Wichtige Props: `uri`, `accessibilityLabel`, `maximumScale`, `labels`, `onTap`, `onDismiss`, `renderImage`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.

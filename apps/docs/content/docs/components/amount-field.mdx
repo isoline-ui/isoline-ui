@@ -1,0 +1,67 @@
+---
+title: 'Amount field'
+description: 'Keep localized editing text separate from parsed numeric units. Currency, validation, rounding and persistence remain explicit caller decisions.'
+---
+
+<ComponentPreview kind="catalog-amount-field" />
+
+Keep localized editing text separate from parsed numeric units. Currency, validation, rounding and persistence remain explicit caller decisions.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="AmountfieldExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function AmountFieldExample({ de = false }: StoryProps) {
+  const [value, setValue] = React.useState(de ? '12,90' : '12.90');
+  const [amount, setAmount] = React.useState<number | null>(12.9);
+  return (
+    <View style={{ gap: 12 }}>
+      <UI.AmountField
+        label={de ? 'Betrag' : 'Amount'}
+        accessibilityLabel={de ? 'Betrag' : 'Amount'}
+        value={value}
+        onChangeText={setValue}
+        onAmountChange={setAmount}
+        locale={de ? 'de-DE' : 'en-US'}
+        currency="EUR"
+      />
+      <UI.Text accessibilityLiveRegion="polite">
+        {amount === null
+          ? de
+            ? 'Unvollständiger Betrag'
+            : 'Incomplete amount'
+          : String(amount)}
+      </UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <AmountFieldExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `AmountField`.
+
+Key props: `value`, `onChangeText`, `onAmountChange`, `currency`, `locale`, `label`, `error`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.

@@ -1,0 +1,87 @@
+---
+title: 'Datum und Kalender'
+description: 'Kontrollierte gregorianische Daten, Monatsnavigation, markierte Tage und Wochenleiste. Die App liefert Heute, Sprache, Beschriftungen und Terminmarkierungen.'
+---
+
+<ComponentPreview kind="catalog-date-picker" />
+
+Kontrollierte gregorianische Daten, Monatsnavigation, markierte Tage und Wochenleiste. Die App liefert Heute, Sprache, Beschriftungen und Terminmarkierungen.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="DateandcalendarExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function DatePickerExample({ de = false }: StoryProps) {
+  const [date, setDate] = React.useState<string | null>('2026-11-18');
+  const [month, setMonth] = React.useState('2026-11');
+  const t = (en: string, german: string) => (de ? german : en);
+  const labels = {
+    previousMonth: t('Previous month', 'Vorheriger Monat'),
+    nextMonth: t('Next month', 'Nächster Monat'),
+  };
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.DateField
+        label={t('Choose date', 'Datum wählen')}
+        emptyLabel={t('No date', 'Kein Datum')}
+        value={date}
+        onChange={setDate}
+        today="2026-11-18"
+        locale={de ? 'de-DE' : 'en-US'}
+        labels={labels}
+        clearLabel={t('Clear date', 'Datum entfernen')}
+      />
+      <UI.MonthCalendar
+        value={date}
+        onChange={setDate}
+        today="2026-11-18"
+        month={month}
+        onMonthChange={setMonth}
+        minDate="2026-11-01"
+        maxDate="2027-02-28"
+        disabledDates={['2026-11-19']}
+        locale={de ? 'de-DE' : 'en-US'}
+        labels={labels}
+        marks={{ '2026-11-20': { label: t('Two events', 'Zwei Termine'), count: 2 } }}
+      />
+      <UI.WeekStrip
+        startDate="2026-11-16"
+        value={date}
+        onChange={setDate}
+        today="2026-11-18"
+        locale={de ? 'de-DE' : 'en-US'}
+      />
+      <UI.Text accessibilityLiveRegion="polite">{date ?? t('No date', 'Kein Datum')}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <DatePickerExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `DateField`, `DatePickerSheet`, `DayPicker`, `MonthCalendar`, `WeekStrip`.
+
+Wichtige Props: `value`, `onChange`, `today`, `locale`, `labels`, `month`, `onMonthChange`, `minDate`, `maxDate`, `disabledDates`, `marks`, `range`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.

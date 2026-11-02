@@ -1,0 +1,76 @@
+---
+title: 'Banner und Hinweise'
+description: 'Informationen, behebbare Fehler und neutraler Status mit optionaler Aktion und Schließen. Die Statuserkennung liegt in der App.'
+---
+
+<ComponentPreview kind="catalog-banner" />
+
+Informationen, behebbare Fehler und neutraler Status mit optionaler Aktion und Schließen. Die Statuserkennung liegt in der App.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="BannersandnoticesExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function BannerExample({ de = false }: StoryProps) {
+  const [show, setShow] = React.useState(true),
+    [status, setStatus] = React.useState('');
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Banner
+        message={t(
+          'You are offline. Your work stays on this device.',
+          'Du bist offline. Deine Arbeit bleibt auf diesem Gerät.',
+        )}
+      />
+      {show ? (
+        <UI.Banner
+          title={t('Connection failed', 'Verbindung fehlgeschlagen')}
+          message={t('Try connecting again.', 'Versuche die Verbindung erneut.')}
+          tone="error"
+          actionLabel={t('Retry', 'Erneut versuchen')}
+          onAction={() => setStatus(t('Retry selected', 'Erneut versuchen ausgewählt'))}
+          onDismiss={() => setShow(false)}
+          dismissLabel={t('Dismiss notice', 'Hinweis schließen')}
+        />
+      ) : (
+        <UI.Button label={t('Show notice', 'Hinweis anzeigen')} onPress={() => setShow(true)} />
+      )}
+      <UI.InlineNotice
+        tone="info"
+        message={t('An informational notice.', 'Ein informativer Hinweis.')}
+      />
+      <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <BannerExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `Banner`, `InlineNotice`.
+
+Wichtige Props: `message`, `title`, `tone`, `actionLabel`, `onAction`, `onDismiss`, `dismissLabel`, `icon`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.

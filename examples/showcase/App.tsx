@@ -1,4 +1,5 @@
 import './global.css';
+import { CatalogExamples, catalogStories } from './CatalogExamples';
 import { MaterialExamples } from './MaterialExamples';
 import { BrowserPreview } from './Preview';
 import * as React from 'react';
@@ -71,6 +72,7 @@ function Showcase() {
   const [brand, setBrand] = React.useState<Brand>('violet');
   const [scheme, setScheme] = React.useState<ColorScheme>('light');
   const [query, setQuery] = React.useState('');
+  const [catalog, setCatalog] = React.useState<keyof typeof catalogStories>('checkbox');
   const [value, setValue] = React.useState('');
   const [enabled, setEnabled] = React.useState(true);
   const [sheet, setSheet] = React.useState(false);
@@ -164,6 +166,19 @@ function Showcase() {
             <Text>Floating toolbar</Text>
             <Button label="Add" size="s" onPress={() => setStatus('Added from toolbar.')} />
           </Toolbar>
+        </View>
+        <View style={{ height: 780, gap: 12 }}>
+          <Text variant="heading">Component catalogue</Text>
+          <SelectField
+            value={catalog}
+            onChange={setCatalog}
+            accessibilityLabel="Preview component"
+            options={Object.keys(catalogStories).map((id) => ({
+              id: id as keyof typeof catalogStories,
+              label: id,
+            }))}
+          />
+          <CatalogExamples kind={'catalog-' + catalog} />
         </View>
         <View style={{ height: 1000 }}>
           <MaterialExamples />

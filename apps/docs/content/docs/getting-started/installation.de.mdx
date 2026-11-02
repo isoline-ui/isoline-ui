@@ -3,6 +3,23 @@ title: 'Installation'
 description: 'Installiere die aktuelle Version und binde sie in eine Expo-App ein.'
 ---
 
+## Erweiterter Komponenten-Katalog
+
+Checkbox, Slider, Avatar, Kalender, Zeit-/Farbauswahl und die weiteren neuen Komponenten gehören zum Entwicklungsstand **0.1.0-alpha.3**. Die veröffentlichte Alpha.2 enthält sie noch nicht. Baue die beiden Pakete aus demselben geprüften Quellstand und installiere die erzeugten Archive gemeinsam; ein npm-Release ist dafür nicht nötig.
+
+```sh
+npm ci --ignore-scripts
+npm run pack
+```
+
+Installiere anschließend die erzeugten Archive in deiner App:
+
+```sh
+npm install /path/to/isoline-ui-react-native-0.1.0-alpha.3.tgz /path/to/isoline-ui-native-0.1.0-alpha.3.tgz
+```
+
+Die folgende Alpha.2-URL bleibt der bisherige Release-Stand. Verwende für den erweiterten Katalog die zusammengehörigen Alpha.3-Archive.
+
 ## Bevor du beginnst
 
 Verwende eine App mit Expo SDK **57 oder 58** und React Native **0.86 oder 0.88**. Wenn du NativeWind 4 bereits nutzt, behalte deine Einrichtung und ergänze die folgenden Änderungen. Übernimm keine fremden Abhängigkeitsversionen ungeprüft.

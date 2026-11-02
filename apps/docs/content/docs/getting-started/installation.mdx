@@ -3,6 +3,23 @@ title: 'Installation'
 description: 'Install the current release and connect it to an Expo app.'
 ---
 
+## Expanded component catalogue
+
+Checkbox, slider, avatar, calendars, time/color pickers and the other new components are in the **0.1.0-alpha.3 development source**. The published alpha.2 archives do not include them. Build both packages from the same reviewed source and install their generated archives together; no npm publication is required.
+
+```sh
+npm ci --ignore-scripts
+npm run pack
+```
+
+Then install the generated archives into your app:
+
+```sh
+npm install /path/to/isoline-ui-react-native-0.1.0-alpha.3.tgz /path/to/isoline-ui-native-0.1.0-alpha.3.tgz
+```
+
+The alpha.2 URL below remains the previous release. Use the paired alpha.3 archives for the expanded catalogue.
+
 ## Before you start
 
 Use an Expo SDK **57 or 58** app with React Native **0.86 or 0.88**. If you already use NativeWind 4, keep your existing setup and merge the changes below. Do not replace your app's dependency versions with those from an unrelated example.

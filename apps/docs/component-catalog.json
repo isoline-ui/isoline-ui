@@ -1,0 +1,288 @@
+[
+  {
+    "slug": "checkbox",
+    "story": "checkbox",
+    "exports": [
+      "Checkbox"
+    ],
+    "title": "Checkbox",
+    "titleDe": "Checkbox",
+    "description": "Controlled checked, mixed and disabled selection.",
+    "descriptionDe": "Kontrollierte Auswahl mit aktivem, gemischtem und deaktiviertem Zustand.",
+    "props": "checked;onCheckedChange;accessibilityLabel;label;disabled"
+  },
+  {
+    "slug": "avatar",
+    "story": "avatar",
+    "exports": [
+      "Avatar"
+    ],
+    "title": "Avatar",
+    "titleDe": "Avatar",
+    "description": "Present an image, initials and a badge without contact or network dependencies.",
+    "descriptionDe": "Bild, Initialen und Badge ohne Kontakt- oder Netzwerkabhängigkeiten darstellen.",
+    "props": "initials;source;renderImage;size;accent;badge;accessibilityLabel"
+  },
+  {
+    "slug": "slider",
+    "story": "slider",
+    "exports": [
+      "Slider"
+    ],
+    "title": "Slider",
+    "titleDe": "Slider",
+    "description": "An adjustable numeric value with pointer, keyboard and accessibility actions.",
+    "descriptionDe": "Ein numerischer Wert mit Zeiger-, Tastatur- und barrierefreier Bedienung.",
+    "props": "value;onValueChange;minimumValue;maximumValue;step;disabled;onSlidingComplete;hapticStep"
+  },
+  {
+    "slug": "action-chip",
+    "story": "action-chip",
+    "exports": [
+      "ActionChip"
+    ],
+    "title": "Action Chip",
+    "titleDe": "Action Chip",
+    "description": "A semantic action chip for short actions, separate from filter selection.",
+    "descriptionDe": "Ein semantischer Aktions-Chip für kurze Aktionen, getrennt von Filterauswahl.",
+    "props": "label;icon;tone;onPress;disabled;material"
+  },
+  {
+    "slug": "date-picker",
+    "story": "date-picker",
+    "exports": [
+      "DateField",
+      "DatePickerSheet",
+      "DayPicker",
+      "MonthCalendar",
+      "WeekStrip"
+    ],
+    "title": "Date and calendar",
+    "titleDe": "Datum und Kalender",
+    "description": "Controlled Gregorian dates, month navigation, marked days and a week strip. The app supplies today, locale, labels and agenda marks.",
+    "descriptionDe": "Kontrollierte gregorianische Daten, Monatsnavigation, markierte Tage und Wochenleiste. Die App liefert Heute, Sprache, Beschriftungen und Terminmarkierungen.",
+    "props": "value;onChange;today;locale;labels;month;onMonthChange;minDate;maxDate;disabledDates;marks;range"
+  },
+  {
+    "slug": "time-picker",
+    "story": "time-picker",
+    "exports": [
+      "TimeField",
+      "TimePickerSheet",
+      "TimeGrid",
+      "TimeChips"
+    ],
+    "title": "Time selection",
+    "titleDe": "Zeitauswahl",
+    "description": "Choose a 24-hour local time, keep off-grid minutes and supply your own presets. A sheet can keep a draft until confirmation.",
+    "descriptionDe": "Eine lokale Uhrzeit im 24-Stunden-Format wählen, Minuten außerhalb des Rasters erhalten und eigene Vorgaben liefern. Ein Sheet kann bis zur Bestätigung einen Entwurf halten.",
+    "props": "value;onChange;hourLabel;minuteLabel;minuteStep;presets;onConfirm;onClear"
+  },
+  {
+    "slug": "color-picker",
+    "story": "color-picker",
+    "exports": [
+      "ColorSwatchPicker",
+      "ColorPickerSheet"
+    ],
+    "title": "Color swatches",
+    "titleDe": "Farbauswahl",
+    "description": "An accessible palette with selected and disabled swatches and a sheet presentation. The app supplies colors and names.",
+    "descriptionDe": "Eine barrierefreie Palette mit ausgewählten und deaktivierten Farben sowie einer Sheet-Darstellung. Die App liefert Farben und Namen.",
+    "props": "value;onChange;swatches;accessibilityLabel;visible;onClose;title"
+  },
+  {
+    "slug": "amount-field",
+    "story": "amount-field",
+    "exports": [
+      "AmountField"
+    ],
+    "title": "Amount field",
+    "titleDe": "Betragsfeld",
+    "description": "Keep localized editing text separate from parsed numeric units. Currency, validation, rounding and persistence remain explicit caller decisions.",
+    "descriptionDe": "Lokalen Eingabetext von geparsten numerischen Einheiten trennen. Währung, Validierung, Rundung und Speicherung bleiben explizite Entscheidungen der App.",
+    "props": "value;onChangeText;onAmountChange;currency;locale;label;error"
+  },
+  {
+    "slug": "banner",
+    "story": "banner",
+    "exports": [
+      "Banner",
+      "InlineNotice"
+    ],
+    "title": "Banners and notices",
+    "titleDe": "Banner und Hinweise",
+    "description": "Inline information, recoverable errors and neutral status with optional action and dismissal. Status detection belongs to the app.",
+    "descriptionDe": "Informationen, behebbare Fehler und neutraler Status mit optionaler Aktion und Schließen. Die Statuserkennung liegt in der App.",
+    "props": "message;title;tone;actionLabel;onAction;onDismiss;dismissLabel;icon"
+  },
+  {
+    "slug": "undo-bar",
+    "story": "undo-bar",
+    "exports": [
+      "UndoBar"
+    ],
+    "title": "Undo feedback",
+    "titleDe": "Rückgängig-Leiste",
+    "description": "Present remaining undo time, pause on hold, collapse and dismiss. The app owns the queue, deadline and actual undo operation.",
+    "descriptionDe": "Verbleibende Rückgängig-Zeit zeigen, beim Halten pausieren, einklappen und schließen. Warteschlange, Frist und Rückgängig-Aktion gehören der App.",
+    "props": "remainingMs;totalMs;paused;onPause;onResume;collapsed;onExpand;onUndo;onDismiss;message;actionLabel;dismissLabel;progress;showDismissButton"
+  },
+  {
+    "slug": "image-viewer",
+    "story": "image-viewer",
+    "exports": [
+      "ZoomableImage"
+    ],
+    "title": "Image zoom",
+    "titleDe": "Bildzoom",
+    "description": "Contained image zoom with pinch, pan, double tap, dismiss gesture and accessible zoom controls. A custom image renderer is optional.",
+    "descriptionDe": "Bildzoom mit Pinch, Verschieben, Doppeltippen, Schließgeste und zugänglichen Zoom-Aktionen. Ein eigener Bildrenderer ist optional.",
+    "props": "uri;accessibilityLabel;maximumScale;labels;onTap;onDismiss;renderImage"
+  },
+  {
+    "slug": "list-controls",
+    "story": "list-controls",
+    "exports": [
+      "SelectionHeader",
+      "ListSectionHeader",
+      "JumpToTopPill"
+    ],
+    "title": "List controls",
+    "titleDe": "Listen-Steuerelemente",
+    "description": "Selection, section headings and a return-to-top action with app-supplied labels and callbacks.",
+    "descriptionDe": "Auswahl, Abschnittsüberschriften und Nach-oben-Aktion mit Beschriftungen und Callbacks aus der App.",
+    "props": "count;countLabel;allSelected;onClear;onToggleAll;title;label;onPress"
+  },
+  {
+    "slug": "swipeable-row",
+    "story": "swipeable-row",
+    "exports": [
+      "SwipeableRow"
+    ],
+    "title": "Swipeable row",
+    "titleDe": "Wischbare Zeile",
+    "description": "Reveal row actions on native. A visible action button provides keyboard, screen-reader and browser access. Disabled actions cannot execute.",
+    "descriptionDe": "Zeilenaktionen nativ durch Wischen öffnen. Ein sichtbarer Aktions-Button ermöglicht Tastatur-, Screenreader- und Browserbedienung. Deaktivierte Aktionen werden nicht ausgeführt.",
+    "props": "children;startActions;endActions;actionsLabel;accessibilityLabel;disabled;onSwipeStart;onSwipeEnd"
+  },
+  {
+    "slug": "settings-layout",
+    "story": "settings-layout",
+    "exports": [
+      "SettingsScreenLayout",
+      "SettingsRow"
+    ],
+    "title": "Settings screen layout",
+    "titleDe": "Einstellungs-Bildschirm",
+    "description": "A back row, title, safe-area scroll container and overlays outside scrolling content. Navigation is supplied by onBack.",
+    "descriptionDe": "Zurück-Zeile, Titel, scrollender Inhalt mit sicheren Abständen und Overlays außerhalb des Scrollbereichs. Navigation kommt über onBack.",
+    "props": "title;caption;onBack;backLabel;children;overlay;scrollProps"
+  },
+  {
+    "slug": "settings-list",
+    "story": "settings-list",
+    "exports": [
+      "SettingsSection",
+      "SettingsGroup",
+      "SettingsNavRow",
+      "SettingsChoiceRow",
+      "SettingsSwitchRow",
+      "SettingsSelectRow",
+      "SettingsCard"
+    ],
+    "title": "Settings rows and groups",
+    "titleDe": "Einstellungszeilen und Gruppen",
+    "description": "Compose navigation, choice, switch, picker and custom-card settings from shared rows.",
+    "descriptionDe": "Navigation, Auswahl, Schalter, Picker und eigene Karten aus gemeinsamen Einstellungszeilen zusammensetzen.",
+    "props": "label;description;value;onChange;selected;onPress;children"
+  },
+  {
+    "slug": "badge",
+    "story": "layout",
+    "exports": [
+      "Badge"
+    ],
+    "title": "Badge",
+    "titleDe": "Badge",
+    "description": "Small semantic labels for metadata. Supply the label and optional tint.",
+    "descriptionDe": "Kleine semantische Beschriftungen für Metadaten mit optionaler Farbe.",
+    "props": "label;color;className"
+  },
+  {
+    "slug": "empty-state",
+    "story": "layout",
+    "exports": [
+      "EmptyState"
+    ],
+    "title": "Empty state",
+    "titleDe": "Leerer Zustand",
+    "description": "A shape, icon, title and explanation for an empty collection.",
+    "descriptionDe": "Form, Symbol, Titel und Erklärung für eine leere Sammlung.",
+    "props": "icon;shape;title;body;tone"
+  },
+  {
+    "slug": "refresh-control",
+    "story": "refresh",
+    "exports": [
+      "RefreshControl"
+    ],
+    "title": "Refresh control",
+    "titleDe": "Aktualisierung",
+    "description": "Themed native pull-to-refresh. The browser demo runs the same callback from a visible button because React Native Web has no native pull gesture.",
+    "descriptionDe": "Native Aktualisierung durch Ziehen mit Theme-Farben. Die Browser-Demo löst denselben Callback per Button aus, da React Native Web keine native Ziehgeste anbietet.",
+    "props": "refreshing;onRefresh;tintColor;colors"
+  },
+  {
+    "slug": "keyboard-inset-view",
+    "story": "layout",
+    "exports": [
+      "KeyboardInsetView"
+    ],
+    "title": "Keyboard insets",
+    "titleDe": "Tastatur-Abstände",
+    "description": "Give a native form the space required by the keyboard. The browser preview shows the form; device keyboard placement requires a native build.",
+    "descriptionDe": "Einem nativen Formular den Platz der Tastatur geben. Die Browser-Vorschau zeigt das Formular; die Tastaturposition erfordert einen nativen Build.",
+    "props": "children;style"
+  },
+  {
+    "slug": "input",
+    "story": "layout",
+    "exports": [
+      "Input"
+    ],
+    "title": "Input",
+    "titleDe": "Eingabe",
+    "description": "A basic input with labels, hints, errors and optional password visibility.",
+    "descriptionDe": "Ein einfaches Eingabefeld mit Beschriftung, Hinweis, Fehler und optionaler Passwortsichtbarkeit.",
+    "props": "value;onChangeText;label;hint;error;secureTextEntry"
+  },
+  {
+    "slug": "navigation-bars",
+    "story": "feedback",
+    "exports": [
+      "NavigationBar",
+      "TopBar",
+      "BackButton",
+      "BackIcon",
+      "ScreenTitle"
+    ],
+    "title": "Navigation bars",
+    "titleDe": "Navigationsleisten",
+    "description": "Shared back actions, titles and navigation accessories. Routing remains app-owned.",
+    "descriptionDe": "Gemeinsame Zurück-Aktionen, Titel und Navigationsaktionen. Routing bleibt Aufgabe der App.",
+    "props": "title;leading;trailing;center;onBack;onPress;material"
+  },
+  {
+    "slug": "snackbar",
+    "story": "feedback",
+    "exports": [
+      "Snackbar"
+    ],
+    "title": "Snackbar",
+    "titleDe": "Snackbar",
+    "description": "A concise feedback message and optional action. Visibility and duration belong to the app.",
+    "descriptionDe": "Eine kurze Rückmeldung mit optionaler Aktion. Sichtbarkeit und Dauer gehören der App.",
+    "props": "message;actionLabel;onAction;bottom;material"
+  }
+]

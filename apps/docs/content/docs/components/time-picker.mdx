@@ -1,0 +1,77 @@
+---
+title: 'Time selection'
+description: 'Choose a 24-hour local time, keep off-grid minutes and supply your own presets. A sheet can keep a draft until confirmation.'
+---
+
+<ComponentPreview kind="catalog-time-picker" />
+
+Choose a 24-hour local time, keep off-grid minutes and supply your own presets. A sheet can keep a draft until confirmation.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="TimeselectionExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function TimePickerExample({ de = false }: StoryProps) {
+  const [time, setTime] = React.useState<string | null>('09:00');
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.TimeField
+        label={t('Choose time', 'Uhrzeit wählen')}
+        emptyLabel={t('No time', 'Keine Uhrzeit')}
+        value={time}
+        onChange={setTime}
+        hourLabel={t('Hour', 'Stunde')}
+        minuteLabel={t('Minute', 'Minute')}
+        confirmLabel={t('Done', 'Fertig')}
+        clearLabel={t('Clear time', 'Uhrzeit entfernen')}
+      />
+      <UI.TimeGrid
+        value={time}
+        onChange={setTime}
+        hourLabel={t('Hour', 'Stunde')}
+        minuteLabel={t('Minute', 'Minute')}
+        minuteStep={15}
+      />
+      <UI.TimeChips
+        value={time}
+        onChange={setTime}
+        options={[
+          { value: '09:00', label: t('Morning', 'Morgens') },
+          { value: '19:00', label: t('Evening', 'Abends') },
+        ]}
+      />
+      <UI.Text accessibilityLiveRegion="polite">{time ?? '—'}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <TimePickerExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `TimeField`, `TimePickerSheet`, `TimeGrid`, `TimeChips`.
+
+Key props: `value`, `onChange`, `hourLabel`, `minuteLabel`, `minuteStep`, `presets`, `onConfirm`, `onClear`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.

@@ -1,0 +1,114 @@
+---
+title: 'Rückgängig-Leiste'
+description: 'Verbleibende Rückgängig-Zeit zeigen, beim Halten pausieren, einklappen und schließen. Warteschlange, Frist und Rückgängig-Aktion gehören der App.'
+---
+
+<ComponentPreview kind="catalog-undo-bar" />
+
+Verbleibende Rückgängig-Zeit zeigen, beim Halten pausieren, einklappen und schließen. Warteschlange, Frist und Rückgängig-Aktion gehören der App.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="UndofeedbackExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function UndoBarExample({ de = false }: StoryProps) {
+  const [remaining, setRemaining] = React.useState(10000),
+    [paused, setPaused] = React.useState(false),
+    [collapsed, setCollapsed] = React.useState(false),
+    [visible, setVisible] = React.useState(true),
+    [status, setStatus] = React.useState('');
+  const t = (en: string, german: string) => (de ? german : en);
+  React.useEffect(() => {
+    if (!visible || paused) return;
+    const timer = setInterval(() => setRemaining((value) => Math.max(0, value - 100)), 100);
+    return () => clearInterval(timer);
+  }, [visible, paused]);
+  React.useEffect(() => {
+    if (remaining === 0) {
+      setVisible(false);
+      setStatus(t('Expired', 'Abgelaufen'));
+    }
+  }, [remaining]);
+  return (
+    <View style={{ gap: 12 }}>
+      {visible ? (
+        <UI.UndoBar
+          message={t('Item removed', 'Eintrag entfernt')}
+          actionLabel={t('Undo', 'Rückgängig')}
+          dismissLabel={t('Dismiss undo', 'Rückgängig schließen')}
+          remainingMs={remaining}
+          totalMs={10000}
+          paused={paused}
+          onPause={() => setPaused(true)}
+          onResume={() => setPaused(false)}
+          collapsed={collapsed}
+          onExpand={() => setCollapsed(false)}
+          onUndo={() => {
+            setVisible(false);
+            setStatus(t('Restored', 'Wiederhergestellt'));
+          }}
+          onDismiss={() => {
+            setVisible(false);
+            setStatus(t('Dismissed', 'Geschlossen'));
+          }}
+        />
+      ) : null}
+      <UI.Button
+        label={
+          paused
+            ? t('Resume countdown', 'Countdown fortsetzen')
+            : t('Pause countdown', 'Countdown pausieren')
+        }
+        variant="tonal"
+        onPress={() => setPaused((value) => !value)}
+      />
+      <UI.Button
+        label={t('Collapse undo', 'Rückgängig einklappen')}
+        variant="tonal"
+        onPress={() => setCollapsed(true)}
+      />
+      <UI.Button
+        label={t('Restart example', 'Beispiel neu starten')}
+        variant="ghost"
+        onPress={() => {
+          setRemaining(10000);
+          setVisible(true);
+          setPaused(false);
+          setCollapsed(false);
+          setStatus('');
+        }}
+      />
+      <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <UndoBarExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `UndoBar`.
+
+Wichtige Props: `remainingMs`, `totalMs`, `paused`, `onPause`, `onResume`, `collapsed`, `onExpand`, `onUndo`, `onDismiss`, `message`, `actionLabel`, `dismissLabel`, `progress`, `showDismissButton`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.

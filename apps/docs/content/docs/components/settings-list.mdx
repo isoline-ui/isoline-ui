@@ -1,0 +1,90 @@
+---
+title: 'Settings rows and groups'
+description: 'Compose navigation, choice, switch, picker and custom-card settings from shared rows.'
+---
+
+<ComponentPreview kind="catalog-settings-list" />
+
+Compose navigation, choice, switch, picker and custom-card settings from shared rows.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="SettingsrowsandgroupsExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function SettingsListExample({ de = false }: StoryProps) {
+  const [enabled, setEnabled] = React.useState(true),
+    [selected, setSelected] = React.useState(false),
+    [density, setDensity] = React.useState('comfortable'),
+    [status, setStatus] = React.useState('');
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.SettingsSection title={t('Preferences', 'Voreinstellungen')}>
+        <UI.SettingsGroup>
+          <UI.SettingsNavRow
+            label={t('Open details', 'Details öffnen')}
+            onPress={() => setStatus(t('Details selected', 'Details ausgewählt'))}
+          />
+          <UI.SettingsChoiceRow
+            label={t('Use this option', 'Diese Option verwenden')}
+            selected={selected}
+            onPress={() => setSelected((value) => !value)}
+          />
+          <UI.SettingsSwitchRow
+            label={t('Enable notifications', 'Benachrichtigungen aktivieren')}
+            value={enabled}
+            onValueChange={setEnabled}
+          />
+          <UI.SettingsSelectRow
+            label={t('Density', 'Dichte')}
+            value={density}
+            onChange={setDensity}
+            options={[
+              { id: 'comfortable', label: t('Comfortable', 'Komfortabel') },
+              { id: 'compact', label: t('Compact', 'Kompakt') },
+            ]}
+          />
+        </UI.SettingsGroup>
+      </UI.SettingsSection>
+      <UI.SettingsCard>
+        <UI.Text>
+          {t(
+            'Custom content can use the same card surface.',
+            'Eigene Inhalte können dieselbe Kartenfläche verwenden.',
+          )}
+        </UI.Text>
+      </UI.SettingsCard>
+      <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <SettingsListExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `SettingsSection`, `SettingsGroup`, `SettingsNavRow`, `SettingsChoiceRow`, `SettingsSwitchRow`, `SettingsSelectRow`, `SettingsCard`.
+
+Key props: `label`, `description`, `value`, `onChange`, `selected`, `onPress`, `children`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
