@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { checkCatalog } from './check-catalog-browser.mjs';
 import { checkMaterials } from './check-material-browser.mjs';
 import { checkFocus } from './check-focus-browser.mjs';
+import { checkOverlayPasswords } from './check-overlay-password-browser.mjs';
 import http from 'node:http';
 import { mkdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
@@ -95,6 +96,10 @@ try {
         errors.push(error.message);
         if (process.env.ISOLINE_BROWSER) console.error(error.stack);
       });
+      if (process.env.ISOLINE_OVERLAY_PASSWORD_ONLY) {
+        await checkOverlayPasswords({ browser, origin, base, name, eventually });
+        continue;
+      }
       if (process.env.ISOLINE_FOCUS_ONLY) {
         await checkFocus({ browser, origin, base, name, eventually });
         continue;
@@ -472,6 +477,7 @@ try {
             });
         }
       await checkFocus({ browser, origin, base, name, eventually });
+      await checkOverlayPasswords({ browser, origin, base, name, eventually });
       await checkMaterials({ page, origin, base, name, eventually });
       if (!process.env.ISOLINE_SKIP_CATALOG)
         await checkCatalog({ page, origin, base, name, eventually });

@@ -124,6 +124,7 @@ export function SplitButton({
         glassStyle={glassStyle}
         tintColor={tintColor}
         fallbackColor={fallbackColor}
+        interactive={interactive}
       >
         <ContextMenuRows items={actions} onClose={close} />
       </Popover>

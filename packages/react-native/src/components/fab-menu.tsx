@@ -20,6 +20,8 @@ export interface FabMenuAction {
   destructive?: boolean;
 }
 export interface FabMenuProps extends MaterialOptions {
+  /** Material of the anchored menu, independent of the floating trigger. */
+  menuMaterial?: MaterialOptions['material'];
   bottom: number;
   label: string;
   actions: FabMenuAction[];
@@ -31,6 +33,7 @@ export function FabMenu({
   label,
   actions,
   material = 'solid',
+  menuMaterial = 'auto',
   glassStyle,
   tintColor,
   fallbackColor,
@@ -71,10 +74,11 @@ export function FabMenu({
         anchorRef={anchor}
         placement="top"
         accessibilityLabel={label}
-        material="auto"
+        material={menuMaterial}
         glassStyle={glassStyle}
         tintColor={tintColor}
         fallbackColor={fallbackColor}
+        interactive={interactive}
       >
         <ContextMenuRows
           items={actions.map(({ run, ...action }) => ({ ...action, onPress: run }))}

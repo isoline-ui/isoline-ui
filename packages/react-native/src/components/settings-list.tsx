@@ -7,7 +7,7 @@ import { RowGap } from './row-gap.tsx';
 import { SelectField, type SelectOption } from './select-field.tsx';
 import { Switch } from './switch.tsx';
 import { Text } from './text.tsx';
-import { useRipple, useThemeColors } from '../provider.tsx';
+import { useRipple, useThemeColors, type MaterialOptions } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 /**
@@ -256,7 +256,9 @@ export function SettingsSwitchRow({
   );
 }
 
-export interface SettingsSelectRowProps<T extends string> {
+export interface SettingsSelectRowProps<T extends string> extends MaterialOptions {
+  menuMaterial?: MaterialOptions['material'];
+  disabled?: boolean;
   icon?: SettingsIcon;
   label: string;
   description?: string;
@@ -274,11 +276,13 @@ export function SettingsSelectRow<T extends string>({
   options,
   onChange,
   accessibilityLabel,
+  ...materialOptions
 }: SettingsSelectRowProps<T>) {
   return (
     <View className="flex-row items-center gap-3 px-4 py-3.5">
       <RowLabel icon={icon} label={label} description={description} />
       <SelectField
+        {...materialOptions}
         value={value}
         options={options}
         onChange={onChange}

@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { TextInput, View } from 'react-native';
 
-import { Eye, EyeOff } from './icons.tsx';
-import { Pressable } from './pressable.tsx';
+import { PasswordVisibility } from './password-visibility.tsx';
 import { Text } from './text.tsx';
-import { useLabels } from '../provider.tsx';
-import { useRipple, useThemeColors } from '../provider.tsx';
+import { useThemeColors } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 export type InputProps = React.ComponentProps<typeof TextInput> & {
@@ -31,8 +29,6 @@ export const Input: React.ForwardRefExoticComponent<
   ref,
 ) {
   const colors = useThemeColors();
-  const ripple = useRipple();
-  const labels = useLabels();
   // A masked field can be shown in the clear on request: a password typed on
   // a phone keyboard is easy to get wrong and impossible to check otherwise.
   const [revealed, setRevealed] = React.useState(false);
@@ -65,21 +61,10 @@ export const Input: React.ForwardRefExoticComponent<
         />
 
         {secureTextEntry ? (
-          <View className="absolute right-2 overflow-hidden rounded-full">
-            <Pressable
-              onPress={() => setRevealed((value) => !value)}
-              android_ripple={{ color: ripple.onNeutral, borderless: true }}
-              accessibilityRole="button"
-              accessibilityLabel={revealed ? labels.hidePassword : labels.showPassword}
-              className="h-10 w-10 items-center justify-center"
-            >
-              {revealed ? (
-                <EyeOff size={20} color={colors.onSurfaceVariant} />
-              ) : (
-                <Eye size={20} color={colors.onSurfaceVariant} />
-              )}
-            </Pressable>
-          </View>
+          <PasswordVisibility
+            revealed={revealed}
+            onPress={() => setRevealed((value) => !value)}
+          />
         ) : null}
       </View>
 

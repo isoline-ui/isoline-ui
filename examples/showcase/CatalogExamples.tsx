@@ -638,12 +638,20 @@ export function LayoutExample({ de = false }: StoryProps) {
 }
 export function ImageViewerExample({ de = false }: StoryProps) {
   const [status, setStatus] = React.useState('');
+  const [solid, setSolid] = React.useState(false);
   const t = (en: string, german: string) => (de ? german : en);
   const uri =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAIAAACGBWc0AAAAk0lEQVR4nO3QQQ3AIAAEQbxgow7qAGF9IwJXmKiJe10mWQM7Yz0n0tw70v3eSKmvAQgQIECAAAECBAgQIECAAAECBAgQIECAAAECBKgCqHUs9QUIECBAgAABAgQIECBAgAABAgQIECBAgAABAgSoA6h1LPUFCBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIEqALoByp/Q1kKfgjjAAAAAElFTkSuQmCC';
   return (
-    <View style={{ height: 380, gap: 12 }}>
+    <View style={{ height: 440, gap: 12 }}>
+      <UI.Switch
+        value={solid}
+        onValueChange={setSolid}
+        accessibilityLabel={t('Solid image controls', 'Solide Bildsteuerung')}
+      />
       <UI.ZoomableImage
+        material={solid ? 'solid' : 'auto'}
+        glassStyle="clear"
         uri={uri}
         accessibilityLabel={t('Color study', 'Farbstudie')}
         onTap={() => setStatus(t('Image tapped', 'Bild angetippt'))}
@@ -745,7 +753,237 @@ export function RefreshExample({ de = false }: StoryProps) {
     </ScrollView>
   );
 }
+export function PasswordExample({ de = false }: StoryProps) {
+  const [password, setPassword] = React.useState('');
+  const [confirmation, setConfirmation] = React.useState('');
+  const theme = UI.useIsolineTheme();
+  const t = (en: string, german: string) => (de ? german : en);
+  return (
+    <UI.IsolineProvider
+      theme={theme}
+      style={{ flex: 0 }}
+      labels={{
+        showPassword: t('Show password', 'Passwort anzeigen'),
+        hidePassword: t('Hide password', 'Passwort verbergen'),
+      }}
+    >
+      <View style={{ gap: 20 }}>
+        <View testID="password-text-field">
+          <UI.TextField
+            label={t('New password', 'Neues Passwort')}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            notchClassName="bg-background"
+            autoComplete="new-password"
+            textContentType="newPassword"
+            error={
+              password.length > 0 && password.length < 8
+                ? t(
+                    'Example: use at least 8 characters.',
+                    'Beispiel: mindestens 8 Zeichen verwenden.',
+                  )
+                : undefined
+            }
+          />
+        </View>
+        <View testID="password-basic-input">
+          <UI.Input
+            label={t('Account password', 'Kontopasswort')}
+            value={confirmation}
+            onChangeText={setConfirmation}
+            secureTextEntry
+            autoComplete="current-password"
+            textContentType="password"
+            hint={t(
+              'Use the eye button to show or hide the text.',
+              'Mit dem Auge den Text anzeigen oder verbergen.',
+            )}
+          />
+        </View>
+        <UI.Text>
+          {t(
+            'Both input styles keep their value when visibility changes. Password fields remain solid form content.',
+            'Beide Eingabestile behalten ihren Wert beim Umschalten. Passwortfelder bleiben solide Formularinhalte.',
+          )}
+        </UI.Text>
+      </View>
+    </UI.IsolineProvider>
+  );
+}
+export function OverlayMaterialsExample({ de = false }: StoryProps) {
+  const colors = UI.useThemeColors();
+  const [solid, setSolid] = React.useState(false);
+  const [glassStyle, setGlassStyle] = React.useState<'regular' | 'clear'>('regular');
+  const [date, setDate] = React.useState<string | null>('2026-11-18');
+  const [time, setTime] = React.useState<string | null>('09:00');
+  const [color, setColor] = React.useState<string | null>('#7c4ab1');
+  const [open, setOpen] = React.useState('');
+  const [density, setDensity] = React.useState('comfortable');
+  const [password, setPassword] = React.useState('');
+  const [status, setStatus] = React.useState('');
+  const theme = UI.useIsolineTheme();
+  const t = (en: string, german: string) => (de ? german : en);
+  const material: UI.MaterialOptions = { material: solid ? 'solid' : 'auto', glassStyle };
+  return (
+    <UI.IsolineProvider
+      theme={theme}
+      style={{ flex: 0 }}
+      labels={{
+        close: t('Close', 'Schließen'),
+        showPassword: t('Show password', 'Passwort anzeigen'),
+        hidePassword: t('Hide password', 'Passwort verbergen'),
+      }}
+    >
+      <View style={{ gap: 12 }}>
+        <UI.Switch
+          value={solid}
+          onValueChange={setSolid}
+          accessibilityLabel={t('Solid overlays', 'Solide Overlays')}
+        />
+        <UI.ButtonGroup
+          value={glassStyle}
+          onChange={setGlassStyle}
+          items={[
+            { id: 'regular', label: t('Regular', 'Regulär') },
+            { id: 'clear', label: t('Clear', 'Klar') },
+          ]}
+        />
+        <View
+          testID="overlay-material-stage"
+          style={{
+            minHeight: 420,
+            gap: 12,
+            padding: 16,
+            borderRadius: 24,
+            overflow: 'hidden',
+            backgroundColor: colors.primaryContainer,
+          }}
+        >
+          <View
+            pointerEvents="none"
+            style={{
+              position: 'absolute',
+              top: 100,
+              left: -40,
+              right: -40,
+              height: 180,
+              backgroundColor: colors.tertiary,
+              transform: [{ rotate: '-16deg' }],
+            }}
+          />
+          <View
+            pointerEvents="none"
+            style={{
+              position: 'absolute',
+              bottom: 60,
+              left: -30,
+              right: -30,
+              height: 150,
+              backgroundColor: colors.primary,
+              transform: [{ rotate: '12deg' }],
+            }}
+          />
+          <UI.Text variant="heading">
+            {t('Content behind the glass', 'Inhalt hinter dem Glas')}
+          </UI.Text>
+          <UI.DateField
+            {...material}
+            label={t('Overlay date', 'Overlay-Datum')}
+            emptyLabel="—"
+            value={date}
+            onChange={setDate}
+            today="2026-11-18"
+            locale={de ? 'de-DE' : 'en-US'}
+            labels={{
+              previousMonth: t('Previous month', 'Vorheriger Monat'),
+              nextMonth: t('Next month', 'Nächster Monat'),
+            }}
+          />
+          <UI.TimeField
+            {...material}
+            label={t('Overlay time', 'Overlay-Uhrzeit')}
+            emptyLabel="—"
+            value={time}
+            onChange={setTime}
+            hourLabel={t('Hour', 'Stunde')}
+            minuteLabel={t('Minute', 'Minute')}
+            confirmLabel={t('Done', 'Fertig')}
+          />
+          <UI.Button
+            label={t('Overlay color', 'Overlay-Farbe')}
+            onPress={() => setOpen('color')}
+          />
+          <UI.Button
+            label={t('Password sheet', 'Passwort-Sheet')}
+            onPress={() => setOpen('password')}
+          />
+          <View testID="overlay-settings-picker">
+            <UI.SettingsSelectRow
+              menuMaterial={material.material}
+              glassStyle={glassStyle}
+              label={t('Display density', 'Anzeigedichte')}
+              value={density}
+              onChange={setDensity}
+              options={[
+                { id: 'comfortable', label: t('Comfortable', 'Komfortabel') },
+                { id: 'compact', label: t('Compact', 'Kompakt') },
+              ]}
+            />
+          </View>
+          <View testID="overlay-jump">
+            <UI.JumpToTopPill
+              {...material}
+              label={t('Back to top', 'Nach oben')}
+              onPress={() => setStatus(t('Top requested', 'Nach oben angefordert'))}
+            />
+          </View>
+          <View testID="overlay-undo">
+            <UI.UndoBar
+              {...material}
+              message={t('Example item removed', 'Beispieleintrag entfernt')}
+              remainingMs={8000}
+              totalMs={10000}
+              actionLabel={t('Undo', 'Rückgängig')}
+              dismissLabel={t('Dismiss', 'Schließen')}
+              onUndo={() => setStatus(t('Restored', 'Wiederhergestellt'))}
+              onDismiss={() => setStatus(t('Dismissed', 'Geschlossen'))}
+            />
+          </View>
+        </View>
+        <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+        <UI.ColorPickerSheet
+          {...material}
+          visible={open === 'color'}
+          onClose={() => setOpen('')}
+          title={t('Overlay color', 'Overlay-Farbe')}
+          value={color}
+          onChange={setColor}
+          accessibilityLabel={t('Overlay palette', 'Overlay-Palette')}
+          swatches={[
+            { value: '#7c4ab1', label: t('Violet', 'Violett') },
+            { value: '#008577', label: t('Teal', 'Türkis') },
+          ]}
+        />
+        <UI.PanelSheet {...material} visible={open === 'password'} onClose={() => setOpen('')}>
+          <UI.TextField
+            label={t('Sheet password', 'Sheet-Passwort')}
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            autoComplete="current-password"
+            textContentType="password"
+          />
+          <UI.Button label={t('Done', 'Fertig')} onPress={() => setOpen('')} />
+        </UI.PanelSheet>
+      </View>
+    </UI.IsolineProvider>
+  );
+}
+
 export const catalogStories = {
+  password: PasswordExample,
+  'overlay-materials': OverlayMaterialsExample,
   'settings-list': SettingsListExample,
   refresh: RefreshExample,
   'image-viewer': ImageViewerExample,

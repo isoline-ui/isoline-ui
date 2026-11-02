@@ -89,6 +89,7 @@ export function SelectField<T extends string>({
         glassStyle={glassStyle}
         tintColor={tintColor}
         fallbackColor={fallbackColor}
+        interactive={interactive}
       >
         <ContextMenuRows
           items={options.map((option) => ({

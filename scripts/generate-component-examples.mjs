@@ -71,7 +71,14 @@ for (const entry of catalog)
   for (const de of [false, true]) {
     const fn = functions.get(stories[entry.story]);
     if (!fn) throw Error(`Missing story ${entry.story}`);
-    const snippet = `import * as React from 'react';\nimport { View, ScrollView } from 'react-native';\nimport { SafeAreaProvider } from 'react-native-safe-area-context';\nimport { GestureHandlerRootView } from 'react-native-gesture-handler';\nimport * as UI from '@isoline-ui/react-native';\n\ntype StoryProps = { de?: boolean };\n\n${fn}\n\nexport function Example() {\n  return (\n    <GestureHandlerRootView style={{ flex: 1 }}>\n    <SafeAreaProvider>\n      <UI.IsolineProvider theme={UI.themes.violet.light}>\n        <${stories[entry.story]} de={${de}} />\n      </UI.IsolineProvider>\n    </SafeAreaProvider>\n    </GestureHandlerRootView>\n  );\n}\n`;
+    const usesMaterialAdapter = ['overlay-materials', 'image-viewer'].includes(entry.story);
+    const adapterImport = usesMaterialAdapter
+      ? "import { MaterialSurface, MaterialGroup } from '@isoline-ui/native';\n"
+      : '';
+    const adapterProps = usesMaterialAdapter
+      ? ' surfaceComponent={MaterialSurface} surfaceGroupComponent={MaterialGroup}'
+      : '';
+    const snippet = `import * as React from 'react';\nimport { View, ScrollView } from 'react-native';\nimport { SafeAreaProvider } from 'react-native-safe-area-context';\nimport { GestureHandlerRootView } from 'react-native-gesture-handler';\nimport * as UI from '@isoline-ui/react-native';\n${adapterImport}\ntype StoryProps = { de?: boolean };\n\n${fn}\n\nexport function Example() {\n  return (\n    <GestureHandlerRootView style={{ flex: 1 }}>\n    <SafeAreaProvider>\n      <UI.IsolineProvider theme={UI.themes.violet.light}${adapterProps}>\n        <${stories[entry.story]} de={${de}} />\n      </UI.IsolineProvider>\n    </SafeAreaProvider>\n    </GestureHandlerRootView>\n  );\n}\n`;
     const formattedSnippet = await prettier.format(snippet, {
       ...formatting,
       parser: 'typescript',
@@ -83,7 +90,21 @@ for (const entry of catalog)
       .join(
         ', ',
       )}. ${de ? 'Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.' : 'Exported props types define the full contract. Labels and actions are supplied by the app.'}\n\n${de ? 'Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.' : 'Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.'}\n`;
-    emit(path.join(docs, entry.slug + (de ? '.de' : '') + '.mdx'), text);
+    const materialLink =
+      entry.props.split(';').includes('material') && entry.slug !== 'overlay-materials'
+        ? `\n${de ? 'Glas, solide Alternativen und den Hintergrund vergleichen:' : 'Compare glass, solid fallbacks and backdrop content:'} [${de ? 'Picker und schwebende Materialien' : 'Picker and floating materials'}](/${de ? 'de' : 'en'}/docs/components/overlay-materials).\n`
+        : '';
+    const adapterNote = usesMaterialAdapter
+      ? `\n${de ? 'Das vollständige Beispiel registriert den optionalen Adapter aus `@isoline-ui/native`. Installation, iOS-Voraussetzungen und solide Alternativen:' : 'This complete example registers the optional `@isoline-ui/native` adapter. Installation, iOS requirements and solid fallbacks:'} [${de ? 'Materialien einrichten' : 'Material setup'}](/${de ? 'de' : 'en'}/docs/foundations/materials).\n`
+      : '';
+    const passwordLink =
+      entry.slug === 'input'
+        ? `\n${de ? 'Maskierung, Anzeigen/Verbergen und Passwortmanager-Hinweise:' : 'Masking, show/hide and password-manager hints:'} [${de ? 'Passwortfelder' : 'Password inputs'}](/${de ? 'de' : 'en'}/docs/components/password-input).\n`
+        : '';
+    emit(
+      path.join(docs, entry.slug + (de ? '.de' : '') + '.mdx'),
+      text + materialLink + adapterNote + passwordLink,
+    );
   }
 for (const de of [false, true]) {
   const file = path.join(docs, `meta${de ? '.de' : ''}.json`);

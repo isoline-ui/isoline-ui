@@ -61,7 +61,7 @@
     "titleDe": "Datum und Kalender",
     "description": "Controlled Gregorian dates, month navigation, marked days and a week strip. The app supplies today, locale, labels and agenda marks.",
     "descriptionDe": "Kontrollierte gregorianische Daten, Monatsnavigation, markierte Tage und Wochenleiste. Die App liefert Heute, Sprache, Beschriftungen und Terminmarkierungen.",
-    "props": "value;onChange;today;locale;labels;month;onMonthChange;minDate;maxDate;disabledDates;marks;range"
+    "props": "value;onChange;today;locale;labels;month;onMonthChange;minDate;maxDate;disabledDates;marks;range;material;glassStyle;tintColor;fallbackColor;interactive"
   },
   {
     "slug": "time-picker",
@@ -76,7 +76,7 @@
     "titleDe": "Zeitauswahl",
     "description": "Choose a 24-hour local time, keep off-grid minutes and supply your own presets. A sheet can keep a draft until confirmation.",
     "descriptionDe": "Eine lokale Uhrzeit im 24-Stunden-Format wählen, Minuten außerhalb des Rasters erhalten und eigene Vorgaben liefern. Ein Sheet kann bis zur Bestätigung einen Entwurf halten.",
-    "props": "value;onChange;hourLabel;minuteLabel;minuteStep;presets;onConfirm;onClear"
+    "props": "value;onChange;hourLabel;minuteLabel;minuteStep;presets;onConfirm;onClear;material;glassStyle;tintColor;fallbackColor;interactive"
   },
   {
     "slug": "color-picker",
@@ -89,7 +89,7 @@
     "titleDe": "Farbauswahl",
     "description": "An accessible palette with selected and disabled swatches and a sheet presentation. The app supplies colors and names.",
     "descriptionDe": "Eine barrierefreie Palette mit ausgewählten und deaktivierten Farben sowie einer Sheet-Darstellung. Die App liefert Farben und Namen.",
-    "props": "value;onChange;swatches;accessibilityLabel;visible;onClose;title"
+    "props": "value;onChange;swatches;accessibilityLabel;visible;onClose;title;material;glassStyle;tintColor;fallbackColor;interactive"
   },
   {
     "slug": "amount-field",
@@ -126,7 +126,7 @@
     "titleDe": "Rückgängig-Leiste",
     "description": "Present remaining undo time, pause on hold, collapse and dismiss. The app owns the queue, deadline and actual undo operation.",
     "descriptionDe": "Verbleibende Rückgängig-Zeit zeigen, beim Halten pausieren, einklappen und schließen. Warteschlange, Frist und Rückgängig-Aktion gehören der App.",
-    "props": "remainingMs;totalMs;paused;onPause;onResume;collapsed;onExpand;onUndo;onDismiss;message;actionLabel;dismissLabel;progress;showDismissButton"
+    "props": "remainingMs;totalMs;paused;onPause;onResume;collapsed;onExpand;onUndo;onDismiss;message;actionLabel;dismissLabel;progress;showDismissButton;material;glassStyle;tintColor;fallbackColor;interactive"
   },
   {
     "slug": "image-viewer",
@@ -138,7 +138,7 @@
     "titleDe": "Bildzoom",
     "description": "Contained image zoom with pinch, pan, double tap, dismiss gesture and accessible zoom controls. A custom image renderer is optional.",
     "descriptionDe": "Bildzoom mit Pinch, Verschieben, Doppeltippen, Schließgeste und zugänglichen Zoom-Aktionen. Ein eigener Bildrenderer ist optional.",
-    "props": "uri;accessibilityLabel;maximumScale;labels;onTap;onDismiss;renderImage"
+    "props": "uri;accessibilityLabel;maximumScale;labels;onTap;onDismiss;renderImage;material;glassStyle;tintColor;fallbackColor;interactive"
   },
   {
     "slug": "list-controls",
@@ -152,7 +152,7 @@
     "titleDe": "Listen-Steuerelemente",
     "description": "Selection, section headings and a return-to-top action with app-supplied labels and callbacks.",
     "descriptionDe": "Auswahl, Abschnittsüberschriften und Nach-oben-Aktion mit Beschriftungen und Callbacks aus der App.",
-    "props": "count;countLabel;allSelected;onClear;onToggleAll;title;label;onPress"
+    "props": "count;countLabel;allSelected;onClear;onToggleAll;title;label;onPress;material;glassStyle;tintColor;fallbackColor;interactive"
   },
   {
     "slug": "swipeable-row",
@@ -195,7 +195,7 @@
     "titleDe": "Einstellungszeilen und Gruppen",
     "description": "Compose navigation, choice, switch, picker and custom-card settings from shared rows.",
     "descriptionDe": "Navigation, Auswahl, Schalter, Picker und eigene Karten aus gemeinsamen Einstellungszeilen zusammensetzen.",
-    "props": "label;description;value;onChange;selected;onPress;children"
+    "props": "label;description;value;onChange;selected;onPress;children;material;menuMaterial;glassStyle"
   },
   {
     "slug": "badge",
@@ -284,5 +284,38 @@
     "description": "A concise feedback message and optional action. Visibility and duration belong to the app.",
     "descriptionDe": "Eine kurze Rückmeldung mit optionaler Aktion. Sichtbarkeit und Dauer gehören der App.",
     "props": "message;actionLabel;onAction;bottom;material"
+  },
+  {
+    "slug": "password-input",
+    "story": "password",
+    "exports": [
+      "Input",
+      "TextField"
+    ],
+    "title": "Password inputs",
+    "titleDe": "Passwortfelder",
+    "description": "Masked input with accessible show/hide controls, password-manager hints and validation in both input styles.",
+    "descriptionDe": "Maskierte Eingabe mit zugänglichem Anzeigen/Verbergen, Passwortmanager-Hinweisen und Validierung in beiden Eingabestilen.",
+    "props": "secureTextEntry;autoComplete;textContentType;value;onChangeText;editable;error"
+  },
+  {
+    "slug": "overlay-materials",
+    "story": "overlay-materials",
+    "exports": [
+      "DateField",
+      "DatePickerSheet",
+      "TimeField",
+      "TimePickerSheet",
+      "ColorPickerSheet",
+      "SettingsSelectRow",
+      "JumpToTopPill",
+      "UndoBar",
+      "PanelSheet"
+    ],
+    "title": "Picker and floating materials",
+    "titleDe": "Picker und schwebende Materialien",
+    "description": "Compare regular glass, clear glass and solid surfaces over a colored background. On iOS the material belongs to overlay chrome; forms and inline content remain solid.",
+    "descriptionDe": "Reguläres Glas, klares Glas und solide Flächen über einem farbigen Hintergrund vergleichen. Unter iOS gehört das Material zur Overlay-Bedienebene; Formulare und Inhalte bleiben solide.",
+    "props": "material;glassStyle;tintColor;fallbackColor;interactive;menuMaterial"
   }
 ]

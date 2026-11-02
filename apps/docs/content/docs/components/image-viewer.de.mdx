@@ -17,17 +17,26 @@ import { View, ScrollView } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as UI from '@isoline-ui/react-native';
+import { MaterialSurface, MaterialGroup } from '@isoline-ui/native';
 
 type StoryProps = { de?: boolean };
 
 function ImageViewerExample({ de = false }: StoryProps) {
   const [status, setStatus] = React.useState('');
+  const [solid, setSolid] = React.useState(false);
   const t = (en: string, german: string) => (de ? german : en);
   const uri =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABICAIAAACGBWc0AAAAk0lEQVR4nO3QQQ3AIAAEQbxgow7qAGF9IwJXmKiJe10mWQM7Yz0n0tw70v3eSKmvAQgQIECAAAECBAgQIECAAAECBAgQIECAAAECBKgCqHUs9QUIECBAgAABAgQIECBAgAABAgQIECBAgAABAgSoA6h1LPUFCBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIEqALoByp/Q1kKfgjjAAAAAElFTkSuQmCC';
   return (
-    <View style={{ height: 380, gap: 12 }}>
+    <View style={{ height: 440, gap: 12 }}>
+      <UI.Switch
+        value={solid}
+        onValueChange={setSolid}
+        accessibilityLabel={t('Solid image controls', 'Solide Bildsteuerung')}
+      />
       <UI.ZoomableImage
+        material={solid ? 'solid' : 'auto'}
+        glassStyle="clear"
         uri={uri}
         accessibilityLabel={t('Color study', 'Farbstudie')}
         onTap={() => setStatus(t('Image tapped', 'Bild angetippt'))}
@@ -48,7 +57,11 @@ export function Example() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <UI.IsolineProvider theme={UI.themes.violet.light}>
+        <UI.IsolineProvider
+          theme={UI.themes.violet.light}
+          surfaceComponent={MaterialSurface}
+          surfaceGroupComponent={MaterialGroup}
+        >
           <ImageViewerExample de={true} />
         </UI.IsolineProvider>
       </SafeAreaProvider>
@@ -61,6 +74,10 @@ export function Example() {
 
 Öffentliche Komponenten: `ZoomableImage`.
 
-Wichtige Props: `uri`, `accessibilityLabel`, `maximumScale`, `labels`, `onTap`, `onDismiss`, `renderImage`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
+Wichtige Props: `uri`, `accessibilityLabel`, `maximumScale`, `labels`, `onTap`, `onDismiss`, `renderImage`, `material`, `glassStyle`, `tintColor`, `fallbackColor`, `interactive`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
 
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+Glas, solide Alternativen und den Hintergrund vergleichen: [Picker und schwebende Materialien](/de/docs/components/overlay-materials).
+
+Das vollständige Beispiel registriert den optionalen Adapter aus `@isoline-ui/native`. Installation, iOS-Voraussetzungen und solide Alternativen: [Materialien einrichten](/de/docs/foundations/materials).
