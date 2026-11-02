@@ -6,7 +6,7 @@ import { Button } from './button.tsx';
 import { IconButton } from './icon-button.tsx';
 import { X } from './icons.tsx';
 import { Pressable } from './pressable.tsx';
-import { useThemeColors, useHaptics } from '../provider.tsx';
+import { useThemeColors, useHaptics, type MaterialOptions } from '../provider.tsx';
 import { useRadioNavigation } from './radio-navigation.ts';
 import { validTime } from '../calendar.ts';
 
@@ -144,7 +144,7 @@ export function TimeGrid({
     </View>
   );
 }
-export interface TimePickerSheetProps extends TimeGridProps {
+export interface TimePickerSheetProps extends TimeGridProps, MaterialOptions {
   visible: boolean;
   onClose: () => void;
   title: string;
@@ -163,10 +163,23 @@ export function TimePickerSheet({
   onClear,
   presets = [],
   onConfirm,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive,
   ...grid
 }: TimePickerSheetProps) {
   return (
-    <BottomSheet visible={visible} onClose={onClose}>
+    <BottomSheet
+      visible={visible}
+      onClose={onClose}
+      material={material}
+      glassStyle={glassStyle}
+      tintColor={tintColor}
+      fallbackColor={fallbackColor}
+      interactive={interactive}
+    >
       <ScrollView
         keyboardShouldPersistTaps="handled"
         style={{ flexGrow: 0 }}

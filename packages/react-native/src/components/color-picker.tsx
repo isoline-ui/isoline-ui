@@ -4,7 +4,7 @@ import { Pressable } from './pressable.tsx';
 import { Text } from './text.tsx';
 import { Check } from './icons.tsx';
 import { BottomSheet } from './bottom-sheet.tsx';
-import { useThemeColors } from '../provider.tsx';
+import { useThemeColors, type MaterialOptions } from '../provider.tsx';
 import { useRadioNavigation } from './radio-navigation.ts';
 
 export interface ColorSwatch {
@@ -26,7 +26,11 @@ export function ColorSwatchPicker({
   accessibilityLabel,
 }: ColorSwatchPickerProps) {
   const colors = useThemeColors();
-  const navigation = useRadioNavigation(swatches.map(swatch => ({id:swatch.value,disabled:swatch.disabled})), value, onChange);
+  const navigation = useRadioNavigation(
+    swatches.map((swatch) => ({ id: swatch.value, disabled: swatch.disabled })),
+    value,
+    onChange,
+  );
   return (
     <View
       accessibilityRole="radiogroup"
@@ -72,14 +76,32 @@ export function ColorSwatchPicker({
     </View>
   );
 }
-export interface ColorPickerSheetProps extends ColorSwatchPickerProps {
+export interface ColorPickerSheetProps extends ColorSwatchPickerProps, MaterialOptions {
   visible: boolean;
   onClose: () => void;
   title: string;
 }
-export function ColorPickerSheet({ visible, onClose, title, ...props }: ColorPickerSheetProps) {
+export function ColorPickerSheet({
+  visible,
+  onClose,
+  title,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive,
+  ...props
+}: ColorPickerSheetProps) {
   return (
-    <BottomSheet visible={visible} onClose={onClose}>
+    <BottomSheet
+      visible={visible}
+      onClose={onClose}
+      material={material}
+      glassStyle={glassStyle}
+      tintColor={tintColor}
+      fallbackColor={fallbackColor}
+      interactive={interactive}
+    >
       <Text variant="heading">{title}</Text>
       <ColorSwatchPicker
         {...props}

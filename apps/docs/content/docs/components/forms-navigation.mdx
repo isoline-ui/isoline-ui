@@ -3,7 +3,7 @@ title: 'Forms, settings and navigation'
 description: 'Use labelled inputs, settings rows and shared headers.'
 ---
 
-<ComponentPreview kind="catalog-layout" />
+<ComponentPreview kind="catalog-password" />
 
 ## Passwords, hints and errors
 
@@ -53,3 +53,5 @@ export function NotificationsSetting({
 `SettingsRow` provides an alternative leading-icon-circle presentation with `first`, `label`, `description`, `icon`, and either `onPress` or `value` plus `onValueChange`.
 
 `RefreshControl` forwards **all** native refresh-control props, including `children` and `style`, and supplies theme colours only when you omit them. Use it in React Native list/scroll-view `refreshControl` as usual.
+
+`TextField` also includes the password visibility control. See [password inputs](/en/docs/components/password-input) for both live field styles and [overlay materials](/en/docs/components/overlay-materials) for a password form inside a glass sheet.

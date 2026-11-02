@@ -1,0 +1,219 @@
+---
+title: 'Picker and floating materials'
+description: 'Compare regular glass, clear glass and solid surfaces over a colored background. On iOS the material belongs to overlay chrome; forms and inline content remain solid.'
+---
+
+<ComponentPreview kind="catalog-overlay-materials" />
+
+Compare regular glass, clear glass and solid surfaces over a colored background. On iOS the material belongs to overlay chrome; forms and inline content remain solid.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="PickerandfloatingmaterialsExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+import { MaterialSurface, MaterialGroup } from '@isoline-ui/native';
+
+type StoryProps = { de?: boolean };
+
+function OverlayMaterialsExample({ de = false }: StoryProps) {
+  const colors = UI.useThemeColors();
+  const [solid, setSolid] = React.useState(false);
+  const [glassStyle, setGlassStyle] = React.useState<'regular' | 'clear'>('regular');
+  const [date, setDate] = React.useState<string | null>('2026-11-18');
+  const [time, setTime] = React.useState<string | null>('09:00');
+  const [color, setColor] = React.useState<string | null>('#7c4ab1');
+  const [open, setOpen] = React.useState('');
+  const [density, setDensity] = React.useState('comfortable');
+  const [password, setPassword] = React.useState('');
+  const [status, setStatus] = React.useState('');
+  const theme = UI.useIsolineTheme();
+  const t = (en: string, german: string) => (de ? german : en);
+  const material: UI.MaterialOptions = { material: solid ? 'solid' : 'auto', glassStyle };
+  return (
+    <UI.IsolineProvider
+      theme={theme}
+      style={{ flex: 0 }}
+      labels={{
+        close: t('Close', 'Schließen'),
+        showPassword: t('Show password', 'Passwort anzeigen'),
+        hidePassword: t('Hide password', 'Passwort verbergen'),
+      }}
+    >
+      <View style={{ gap: 12 }}>
+        <UI.Switch
+          value={solid}
+          onValueChange={setSolid}
+          accessibilityLabel={t('Solid overlays', 'Solide Overlays')}
+        />
+        <UI.ButtonGroup
+          value={glassStyle}
+          onChange={setGlassStyle}
+          items={[
+            { id: 'regular', label: t('Regular', 'Regulär') },
+            { id: 'clear', label: t('Clear', 'Klar') },
+          ]}
+        />
+        <View
+          testID="overlay-material-stage"
+          style={{
+            minHeight: 420,
+            gap: 12,
+            padding: 16,
+            borderRadius: 24,
+            overflow: 'hidden',
+            backgroundColor: colors.primaryContainer,
+          }}
+        >
+          <View
+            pointerEvents="none"
+            style={{
+              position: 'absolute',
+              top: 100,
+              left: -40,
+              right: -40,
+              height: 180,
+              backgroundColor: colors.tertiary,
+              transform: [{ rotate: '-16deg' }],
+            }}
+          />
+          <View
+            pointerEvents="none"
+            style={{
+              position: 'absolute',
+              bottom: 60,
+              left: -30,
+              right: -30,
+              height: 150,
+              backgroundColor: colors.primary,
+              transform: [{ rotate: '12deg' }],
+            }}
+          />
+          <UI.Text variant="heading">
+            {t('Content behind the glass', 'Inhalt hinter dem Glas')}
+          </UI.Text>
+          <UI.DateField
+            {...material}
+            label={t('Overlay date', 'Overlay-Datum')}
+            emptyLabel="—"
+            value={date}
+            onChange={setDate}
+            today="2026-11-18"
+            locale={de ? 'de-DE' : 'en-US'}
+            labels={{
+              previousMonth: t('Previous month', 'Vorheriger Monat'),
+              nextMonth: t('Next month', 'Nächster Monat'),
+            }}
+          />
+          <UI.TimeField
+            {...material}
+            label={t('Overlay time', 'Overlay-Uhrzeit')}
+            emptyLabel="—"
+            value={time}
+            onChange={setTime}
+            hourLabel={t('Hour', 'Stunde')}
+            minuteLabel={t('Minute', 'Minute')}
+            confirmLabel={t('Done', 'Fertig')}
+          />
+          <UI.Button
+            label={t('Overlay color', 'Overlay-Farbe')}
+            onPress={() => setOpen('color')}
+          />
+          <UI.Button
+            label={t('Password sheet', 'Passwort-Sheet')}
+            onPress={() => setOpen('password')}
+          />
+          <View testID="overlay-settings-picker">
+            <UI.SettingsSelectRow
+              menuMaterial={material.material}
+              glassStyle={glassStyle}
+              label={t('Display density', 'Anzeigedichte')}
+              value={density}
+              onChange={setDensity}
+              options={[
+                { id: 'comfortable', label: t('Comfortable', 'Komfortabel') },
+                { id: 'compact', label: t('Compact', 'Kompakt') },
+              ]}
+            />
+          </View>
+          <View testID="overlay-jump">
+            <UI.JumpToTopPill
+              {...material}
+              label={t('Back to top', 'Nach oben')}
+              onPress={() => setStatus(t('Top requested', 'Nach oben angefordert'))}
+            />
+          </View>
+          <View testID="overlay-undo">
+            <UI.UndoBar
+              {...material}
+              message={t('Example item removed', 'Beispieleintrag entfernt')}
+              remainingMs={8000}
+              totalMs={10000}
+              actionLabel={t('Undo', 'Rückgängig')}
+              dismissLabel={t('Dismiss', 'Schließen')}
+              onUndo={() => setStatus(t('Restored', 'Wiederhergestellt'))}
+              onDismiss={() => setStatus(t('Dismissed', 'Geschlossen'))}
+            />
+          </View>
+        </View>
+        <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+        <UI.ColorPickerSheet
+          {...material}
+          visible={open === 'color'}
+          onClose={() => setOpen('')}
+          title={t('Overlay color', 'Overlay-Farbe')}
+          value={color}
+          onChange={setColor}
+          accessibilityLabel={t('Overlay palette', 'Overlay-Palette')}
+          swatches={[
+            { value: '#7c4ab1', label: t('Violet', 'Violett') },
+            { value: '#008577', label: t('Teal', 'Türkis') },
+          ]}
+        />
+        <UI.PanelSheet {...material} visible={open === 'password'} onClose={() => setOpen('')}>
+          <UI.TextField
+            label={t('Sheet password', 'Sheet-Passwort')}
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            autoComplete="current-password"
+            textContentType="password"
+          />
+          <UI.Button label={t('Done', 'Fertig')} onPress={() => setOpen('')} />
+        </UI.PanelSheet>
+      </View>
+    </UI.IsolineProvider>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider
+          theme={UI.themes.violet.light}
+          surfaceComponent={MaterialSurface}
+          surfaceGroupComponent={MaterialGroup}
+        >
+          <OverlayMaterialsExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `DateField`, `DatePickerSheet`, `TimeField`, `TimePickerSheet`, `ColorPickerSheet`, `SettingsSelectRow`, `JumpToTopPill`, `UndoBar`, `PanelSheet`.
+
+Key props: `material`, `glassStyle`, `tintColor`, `fallbackColor`, `interactive`, `menuMaterial`. Exported props types define the full contract. Labels and actions are supplied by the app.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
+
+This complete example registers the optional `@isoline-ui/native` adapter. Installation, iOS requirements and solid fallbacks: [Material setup](/en/docs/foundations/materials).

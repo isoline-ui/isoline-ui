@@ -44,6 +44,24 @@ Controls wie `Button`, `IconButton`, `FloatingActionButton`, `FabMenu`, `SplitBu
 
 `Dialog`, `BottomSheet`, `PanelSheet`, `MenuSheet` und `Snackbar` bleiben standardmäßig solide; ihre Materialwahl ist explizit. Formulare, Einstellungen, längere Texte und leere Zustände benötigen keine pauschale Glasfläche. Für Menüs von `SplitButton` steuert `menuMaterial` die überlagerte Fläche unabhängig vom Button.
 
+
+## Prüfung der Overlays und schwebenden Controls
+
+Die [Materialvergleichs-Demo](/de/docs/components/overlay-materials) zeigt die neuen Sheets und schwebenden Rückmeldungen über einem farbigen Hintergrund. Passwörter haben einen [eigenen Live-Leitfaden](/de/docs/components/password-input).
+
+| Komponenten | Materialfläche und Standard |
+| --- | --- |
+| `DatePickerSheet`, `TimePickerSheet`, `ColorPickerSheet` | Vollständige `MaterialOptions` am Sheet; aus Kompatibilität standardmäßig `solid`. `material="auto"` aktiviert iOS-Glas. |
+| `DateField`, `TimeField` | Reichen diese Optionen an ihr Sheet weiter. Auslöser und Formularinhalt bleiben solide. |
+| `SelectField`, `SettingsSelectRow`, `SplitButton`, verankertes `FabMenu` | `menuMaterial="auto"` steuert das Menü unabhängig vom soliden Auslöser. Stil, Tönung und Alternative werden ebenfalls weitergereicht. |
+| `Popover`, `ContextMenu`, Toolbar-, Navigations- und Tab-Leisten | Standardmäßig automatisches iOS-Material. |
+| `Dialog`, `BottomSheet`, `PanelSheet`, `MenuSheet` | Materialoptionen verfügbar; `solid` bleibt Standard. Reguläres Glas eignet sich für kurze, lesbare Formulare. |
+| `UndoBar`, `Snackbar`, `JumpToTopPill`, `ActionChip`, schwebende Buttons | Über Inhalten optional Glas verwenden; standardmäßig `solid`. |
+| `ZoomableImage` | Die schwebende Zoom-Leiste verwendet standardmäßig `auto`. Material, Stil, Tönung und Alternative gelten für Controls, niemals für das Bild. |
+| Passwort-/Text-/Betragsfelder, Inline-Kalender, Banner, Einstellungszeilen, Wischaktionen | Solide Inhalte, keine Glasflächen. Das umgebende Sheet oder Menü kann Glas verwenden. |
+
+`FabMenu` behält seine bisherige solide native Erweiterung im entsprechenden Legacy-Modus; `menuMaterial` konfiguriert die verankerte Menüdarstellung. Natives Glas benötigt den Adapter und ein unterstütztes iOS-Gerät. Web-Blur ist eine CSS-Annäherung; Android, reduzierte Transparenz und nicht unterstützte Browser verwenden solide Alternativen. Bei `solid` als Standard wird Glas gezielt aktiviert, nicht pauschal auf alle Komponenten angewendet.
+
 ## Zustände und Bewegung
 
 Glasflächen liegen außerhalb des Press-Opacity-Feedbacks ihrer Kinder. Deaktivierte Controls bleiben nicht bedienbar. Die Tab-Leiste animiert ihre Auswahl auf nativen Geräten; Tastatur, ausgewählte und deaktivierte Zustände sind im Web vorhanden. Die Toolbar blendet das Material beim automatischen Verstecken nicht über Opacity aus, sondern bewegt es aus dem Bild.

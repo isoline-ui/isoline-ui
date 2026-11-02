@@ -7,7 +7,7 @@ import { IconButton } from './icon-button.tsx';
 import { X } from './icons.tsx';
 import { Text } from './text.tsx';
 import { BottomSheet } from './bottom-sheet.tsx';
-import { useThemeColors } from '../provider.tsx';
+import { useThemeColors, type MaterialOptions } from '../provider.tsx';
 import { addDays, addMonths, monthDays, validDate, formatCalendarDate } from '../calendar.ts';
 
 export interface CalendarLabels {
@@ -316,7 +316,7 @@ export interface QuickDateOption {
   label: string;
   disabled?: boolean;
 }
-export interface DayPickerProps extends MonthCalendarProps {
+export interface DayPickerProps extends MonthCalendarProps, MaterialOptions {
   quickDates?: QuickDateOption[];
   onClear?: () => void;
   clearLabel?: string;
@@ -356,7 +356,7 @@ export function DayPicker({
     </View>
   );
 }
-export interface DatePickerSheetProps extends MonthCalendarProps {
+export interface DatePickerSheetProps extends MonthCalendarProps, MaterialOptions {
   visible: boolean;
   onClose: () => void;
   title: string;
@@ -371,6 +371,11 @@ export function DatePickerSheet({
   quickDates = [],
   onClear,
   clearLabel,
+  material = 'solid',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive,
   ...calendar
 }: DatePickerSheetProps) {
   const select = (date: string) => {
@@ -378,7 +383,15 @@ export function DatePickerSheet({
     onClose();
   };
   return (
-    <BottomSheet visible={visible} onClose={onClose}>
+    <BottomSheet
+      visible={visible}
+      onClose={onClose}
+      material={material}
+      glassStyle={glassStyle}
+      tintColor={tintColor}
+      fallbackColor={fallbackColor}
+      interactive={interactive}
+    >
       <ScrollView
         keyboardShouldPersistTaps="handled"
         style={{ flexGrow: 0 }}

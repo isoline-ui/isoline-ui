@@ -6,6 +6,7 @@ import { Button } from './button.tsx';
 import { IconButton } from './icon-button.tsx';
 import { BackButton } from './back-button.tsx';
 import { X } from './icons.tsx';
+import type { MaterialOptions } from '../provider.tsx';
 
 export interface SelectionHeaderProps {
   count: number;
@@ -65,7 +66,7 @@ export function ListSectionHeader({ title, first, trailing }: ListSectionHeaderP
     </View>
   );
 }
-export interface JumpToTopPillProps {
+export interface JumpToTopPillProps extends MaterialOptions {
   label: string;
   onPress: () => void;
   count?: number;
@@ -76,9 +77,11 @@ export function JumpToTopPill({
   onPress,
   count = 0,
   accessibilityLabel,
+  ...materialOptions
 }: JumpToTopPillProps) {
   return (
     <Button
+      {...materialOptions}
       label={label}
       accessibilityLabel={accessibilityLabel ?? label}
       onPress={onPress}

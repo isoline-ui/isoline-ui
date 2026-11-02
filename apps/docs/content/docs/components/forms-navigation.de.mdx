@@ -3,7 +3,7 @@ title: 'Formulare, Einstellungen und Navigation'
 description: 'Beschriftete Eingaben, Einstellungszeilen und gemeinsame Kopfzeilen.'
 ---
 
-<ComponentPreview kind="catalog-layout" />
+<ComponentPreview kind="catalog-password" />
 
 ## Passwörter, Hinweise und Fehler
 
@@ -53,3 +53,5 @@ export function NotificationsSetting({
 `SettingsRow` bietet eine Variante mit Symbol im farbigen Kreis: `first`, `label`, `description`, `icon` und entweder `onPress` oder `value` mit `onValueChange`.
 
 `RefreshControl` reicht **alle** nativen Props einschließlich `children` und `style` weiter und setzt Theme-Farben nur, wenn du keine vorgibst. Setze es wie gewohnt als `refreshControl` einer React-Native-Liste oder Scroll-View ein.
+
+Auch `TextField` enthält den Anzeigen-/Verbergen-Button. Die [Passwortfelder](/de/docs/components/password-input) zeigen beide Feldstile; [Overlay-Materialien](/de/docs/components/overlay-materials) zeigt ein Passwortformular im Glas-Sheet.

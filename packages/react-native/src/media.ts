@@ -23,13 +23,23 @@ export function imagePanBounds(width: number, height: number, aspect: number, sc
 export function imageDimensions(event: unknown): { width: number; height: number } | null {
   if (!event || typeof event !== 'object') return null;
   const data = event as {
+    target?: { naturalWidth?: number; naturalHeight?: number };
+    currentTarget?: { naturalWidth?: number; naturalHeight?: number };
     nativeEvent?: {
       source?: { width?: number; height?: number };
       target?: { naturalWidth?: number; naturalHeight?: number };
     };
   };
-  const width = data.nativeEvent?.source?.width ?? data.nativeEvent?.target?.naturalWidth;
-  const height = data.nativeEvent?.source?.height ?? data.nativeEvent?.target?.naturalHeight;
+  const width =
+    data.nativeEvent?.source?.width ??
+    data.nativeEvent?.target?.naturalWidth ??
+    data.target?.naturalWidth ??
+    data.currentTarget?.naturalWidth;
+  const height =
+    data.nativeEvent?.source?.height ??
+    data.nativeEvent?.target?.naturalHeight ??
+    data.target?.naturalHeight ??
+    data.currentTarget?.naturalHeight;
   return typeof width === 'number' &&
     typeof height === 'number' &&
     Number.isFinite(width) &&

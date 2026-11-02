@@ -44,6 +44,24 @@ export function MaterialRoot({ children }: { children: ReactNode }) {
 
 `Dialog`, `BottomSheet`, `PanelSheet`, `MenuSheet`, and `Snackbar` retain solid defaults with explicit material options. Forms, settings, long text, and empty states do not need blanket glass. For `SplitButton`, `menuMaterial` controls the overlay independently of the button.
 
+
+## Overlay and floating-control audit
+
+Use [the material comparison demo](/en/docs/components/overlay-materials) to see the new sheets and floating feedback over a colored backdrop. Password entry has a [dedicated live guide](/en/docs/components/password-input).
+
+| Components | Material surface and default |
+| --- | --- |
+| `DatePickerSheet`, `TimePickerSheet`, `ColorPickerSheet` | Full `MaterialOptions` on the sheet; `solid` by default for compatibility. Use `material="auto"` for iOS glass. |
+| `DateField`, `TimeField` | Forward those options to their sheet. The field trigger and form content remain solid. |
+| `SelectField`, `SettingsSelectRow`, `SplitButton`, anchored `FabMenu` | `menuMaterial="auto"` controls the menu independently of the solid trigger. Shared style, tint and fallback options reach the menu too. |
+| `Popover`, `ContextMenu`, toolbar/navigation/tab bars | Automatic iOS material by default. |
+| `Dialog`, `BottomSheet`, `PanelSheet`, `MenuSheet` | Material options available; retain `solid` defaults. Regular glass is the readable choice for short forms. |
+| `UndoBar`, `Snackbar`, `JumpToTopPill`, `ActionChip`, floating buttons | Opt into glass when floating over content; `solid` defaults. |
+| `ZoomableImage` | The floating zoom-control toolbar defaults to `auto`. `material`, `glassStyle`, tint and fallback apply to the controls, never the image. |
+| Password/text/amount fields, inline calendars, banners, settings rows, swipe actions | Solid content, not glass surfaces. An enclosing sheet or menu can use glass. |
+
+`FabMenu` keeps its existing solid native expansion when using its legacy solid presentation; `menuMaterial` configures its anchored menu presentation. Native glass requires the material adapter and a supported iOS device. Web blur is a CSS approximation; Android, reduced transparency and unsupported browsers use solid fallbacks. Glass is opt-in where the default is `solid`, not enabled globally on every component.
+
 ## States and motion
 
 Glass surfaces stay outside their children's press-opacity feedback. Disabled controls cannot run actions. The tab bar animates selection on native devices and exposes keyboard, selected, and disabled states on web. Toolbar auto-hide translates the material off-screen instead of fading glass opacity.

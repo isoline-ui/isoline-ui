@@ -341,6 +341,7 @@ export function MaterialExamples({
             <View style={{ height: 100 }}>
               <FabMenu
                 {...material}
+                menuMaterial={material.material}
                 bottom={8}
                 label={heading('Capture menu', 'Erfassungsmenü')}
                 actions={[

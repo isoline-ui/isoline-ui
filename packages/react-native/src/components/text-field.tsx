@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Text } from './text.tsx';
+import { PasswordVisibility } from './password-visibility.tsx';
 import { effects, spatial } from '../motion.ts';
 import { corner } from '../shape.ts';
 import { useIsolinePlatform, useThemeColors } from '../provider.tsx';
@@ -60,6 +61,7 @@ export const TextField: React.ForwardRefExoticComponent<
     onFocus,
     onBlur,
     accessibilityLabel,
+    secureTextEntry,
     ...props
   },
   ref,
@@ -69,6 +71,7 @@ export const TextField: React.ForwardRefExoticComponent<
   const Box = (web ? View : Animated.View) as typeof Animated.View;
   const Label = (web ? RNText : Animated.Text) as typeof Animated.Text;
   const colors = useThemeColors();
+  const [revealed, setRevealed] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
   const floated = focused || Boolean(value);
 
@@ -125,30 +128,42 @@ export const TextField: React.ForwardRefExoticComponent<
         <Text variant="label" style={{ color: error ? colors.error : colors.onSurfaceVariant }}>
           {label}
         </Text>
-        <TextInput
-          ref={ref}
-          value={value}
-          placeholder={placeholder}
-          placeholderTextColor={colors.onSurfaceVariant}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          accessibilityLabel={accessibilityLabel ?? label}
-          className={cn('text-foreground', className)}
-          style={[
-            {
-              minHeight: 44,
-              paddingHorizontal: 12,
-              paddingVertical: 10,
-              borderRadius: 10,
-              backgroundColor: colors.surfaceContainerHigh,
-              borderWidth: 1,
-              borderColor: error ? colors.error : focused ? colors.primary : 'transparent',
-              fontSize: 17,
-            },
-            style,
-          ]}
-          {...props}
-        />
+        <View style={{ position: 'relative' }}>
+          <TextInput
+            ref={ref}
+            value={value}
+            placeholder={placeholder}
+            placeholderTextColor={colors.onSurfaceVariant}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            accessibilityLabel={accessibilityLabel ?? label}
+            className={cn('text-foreground', className)}
+            style={[
+              {
+                minHeight: 44,
+                paddingHorizontal: 12,
+                paddingRight: secureTextEntry ? 56 : 12,
+                paddingVertical: 10,
+                borderRadius: 10,
+                backgroundColor: colors.surfaceContainerHigh,
+                borderWidth: 1,
+                borderColor: error ? colors.error : focused ? colors.primary : 'transparent',
+                fontSize: 17,
+              },
+              style,
+            ]}
+            {...props}
+            autoCapitalize={props.autoCapitalize ?? (secureTextEntry ? 'none' : undefined)}
+            autoCorrect={props.autoCorrect ?? (secureTextEntry ? false : undefined)}
+            secureTextEntry={secureTextEntry && !revealed}
+          />
+          {secureTextEntry ? (
+            <PasswordVisibility
+              revealed={revealed}
+              onPress={() => setRevealed((value) => !value)}
+            />
+          ) : null}
+        </View>
         {error ? (
           <Text variant="caption" accessibilityRole="alert" style={{ color: colors.error }}>
             {error}
@@ -164,11 +179,18 @@ export const TextField: React.ForwardRefExoticComponent<
           value={value}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          className={cn('h-14 rounded px-4 pt-2 text-base text-foreground', className)}
+          className={cn(
+            'h-14 rounded px-4 pt-2 text-base text-foreground',
+            secureTextEntry && 'pr-14',
+            className,
+          )}
           style={style}
           placeholder={floated ? placeholder : undefined}
           accessibilityLabel={accessibilityLabel ?? label}
           {...props}
+          autoCapitalize={props.autoCapitalize ?? (secureTextEntry ? 'none' : undefined)}
+          autoCorrect={props.autoCorrect ?? (secureTextEntry ? false : undefined)}
+          secureTextEntry={secureTextEntry && !revealed}
         />
 
         <Box
@@ -224,6 +246,12 @@ export const TextField: React.ForwardRefExoticComponent<
             </Label>
           </Box>
         </View>
+        {secureTextEntry ? (
+          <PasswordVisibility
+            revealed={revealed}
+            onPress={() => setRevealed((value) => !value)}
+          />
+        ) : null}
       </View>
 
       {error ? (

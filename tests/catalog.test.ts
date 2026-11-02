@@ -93,6 +93,18 @@ test('image loading reads both native source and web DOM dimensions', () => {
     imageDimensions({ nativeEvent: { target: { naturalWidth: 96, naturalHeight: 72 } } }),
     { width: 96, height: 72 },
   );
+  // RN Web's ImageLoader also forwards raw browser load events.
+  assert.deepEqual(imageDimensions({ target: { naturalWidth: 96, naturalHeight: 72 } }), {
+    width: 96,
+    height: 72,
+  });
+  assert.deepEqual(
+    imageDimensions({ currentTarget: { naturalWidth: 72, naturalHeight: 96 } }),
+    {
+      width: 72,
+      height: 96,
+    },
+  );
   for (const event of [
     null,
     {},

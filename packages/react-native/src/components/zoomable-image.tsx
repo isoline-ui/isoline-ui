@@ -8,10 +8,13 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Button } from './button.tsx';
+import { Toolbar as ToolbarContainer } from './toolbar.tsx';
+import type { MaterialOptions } from '../provider.tsx';
 import { Text } from './text.tsx';
 import { clampZoom, imagePanBounds, imageDimensions } from '../media.ts';
 
-export interface ZoomableImageProps {
+/** Material options apply to the floating zoom controls, never the image. */
+export interface ZoomableImageProps extends MaterialOptions {
   uri: string;
   accessibilityLabel: string;
   onTap?: () => void;
@@ -31,7 +34,21 @@ export function ZoomableImage({
   maximumScale = 5,
   labels,
   renderImage,
+  material = 'auto',
+  glassStyle,
+  tintColor,
+  fallbackColor,
+  interactive,
 }: ZoomableImageProps) {
+  const currentUri = React.useRef(uri);
+  currentUri.current = uri;
+  const mounted = React.useRef(true);
+  React.useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   const width = useSharedValue(1),
     height = useSharedValue(1),
     aspect = useSharedValue(1);
@@ -134,6 +151,12 @@ export function ZoomableImage({
   const motion = useAnimatedStyle(() => ({
     transform: [{ translateX: x.value }, { translateY: y.value }, { scale: scale.value }],
   }));
+  // Keep the floating material over the contained photo rather than its empty
+  // letterbox. This position stays stable while zooming and updates on resize.
+  const controlPosition = useAnimatedStyle(() => ({
+    bottom:
+      Math.max(0, (height.value - Math.min(height.value, width.value / aspect.value)) / 2) + 8,
+  }));
   const imageLoaded = (w: number, h: number) => {
     if (w > 0 && h > 0) aspect.value = w / h;
   };
@@ -143,6 +166,7 @@ export function ZoomableImage({
         gesture={Gesture.Simultaneous(pinch, pan, Gesture.Exclusive(double, single))}
       >
         <View
+          testID="isoline-image-viewport"
           onLayout={(event) => {
             width.value = Math.max(1, event.nativeEvent.layout.width);
             height.value = Math.max(1, event.nativeEvent.layout.height);
@@ -161,6 +185,17 @@ export function ZoomableImage({
                 onLoad={(event) => {
                   const size = imageDimensions(event);
                   if (size) imageLoaded(size.width, size.height);
+                  else {
+                    // Deferred browser load events can lose their DOM target.
+                    // Ask the standard image loader for cached dimensions instead.
+                    Image.getSize(
+                      uri,
+                      (w, h) => {
+                        if (mounted.current && currentUri.current === uri) imageLoaded(w, h);
+                      },
+                      () => {},
+                    );
+                  }
                 }}
                 onError={() => setFailed(true)}
               />
@@ -169,24 +204,37 @@ export function ZoomableImage({
           {failed && labels.error ? <Text>{labels.error}</Text> : null}
         </View>
       </GestureDetector>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-        <Button
-          size="s"
-          variant="tonal"
-          label={labels.zoomOut}
-          accessibilityLabel={labels.zoomOut}
-          disabled={shown <= 1}
-          onPress={() => zoom(scale.value / 1.5)}
-        />
-        <Button
-          size="s"
-          variant="tonal"
-          label={labels.zoomIn}
-          disabled={shown >= maximum}
-          onPress={() => zoom(scale.value * 1.5)}
-        />
-        <Button size="s" variant="ghost" label={labels.reset} onPress={reset} />
-      </View>
+      <Animated.View
+        pointerEvents="box-none"
+        style={[{ position: 'absolute', left: 8, right: 8 }, controlPosition]}
+      >
+        <ToolbarContainer
+          testID="isoline-image-controls"
+          material={material}
+          glassStyle={glassStyle}
+          tintColor={tintColor}
+          fallbackColor={fallbackColor}
+          interactive={interactive}
+          style={{ flexWrap: 'wrap', justifyContent: 'center', gap: 4 }}
+        >
+          <Button
+            size="s"
+            variant="ghost"
+            label={labels.zoomOut}
+            accessibilityLabel={labels.zoomOut}
+            disabled={shown <= 1}
+            onPress={() => zoom(scale.value / 1.5)}
+          />
+          <Button
+            size="s"
+            variant="ghost"
+            label={labels.zoomIn}
+            disabled={shown >= maximum}
+            onPress={() => zoom(scale.value * 1.5)}
+          />
+          <Button size="s" variant="ghost" label={labels.reset} onPress={reset} />
+        </ToolbarContainer>
+      </Animated.View>
     </View>
   );
 }
