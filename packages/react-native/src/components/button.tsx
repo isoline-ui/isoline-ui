@@ -186,7 +186,14 @@ export function Button({
   const Control = (
     web || materialActive ? Pressable : AnimatedPressable
   ) as typeof AnimatedPressable;
-  const [webPressed, setWebPressed] = React.useState(false);
+  // Reanimated only drives the animated styles it finds in a plain `style`
+  // value: inside a style callback they are dropped, and the control keeps
+  // square corners under its rounded clip (an Outlined border then shows only
+  // as broken top and bottom lines). So the animated control gets a resolved
+  // array, and a caller's style callback is fed the pressed state from here.
+  const animated = !web && !materialActive;
+  const tracksPressed = web || (animated && typeof style === 'function');
+  const [pressedNow, setPressedNow] = React.useState(false);
   const ios = useIsolinePlatform() === 'ios';
   const alertAction = React.useContext(DialogActionContext) && ios;
   const { selectionHaptic } = useHaptics();
@@ -223,7 +230,7 @@ export function Button({
                 ? 0
                 : materialActive
                   ? rest
-                  : webPressed
+                  : pressedNow
                     ? active
                     : rest,
             }
@@ -238,14 +245,14 @@ export function Button({
           props.disabled && 'opacity-50',
           pressableClassName,
         )}
-        style={(state: PressableStateCallbackType) => [
+        style={resolveStyle(animated, pressedNow, (state: PressableStateCallbackType) => [
           web || materialActive
             ? {
-                borderRadius: webPressed ? active : rest,
-                transform: [{ scale: webPressed ? 0.97 : 1 }],
+                borderRadius: pressedNow ? active : rest,
+                transform: [{ scale: pressedNow ? 0.97 : 1 }],
               }
             : radiusStyle,
-          !web && !materialActive && scaleStyle,
+          animated && scaleStyle,
           ios && {
             minHeight: 44,
             height: { xs: 44, s: 44, m: 50, l: 64, xl: 80, icon: 44 }[resolvedSize],
@@ -254,15 +261,15 @@ export function Button({
           materialActive && { backgroundColor: 'transparent', borderWidth: 0 },
           alertAction && { backgroundColor: 'transparent', borderWidth: 0, borderRadius: 0 },
           typeof style === 'function' ? style(state) : style,
-        ]}
+        ])}
         android_ripple={{ color: rippleByVariant(ripple)[resolvedVariant] }}
         onPressIn={(event) => {
-          if (web) setWebPressed(true);
+          if (tracksPressed) setPressedNow(true);
           pressed.value = withSpring(1, spatial.fast);
           onPressIn?.(event);
         }}
         onPressOut={(event) => {
-          if (web) setWebPressed(false);
+          if (tracksPressed) setPressedNow(false);
           pressed.value = withSpring(0, spatial.default);
           onPressOut?.(event);
         }}
@@ -313,6 +320,18 @@ export function Button({
       </Control>
     </Container>
   );
+}
+
+/**
+ * The control's style as Reanimated can read it: resolved now for the
+ * animated control, left as a callback where no animated style is involved.
+ */
+function resolveStyle<T>(
+  animated: boolean,
+  pressed: boolean,
+  style: (state: PressableStateCallbackType) => T,
+): T | ((state: PressableStateCallbackType) => T) {
+  return animated ? style({ pressed }) : style;
 }
 
 export { buttonVariants, labelVariants };
