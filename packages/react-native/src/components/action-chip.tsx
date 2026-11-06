@@ -47,10 +47,13 @@ export function ActionChip({
       size="s"
       variant="tonal"
       accessibilityLabel={props.accessibilityLabel ?? label}
-      style={(state) => [
-        { backgroundColor, minHeight: 48 },
-        typeof style === 'function' ? style(state) : style,
-      ]}
+      // A callback only when the caller passed one: Button has to re-render on
+      // press to resolve it, which a plain style avoids.
+      style={
+        typeof style === 'function'
+          ? (state) => [{ backgroundColor, minHeight: 48 }, style(state)]
+          : [{ backgroundColor, minHeight: 48 }, style]
+      }
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
         {Icon ? <Icon size={20} color={color} /> : null}
