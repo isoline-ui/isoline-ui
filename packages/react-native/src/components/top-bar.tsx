@@ -41,6 +41,36 @@ export function TopBar({
   const labels = useLabels();
   const ios = useIsolinePlatform() === 'ios';
   const Surface = useSurface();
+  // Liquid Glass belongs on the controls, not on a full-width band: a glass
+  // bar under the status bar reads as a stray strip with a seam at its top.
+  // On iOS the bar is transparent and the back button is its own glass disc.
+  if (ios && material !== 'solid') {
+    return (
+      <View
+        className={className}
+        style={{
+          minHeight: 56,
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 8,
+        }}
+      >
+        <IconButton
+          {...HEADER_ICON_BUTTON}
+          icon={BackIcon}
+          onPress={onBack}
+          accessibilityLabel={backLabel ?? labels.back}
+          material={material}
+          glassStyle={glassStyle}
+          tintColor={tintColor}
+          fallbackColor={fallbackColor}
+          interactive={interactive ?? true}
+        />
+        <View className="flex-1 items-center px-2">{center}</View>
+        {actions}
+      </View>
+    );
+  }
   return (
     <Surface
       material={ios ? material : 'solid'}

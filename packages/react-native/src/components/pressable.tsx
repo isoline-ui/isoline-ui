@@ -4,6 +4,7 @@ import {
   Pressable as RNPressable,
   StyleSheet,
   type PressableProps,
+  type PressableStateCallbackType,
   type ViewStyle,
 } from 'react-native';
 import Animated, { type AnimatedProps } from 'react-native-reanimated';
@@ -19,11 +20,41 @@ type PressableRef = React.ElementRef<typeof RNPressable>;
 export const Pressable: React.ForwardRefExoticComponent<
   PressableProps & React.RefAttributes<PressableRef>
 > = React.forwardRef<React.ElementRef<typeof RNPressable>, PressableProps>(function Pressable(
-  { className, android_ripple, style, disabled, onKeyDown, accessibilityState, ...props },
+  {
+    className,
+    android_ripple,
+    style,
+    disabled,
+    onKeyDown,
+    onPressIn,
+    onPressOut,
+    accessibilityState,
+    ...props
+  },
   ref,
 ) {
   const ios = useIsolinePlatform() === 'ios';
   const web = Platform.OS === 'web';
+  // On native, NativeWind merges `className` into `style` as an array, and a
+  // style *callback* inside that array is silently dropped. So native never
+  // hands RN a callback: the pressed state is tracked here and the caller's
+  // style resolved against it.
+  const [pressed, setPressed] = React.useState(false);
+  const tracksPressed = !web && (ios || typeof style === 'function');
+  const resolveStyle = (state: PressableStateCallbackType) => {
+    const resolved = typeof style === 'function' ? style(state) : style;
+    if (!ios && !web) return resolved;
+    const opacity = StyleSheet.flatten(resolved)?.opacity;
+    // Do not brighten translucent controls or replace animated opacity.
+    const pressedOpacity =
+      opacity === undefined || typeof opacity === 'number' ? (opacity ?? 1) * 0.65 : undefined;
+    return [
+      resolved,
+      state.pressed && !disabled && pressedOpacity !== undefined
+        ? { opacity: pressedOpacity }
+        : undefined,
+    ];
+  };
   const classNames = cn(
     // Use browser modality detection, including keyboard use after a tap. Keep
     // the ring inside shaped/connected controls so clipping cannot cut it off.
@@ -75,27 +106,29 @@ export const Pressable: React.ForwardRefExoticComponent<
       // NativeWind's web adapter cannot merge className into a style callback.
       // Supply RN Web's compiled-class marker inside the callback instead.
       className={web ? undefined : classNames}
-      style={
-        ios || Platform.OS === 'web'
-          ? (state) => {
-              const resolved = typeof style === 'function' ? style(state) : style;
-              const opacity = StyleSheet.flatten(resolved)?.opacity;
-              // Do not brighten translucent controls or replace animated opacity.
-              const pressedOpacity =
-                opacity === undefined || typeof opacity === 'number'
-                  ? (opacity ?? 1) * 0.65
-                  : undefined;
-              return [
-                web && classNames
-                  ? ({ $$css: true, [classNames]: classNames } as ViewStyle)
-                  : undefined,
-                resolved,
-                state.pressed && !disabled && pressedOpacity !== undefined
-                  ? { opacity: pressedOpacity }
-                  : undefined,
-              ];
+      onPressIn={
+        !tracksPressed
+          ? onPressIn
+          : (event) => {
+              setPressed(true);
+              onPressIn?.(event);
             }
-          : style
+      }
+      onPressOut={
+        !tracksPressed
+          ? onPressOut
+          : (event) => {
+              setPressed(false);
+              onPressOut?.(event);
+            }
+      }
+      style={
+        web
+          ? (state) => [
+              classNames ? ({ $$css: true, [classNames]: classNames } as ViewStyle) : undefined,
+              resolveStyle(state),
+            ]
+          : resolveStyle({ pressed })
       }
       {...props}
     />
