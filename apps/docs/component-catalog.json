@@ -271,7 +271,7 @@
     "titleDe": "Navigationsleisten",
     "description": "Shared back actions, titles and navigation accessories. Routing remains app-owned.",
     "descriptionDe": "Gemeinsame Zurück-Aktionen, Titel und Navigationsaktionen. Routing bleibt Aufgabe der App.",
-    "props": "title;leading;trailing;center;onBack;onPress;material"
+    "props": "title;leading;trailing;center;onBack;onPress;material;floating"
   },
   {
     "slug": "snackbar",
