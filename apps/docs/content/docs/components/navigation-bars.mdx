@@ -75,7 +75,9 @@ export function Example() {
 
 Public components: `NavigationBar`, `TopBar`, `BackButton`, `BackIcon`, `ScreenTitle`.
 
-Key props: `title`, `leading`, `trailing`, `center`, `onBack`, `onPress`, `material`. Exported props types define the full contract. Labels and actions are supplied by the app.
+Key props: `title`, `leading`, `trailing`, `center`, `onBack`, `onPress`, `material`, `floating`.
+
+On iOS, `TopBar` puts glass on its controls: the back button is a disc, the title and the actions each sit in a capsule. With `floating` it lies over the screen from the top edge, and the content scrolls under it and fades out beneath the controls; pad the content by `useTopBarInset()`, which is 0 on Android and the web. Exported props types define the full contract. Labels and actions are supplied by the app.
 
 Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
 
