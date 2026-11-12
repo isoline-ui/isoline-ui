@@ -3,7 +3,7 @@
 ## 1.0.1
 
 - iOS: `Pressable` no longer hands NativeWind a style callback, which it dropped whenever a `className` was set. Chips, buttons and other pressables keep their radii, heights and colours.
-- iOS: `TopBar` puts Liquid Glass on its controls instead of a full-width band: the back button is a glass disc, the title and the actions each sit in a glass capsule. With `floating`, it lies over the screen with a scroll-edge fade under it; pad the content by `useTopBarInset()`.
+- iOS: `TopBar` puts Liquid Glass on its controls instead of a full-width band: the back button is a glass disc, the title and the actions each sit in a glass capsule. Its glass shares one group, so a pressed control swells and flows into its neighbour. With `floating`, it lies over the screen with a scroll-edge fade under it; pad the content by `useTopBarInset()`.
 - `@isoline-ui/native` now peers on the matching `@isoline-ui/react-native`, so `npm ci` resolves again.
 
 ## 0.1.0-alpha.2

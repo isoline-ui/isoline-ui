@@ -10,6 +10,7 @@ import {
   type MaterialOptions,
   useIsolinePlatform,
   useLabels,
+  SurfaceGroup,
   useSurface,
   useIsolineTheme,
   useThemeColors,
@@ -39,6 +40,9 @@ export interface TopBarProps extends MaterialOptions {
 
 /** The bar's height below the status bar. */
 export const TOP_BAR_HEIGHT = 56;
+/** Space between the bar's glass pieces, and how close they come before blending. */
+const GLASS_GAP = 12;
+const GLASS_BLEND = 8;
 /** How far the scroll-edge fade reaches past the bar. */
 const FADE = 20;
 const CAPSULE = {
@@ -110,14 +114,19 @@ export function TopBar({
   // the title and the actions each sit in a glass capsule.
   if (ios && material !== 'solid') {
     const glass = { material, glassStyle, tintColor, fallbackColor } as const;
+    // One glass group, every piece a direct child of it: iOS melts glass
+    // shapes into each other only inside a shared container. The gap is wider
+    // than the blend distance, so at rest they stand apart; a pressed control
+    // swells towards its neighbour and flows into it.
     const row = (
-      <View
+      <SurfaceGroup
+        spacing={GLASS_BLEND}
+        gap={GLASS_GAP}
         style={{
           minHeight: TOP_BAR_HEIGHT,
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: 8,
-          gap: 8,
         }}
       >
         <IconButton
@@ -128,26 +137,26 @@ export function TopBar({
           {...glass}
           interactive={interactive ?? true}
         />
-        <View className="flex-1 items-center">
-          {center ? (
-            <Surface {...glass} style={CAPSULE}>
-              {center}
-            </Surface>
-          ) : null}
-        </View>
+        {/* Equal flexible room either side keeps the title centred. */}
+        <View style={{ flex: 1 }} />
+        {center ? (
+          <Surface {...glass} style={[CAPSULE, { flexShrink: 1 }]}>
+            {center}
+          </Surface>
+        ) : null}
+        <View style={{ flex: 1 }} />
         {actions ? (
           <Surface
             {...glass}
-            interactive={interactive}
+            interactive={interactive ?? true}
             style={[CAPSULE, { paddingHorizontal: 0 }]}
           >
             {actions}
           </Surface>
         ) : (
-          // Keeps the title centred against the back button.
           <View style={{ width: HEADER_ICON_BUTTON.size }} />
         )}
-      </View>
+      </SurfaceGroup>
     );
     if (!floating) return <View className={className}>{row}</View>;
     return (
