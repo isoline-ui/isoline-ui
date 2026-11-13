@@ -134,9 +134,14 @@ try {
           await page.reload({ waitUntil: 'networkidle' });
           const frame = page.frameLocator('.component-preview iframe').first();
           const open = frame.getByRole('button', { name: 'Open dialog', exact: true });
+          // iOS buttons are capsules: their corner is half their height.
           await eventually(
-            () => open.evaluate((el) => getComputedStyle(el).borderRadius),
-            platform === 'ios' ? '12px' : '28px',
+            () =>
+              open.evaluate((el, ios) => {
+                const radius = getComputedStyle(el).borderRadius;
+                return ios ? radius === `${el.getBoundingClientRect().height / 2}px` : radius;
+              }, platform === 'ios'),
+            platform === 'ios' ? true : '28px',
           );
           await open.click();
           const panel = frame.getByTestId('isoline-dialog-panel');
@@ -259,9 +264,16 @@ try {
                 name: locale === 'de' ? 'Hinzufügen' : 'Add',
                 exact: true,
               });
+              // iOS buttons are capsules: their corner is half their height.
               await eventually(
-                () => action.evaluate((el) => getComputedStyle(el).borderRadius),
-                platform === 'iOS' ? '12px' : '20px',
+                () =>
+                  action.evaluate((el, ios) => {
+                    const radius = getComputedStyle(el).borderRadius;
+                    return ios
+                      ? radius === `${el.getBoundingClientRect().height / 2}px`
+                      : radius;
+                  }, platform === 'iOS'),
+                platform === 'iOS' ? true : '20px',
               );
               assert.equal(await toggle.isChecked(), false);
               assert.equal(
