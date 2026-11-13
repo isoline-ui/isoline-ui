@@ -1,6 +1,7 @@
 # Design contract
 
-Share semantic colours, component structure, shapes and accessibility rules.
+Share semantic colours, component structure, emphasis and accessibility rules.
+Control geometry follows the selected platform.
 Keep the three product identities distinct through theme values and typography.
 
 - Android keeps contained ripples; iOS receives pressed-opacity feedback.
@@ -22,3 +23,22 @@ light/dark contrast and nested overlays on Android and iOS.
 Atlas currently has more developed SheetFrame/PanelSheet scroll coordination.
 Reconcile those behaviours explicitly before migrating its sheets; do not
 replace them with the simpler alpha sheet.
+
+## Lessons from Atlas iOS preparation
+
+Atlas PRs #49–54 showed that a shared layout still needs platform control
+geometry. Buttons and filter chips now use iOS capsules behind the same API;
+Android retains M3 Expressive. App-specific accent roles stay in consumer themes.
+
+Use Liquid Glass for floating controls through the native surface adapter,
+with solid fallback for unsupported systems and Reduce Transparency. A floating
+`TopBar` needs `useTopBarInset()` on its content; do not turn it on globally
+without migrating screen padding. Tab labels can cap scaling locally, while
+reading text and forms must remain scalable. Device-test contrast over photos,
+long translations, keyboard placement and accessible names.
+
+Build readiness is separate: align all Expo dependencies to the consumer's SDK
+and run `expo install --check` in CI. Atlas had a successful archive that crashed
+in dyld because ExpoCamera and ExpoModulesCore disagreed. A Metro bundle cannot
+prove native ABI compatibility. Compile on macOS and cold-launch the signed or
+re-signed IPA on a phone before calling the native port validated.

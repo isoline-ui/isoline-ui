@@ -44,3 +44,11 @@ This component has no `disabled` or `className` prop in the current release. Use
 | `onLongPress`         | `() => void`                                                        | An optional secondary action.                  |
 | `icon / trailingIcon` | `React.ComponentType<IconProps>`                                    | Optional leading and trailing icon components. |
 | `surface`             | `background / surfaceContainerHigh / popover · default: background` | Match the surface behind the chip.             |
+
+## iOS capsules
+
+On iOS, filter choices use a capsule with a minimum 44-point height, a neutral
+system-role fill and the primary tint when selected. Leading/trailing icons,
+long press, selection accessibility and labels keep the same API. Android keeps
+its stable fill/border layers and expressive motion. Do not disable text scaling
+for filters; verify large labels inside horizontal scroll containers.

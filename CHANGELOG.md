@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Use actual iOS button heights for capsule radii and icon width.
+- Give iOS filters a 44-point capsule, neutral fill and selected brand tint.
+- Document platform geometry and Atlas build/validation lessons in English and German.
+
 ## 1.0.1
 
 - iOS: `Pressable` no longer hands NativeWind a style callback, which it dropped whenever a `className` was set. Chips, buttons and other pressables keep their radii, heights and colours.
