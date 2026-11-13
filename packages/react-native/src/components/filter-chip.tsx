@@ -7,7 +7,7 @@ import { Pressable } from './pressable.tsx';
 import { useSquish } from './squish.ts';
 import { Text } from './text.tsx';
 import { corner } from '../shape.ts';
-import { useIsolinePlatform, useRipple, useThemeColors } from '../provider.tsx';
+import { useHaptics, useIsolinePlatform, useRipple, useThemeColors } from '../provider.tsx';
 import { cn } from '../utils.ts';
 
 /**
@@ -56,6 +56,8 @@ const SURFACE_FILL = {
 
 export interface FilterChipProps {
   label: string;
+  /** Selection feedback through the provider; defaults to enabled on iOS. */
+  haptic?: boolean;
   selected: boolean;
   onPress: () => void;
   /**
@@ -86,12 +88,14 @@ export function FilterChip({
   icon: Icon,
   trailingIcon: Trailing,
   surface = 'background',
+  haptic,
 }: FilterChipProps) {
   const ios = useIsolinePlatform() === 'ios';
   const web = Platform.OS === 'web';
-  const Container = (web ? View : Animated.View) as typeof Animated.View;
+  const Container = (web || ios ? View : Animated.View) as typeof Animated.View;
   const colors = useThemeColors();
   const ripple = useRipple();
+  const { selectionHaptic } = useHaptics();
 
   const foreground = ios
     ? selected
@@ -108,11 +112,14 @@ export function FilterChip({
   return (
     <Container
       className="shrink-0 overflow-hidden"
-      style={[{ borderRadius: ios ? 22 : corner.large }, !web && squish.style]}
+      style={[{ borderRadius: ios ? 22 : corner.large }, !web && !ios && squish.style]}
     >
       <Pressable
-        {...squish.handlers}
-        onPress={onPress}
+        {...(!ios ? squish.handlers : {})}
+        onPress={() => {
+          if (haptic ?? ios) selectionHaptic();
+          onPress();
+        }}
         onLongPress={onLongPress}
         // A 32dp chip is under the 48dp touch target on its own.
         hitSlop={{ top: 8, bottom: 8 }}
@@ -130,6 +137,8 @@ export function FilterChip({
           ...(ios
             ? {
                 minHeight: 44,
+                paddingHorizontal: 14,
+                gap: 6,
                 borderWidth: 0,
                 backgroundColor: selected ? colors.primary : colors.secondaryContainer,
               }
@@ -141,10 +150,17 @@ export function FilterChip({
         {/* Coloured inline from the same value the icon uses, rather than
             through a class, so the two cannot diverge and the label keeps a
             colour even if the class does not resolve. */}
-        <Text variant="labelLarge" numberOfLines={1} style={{ color: foreground }}>
+        <Text
+          variant="labelLarge"
+          numberOfLines={1}
+          style={{
+            color: foreground,
+            ...(ios ? { fontSize: 15, fontWeight: '500' as const } : {}),
+          }}
+        >
           {label}
         </Text>
-        {Trailing ? <Trailing size={16} color={foreground} /> : null}
+        {Trailing ? <Trailing size={ios ? 14 : 16} color={foreground} /> : null}
       </Pressable>
     </Container>
   );
