@@ -5,7 +5,7 @@ description: 'Install the current release and connect it to an Expo app.'
 
 ## Packages
 
-Isoline is published on npm as `@isoline-ui/react-native` and, for native appearance, `@isoline-ui/native`. The [changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) lists what each version changed.
+This documentation describes the current release of [`@isoline-ui/react-native`](https://www.npmjs.com/package/@isoline-ui/react-native) and [`@isoline-ui/native`](https://www.npmjs.com/package/@isoline-ui/native) on npm. The historical GitHub alpha.0/alpha.1 archives have a different API.
 
 ## Before you start
 
@@ -19,7 +19,7 @@ From your app directory:
 npm install @isoline-ui/react-native
 ```
 
-npm records the exact version in your lockfile. Commit `package.json` and the lockfile so `npm ci` installs the same version on every machine and in CI. The native package is optional; when you add it, keep both packages at the same version.
+For optional native appearance, also install [`@isoline-ui/native`](/en/docs/native/overview) at the same version. Commit `package.json` and your lockfile so `npm ci` reproduces the installation.
 
 ## 2. Install the peer dependencies
 
@@ -90,7 +90,7 @@ Follow [Your first screen](/en/docs/getting-started/first-screen) for a complete
 
 ## 5. Add native appearance when you need it
 
-For Android system colors and iOS Liquid Glass, install `@isoline-ui/native` at the same version as `@isoline-ui/react-native` and let Expo choose the glass dependency. See [Native appearance](/en/docs/native/overview).
+For Android system colors and iOS Liquid Glass, install **both packages at the same version** and let Expo choose the glass dependency. See [Native appearance](/en/docs/native/overview).
 
 ## Check the setup
 

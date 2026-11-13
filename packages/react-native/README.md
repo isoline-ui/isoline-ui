@@ -2,13 +2,15 @@
 
 Expressive shared UI with platform-aware interaction.
 
+[![npm](https://img.shields.io/npm/v/@isoline-ui/react-native)](https://www.npmjs.com/package/@isoline-ui/react-native)
+
 ## Install
 
 ```sh
 npm install @isoline-ui/react-native
 ```
 
-Commit `package.json` and the lockfile so every install gets the same version. The [changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) lists what each version changed.
+The historical GitHub alpha archives have a different API.
 
 ## Consumer setup
 

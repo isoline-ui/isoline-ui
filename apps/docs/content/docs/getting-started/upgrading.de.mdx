@@ -1,27 +1,22 @@
 ---
 title: 'Isoline aktualisieren'
-description: 'Wechsle auf eine neue Version der Pakete, ohne die nachvollziehbare Installation zu verlieren.'
+description: 'Aktualisiere die npm-Pakete mit einer nachvollziehbaren Installation.'
 ---
 
 ## Eine Version auswählen
 
-Lies im [Changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) die Hinweise zur gewünschten Version. Eine neue Hauptversion (die erste Zahl) kann APIs entfernen oder ändern; der [Migrationsleitfaden](https://github.com/isoline-ui/isoline-ui/blob/main/docs/migration.md) nennt die nötigen Änderungen.
+Lies das [Changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) und prüfe die Versionen auf npm für [`@isoline-ui/react-native`](https://www.npmjs.com/package/@isoline-ui/react-native) und [`@isoline-ui/native`](https://www.npmjs.com/package/@isoline-ui/native). Lies die Hinweise zu jeder Version zwischen deiner und der Zielversion.
 
 Nutzt du die native Darstellung, aktualisiere **beide Pakete gemeinsam** auf dieselbe Version. Die Peer-Abhängigkeit des nativen Pakets erwartet die passende UI-Version.
 
 ## Deine App aktualisieren
 
-1. Installiere die neue Version, zum Beispiel:
-
-   ```sh
-   npm install @isoline-ui/react-native@latest @isoline-ui/native@latest
-   ```
-
+1. Installiere die neue Version, zum Beispiel `npm install @isoline-ui/react-native@latest @isoline-ui/native@latest`.
 2. Committe `package.json` und die Lockdatei.
-3. Prüfe im Changelog geänderte Eigenschaften und native Abhängigkeiten.
+3. Prüfe das Changelog auf geänderte Eigenschaften und native Abhängigkeiten.
 4. Führe den Typecheck deiner App aus und probiere die verwendeten Bildschirme aus.
 5. Baue die native App neu, wenn sich nativer Code oder native Abhängigkeiten geändert haben.
 
 ## Falls ein Update Probleme macht
 
-Stelle die vorherige `package.json` und Lockdatei wieder her und führe `npm ci` aus. Hat sich der native Code geändert, brauchst du auch eine dazu passende native App-Version oder einen erneuten nativen Build. Siehe [Development-Builds](/de/docs/native/development-builds).
+Installiere die vorherigen Versionen erneut und stelle die Lockdatei wieder her. Hat sich der native Code geändert, brauchst du auch eine dazu passende native App-Version oder einen erneuten nativen Build. Siehe [Development-Builds](/de/docs/native/development-builds).

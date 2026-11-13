@@ -83,9 +83,7 @@ export function Home({ locale }: { locale: Locale }) {
               href={`/${de ? 'de' : 'en'}/docs/getting-started/installation/`}
             >
               <span />
-              {de
-                ? `${uiPackage.version} · Entwicklungsstand`
-                : `${uiPackage.version} · Development source`}
+              {`${uiPackage.version} · npm`}
               <ArrowUpRight size={12} />
             </Link>
             <p className="eyebrow">REACT NATIVE · EXPO · ISOLINE UI</p>

@@ -5,13 +5,13 @@ description: 'Installiere die aktuelle Version und binde sie in eine Expo-App ei
 
 ## Pakete
 
-Isoline ist auf npm als `@isoline-ui/react-native` veröffentlicht, für die native Darstellung zusätzlich als `@isoline-ui/native`. Das [Changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) nennt die Änderungen jeder Version.
+Diese Dokumentation beschreibt die aktuelle Version von [`@isoline-ui/react-native`](https://www.npmjs.com/package/@isoline-ui/react-native) und [`@isoline-ui/native`](https://www.npmjs.com/package/@isoline-ui/native) auf npm. Die historischen GitHub-Archive alpha.0/alpha.1 haben eine andere API.
 
 ## Bevor du beginnst
 
 Verwende eine App mit Expo SDK **57 oder 58** und React Native **0.86 oder 0.88**. Wenn du NativeWind 4 bereits nutzt, behalte deine Einrichtung und ergänze die folgenden Änderungen. Übernimm keine fremden Abhängigkeitsversionen ungeprüft.
 
-## 1. Das Paket installieren
+## 1. Paket installieren
 
 Aus deinem App-Verzeichnis:
 
@@ -19,7 +19,7 @@ Aus deinem App-Verzeichnis:
 npm install @isoline-ui/react-native
 ```
 
-npm hält die genaue Version in der Lockdatei fest. Committe `package.json` und die Lockdatei, damit `npm ci` auf jedem Rechner und in der CI dieselbe Version installiert. Das native Paket ist optional; wenn du es ergänzt, halte beide Pakete auf derselben Version.
+Für die optionale native Darstellung installierst du zusätzlich [`@isoline-ui/native`](/de/docs/native/overview) in derselben Version. Committe `package.json` und die Lockdatei, damit `npm ci` die Installation reproduziert.
 
 ## 2. Peer-Abhängigkeiten installieren
 
@@ -90,7 +90,7 @@ Unter [Dein erster Bildschirm](/de/docs/getting-started/first-screen) findest du
 
 ## 5. Bei Bedarf native Darstellung hinzufügen
 
-Für Android-Systemfarben und iOS Liquid Glass installierst du `@isoline-ui/native` in derselben Version wie `@isoline-ui/react-native` und lässt Expo die Glas-Abhängigkeit auswählen. Siehe [Native Darstellung](/de/docs/native/overview).
+Für Android-Systemfarben und iOS Liquid Glass installierst du **beide Isoline-Pakete in derselben Version** und lässt Expo die Glas-Abhängigkeit auswählen. Siehe [Native Darstellung](/de/docs/native/overview).
 
 ## Die Einrichtung prüfen
 

@@ -1,22 +1,17 @@
 ---
 title: 'Updating Isoline'
-description: 'Move to a new version of the packages without losing a reproducible installation.'
+description: 'Update the npm packages without losing a reproducible installation.'
 ---
 
 ## Choose a version
 
-Read the [changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) for the version you want. A new major version (the first number) can remove or change APIs; the [migration guide](https://github.com/isoline-ui/isoline-ui/blob/main/docs/migration.md) says what to change.
+Check the [changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) and the versions on npm for [`@isoline-ui/react-native`](https://www.npmjs.com/package/@isoline-ui/react-native) and [`@isoline-ui/native`](https://www.npmjs.com/package/@isoline-ui/native). Read the notes for every version between yours and the target.
 
 If you use native appearance, update **both packages together** to the same version. The native package's peer dependency expects the matching UI version.
 
 ## Update your app
 
-1. Install the new version, for example:
-
-   ```sh
-   npm install @isoline-ui/react-native@latest @isoline-ui/native@latest
-   ```
-
+1. Install the new version, for example `npm install @isoline-ui/react-native@latest @isoline-ui/native@latest`.
 2. Commit `package.json` and your lockfile.
 3. Check the changelog for changed props and native dependencies.
 4. Run your app's typecheck and try the screens you use.
@@ -24,4 +19,4 @@ If you use native appearance, update **both packages together** to the same vers
 
 ## If an update goes wrong
 
-Restore the previous `package.json` and lockfile, then run `npm ci`. When the installed native code changed, restore or rebuild a native app that matches the JavaScript version too. See [Development builds](/en/docs/native/development-builds).
+Install the previous versions again and restore your lockfile. When the installed native code changed, restore or rebuild a native app that matches the JavaScript version too. See [Development builds](/en/docs/native/development-builds).

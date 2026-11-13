@@ -9,3 +9,6 @@ Material Symbols icon collections and brand fonts are not bundled.
 
 Runtime packages remain subject to their respective licences. Apps consuming
 Isoline should regenerate their dependency licence notices after integration.
+
+The README hero images in `docs/assets/` are original artwork for this project,
+using the Isoline mark from the documentation favicon and the bundled theme colours.

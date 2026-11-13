@@ -51,7 +51,7 @@ for (const file of [
   );
   assert.doesNotMatch(
     text,
-    /not (a published|an) npm release|kein veröffentlichter npm-Release/i,
+    /not (?:yet )?(?:a )?published|not an npm release|development source|noch nicht auf npm|keinen? veröffentlichten?/i,
     `${file}: Isoline is on npm`,
   );
 }
