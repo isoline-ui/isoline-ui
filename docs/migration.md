@@ -1,6 +1,6 @@
 # Consumer migration
 
-For the current 2.1.0 development API, build paired UI/native archives from one reviewed commit (see distribution.md). Historical alpha release archives do not match this API. Keep existing app imports as thin forwarding modules during migration.
+Install the packages from npm, both at the same version. Historical alpha release archives do not match this API. Keep existing app imports as thin forwarding modules during migration.
 
 1. Add the versioned package, NativeWind preset/content scan and a theme adapter.
 2. Start with simple shared primitives and keep existing app import paths as
@@ -44,8 +44,7 @@ ranges and custom day marks, and informational undo countdowns continue under
 reduced motion.
 
 Register MaterialGroup alongside MaterialSurface when enabling native glass
-groups. Update both archives, their lockfile integrities and archive checksums
-together. The 2.1.0 development snapshot is not an npm release. Every public component is
+groups. Update both packages together, to the same version. Every public component is
 tracked by the documentation coverage check; component pages require both a
 React Native example and a rendered live preview in English and German.
 

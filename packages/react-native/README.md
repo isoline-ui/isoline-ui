@@ -1,16 +1,14 @@
 # @isoline-ui/react-native
 
-Expressive shared UI with platform-aware interaction. This guide describes the 2.1.0 development source, not an npm release. Historical GitHub alpha archives have a different API.
+Expressive shared UI with platform-aware interaction.
 
-## Install the 2.1.0 development source
-
-Build the archive from a reviewed repository commit with Node.js 24+, `npm ci --ignore-scripts` and `npm run pack`. Copy it into your app’s `vendor/` directory. Historical alpha releases do not match this API.
+## Install
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-2.1.0.tgz
+npm install @isoline-ui/react-native
 ```
 
-The URL is versioned and the package imports as `@isoline-ui/react-native`.
+Commit `package.json` and the lockfile so every install gets the same version. The [changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) lists what each version changed.
 
 ## Consumer setup
 

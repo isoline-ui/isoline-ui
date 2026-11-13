@@ -8,10 +8,9 @@ Isoline keeps the common interaction and accessibility rules in one place while
 allowing each app to keep its own colours and typography. The built-in
 themes are Violet, Teal and Cyan.
 
-**Documentation/API version: 2.1.0 (development source).** This version is not
-published to npm or available as a GitHub release asset. Historical alpha.0/alpha.1
-releases do not match this catalogue. Build local archives from one reviewed
-commit using the instructions below. Native appearance is optional.
+Isoline is published on npm as `@isoline-ui/react-native` and, for native
+appearance, `@isoline-ui/native`. The [changelog](CHANGELOG.md) lists what each
+version changed. Native appearance is optional.
 
 ## What is here
 
@@ -36,25 +35,20 @@ or try the complete [form](https://isoline-ui.github.io/isoline-ui/en/docs/guide
 [list](https://isoline-ui.github.io/isoline-ui/en/docs/guides/data-list-screen/) and
 [settings](https://isoline-ui.github.io/isoline-ui/en/docs/guides/settings-screen/) examples.
 
-## Install the documented development API
+## Install
 
-Use Node.js 24+ and npm. From a checkout of this repository:
+From your app:
 
 ```sh
-git rev-parse HEAD
-npm ci --ignore-scripts
-npm run check
-npm run pack
+npm install @isoline-ui/react-native
 ```
 
-Record the source commit, then copy `isoline-ui-react-native-2.1.0.tgz` into your
-app's `vendor/` directory and run `npm install ./vendor/isoline-ui-react-native-2.1.0.tgz`.
-Commit the archive, package manifest and lockfile for reproducible CI installs.
-For native appearance, also install `isoline-ui-native-2.1.0.tgz` from the same commit.
+Commit `package.json` and the lockfile so CI installs the same version. For native
+appearance, also install `@isoline-ui/native` at the same version.
 
 Follow [installation](https://isoline-ui.github.io/isoline-ui/en/docs/getting-started/installation/)
 for peers, NativeWind, Metro and providers. Installing the package alone does not
-configure an app. See [distribution](docs/distribution.md) for archive/update rules.
+configure an app. See [distribution](docs/distribution.md) for how releases are made.
 
 ## Development
 

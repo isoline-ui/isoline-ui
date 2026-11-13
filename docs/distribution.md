@@ -1,44 +1,21 @@
-# Distribution without npmjs
+# Releases
 
-Isoline test packages are attached to GitHub prereleases as `.tgz` files created
-by `npm pack`. Each tarball is a package under `packages/react-native` or `packages/native`, not a
-GitHub source archive of the entire monorepo.
+Isoline is published on npm as two packages that share one version number:
+`@isoline-ui/react-native` (the UI) and `@isoline-ui/native` (the optional native
+appearance), whose peer dependency expects the matching UI version. Each package
+is built from `packages/react-native` or `packages/native`, not from the whole
+monorepo.
 
-## Install the documented 2.1.0 development source
-
-The current API is a development source version, not a published release asset.
-Historical alpha.0/alpha.1 archives do not include the current catalogue.
-
-```sh
-git clone https://github.com/isoline-ui/isoline-ui.git
-cd isoline-ui
-git rev-parse HEAD
-npm ci --ignore-scripts
-npm run check
-npm run pack
-```
-
-Record the commit and use it for subsequent builds. Copy the resulting archives
-into the consuming app's `vendor/` directory. From the app:
+## Install
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-2.1.0.tgz
+npm install @isoline-ui/react-native
+npm install @isoline-ui/native        # optional native appearance
+npx expo install expo-glass-effect    # with the native package
 ```
 
-For optional native appearance, install the matching native archive too:
-
-```sh
-npm install ./vendor/isoline-ui-native-2.1.0.tgz
-npx expo install expo-glass-effect
-```
-
-Commit the archives, package.json and lockfile. A clean CI checkout can then run
-`npm ci`. Ordinary dependencies still come from the configured registry. Keep
-native peers selected by the consuming Expo SDK. Never pair archives from different
-commits simply because their development version strings match.
-
-Once an authorized immutable release exists, its versioned GitHub asset URLs can
-replace the local archives. Do not invent an asset URL before uploading a release.
+Commit `package.json` and the lockfile so a clean `npm ci` installs the same
+versions. Keep native peers selected by the consuming Expo SDK.
 
 ## Package contents and setup
 
@@ -47,26 +24,40 @@ NativeWind preset and licence notices. The app must still configure NativeWind,
 scan the package source and mount IsolineProvider. Fonts, labels and haptic
 preferences remain consumer responsibilities. See the package README.
 
-## Release rules
+The native package also includes Expo autolinking configuration and Android
+Kotlin/Gradle sources. See [native appearance](native.md) for rebuild
+requirements. Install only the UI package if the app does not use native
+appearance.
 
-- Build and check the package before packing; use a new tag/version for updates.
-- Attach the archive and SHA256SUMS to a prerelease targeting its source commit.
-- Do not replace a published archive or move a release tag.
-- This distribution step is independent of npm publishing.
+## Making a release
 
-## Automated prereleases
+1. While features land, describe each under `## Unreleased` at the top of
+   `CHANGELOG.md`.
+2. Pick the version: a new major version when something is removed or changed
+   incompatibly, a minor version for additions, a patch version for fixes.
+3. Run `npm run release -- <version>`, for example `npm run release -- 2.2.0`.
+   It sets the version of both packages, the native package's peer on the UI
+   package and the showcase's dependencies, renames `## Unreleased` to the
+   version with today's date, regenerates the lockfile and runs `npm run check`
+   and `npm run docs:check`.
+4. Commit, open a pull request and merge it once CI passes.
+5. Publish from a clean checkout of `main`, the UI package first, since the
+   native package's peer expects it:
 
-The Publish prerelease workflow builds and checks a selected source ref, packs
-the package, uploads the archive and SHA256SUMS, then publishes the prerelease.
-It uses GitHub's repository token; no npm account or stored upload token is
-needed. The initial workflow push bootstraps the first release. Later releases
-are started from Actions → Publish prerelease → Run workflow after a version bump.
+   ```sh
+   npm ci
+   npm run build
+   npm publish --workspace @isoline-ui/react-native
+   npm publish --workspace @isoline-ui/native
+   ```
 
-Only prerelease versions are accepted. A published version is left unchanged.
-If an upload partially fails, the workflow does not replace existing assets;
-inspect the draft before retrying.
+Never republish or change a version once it is on npm; release a new version
+instead. The documentation names no version numbers, so it needs no changes for
+a release.
 
-The native archive also includes Expo autolinking configuration and Android
-Kotlin/Gradle sources. See [native appearance](native.md) for rebuild requirements
-and migration. Native support is optional: install only the UI archive if the app
-does not use native appearance.
+## GitHub prereleases
+
+For a prerelease version (for example `2.2.0-alpha.1`), Actions → Publish
+prerelease builds and checks a chosen ref and attaches both packages as `.tgz`
+files and SHA256SUMS to a GitHub prerelease. It accepts only prerelease versions
+and never replaces an existing asset.

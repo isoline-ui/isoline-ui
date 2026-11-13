@@ -1,38 +1,27 @@
 ---
 title: 'Updating Isoline'
-description: 'Update the release archives without losing a reproducible installation.'
+description: 'Move to a new version of the packages without losing a reproducible installation.'
 ---
 
-## Updating development snapshots
+## Choose a version
 
-This documentation targets the 2.1.0 source, not a published release. For an update, build both archives from the same new reviewed commit. Store them in a new commit-named subdirectory under `vendor/` and update the installation paths. Do not overwrite the previous archive even if the internal development version remains 2.1.0. Commit the new archives, package manifest and lockfile. Keep the previous combination for rollback.
+Read the [changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) for the version you want. A new major version (the first number) can remove or change APIs; the [migration guide](https://github.com/isoline-ui/isoline-ui/blob/main/docs/migration.md) says what to change.
 
-The release rules below apply once a matching immutable release is available. Historical alpha releases do not provide the current API.
-
-## Choose a release
-
-Open [GitHub Releases](https://github.com/isoline-ui/isoline-ui/releases) and read the notes for the version you want. Use the `.tgz` package assets, not the automatic ZIP of the whole repository.
-
-For the UI package alone, update its archive URL. If you use native appearance, update **both packages together** to the same version. The native package's peer dependency expects the matching UI version.
+If you use native appearance, update **both packages together** to the same version. The native package's peer dependency expects the matching UI version.
 
 ## Update your app
 
-1. Install the new archive URL or URLs with your package manager.
+1. Install the new version, for example:
+
+   ```sh
+   npm install @isoline-ui/react-native@latest @isoline-ui/native@latest
+   ```
+
 2. Commit `package.json` and your lockfile.
-3. Check the release notes for changed props and native dependencies.
+3. Check the changelog for changed props and native dependencies.
 4. Run your app's typecheck and try the screens you use.
 5. Rebuild the native app if native code or native dependencies changed.
 
-Do not replace an old `.tgz` file while keeping its URL or version. Use immutable release URLs so a clean `npm ci` reproduces your installation.
-
-## Keeping a local archive
-
-```sh
-npm install ./vendor/isoline-ui-react-native-2.1.0.tgz
-```
-
-Keep that file available to your teammates and CI. Commit it with the app if you choose this approach. Installing from the release URL is usually simpler across several apps.
-
 ## If an update goes wrong
 
-Restore the previous archive URL and lockfile. When the installed native code changed, restore or rebuild a native app that matches the JavaScript version too. See [Development builds](/en/docs/native/development-builds).
+Restore the previous `package.json` and lockfile, then run `npm ci`. When the installed native code changed, restore or rebuild a native app that matches the JavaScript version too. See [Development builds](/en/docs/native/development-builds).

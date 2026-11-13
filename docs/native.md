@@ -41,7 +41,7 @@ workspace cannot run Xcode or an iOS simulator.
 
 ## Consumer migration
 
-Build and install the paired development archives from one reviewed commit (see distribution.md) and `npx expo install expo-glass-effect`.
+Install `@isoline-ui/react-native` and `@isoline-ui/native` at the same version, then `npx expo install expo-glass-effect`.
 Keep SDK-selected peer versions. Replace the app's palette reader with
 `useSystemTheme(baseTheme, useSystemColorsPreference)` at its IsolineProvider.
 Keep the scheme, brand, preference persistence and font loading in the app.
