@@ -20,7 +20,8 @@
     "docs:check": "npm run typecheck --workspace isoline-docs && node scripts/generate-component-examples.mjs --check && node scripts/generate-api-reference.mjs --check && node scripts/check-component-coverage.mjs && node scripts/check-documentation-contract.mjs && node scripts/check-docs.mjs",
     "docs:preview": "node scripts/build-docs-preview.mjs",
     "docs:test": "node scripts/check-browser.mjs",
-    "docs:examples": "node scripts/generate-component-examples.mjs && node scripts/generate-api-reference.mjs"
+    "docs:examples": "node scripts/generate-component-examples.mjs && node scripts/generate-api-reference.mjs",
+    "release": "node scripts/release.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

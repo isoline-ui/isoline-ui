@@ -1,6 +1,6 @@
 # Consumer migration
 
-Install the current 2.0.0 UI and native packages from npm at the same version. Historical alpha release archives do not match this API. Keep existing app imports as thin forwarding modules during migration.
+Install the UI and native packages from npm at the same version. Historical alpha release archives do not match this API. Keep existing app imports as thin forwarding modules during migration.
 
 1. Add the versioned package, NativeWind preset/content scan and a theme adapter.
 2. Start with simple shared primitives and keep existing app import paths as

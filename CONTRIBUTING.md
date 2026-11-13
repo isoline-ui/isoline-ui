@@ -47,7 +47,8 @@ npm run docs:check
 ```
 
 Update both the English and German pages, and add a [CHANGELOG](CHANGELOG.md) entry
-for user-facing changes.
+for user-facing changes under `## Unreleased` at the top (start that section if it
+is not there).
 
 ## Pull requests
 
@@ -58,8 +59,10 @@ for user-facing changes.
 
 ## Releases
 
-Maintainers make releases. Do not add npm tokens or other secrets to workflows or
-source files.
+Maintainers make releases with `npm run release -- <version>`, which writes the
+version everywhere it has to agree and turns `## Unreleased` into that version;
+see [distribution](docs/distribution.md). Do not add npm tokens or other secrets to
+workflows or source files.
 
 ## Code of conduct
 

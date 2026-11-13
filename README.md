@@ -112,7 +112,7 @@ for peer dependencies, NativeWind, Metro and providers. To try an unreleased
 commit, see [distribution](docs/distribution.md).
 
 > [!NOTE]
-> The historical GitHub alpha.0/alpha.1 archives have a different API from 2.0.0.
+> The historical GitHub alpha.0/alpha.1 archives have a different API from the npm releases.
 
 ## Compatibility
 

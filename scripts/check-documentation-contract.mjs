@@ -1,10 +1,32 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+
+/**
+ * Holds the release contract: both packages and everything that pins them
+ * share one version (scripts/release.mjs writes them together), and the
+ * install guides install from npm without naming a version, so a release
+ * never has to touch them.
+ */
 const root = path.resolve(import.meta.dirname, '..');
-const ui = JSON.parse(fs.readFileSync(path.join(root, 'packages/react-native/package.json')));
-const native = JSON.parse(fs.readFileSync(path.join(root, 'packages/native/package.json')));
-assert.equal(ui.version, native.version, 'Documented native/UI archive versions must match');
+const readJson = (file) => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+const ui = readJson('packages/react-native/package.json');
+const native = readJson('packages/native/package.json');
+const showcase = readJson('examples/showcase/package.json');
+
+assert.equal(native.version, ui.version, 'Both packages must share one version');
+assert.equal(
+  native.peerDependencies['@isoline-ui/react-native'],
+  ui.version,
+  'The native package must peer on the UI package of its own version',
+);
+for (const name of ['@isoline-ui/react-native', '@isoline-ui/native'])
+  assert.equal(
+    showcase.dependencies[name],
+    ui.version,
+    `Showcase must use ${name} ${ui.version}`,
+  );
+
 for (const file of [
   'README.md',
   'packages/react-native/README.md',
@@ -12,21 +34,25 @@ for (const file of [
   'docs/distribution.md',
   'apps/docs/content/docs/getting-started/installation.mdx',
   'apps/docs/content/docs/getting-started/installation.de.mdx',
+  'apps/docs/content/docs/native/overview.mdx',
+  'apps/docs/content/docs/native/overview.de.mdx',
 ]) {
   const text = fs.readFileSync(path.join(root, file), 'utf8');
-  assert.ok(
-    text.includes('npm install @isoline-ui/react-native'),
-    `${file}: must document installing the npm package`,
+  assert.match(text, /npm install @isoline-ui\/react-native/, `${file}: install from npm`);
+  assert.doesNotMatch(
+    text,
+    /isoline-ui-(react-)?native-\d[^\s]*\.tgz/,
+    `${file}: no local archive`,
   );
   assert.doesNotMatch(
     text,
-    /not (?:yet )?(?:a )?published|not an npm release|development source|noch nicht auf npm|keinen veröffentlichten/i,
-    `${file}: must not describe the npm release as unpublished`,
+    /@isoline-ui\/(react-)?native@\d/,
+    `${file}: no pinned version; a release must not need doc edits`,
   );
   assert.doesNotMatch(
     text,
-    /releases\/download\/v0\.1\.0-alpha\.[23]\//,
-    `${file}: nonexistent release asset`,
+    /not (?:yet )?(?:a )?published|not an npm release|development source|noch nicht auf npm|keinen? veröffentlichten?/i,
+    `${file}: Isoline is on npm`,
   );
 }
-console.log(`Documentation installs ${ui.version} from npm with matching UI/native versions.`);
+console.log(`Packages share ${ui.version}; install guides install from npm without a version.`);

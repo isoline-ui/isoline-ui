@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.0
+
+- New components: `Card`, `ListItem`, `FormField`, `RadioGroup`, `Combobox`, `Accordion` and `Skeleton`, with English and German guides, examples and reference screens.
+- `Button` takes `loading` and `loadingLabel`: it shows a spinner, announces busy and stops activating, while keeping its size.
+- `Dialog`, `BottomSheet`, `PanelSheet` and `Popover` take `dismissible`; when it is false, the backdrop, Back and the screen reader's dismiss leave it open, while the app's own buttons still close it.
+- `BottomSheet` takes `keyboardAware`, which keeps searchable content above the keyboard on Android; iOS keeps its native avoidance.
+- `SelectField` accepts `value={null}` with a `placeholder`.
+- `LoadingIndicator` takes an `accessibilityLabel`; field errors in `Input` and `TextField` are announced to screen readers when they appear.
+
 ## 2.0.0
 
 - Breaking: only the palette-named theme presets remain: `themes.violet`, `themes.teal` and `themes.cyan`. The deprecated aliases `themes.inboki`, `themes.yours` and `themes.atlas` are removed; use the palette name, or define your own alias in the app.
