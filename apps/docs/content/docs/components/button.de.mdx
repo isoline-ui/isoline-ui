@@ -78,3 +78,43 @@ bleibt transparent. Farben kommen aus dem Theme des Providers. Bei großer Schri
 kann die Mindesthöhe wachsen. Die Druckrückmeldung verwendet Deckkraft statt
 Form- oder Skalierungsanimation. Dialogaktionen behalten ihre flache Darstellung.
 Konsumierende Anwendungen benötigen keine eigene iOS-Implementierung.
+
+## Ladezustand
+
+`loading` zeigt einen Indikator, sperrt die Aktion und meldet Busy. `loadingLabel` liefert den lokalisierten Text währenddessen. Ohne dieses Label bleibt der normale Text erhalten. Die App setzt den Zustand vor der Anfrage und im finally-Block zurück; bei Fehler bleiben Eingaben erhalten. Für stabile Breite ein passendes Layout verwenden.
+
+```tsx
+<Button label="Speichern" loading={saving} loadingLabel="Wird gespeichert" onPress={submit} />
+```
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Button
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `variant` | `"default" \| "secondary" \| "tonal" \| "tertiary" \| "outline" \| "ghost" \| "destructive" \| null \| undefined` | optional | — | — |
+| `size` | `"xs" \| "s" \| "m" \| "l" \| "xl" \| "icon" \| null \| undefined` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `true` | Enables material interaction, not an action handler. |
+| `children` | `React.ComponentProps<typeof Pressable>['children']` | optional | — | — |
+| `pressableClassName` | `string` | optional | — | — |
+| `label` | `string` | optional | — | — |
+| `loading` | `boolean` | optional | `false` | Disables activation and announces busy while preserving the button layout. |
+| `loadingLabel` | `string` | optional | — | — |
+| `icon` | `React.ComponentType<IconProps>` | optional | — | A leading symbol, drawn in the label's color. |
+| `shape` | `'round' \| 'square'` | optional | `'round'` | Resting shape. Pressing morphs to the other one and back. |
+| `haptic` | `boolean` | optional | `true` | Fires a selection tick on press. Off for destructive-adjacent actions. |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/button.tsx)
+
+{/* generated-api:end */}

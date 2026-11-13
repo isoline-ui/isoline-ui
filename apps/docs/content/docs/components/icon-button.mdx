@@ -51,3 +51,34 @@ The dedicated [Floating Toolbar guide](/en/docs/components/floating-toolbar) cov
 ## Material options
 
 Suitable controls and overlay surfaces support the shared material contract, including `glassStyle`, `tintColor`, `fallbackColor`, and `interactive`. See [Materials and Liquid Glass](/en/docs/foundations/materials) for defaults, adapters, states, and fallbacks.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### IconButton
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `icon` | `React.ComponentType<{ size?: number; color?: string; fill?: string }>` | yes | — | — |
+| `onPress` | `(event: GestureResponderEvent) => void` | yes | — | Receives the press event, for a button nested inside a pressable row that has to stop the row from seeing the same tap. |
+| `size` | `number` | optional | `40` | Touch target diameter in dp; also sets the ripple's radius. |
+| `iconSize` | `number` | optional | `18` | — |
+| `color` | `string` | optional | — | Defaults to 'onSurfaceVariant'. |
+| `fill` | `string` | optional | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `hitSlop` | `PressableProps['hitSlop']` | optional | `8` | — |
+| `className` | `string` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | For a filled/elevated variant — plain RN styles, since 'elevation' can't be a class. |
+| `disabled` | `boolean` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `true` | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/icon-button.tsx)
+
+{/* generated-api:end */}

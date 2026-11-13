@@ -77,8 +77,44 @@ export function Example() {
 
 Öffentliche Komponenten: `ColorSwatchPicker`, `ColorPickerSheet`.
 
-Wichtige Props: `value`, `onChange`, `swatches`, `accessibilityLabel`, `visible`, `onClose`, `title`, `material`, `glassStyle`, `tintColor`, `fallbackColor`, `interactive`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
 
 Glas, solide Alternativen und den Hintergrund vergleichen: [Picker und schwebende Materialien](/de/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### ColorSwatchPicker
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `string \| null` | ja | — | — |
+| `onChange` | `(value: string) => void` | ja | — | — |
+| `swatches` | `ColorSwatch[]` | ja | — | — |
+| `accessibilityLabel` | `string` | ja | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/color-picker.tsx)
+
+### ColorPickerSheet
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | ja | — | — |
+| `onClose` | `() => void` | ja | — | — |
+| `title` | `string` | ja | — | — |
+| `value` | `string \| null` | ja | — | — |
+| `onChange` | `(value: string) => void` | ja | — | — |
+| `swatches` | `ColorSwatch[]` | ja | — | — |
+| `accessibilityLabel` | `string` | ja | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/color-picker.tsx)
+
+{/* generated-api:end */}

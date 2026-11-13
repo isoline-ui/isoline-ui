@@ -14,7 +14,8 @@ import type { Locale } from '@/lib/i18n';
 import { Brand, BrandMark } from './brand';
 import { HomeControls } from './home-controls';
 import { ComponentPreview } from './preview';
-import { repository, release } from '@/lib/site';
+import uiPackage from '../../../packages/react-native/package.json';
+import { repository } from '@/lib/site';
 export function Home({ locale }: { locale: Locale }) {
   const de = locale === 'de';
   const doc = `/${locale}/docs`;
@@ -76,9 +77,14 @@ export function Home({ locale }: { locale: Locale }) {
             ))}
           </svg>
           <div className="hero-copy">
-            <a className="release-badge" href={release}>
+            <a
+              className="release-badge"
+              href={`/${de ? 'de' : 'en'}/docs/getting-started/installation/`}
+            >
               <span />
-              {de ? 'Jetzt als Alpha verfügbar' : 'Available in alpha'}
+              {de
+                ? `${uiPackage.version} · Entwicklungsstand`
+                : `${uiPackage.version} · Development source`}
               <ArrowUpRight size={12} />
             </a>
             <p className="eyebrow">REACT NATIVE · EXPO · ISOLINE UI</p>

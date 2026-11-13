@@ -2,9 +2,7 @@
   {
     "slug": "checkbox",
     "story": "checkbox",
-    "exports": [
-      "Checkbox"
-    ],
+    "exports": ["Checkbox"],
     "title": "Checkbox",
     "titleDe": "Checkbox",
     "description": "Controlled checked, mixed and disabled selection.",
@@ -14,9 +12,7 @@
   {
     "slug": "avatar",
     "story": "avatar",
-    "exports": [
-      "Avatar"
-    ],
+    "exports": ["Avatar"],
     "title": "Avatar",
     "titleDe": "Avatar",
     "description": "Present an image, initials and a badge without contact or network dependencies.",
@@ -26,21 +22,19 @@
   {
     "slug": "slider",
     "story": "slider",
-    "exports": [
-      "Slider"
-    ],
+    "exports": ["Slider"],
     "title": "Slider",
     "titleDe": "Slider",
     "description": "An adjustable numeric value with pointer, keyboard and accessibility actions.",
     "descriptionDe": "Ein numerischer Wert mit Zeiger-, Tastatur- und barrierefreier Bedienung.",
-    "props": "value;onValueChange;minimumValue;maximumValue;step;disabled;onSlidingComplete;hapticStep"
+    "props": "value;onValueChange;minimumValue;maximumValue;step;disabled;onSlidingComplete;hapticStep",
+    "guidance": "The default range is 0–1; `step=0` is continuous. Values are clamped and discrete steps quantized. `onValueChange` updates during dragging and accessibility/keyboard adjustments; `onSlidingComplete` is for committing a gesture. Supply a human-readable `valueLabel` for units and an accessible control label. Disabled sliders cannot change. Colors can be overridden individually; `style` targets the outer wrapper.",
+    "guidanceDe": "Der Standardbereich ist 0–1; `step=0` ist kontinuierlich. Werte werden begrenzt und Schritte gerastert. `onValueChange` aktualisiert beim Ziehen sowie bei Tastatur-/Hilfstechnologie-Aktionen; `onSlidingComplete` dient dem Abschluss einer Geste. `valueLabel` für verständliche Einheiten und eine barrierefreie Beschriftung angeben. Deaktivierte Regler ändern sich nicht. Farben lassen sich einzeln überschreiben; `style` gilt für den äußeren Wrapper."
   },
   {
     "slug": "action-chip",
     "story": "action-chip",
-    "exports": [
-      "ActionChip"
-    ],
+    "exports": ["ActionChip"],
     "title": "Action Chip",
     "titleDe": "Action Chip",
     "description": "A semantic action chip for short actions, separate from filter selection.",
@@ -50,28 +44,19 @@
   {
     "slug": "date-picker",
     "story": "date-picker",
-    "exports": [
-      "DateField",
-      "DatePickerSheet",
-      "DayPicker",
-      "MonthCalendar",
-      "WeekStrip"
-    ],
+    "exports": ["DateField", "DatePickerSheet", "DayPicker", "MonthCalendar", "WeekStrip"],
     "title": "Date and calendar",
     "titleDe": "Datum und Kalender",
     "description": "Controlled Gregorian dates, month navigation, marked days and a week strip. The app supplies today, locale, labels and agenda marks.",
     "descriptionDe": "Kontrollierte gregorianische Daten, Monatsnavigation, markierte Tage und Wochenleiste. Die App liefert Heute, Sprache, Beschriftungen und Terminmarkierungen.",
-    "props": "value;onChange;today;locale;labels;month;onMonthChange;minDate;maxDate;disabledDates;marks;range;material;glassStyle;tintColor;fallbackColor;interactive"
+    "props": "value;onChange;today;locale;labels;month;onMonthChange;minDate;maxDate;disabledDates;marks;range;material;glassStyle;tintColor;fallbackColor;interactive",
+    "guidance": "Dates use valid Gregorian `YYYY-MM-DD` strings, months `YYYY-MM`; they are calendar days, not UTC timestamps. `value=null` means no selection. The app supplies `today` and localized previous/next labels. `firstDayOfWeek` is 0 (Sunday) through 6 (Saturday), default 1. Bounds are inclusive; disabled dates cannot be chosen. MonthCalendar can control its month with `month` plus `onMonthChange`. `range` highlights an app-supplied start/end; it does not implement a range-selection state machine. `marks` use date keys. DateField opens DatePickerSheet; DayPicker/MonthCalendar are inline, WeekStrip starts at `startDate`. See the separate component tables below for exactly which props each accepts.",
+    "guidanceDe": "Daten sind gültige gregorianische Strings `YYYY-MM-DD`, Monate `YYYY-MM`; Kalendertage, keine UTC-Zeitstempel. `value=null` bedeutet keine Auswahl. Die App liefert `today` sowie übersetzte Vor-/Zurück-Labels. `firstDayOfWeek` reicht von 0 (Sonntag) bis 6 (Samstag), Default 1. Grenzen sind inklusive; gesperrte Tage sind nicht auswählbar. MonthCalendar kann den Monat über `month` und `onMonthChange` kontrollieren. `range` hebt Start/Ende der App hervor und implementiert keine eigene Bereichsauswahl. `marks` verwendet Datumsschlüssel. DateField öffnet DatePickerSheet; DayPicker/MonthCalendar sind inline, WeekStrip beginnt bei `startDate`. Die getrennten Tabellen unten zeigen die Props je Komponente."
   },
   {
     "slug": "time-picker",
     "story": "time-picker",
-    "exports": [
-      "TimeField",
-      "TimePickerSheet",
-      "TimeGrid",
-      "TimeChips"
-    ],
+    "exports": ["TimeField", "TimePickerSheet", "TimeGrid", "TimeChips"],
     "title": "Time selection",
     "titleDe": "Zeitauswahl",
     "description": "Choose a 24-hour local time, keep off-grid minutes and supply your own presets. A sheet can keep a draft until confirmation.",
@@ -81,10 +66,7 @@
   {
     "slug": "color-picker",
     "story": "color-picker",
-    "exports": [
-      "ColorSwatchPicker",
-      "ColorPickerSheet"
-    ],
+    "exports": ["ColorSwatchPicker", "ColorPickerSheet"],
     "title": "Color swatches",
     "titleDe": "Farbauswahl",
     "description": "An accessible palette with selected and disabled swatches and a sheet presentation. The app supplies colors and names.",
@@ -94,22 +76,19 @@
   {
     "slug": "amount-field",
     "story": "amount-field",
-    "exports": [
-      "AmountField"
-    ],
+    "exports": ["AmountField"],
     "title": "Amount field",
     "titleDe": "Betragsfeld",
     "description": "Keep localized editing text separate from parsed numeric units. Currency, validation, rounding and persistence remain explicit caller decisions.",
     "descriptionDe": "Lokalen Eingabetext von geparsten numerischen Einheiten trennen. Währung, Validierung, Rundung und Speicherung bleiben explizite Entscheidungen der App.",
-    "props": "value;onChangeText;onAmountChange;currency;locale;label;error"
+    "props": "value;onChangeText;onAmountChange;currency;locale;label;error",
+    "guidance": "Keep `value` as the editing string so incomplete input is not lost. `onAmountChange` reports a number in major currency units or null for incomplete/invalid text, not integer cents. `locale` controls decimal/group separators and `currency` supplies a symbol; neither performs conversion. Check finite values and product limits before saving. In financial calculations use an appropriate decimal/minor-unit strategy in your app.",
+    "guidanceDe": "Den Eingabestring in `value` behalten, damit unvollständige Eingaben erhalten bleiben. `onAmountChange` liefert eine Zahl in Währungseinheiten oder null für unvollständige/ungültige Texte, keine ganzzahligen Cent. `locale` steuert Trennzeichen, `currency` das Symbol; keine Umrechnung. Vor dem Speichern Endlichkeit und Produktgrenzen prüfen. Finanzberechnungen in der App mit einer passenden Dezimal-/Cent-Strategie ausführen."
   },
   {
     "slug": "banner",
     "story": "banner",
-    "exports": [
-      "Banner",
-      "InlineNotice"
-    ],
+    "exports": ["Banner", "InlineNotice"],
     "title": "Banners and notices",
     "titleDe": "Banner und Hinweise",
     "description": "Inline information, recoverable errors and neutral status with optional action and dismissal. Status detection belongs to the app.",
@@ -119,9 +98,7 @@
   {
     "slug": "undo-bar",
     "story": "undo-bar",
-    "exports": [
-      "UndoBar"
-    ],
+    "exports": ["UndoBar"],
     "title": "Undo feedback",
     "titleDe": "Rückgängig-Leiste",
     "description": "Present remaining undo time, pause on hold, collapse and dismiss. The app owns the queue, deadline and actual undo operation.",
@@ -131,9 +108,7 @@
   {
     "slug": "image-viewer",
     "story": "image-viewer",
-    "exports": [
-      "ZoomableImage"
-    ],
+    "exports": ["ZoomableImage"],
     "title": "Image zoom",
     "titleDe": "Bildzoom",
     "description": "Contained image zoom with pinch, pan, double tap, dismiss gesture and accessible zoom controls. A custom image renderer is optional.",
@@ -143,11 +118,7 @@
   {
     "slug": "list-controls",
     "story": "list-controls",
-    "exports": [
-      "SelectionHeader",
-      "ListSectionHeader",
-      "JumpToTopPill"
-    ],
+    "exports": ["SelectionHeader", "ListSectionHeader", "JumpToTopPill"],
     "title": "List controls",
     "titleDe": "Listen-Steuerelemente",
     "description": "Selection, section headings and a return-to-top action with app-supplied labels and callbacks.",
@@ -157,9 +128,7 @@
   {
     "slug": "swipeable-row",
     "story": "swipeable-row",
-    "exports": [
-      "SwipeableRow"
-    ],
+    "exports": ["SwipeableRow"],
     "title": "Swipeable row",
     "titleDe": "Wischbare Zeile",
     "description": "Reveal row actions on native. A visible action button provides keyboard, screen-reader and browser access. Disabled actions cannot execute.",
@@ -169,10 +138,7 @@
   {
     "slug": "settings-layout",
     "story": "settings-layout",
-    "exports": [
-      "SettingsScreenLayout",
-      "SettingsRow"
-    ],
+    "exports": ["SettingsScreenLayout", "SettingsRow"],
     "title": "Settings screen layout",
     "titleDe": "Einstellungs-Bildschirm",
     "description": "A back row, title, safe-area scroll container and overlays outside scrolling content. Navigation is supplied by onBack.",
@@ -200,9 +166,7 @@
   {
     "slug": "badge",
     "story": "layout",
-    "exports": [
-      "Badge"
-    ],
+    "exports": ["Badge"],
     "title": "Badge",
     "titleDe": "Badge",
     "description": "Small semantic labels for metadata. Supply the label and optional tint.",
@@ -212,9 +176,7 @@
   {
     "slug": "empty-state",
     "story": "layout",
-    "exports": [
-      "EmptyState"
-    ],
+    "exports": ["EmptyState"],
     "title": "Empty state",
     "titleDe": "Leerer Zustand",
     "description": "A shape, icon, title and explanation for an empty collection.",
@@ -224,9 +186,7 @@
   {
     "slug": "refresh-control",
     "story": "refresh",
-    "exports": [
-      "RefreshControl"
-    ],
+    "exports": ["RefreshControl"],
     "title": "Refresh control",
     "titleDe": "Aktualisierung",
     "description": "Themed native pull-to-refresh. The browser demo runs the same callback from a visible button because React Native Web has no native pull gesture.",
@@ -236,9 +196,7 @@
   {
     "slug": "keyboard-inset-view",
     "story": "layout",
-    "exports": [
-      "KeyboardInsetView"
-    ],
+    "exports": ["KeyboardInsetView"],
     "title": "Keyboard insets",
     "titleDe": "Tastatur-Abstände",
     "description": "Give a native form the space required by the keyboard. The browser preview shows the form; device keyboard placement requires a native build.",
@@ -247,26 +205,20 @@
   },
   {
     "slug": "input",
-    "story": "layout",
-    "exports": [
-      "Input"
-    ],
+    "story": "input",
+    "exports": ["Input"],
     "title": "Input",
     "titleDe": "Eingabe",
     "description": "A basic input with labels, hints, errors and optional password visibility.",
     "descriptionDe": "Ein einfaches Eingabefeld mit Beschriftung, Hinweis, Fehler und optionaler Passwortsichtbarkeit.",
-    "props": "value;onChangeText;label;hint;error;secureTextEntry"
+    "props": "value;onChangeText;label;hint;error;secureTextEntry",
+    "guidance": "Choose Input for a simple persistent label and TextField for platform-adaptive presentation. Both accept TextInput props and refs. The example shows hint, validation and a non-editable field. Errors replace hints; use `editable={false}` for a read-only field. Set keyboard, autofill and capitalization explicitly for the data being entered. `className` styles the TextInput, not the outer group.",
+    "guidanceDe": "Input bietet eine einfache dauerhaft sichtbare Beschriftung, TextField eine plattformabhängige Darstellung. Beide nehmen TextInput-Props und Refs an. Das Beispiel zeigt Hinweis, Validierung und ein nicht bearbeitbares Feld. Fehler ersetzen Hinweise; `editable={false}` sperrt die Eingabe. Tastatur, Autofill und Großschreibung passend zu den Daten setzen. `className` gestaltet TextInput, nicht die äußere Gruppe."
   },
   {
     "slug": "navigation-bars",
     "story": "feedback",
-    "exports": [
-      "NavigationBar",
-      "TopBar",
-      "BackButton",
-      "BackIcon",
-      "ScreenTitle"
-    ],
+    "exports": ["NavigationBar", "TopBar", "BackButton", "BackIcon", "ScreenTitle"],
     "title": "Navigation bars",
     "titleDe": "Navigationsleisten",
     "description": "Shared back actions, titles and navigation accessories. Routing remains app-owned.",
@@ -276,9 +228,7 @@
   {
     "slug": "snackbar",
     "story": "feedback",
-    "exports": [
-      "Snackbar"
-    ],
+    "exports": ["Snackbar"],
     "title": "Snackbar",
     "titleDe": "Snackbar",
     "description": "A concise feedback message and optional action. Visibility and duration belong to the app.",
@@ -288,10 +238,7 @@
   {
     "slug": "password-input",
     "story": "password",
-    "exports": [
-      "Input",
-      "TextField"
-    ],
+    "exports": ["Input", "TextField"],
     "title": "Password inputs",
     "titleDe": "Passwortfelder",
     "description": "Masked input with accessible show/hide controls, password-manager hints and validation in both input styles.",
@@ -317,5 +264,89 @@
     "description": "Compare regular glass, clear glass and solid surfaces over a colored background. On iOS the material belongs to overlay chrome; forms and inline content remain solid.",
     "descriptionDe": "Reguläres Glas, klares Glas und solide Flächen über einem farbigen Hintergrund vergleichen. Unter iOS gehört das Material zur Overlay-Bedienebene; Formulare und Inhalte bleiben solide.",
     "props": "material;glassStyle;tintColor;fallbackColor;interactive;menuMaterial"
+  },
+  {
+    "slug": "radio-group",
+    "story": "radio",
+    "exports": ["RadioGroup", "RadioItem"],
+    "title": "Radio group",
+    "titleDe": "Radio-Gruppe",
+    "description": "Choose one visible option with keyboard and screen-reader support.",
+    "descriptionDe": "Eine sichtbare Option mit Tastatur und Screenreader auswählen.",
+    "props": "value;onValueChange;accessibilityLabel;disabled;children",
+    "guidance": "Use this for one visible choice. Put uniquely valued `RadioItem` children directly inside `RadioGroup`; fragments and nested groups are not registered. The group is controlled and accepts `null` for no selection. Disabled items are skipped by arrow keys; Home/End select the first/last available item. Supply a group label. Use Checkbox for independent multiple choices.",
+    "guidanceDe": "Für eine sichtbare Einfachauswahl. `RadioItem` mit eindeutigen Werten direkt in `RadioGroup` platzieren; Fragmente und verschachtelte Gruppen werden nicht registriert. `null` bedeutet keine Auswahl. Pfeiltasten überspringen deaktivierte Einträge, Home/End wählen den ersten/letzten verfügbaren Eintrag. Eine Gruppenbeschriftung angeben. Für unabhängige Mehrfachauswahl Checkbox verwenden."
+  },
+  {
+    "slug": "card",
+    "story": "card",
+    "exports": ["Card"],
+    "title": "Card",
+    "titleDe": "Card",
+    "description": "Group content with a header, footer or a single card action.",
+    "descriptionDe": "Inhalte mit Kopfzeile, Fußzeile oder einer Kartenaktion gruppieren.",
+    "props": "header;footer;children;onPress;disabled;style",
+    "guidance": "Use `header` and `footer` for arbitrary content. Set `onPress` only when the whole card is one action; give it an accessible label and do not nest buttons or links. For a card containing separate actions, omit `onPress`. `className` and `style` target the outer container; no router or persistence is installed.",
+    "guidanceDe": "Kopf- und Fußzeile nehmen beliebige Inhalte auf. `onPress` nur setzen, wenn die gesamte Karte eine Aktion ist; beschriften und keine Buttons oder Links verschachteln. Für einzelne Aktionen in der Karte `onPress` weglassen. `className` und `style` gestalten den äußeren Container; Router und Speicherung bleiben in der App."
+  },
+  {
+    "slug": "list-item",
+    "story": "list-item",
+    "exports": ["ListItem"],
+    "title": "List item",
+    "titleDe": "Listeneintrag",
+    "description": "Compose general-purpose rows with leading content and trailing actions.",
+    "descriptionDe": "Allgemeine Zeilen mit führendem Inhalt und nachgelagerten Aktionen zusammensetzen.",
+    "props": "title;description;leading;trailing;onPress;disabled;selected;style",
+    "guidance": "A row without `onPress` is a static container and can contain independent trailing controls. A row with `onPress` is one button: use decorative leading/trailing content, not nested interactive elements. `disabled` prevents that row action; `selected` changes its surface and accessible state. Long titles and descriptions wrap. `className` and `style` apply to the row.",
+    "guidanceDe": "Ohne `onPress` ist die Zeile ein statischer Container und darf unabhängige Aktionen enthalten. Mit `onPress` ist sie ein Button: führende und nachgelagerte Inhalte dekorativ halten, keine interaktiven Elemente verschachteln. `disabled` sperrt die Zeilenaktion; `selected` ändert Fläche und barrierefreien Zustand. Lange Texte umbrechen. `className` und `style` gelten für die Zeile."
+  },
+  {
+    "slug": "skeleton",
+    "story": "skeleton",
+    "exports": ["Skeleton"],
+    "title": "Skeleton",
+    "titleDe": "Skeleton",
+    "description": "Show static placeholders while content is loading.",
+    "descriptionDe": "Statische Platzhalter anzeigen, während Inhalte laden.",
+    "props": "width;height;radius;style",
+    "guidance": "Use several blocks matching the final layout. Skeletons are static, non-interactive and hidden from assistive technology. Announce loading once on the surrounding region using a localized status and busy state. Replace placeholders when the request resolves; show an error and retry action on failure. Width/height accept React Native dimensions; `radius` is in dp.",
+    "guidanceDe": "Mehrere Blöcke passend zum späteren Layout verwenden. Skeletons sind statisch, nicht interaktiv und vor Hilfstechnologien verborgen. Den Ladezustand einmal am umgebenden Bereich mit lokalisiertem Status und Busy-Zustand mitteilen. Nach Erfolg ersetzen, bei Fehler Nachricht und Wiederholen-Aktion zeigen. Breite/Höhe nehmen React-Native-Dimensionen an; `radius` ist in dp."
+  },
+  {
+    "slug": "accordion",
+    "story": "accordion",
+    "exports": ["Accordion"],
+    "title": "Accordion",
+    "titleDe": "Accordion",
+    "description": "Reveal controlled content without a navigation change.",
+    "descriptionDe": "Kontrollierte Inhalte ohne Navigationswechsel aufklappen.",
+    "props": "title;expanded;onExpandedChange;disabled;keepMounted;children",
+    "guidance": "Keep `expanded` in app state. Each instance is an independent disclosure; enforce single-open behavior in your parent if needed. Hidden content unmounts by default. `keepMounted` retains local state while removing collapsed content from layout and focus order. The trigger announces expanded/disabled states. `className` and `style` apply to the outer group.",
+    "guidanceDe": "Die App kontrolliert `expanded`. Jede Instanz ist unabhängig; höchstens einen offenen Abschnitt bei Bedarf im Elternteil steuern. Verborgener Inhalt wird standardmäßig ausgehängt. `keepMounted` erhält lokalen Zustand, entfernt geschlossene Inhalte aber aus Layout und Fokusreihenfolge. Der Auslöser meldet geöffnet/deaktiviert. `className` und `style` gelten für die äußere Gruppe."
+  },
+  {
+    "slug": "form-field",
+    "story": "form-field",
+    "exports": ["FormField"],
+    "title": "Form field",
+    "titleDe": "Formularfeld",
+    "description": "Share visible labels, required markers, hints and errors across controls.",
+    "descriptionDe": "Beschriftungen, Pflichtmarkierungen, Hilfetexte und Fehler für Felder vereinheitlichen.",
+    "props": "label;requiredLabel;hint;error;children",
+    "guidance": "Wrap controls that do not already render their own label/error. `requiredLabel` is visible localized text, not a validation rule. Pass the same label and error/hint to the child control for its accessible name and hint; this wrapper does not clone children or generate native label associations. Errors take precedence over hints and use a polite live region. Validation and submit state remain in the app.",
+    "guidanceDe": "Für Controls ohne eigene Beschriftung/Fehlerdarstellung. `requiredLabel` ist sichtbarer lokalisierter Text, keine Validierungsregel. Beschriftung und Fehler/Hinweis auch dem Control als barrierefreien Namen/Hinweis mitgeben; der Wrapper klont keine Kinder und erzeugt keine native Label-Zuordnung. Fehler haben Vorrang vor Hinweisen und werden höflich angekündigt. Validierung und Absenden bleiben in der App."
+  },
+  {
+    "slug": "combobox",
+    "story": "combobox",
+    "exports": ["Combobox"],
+    "title": "Combobox",
+    "titleDe": "Durchsuchbare Auswahl",
+    "description": "Search a local or asynchronously supplied single-selection list.",
+    "descriptionDe": "Eine lokale oder asynchron geladene Einfachauswahl durchsuchen.",
+    "props": "value;options;onChange;accessibilityLabel;label;placeholder;error;disabled;query;onQueryChange;loading;searchLabel;emptyLabel;material",
+    "guidance": "Use for longer single-selection lists. `null` displays the placeholder. Local mode filters option labels without case sensitivity; disabled results cannot be selected. The sheet contains a bounded virtualized list. For remote search, supply both `query` and `onQueryChange`; `options` must then already contain the results. The app must debounce requests, cancel or ignore stale responses, and retain the selected option when changing results. `loading` replaces results; use localized `loadingLabel`, `searchLabel` and `emptyLabel`. `error` is a field error, not an automatic retry mechanism.",
+    "guidanceDe": "Für längere Einfachauswahllisten. `null` zeigt den Platzhalter. Lokal werden Optionsbeschriftungen ohne Groß-/Kleinschreibung gefiltert; deaktivierte Treffer sind gesperrt. Das Sheet enthält eine begrenzte virtualisierte Liste. Für Serversuche `query` und `onQueryChange` gemeinsam liefern; `options` enthält dann bereits die Treffer. Die App muss Anfragen verzögern, veraltete Antworten ignorieren oder abbrechen und die ausgewählte Option beim Trefferwechsel behalten. `loading` ersetzt Treffer; `loadingLabel`, `searchLabel` und `emptyLabel` lokalisieren. `error` ist ein Feldfehler, kein automatischer Wiederholungsmechanismus."
   }
 ]

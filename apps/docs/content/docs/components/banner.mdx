@@ -71,6 +71,42 @@ export function Example() {
 
 Public components: `Banner`, `InlineNotice`.
 
-Key props: `message`, `title`, `tone`, `actionLabel`, `onAction`, `onDismiss`, `dismissLabel`, `icon`. Exported props types define the full contract. Labels and actions are supplied by the app.
-
 Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### Banner
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `message` | `string` | yes | — | — |
+| `title` | `string` | optional | — | — |
+| `tone` | `'neutral' \| 'info' \| 'error'` | optional | `'neutral'` | — |
+| `icon` | `React.ComponentType<IconProps>` | optional | — | — |
+| `actionLabel` | `string` | optional | — | — |
+| `onAction` | `() => void` | optional | — | — |
+| `onDismiss` | `() => void` | optional | — | — |
+| `dismissLabel` | `string` | optional | — | — |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/banner.tsx)
+
+### InlineNotice
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `message` | `string` | yes | — | — |
+| `title` | `string` | optional | — | — |
+| `tone` | `'neutral' \| 'info' \| 'error'` | optional | — | — |
+| `icon` | `React.ComponentType<IconProps>` | optional | — | — |
+| `actionLabel` | `string` | optional | — | — |
+| `onAction` | `() => void` | optional | — | — |
+| `onDismiss` | `() => void` | optional | — | — |
+| `dismissLabel` | `string` | optional | — | — |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/banner.tsx)
+
+{/* generated-api:end */}

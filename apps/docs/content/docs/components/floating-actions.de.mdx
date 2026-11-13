@@ -19,3 +19,64 @@ description: 'Schwebende Hauptaktionen und Split-Buttons mit gemeinsamen Materia
 Routen, Berechtigungen, Bestätigungen und Erfassungslogik gehören in die App. Die [Materialeinrichtung](/de/docs/foundations/materials) und [Popover-Grenzen](/de/docs/components/popover) gelten auch hier.
 
 `FabMenu.menuMaterial` steuert das verankerte Menü unabhängig vom Auslöser (Standard: `auto`). Mit `solid` wird Glas gezielt deaktiviert; Stil, Tönung, Alternative und Interaktion werden an das Menü weitergereicht.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### SplitButton
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `menuMaterial` | `MaterialOptions['material']` | optional | `'auto'` | — |
+| `label` | `string` | ja | — | — |
+| `icon` | `React.ComponentType<{ size?: number; color?: string }>` | ja | — | — |
+| `onPress` | `() => void` | ja | — | — |
+| `actions` | `SplitButtonAction[]` | ja | — | — |
+| `optionsLabel` | `string` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `true` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/split-button.tsx)
+
+### FabMenu
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `menuMaterial` | `MaterialOptions['material']` | optional | `'auto'` | Material of the anchored menu, independent of the floating trigger. |
+| `bottom` | `number` | ja | — | — |
+| `label` | `string` | ja | — | — |
+| `actions` | `FabMenuAction[]` | ja | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `true` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/fab-menu.tsx)
+
+### FloatingActionButton
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `icon` | `React.ComponentType<IconProps>` | ja | — | — |
+| `accessibilityLabel` | `string` | ja | — | — |
+| `onPress` | `() => void` | ja | — | — |
+| `label` | `string` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `size` | `56 \| 64` | optional | `64` | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `true` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/floating-action-button.tsx)
+
+{/* generated-api:end */}

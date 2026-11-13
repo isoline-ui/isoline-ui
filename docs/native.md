@@ -41,7 +41,7 @@ workspace cannot run Xcode or an iOS simulator.
 
 ## Consumer migration
 
-Install the paired prerelease archives and `npx expo install expo-glass-effect`.
+Build and install the paired development archives from one reviewed commit (see distribution.md) and `npx expo install expo-glass-effect`.
 Keep SDK-selected peer versions. Replace the app's palette reader with
 `useSystemTheme(baseTheme, useSystemColorsPreference)` at its IsolineProvider.
 Keep the scheme, brand, preference persistence and font loading in the app.
@@ -52,4 +52,4 @@ integrations automatically.
 
 ### Alpha.1 build evidence
 
-The published 0.1.0-alpha.2 package sources passed [native and package CI](https://github.com/isoline-ui/isoline-ui/actions/runs/41301672372): Android Kotlin compilation and the complete unsigned iOS simulator showcase build on macOS 26 / Xcode 26.6, alongside the package and Metro checks. The installed release archives were also checked against Expo SDK 57 / React Native 0.86 source types and Android autolinking. That SDK 57 check was not a native app build. Physical-device behavior remains to be verified.
+An earlier alpha source snapshot passed [native and package CI](https://github.com/isoline-ui/isoline-ui/actions/runs/41301672372): Android Kotlin compilation and the complete unsigned iOS simulator showcase build on macOS 26 / Xcode 26.6, alongside the package and Metro checks. Archives from that snapshot were also checked against Expo SDK 57 / React Native 0.86 source types and Android autolinking. That SDK 57 check was not a native app build. Physical-device behavior remains to be verified.

@@ -11,11 +11,22 @@ const formatting = await prettier.resolveConfig(
 function emit(file, text) {
   if (check)
     assert.equal(
-      fs.readFileSync(file, 'utf8'),
-      text,
+      fs.readFileSync(file, 'utf8').split('\n{/* generated-api:start */}\n')[0].trimEnd(),
+      text.split('\n{/* generated-api:start */}\n')[0].trimEnd(),
       `Stale generated example: ${file}; run npm run docs:examples`,
     );
-  else fs.writeFileSync(file, text);
+  else {
+    const previous = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+    const suffix = previous.includes('\n{/* generated-api:start */}\n')
+      ? '\n{/* generated-api:start */}\n' + previous.split('\n{/* generated-api:start */}\n')[1]
+      : '';
+    fs.writeFileSync(
+      file,
+      suffix
+        ? text.split('\n{/* generated-api:start */}\n')[0].trimEnd() + '\n' + suffix
+        : text,
+    );
+  }
 }
 const source = fs.readFileSync(
   path.join(root, 'examples/showcase/CatalogExamples.tsx'),
@@ -84,12 +95,7 @@ for (const entry of catalog)
       parser: 'typescript',
       filepath: 'Example.tsx',
     });
-    const text = `---\ntitle: '${de ? entry.titleDe : entry.title}'\ndescription: '${(de ? entry.descriptionDe : entry.description).replaceAll("'", "''")}'\n---\n\n<ComponentPreview kind="catalog-${entry.story}" />\n\n${de ? entry.descriptionDe : entry.description}\n\n## ${de ? 'Vollständiges Beispiel' : 'Complete example'}\n\n${de ? 'Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.' : 'The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.'}\n\n\`\`\`tsx title="${entry.title.replaceAll(' ', '')}Example.tsx"\n${formattedSnippet}\`\`\`\n\n## API\n\n${de ? 'Öffentliche Komponenten' : 'Public components'}: ${entry.exports.map((n) => '\`' + n + '\`').join(', ')}.\n\n${de ? 'Wichtige Props' : 'Key props'}: ${entry.props
-      .split(';')
-      .map((n) => '\`' + n + '\`')
-      .join(
-        ', ',
-      )}. ${de ? 'Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.' : 'Exported props types define the full contract. Labels and actions are supplied by the app.'}\n\n${de ? 'Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.' : 'Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.'}\n`;
+    const text = `---\ntitle: '${de ? entry.titleDe : entry.title}'\ndescription: '${(de ? entry.descriptionDe : entry.description).replaceAll("'", "''")}'\n---\n\n<ComponentPreview kind="catalog-${entry.story}" />\n\n${de ? entry.descriptionDe : entry.description}\n\n${(de ? entry.guidanceDe : entry.guidance) ? `## ${de ? 'Verwendung und Zustände' : 'Usage and states'}\n\n${de ? entry.guidanceDe : entry.guidance}\n\n` : ''}## ${de ? 'Vollständiges Beispiel' : 'Complete example'}\n\n${de ? 'Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.' : 'The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.'}\n\n\`\`\`tsx title="${entry.title.replaceAll(' ', '')}Example.tsx"\n${formattedSnippet}\`\`\`\n\n## API\n\n${de ? 'Öffentliche Komponenten' : 'Public components'}: ${entry.exports.map((n) => '\`' + n + '\`').join(', ')}.\n\n${de ? 'Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.' : 'Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.'}\n`;
     const materialLink =
       entry.props.split(';').includes('material') && entry.slug !== 'overlay-materials'
         ? `\n${de ? 'Glas, solide Alternativen und den Hintergrund vergleichen:' : 'Compare glass, solid fallbacks and backdrop content:'} [${de ? 'Picker und schwebende Materialien' : 'Picker and floating materials'}](/${de ? 'de' : 'en'}/docs/components/overlay-materials).\n`
@@ -115,3 +121,41 @@ for (const de of [false, true]) {
 console.log(
   `${catalog.length} component families generated from ${Object.keys(stories).length} live stories; missing legacy previews restored.`,
 );
+
+// Reference screens are runnable stories, not separately maintained code snippets.
+for (const [slug, story, en, deTitle, enDescription, deDescription] of [
+  [
+    'form-screen',
+    'FormScreenExample',
+    'Reference form screen',
+    'Referenz: Formular',
+    'Multiple fields, focus progression, validation, pending submission, server errors and protected dismissal.',
+    'Mehrere Felder, Fokuswechsel, Validierung, Absenden, Serverfehler und geschütztes Schließen.',
+  ],
+  [
+    'data-list-screen',
+    'DataListScreenExample',
+    'Reference data list',
+    'Referenz: Datenliste',
+    'Search a list and try loading, error, retry, empty and content states.',
+    'Liste durchsuchen sowie Laden, Fehler, Wiederholen, Leerzustand und Inhalt ausprobieren.',
+  ],
+  [
+    'settings-screen',
+    'SettingsScreenExample',
+    'Reference settings screen',
+    'Referenz: Einstellungen',
+    'Compose grouped switches, radio choices and disclosure content without a router or store.',
+    'Gruppierte Schalter, Einfachauswahl und aufklappbare Inhalte ohne Router oder Store zusammensetzen.',
+  ],
+])
+  for (const de of [false, true]) {
+    const snippet = await prettier.format(
+      `import * as React from 'react';\nimport { View } from 'react-native';\nimport * as UI from '@isoline-ui/react-native';\ntype StoryProps = { de?: boolean };\n${functions.get(story)}\nexport function Example() { return <${story} de={${de}} />; }\n`,
+      { ...formatting, parser: 'typescript' },
+    );
+    emit(
+      path.join(root, 'apps/docs/content/docs/guides', slug + (de ? '.de' : '') + '.mdx'),
+      `---\ntitle: '${de ? deTitle : en}'\ndescription: '${de ? deDescription : enDescription}'\n---\n\n<ComponentPreview kind="catalog-${slug}" />\n\n${de ? 'Dieses vollständige Beispiel läuft unter deinem vorhandenen IsolineProvider mit Safe-Area- und Gesture-Providern. Daten und Serveraktionen sind bewusst lokale Demonstrationen; ersetze sie durch deine Anwendungsschnittstellen. Die Vorschau erlaubt reproduzierbare Zustandswechsel.' : 'This complete example runs beneath your existing IsolineProvider, safe-area and gesture providers. Data and server actions are local demonstrations; replace them with your application interfaces. The preview exposes repeatable state transitions.'}\n\n## ${de ? 'Vollständiges Beispiel' : 'Complete example'}\n\n\`\`\`tsx\n${snippet}\`\`\`\n\n## ${de ? 'Integration' : 'Integration'}\n\n${de ? 'Render den Bildschirm im scrollbaren Bereich deiner Route. Bei langen Datenlisten ersetze die kleine Beispiel-Liste durch FlatList und behalte Lade-/Fehler-/Leerzustände als ListEmptyComponent. Prüfe Fokus, große Schrift und die letzte Aktion bei geöffneter Tastatur auf iOS und Android. Für einen echten Request verwende Abbruch oder eine Request-ID, damit eine ältere Antwort keinen neueren Zustand überschreibt. Einstellungen sollten erst nach dem erfolgreichen Laden editierbar sein; Speicherung und Fehlerbehandlung bleiben in deiner App.' : 'Render the screen in your route’s scrolling viewport. For long data lists, replace the small example list with FlatList and retain loading/error/empty states in ListEmptyComponent. Verify focus, large text and the final action with the keyboard open on iOS and Android. For real requests, use cancellation or a request ID so an older response cannot overwrite newer state. Keep settings disabled until loaded; persistence and failure handling belong to your app.'}\n`,
+    );
+  }

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { checkAdoption } from './check-adoption-browser.mjs';
 import { checkCatalog } from './check-catalog-browser.mjs';
 import { checkMaterials } from './check-material-browser.mjs';
 import { checkFocus } from './check-focus-browser.mjs';
@@ -107,6 +108,11 @@ try {
       if (process.env.ISOLINE_MATERIAL_ONLY) {
         await checkMaterials({ page, origin, base, name, eventually });
         assert.deepEqual(errors, [], `${name}: material browser runtime errors`);
+        continue;
+      }
+      if (process.env.ISOLINE_ADOPTION_ONLY) {
+        await checkAdoption({ page, origin, base, name, eventually });
+        assert.deepEqual(errors, [], `${name}: adoption runtime errors`);
         continue;
       }
       if (process.env.ISOLINE_FORCED_COLORS_ONLY) {
@@ -493,6 +499,7 @@ try {
       await checkMaterials({ page, origin, base, name, eventually });
       if (!process.env.ISOLINE_SKIP_CATALOG)
         await checkCatalog({ page, origin, base, name, eventually });
+      await checkAdoption({ page, origin, base, name, eventually });
       await checkForcedColors(page);
       assert.deepEqual(errors, [], `${name}: browser runtime errors`);
       console.log(

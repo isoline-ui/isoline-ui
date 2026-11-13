@@ -1,0 +1,39 @@
+---
+title: 'Choose the right component'
+description: 'Choose controls, navigation and overlays by task.'
+---
+
+## Inputs and choices
+
+| Task | Component | Why |
+| --- | --- | --- |
+| Simple labeled text input | Input | Persistent label, hint and error; TextInput props and refs. |
+| Platform-adaptive text input | TextField | iOS persistent label; Android floating outline. |
+| Filter existing content | SearchField | Query and clear action without form validation. |
+| One short, visible choice | RadioGroup | Named options with descriptions and radio semantics. |
+| Compact choice among a few values | ButtonGroup | All choices remain visible. |
+| One option from a short hidden list | SelectField | Anchored menu; placeholder, disabled and error states. |
+| One option from a long or remote list | Combobox | Searchable, virtualized sheet; loading and no-results states. |
+| Independent multiple choices | Checkbox | Checked, mixed and disabled states. |
+| Switch a setting on/off | Switch / SettingsSwitchRow | Immediate boolean change. |
+
+ButtonGroup chooses a value. TabBar chooses a view; the app supplies the corresponding content and navigation.
+
+## Overlays
+
+| Task | Component | Ownership |
+| --- | --- | --- |
+| Short confirmation | Dialog | App supplies explicit actions; `dismissible={false}` protects work. |
+| Short task above a screen | BottomSheet | Modal surface; add bounded scrolling for long content. |
+| Keyboard-heavy inline form | PanelSheet | Render last in a screen; follows its keyboard. |
+| Action list | MenuSheet | Action-oriented sheet rather than arbitrary form content. |
+| Content anchored to a control | Popover | Controlled surface with measured anchor. |
+| Anchored action menu | ContextMenu | Menu rows and selection semantics. |
+
+Use a full screen for long or multi-step work. `dismissible={false}` blocks backdrop, platform dismissal and sheet gestures; it does not stop your explicit Save/Cancel buttons from changing `visible`. Always provide an explicit exit and explain pending work.
+
+## Composition
+
+Use Card for general content; SettingsCard/SettingsGroup for settings-specific grouping. Use ListItem for ordinary rows, SettingsNavRow for a settings destination. Use Accordion for inline disclosure, not navigation. Use FormField for controls without their own label/error layout; avoid duplicate labels around Input or TextField.
+
+Try the [form screen](/en/docs/guides/form-screen), [data list](/en/docs/guides/data-list-screen) and [settings screen](/en/docs/guides/settings-screen).

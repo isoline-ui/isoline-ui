@@ -1,7 +1,7 @@
 import type { PressableStateCallbackType } from 'react-native';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-import { Platform, View } from 'react-native';
+import { ActivityIndicator, Platform, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -142,6 +142,9 @@ export type ButtonProps = Omit<React.ComponentProps<typeof Pressable>, 'children
     children?: React.ComponentProps<typeof Pressable>['children'];
     pressableClassName?: string;
     label?: string;
+    /** Disables activation and announces busy while preserving the button layout. */
+    loading?: boolean;
+    loadingLabel?: string;
     /** A leading symbol, drawn in the label's color. */
     icon?: React.ComponentType<IconProps>;
     /** Resting shape. Pressing morphs to the other one and back. */
@@ -169,6 +172,8 @@ export function Button({
   variant,
   size,
   label,
+  loading = false,
+  loadingLabel,
   icon: Icon,
   shape = 'round',
   haptic = true,
@@ -178,6 +183,8 @@ export function Button({
   onPress,
   ...props
 }: ButtonProps) {
+  const disabled = loading || props.disabled;
+  const displayLabel = loading ? (loadingLabel ?? label) : label;
   const web = Platform.OS === 'web';
   const platform = useIsolinePlatform();
   const ios = platform === 'ios';
@@ -251,7 +258,7 @@ export function Button({
                     : rest,
             }
           : radiusStyle,
-        ios && props.disabled && { opacity: 0.4 },
+        ios && disabled && { opacity: 0.4 },
         alertAction && { flex: 1, borderRadius: 0 },
       ]}
       className={cn(!materialActive && 'overflow-hidden', className)}
@@ -259,7 +266,7 @@ export function Button({
       <Control
         className={cn(
           buttonVariants({ variant, size }),
-          !ios && props.disabled && 'opacity-50',
+          !ios && disabled && 'opacity-50',
           pressableClassName,
         )}
         style={resolveStyle(animated, pressedNow, (state: PressableStateCallbackType) => [
@@ -296,18 +303,25 @@ export function Button({
         }}
         onPress={(event) => {
           if (haptic) selectionHaptic();
-          onPress?.(event);
+          if (!disabled) onPress?.(event);
         }}
         accessibilityRole="button"
-        accessibilityState={{ disabled: props.disabled ?? false }}
         {...props}
+        disabled={disabled}
+        accessibilityState={{
+          ...props.accessibilityState,
+          disabled: disabled ?? false,
+          busy: loading || props.accessibilityState?.busy,
+        }}
       >
         {(state: PressableStateCallbackType) => (
           <>
-            {Icon ? (
+            {loading ? (
+              <ActivityIndicator size="small" color={ink} accessible={false} />
+            ) : Icon ? (
               <Icon size={ios ? iosMetrics.icon : ICON_SIZE[resolvedSize]} color={ink} />
             ) : null}
-            {label ? (
+            {displayLabel ? (
               <Text
                 className={cn(labelVariants({ variant, size }))}
                 style={[
@@ -320,7 +334,7 @@ export function Button({
                 ]}
                 numberOfLines={1}
               >
-                {label}
+                {displayLabel}
               </Text>
             ) : typeof children === 'function' ? (
               children(state)

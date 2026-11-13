@@ -63,8 +63,36 @@ export function Example() {
 
 Public components: `ActionChip`.
 
-Key props: `label`, `icon`, `tone`, `onPress`, `disabled`, `material`. Exported props types define the full contract. Labels and actions are supplied by the app.
-
 Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
 
 Compare glass, solid fallbacks and backdrop content: [Picker and floating materials](/en/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### ActionChip
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | yes | — | — |
+| `icon` | `React.ComponentType<IconProps>` | optional | — | — |
+| `tone` | `'neutral' \| 'primary' \| 'secondary' \| 'tertiary'` | optional | `'neutral'` | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+| `pressableClassName` | `string` | optional | — | — |
+| `loading` | `boolean` | optional | — | Disables activation and announces busy while preserving the button layout. |
+| `loadingLabel` | `string` | optional | — | — |
+| `shape` | `'round' \| 'square'` | optional | — | Resting shape. Pressing morphs to the other one and back. |
+| `haptic` | `boolean` | optional | — | Fires a selection tick on press. Off for destructive-adjacent actions. |
+
+Also accepts inherited React Native props from its declared base type (for example View, Pressable or TextInput), and React ref attributes where applicable. All Isoline-specific props and material options are listed above.
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/action-chip.tsx)
+
+{/* generated-api:end */}

@@ -1,0 +1,86 @@
+---
+title: 'Form field'
+description: 'Share visible labels, required markers, hints and errors across controls.'
+---
+
+<ComponentPreview kind="catalog-form-field" />
+
+Share visible labels, required markers, hints and errors across controls.
+
+## Usage and states
+
+Wrap controls that do not already render their own label/error. `requiredLabel` is visible localized text, not a validation rule. Pass the same label and error/hint to the child control for its accessible name and hint; this wrapper does not clone children or generate native label associations. Errors take precedence over hints and use a polite live region. Validation and submit state remain in the app.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="FormfieldExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function FormFieldExample({ de = false }: StoryProps) {
+  const [checked, setChecked] = React.useState(false);
+  const label = de ? 'Einwilligung' : 'Consent';
+  const hint = de ? 'Du kannst die Auswahl ändern.' : 'You can change this choice.';
+  return (
+    <UI.FormField
+      label={label}
+      requiredLabel={de ? '(erforderlich)' : '(required)'}
+      hint={hint}
+    >
+      <UI.Checkbox
+        checked={checked}
+        onCheckedChange={setChecked}
+        accessibilityLabel={`${label}, ${hint}`}
+        label={de ? 'Ich stimme zu' : 'I agree'}
+      />
+    </UI.FormField>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <FormFieldExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `FormField`.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### FormField
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | yes | — | — |
+| `requiredLabel` | `string` | optional | — | Localized visible required marker, for example “(required)”. |
+| `hint` | `string` | optional | — | — |
+| `error` | `string \| null` | optional | — | — |
+| `children` | `React.ReactNode` | yes | — | — |
+
+Also accepts inherited React Native props from its declared base type (for example View, Pressable or TextInput), and React ref attributes where applicable. All Isoline-specific props and material options are listed above.
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/form-field.tsx)
+
+{/* generated-api:end */}

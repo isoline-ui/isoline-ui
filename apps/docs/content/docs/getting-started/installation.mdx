@@ -3,36 +3,34 @@ title: 'Installation'
 description: 'Install the current release and connect it to an Expo app.'
 ---
 
-## Expanded component catalogue
+## Documentation version: 2.0.0 (development)
 
-Checkbox, slider, avatar, calendars, time/color pickers and the other new components are in the **0.1.0-alpha.3 development source**. The published alpha.2 archives do not include them. Build both packages from the same reviewed source and install their generated archives together; no npm publication is required.
-
-```sh
-npm ci --ignore-scripts
-npm run pack
-```
-
-Then install the generated archives into your app:
-
-```sh
-npm install /path/to/isoline-ui-react-native-0.1.0-alpha.3.tgz /path/to/isoline-ui-native-0.1.0-alpha.3.tgz
-```
-
-The alpha.2 URL below remains the previous release. Use the paired alpha.3 archives for the expanded catalogue.
+This documentation describes the current source with package version **2.0.0**. It is not a published npm release. Historical GitHub releases alpha.0/alpha.1 do not contain this API. Build archives from one reviewed commit.
 
 ## Before you start
 
 Use an Expo SDK **57 or 58** app with React Native **0.86 or 0.88**. If you already use NativeWind 4, keep your existing setup and merge the changes below. Do not replace your app's dependency versions with those from an unrelated example.
 
-## 1. Add the UI package
+## 1. Build archives from source
 
-Install the versioned release archive:
+You need Node.js 24 or newer, npm and Git. Run these commands outside your app:
 
 ```sh
-npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-react-native-0.1.0-alpha.2.tgz
+git clone https://github.com/isoline-ui/isoline-ui.git
+cd isoline-ui
+git rev-parse HEAD
+npm ci --ignore-scripts
+npm run check
+npm run pack
 ```
 
-You still import it as `@isoline-ui/react-native`. Commit `package.json` and your lockfile so teammates and CI install the same archive. No Isoline npm account or npm organization is required. Other dependencies continue to come from your configured registry.
+Record the printed commit for your team and CI. Check out that same commit for subsequent builds. `npm run pack` creates these archives at the repository root. From your app directory, install the UI archive (adjust the path):
+
+```sh
+npm install ../isoline-ui/isoline-ui-react-native-2.0.0.tgz
+```
+
+The import name remains `@isoline-ui/react-native`. Keep the archive in your app, for example under `vendor/`, and commit the archive, `package.json` and lockfile so `npm ci` works without a local repository path. The native archive is optional. Both archives must come from the same commit.
 
 ## 2. Install the peer dependencies
 
@@ -103,7 +101,7 @@ Follow [Your first screen](/en/docs/getting-started/first-screen) for a complete
 
 ## 5. Add native appearance when you need it
 
-For Android system colors and iOS Liquid Glass, install **both matching Isoline archives** and let Expo choose the glass dependency. See [Native appearance](/en/docs/native/overview).
+For Android system colors and iOS Liquid Glass, install **both matching 2.0.0 source archives** and let Expo choose the glass dependency. See [Native appearance](/en/docs/native/overview).
 
 ## Check the setup
 

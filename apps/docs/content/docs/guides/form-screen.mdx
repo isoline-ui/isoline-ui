@@ -1,0 +1,175 @@
+---
+title: 'Reference form screen'
+description: 'Multiple fields, focus progression, validation, pending submission, server errors and protected dismissal.'
+---
+
+<ComponentPreview kind="catalog-form-screen" />
+
+This complete example runs beneath your existing IsolineProvider, safe-area and gesture providers. Data and server actions are local demonstrations; replace them with your application interfaces. The preview exposes repeatable state transitions.
+
+## Complete example
+
+```tsx
+import * as React from 'react';
+import { View } from 'react-native';
+import * as UI from '@isoline-ui/react-native';
+type StoryProps = { de?: boolean };
+function FormScreenExample({ de = false }: StoryProps) {
+  const [name, setName] = React.useState('');
+  const [country, setCountry] = React.useState<string | null>(null);
+  const [saving, setSaving] = React.useState(false);
+  const [error, setError] = React.useState('');
+  const [saved, setSaved] = React.useState(false);
+  const [simulateFailure, setSimulateFailure] = React.useState(false);
+  const [editing, setEditing] = React.useState(false);
+  const [sheetEditing, setSheetEditing] = React.useState(false);
+  const [draft, setDraft] = React.useState('');
+  const [submitted, setSubmitted] = React.useState(false);
+  const emailRef =
+    React.useRef<React.ComponentRef<typeof import('react-native').TextInput>>(null);
+  const [email, setEmail] = React.useState('');
+  async function submit() {
+    if (saving) return;
+    setSubmitted(true);
+    setSaved(false);
+    if (!name.trim() || !email.includes('@') || !country) return;
+    setSaving(true);
+    setError('');
+    try {
+      // Replace with the app's request; the switch makes the failure path reproducible.
+      await new Promise<void>((resolve, reject) =>
+        setTimeout(() => (simulateFailure ? reject(new Error('demo')) : resolve()), 500),
+      );
+      setSaved(true);
+      setEditing(false);
+    } catch {
+      setError(
+        de
+          ? 'Speichern fehlgeschlagen. Erneut versuchen.'
+          : 'Could not save. Please try again.',
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
+  return (
+    <UI.KeyboardInsetView>
+      <View style={{ gap: 16 }}>
+        <UI.Text variant="heading">{de ? 'Profil bearbeiten' : 'Edit profile'}</UI.Text>
+        <UI.Input
+          label="Name"
+          value={name}
+          onChangeText={(value) => {
+            setName(value);
+            setSaved(false);
+          }}
+          editable={!saving}
+          autoCapitalize="words"
+          error={submitted && !name.trim() ? (de ? 'Name fehlt.' : 'Enter your name.') : null}
+          returnKeyType="next"
+          onSubmitEditing={() => emailRef.current?.focus()}
+        />
+        <UI.TextField
+          ref={emailRef}
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          editable={!saving}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          error={
+            submitted && !email.includes('@')
+              ? de
+                ? 'E-Mail prüfen.'
+                : 'Check your email.'
+              : null
+          }
+          returnKeyType="done"
+          onSubmitEditing={() => void submit()}
+          notchClassName="bg-background"
+        />
+        <UI.SelectField
+          value={country}
+          onChange={setCountry}
+          disabled={saving}
+          label={de ? 'Land' : 'Country'}
+          accessibilityLabel={de ? 'Land' : 'Country'}
+          placeholder={de ? 'Bitte auswählen' : 'Choose a country'}
+          error={submitted && !country ? (de ? 'Land fehlt.' : 'Choose a country.') : null}
+          options={[
+            { id: 'de', label: de ? 'Deutschland' : 'Germany' },
+            { id: 'fr', label: de ? 'Frankreich' : 'France' },
+          ]}
+        />
+        <UI.Checkbox
+          checked={simulateFailure}
+          onCheckedChange={setSimulateFailure}
+          disabled={saving}
+          label={de ? 'Serverfehler simulieren' : 'Simulate server error'}
+          accessibilityLabel={de ? 'Serverfehler simulieren' : 'Simulate server error'}
+        />
+        {error ? <UI.Text accessibilityLiveRegion="polite">{error}</UI.Text> : null}
+        <UI.Button
+          label={de ? 'Profil speichern' : 'Save profile'}
+          loading={saving}
+          loadingLabel={de ? 'Wird gespeichert' : 'Saving profile'}
+          onPress={() => void submit()}
+        />
+        {saved ? (
+          <UI.Text accessibilityLiveRegion="polite">
+            {de ? 'Profil gespeichert' : 'Profile saved'}
+          </UI.Text>
+        ) : null}
+        <UI.Button
+          variant="outline"
+          label={de ? 'Geschütztes Formular öffnen' : 'Open protected form'}
+          onPress={() => setEditing(true)}
+        />
+        <UI.Button
+          label={de ? 'Geschütztes Sheet öffnen' : 'Open protected sheet'}
+          variant="outline"
+          onPress={() => setSheetEditing(true)}
+        />
+        <UI.BottomSheet
+          visible={sheetEditing}
+          dismissible={false}
+          onClose={() => setSheetEditing(false)}
+        >
+          <UI.TextField
+            label={de ? 'Sheet-Entwurf' : 'Sheet draft'}
+            value={draft}
+            onChangeText={setDraft}
+          />
+          <UI.Button
+            label={de ? 'Sheet schließen' : 'Close protected sheet'}
+            onPress={() => setSheetEditing(false)}
+          />
+        </UI.BottomSheet>
+        <UI.Dialog visible={editing} dismissible={false} onClose={() => setEditing(false)}>
+          <UI.Text>
+            {de
+              ? 'Nur die expliziten Aktionen schließen diesen Dialog.'
+              : 'Only explicit actions close this dialog.'}
+          </UI.Text>
+          <UI.TextField
+            label={de ? 'Entwurf' : 'Draft name'}
+            value={draft}
+            onChangeText={setDraft}
+          />
+          <UI.Button
+            label={de ? 'Änderungen verwerfen' : 'Discard changes'}
+            onPress={() => setEditing(false)}
+          />
+        </UI.Dialog>
+      </View>
+    </UI.KeyboardInsetView>
+  );
+}
+export function Example() {
+  return <FormScreenExample de={false} />;
+}
+```
+
+## Integration
+
+Render the screen in your route’s scrolling viewport. For long data lists, replace the small example list with FlatList and retain loading/error/empty states in ListEmptyComponent. Verify focus, large text and the final action with the keyboard open on iOS and Android. For real requests, use cancellation or a request ID so an older response cannot overwrite newer state. Keep settings disabled until loaded; persistence and failure handling belong to your app.

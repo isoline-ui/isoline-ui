@@ -1,0 +1,104 @@
+---
+title: 'Durchsuchbare Auswahl'
+description: 'Eine lokale oder asynchron geladene Einfachauswahl durchsuchen.'
+---
+
+<ComponentPreview kind="catalog-combobox" />
+
+Eine lokale oder asynchron geladene Einfachauswahl durchsuchen.
+
+## Verwendung und Zustände
+
+Für längere Einfachauswahllisten. `null` zeigt den Platzhalter. Lokal werden Optionsbeschriftungen ohne Groß-/Kleinschreibung gefiltert; deaktivierte Treffer sind gesperrt. Das Sheet enthält eine begrenzte virtualisierte Liste. Für Serversuche `query` und `onQueryChange` gemeinsam liefern; `options` enthält dann bereits die Treffer. Die App muss Anfragen verzögern, veraltete Antworten ignorieren oder abbrechen und die ausgewählte Option beim Trefferwechsel behalten. `loading` ersetzt Treffer; `loadingLabel`, `searchLabel` und `emptyLabel` lokalisieren. `error` ist ein Feldfehler, kein automatischer Wiederholungsmechanismus.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="ComboboxExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function ComboboxExample({ de = false }: StoryProps) {
+  const [value, setValue] = React.useState<string | null>(null);
+  return (
+    <UI.Combobox
+      value={value}
+      onChange={setValue}
+      label={de ? 'Land' : 'Country'}
+      accessibilityLabel={de ? 'Land auswählen' : 'Choose country'}
+      placeholder={de ? 'Bitte auswählen' : 'Select a country'}
+      searchLabel={de ? 'Länder suchen' : 'Search countries'}
+      emptyLabel={de ? 'Keine Treffer' : 'No results'}
+      options={[
+        { id: 'de', label: de ? 'Deutschland' : 'Germany' },
+        { id: 'fr', label: de ? 'Frankreich' : 'France' },
+        { id: 'it', label: de ? 'Italien' : 'Italy' },
+        { id: 'unavailable', label: de ? 'Nicht verfügbar' : 'Unavailable', disabled: true },
+      ]}
+    />
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <ComboboxExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `Combobox`.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+Glas, solide Alternativen und den Hintergrund vergleichen: [Picker und schwebende Materialien](/de/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Combobox
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `searchLabel` | `string` | ja | — | — |
+| `emptyLabel` | `string` | ja | — | — |
+| `loading` | `boolean` | optional | `false` | — |
+| `loadingLabel` | `string` | optional | — | — |
+| `query` | `string` | optional | — | Supply both query and onQueryChange for server-side search. Options are then not filtered locally. |
+| `onQueryChange` | `(query: string) => void` | optional | — | — |
+| `accessibilityLabel` | `string` | ja | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `className` | `string` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `onChange` | `(value: T) => void` | ja | — | — |
+| `placeholder` | `string` | optional | `''` | — |
+| `value` | `T \| null` | ja | — | null displays the placeholder; non-null IDs must exist in options. |
+| `label` | `string` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+| `error` | `string \| null` | optional | — | — |
+| `options` | `SelectOption<T>[]` | ja | — | — |
+| `hint` | `string` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/combobox.tsx)
+
+{/* generated-api:end */}

@@ -7,6 +7,10 @@ description: 'Kontrollierte gregorianische Daten, Monatsnavigation, markierte Ta
 
 Kontrollierte gregorianische Daten, Monatsnavigation, markierte Tage und Wochenleiste. Die App liefert Heute, Sprache, Beschriftungen und Terminmarkierungen.
 
+## Verwendung und Zustände
+
+Daten sind gültige gregorianische Strings `YYYY-MM-DD`, Monate `YYYY-MM`; Kalendertage, keine UTC-Zeitstempel. `value=null` bedeutet keine Auswahl. Die App liefert `today` sowie übersetzte Vor-/Zurück-Labels. `firstDayOfWeek` reicht von 0 (Sonntag) bis 6 (Samstag), Default 1. Grenzen sind inklusive; gesperrte Tage sind nicht auswählbar. MonthCalendar kann den Monat über `month` und `onMonthChange` kontrollieren. `range` hebt Start/Ende der App hervor und implementiert keine eigene Bereichsauswahl. `marks` verwendet Datumsschlüssel. DateField öffnet DatePickerSheet; DayPicker/MonthCalendar sind inline, WeekStrip beginnt bei `startDate`. Die getrennten Tabellen unten zeigen die Props je Komponente.
+
 ## Vollständiges Beispiel
 
 Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
@@ -82,8 +86,143 @@ export function Example() {
 
 Öffentliche Komponenten: `DateField`, `DatePickerSheet`, `DayPicker`, `MonthCalendar`, `WeekStrip`.
 
-Wichtige Props: `value`, `onChange`, `today`, `locale`, `labels`, `month`, `onMonthChange`, `minDate`, `maxDate`, `disabledDates`, `marks`, `range`, `material`, `glassStyle`, `tintColor`, `fallbackColor`, `interactive`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
 
 Glas, solide Alternativen und den Hintergrund vergleichen: [Picker und schwebende Materialien](/de/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### DateField
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | ja | — | — |
+| `emptyLabel` | `string` | ja | — | — |
+| `onChange` | `(date: string \| null) => void` | ja | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `value` | `string \| null` | ja | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+| `quickDates` | `QuickDateOption[]` | optional | — | — |
+| `clearLabel` | `string` | optional | — | — |
+| `today` | `string` | ja | — | — |
+| `locale` | `string` | optional | — | — |
+| `month` | `string` | optional | — | — |
+| `onMonthChange` | `(month: string) => void` | optional | — | — |
+| `firstDayOfWeek` | `number` | optional | — | — |
+| `minDate` | `string` | optional | — | — |
+| `maxDate` | `string` | optional | — | — |
+| `disabledDates` | `readonly string[]` | optional | — | — |
+| `marks` | `Record<string, CalendarMark>` | optional | — | — |
+| `labels` | `CalendarLabels` | ja | — | — |
+| `range` | `{ start: string; end: string } \| null` | optional | — | — |
+| `renderDayAccessory` | `(date: string, selected: boolean) => React.ReactNode` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/date-picker.tsx)
+
+### DatePickerSheet
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | ja | — | — |
+| `onClose` | `() => void` | ja | — | — |
+| `title` | `string` | ja | — | — |
+| `quickDates` | `QuickDateOption[]` | optional | `[]` | — |
+| `onClear` | `() => void` | optional | — | — |
+| `clearLabel` | `string` | optional | — | — |
+| `value` | `string \| null` | ja | — | — |
+| `onChange` | `(date: string) => void` | ja | — | — |
+| `today` | `string` | ja | — | — |
+| `locale` | `string` | optional | — | — |
+| `month` | `string` | optional | — | — |
+| `onMonthChange` | `(month: string) => void` | optional | — | — |
+| `firstDayOfWeek` | `number` | optional | — | — |
+| `minDate` | `string` | optional | — | — |
+| `maxDate` | `string` | optional | — | — |
+| `disabledDates` | `readonly string[]` | optional | — | — |
+| `marks` | `Record<string, CalendarMark>` | optional | — | — |
+| `labels` | `CalendarLabels` | ja | — | — |
+| `range` | `{ start: string; end: string } \| null` | optional | — | — |
+| `renderDayAccessory` | `(date: string, selected: boolean) => React.ReactNode` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/date-picker.tsx)
+
+### DayPicker
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `quickDates` | `QuickDateOption[]` | optional | `[]` | — |
+| `onClear` | `() => void` | optional | — | — |
+| `clearLabel` | `string` | optional | — | — |
+| `value` | `string \| null` | ja | — | — |
+| `onChange` | `(date: string) => void` | ja | — | — |
+| `today` | `string` | ja | — | — |
+| `locale` | `string` | optional | — | — |
+| `month` | `string` | optional | — | — |
+| `onMonthChange` | `(month: string) => void` | optional | — | — |
+| `firstDayOfWeek` | `number` | optional | — | — |
+| `minDate` | `string` | optional | — | — |
+| `maxDate` | `string` | optional | — | — |
+| `disabledDates` | `readonly string[]` | optional | — | — |
+| `marks` | `Record<string, CalendarMark>` | optional | — | — |
+| `labels` | `CalendarLabels` | ja | — | — |
+| `range` | `{ start: string; end: string } \| null` | optional | — | — |
+| `renderDayAccessory` | `(date: string, selected: boolean) => React.ReactNode` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/date-picker.tsx)
+
+### MonthCalendar
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `string \| null` | ja | — | — |
+| `onChange` | `(date: string) => void` | ja | — | — |
+| `today` | `string` | ja | — | — |
+| `locale` | `string` | optional | — | — |
+| `month` | `string` | optional | — | — |
+| `onMonthChange` | `(month: string) => void` | optional | — | — |
+| `firstDayOfWeek` | `number` | optional | `1` | — |
+| `minDate` | `string` | optional | — | — |
+| `maxDate` | `string` | optional | — | — |
+| `disabledDates` | `readonly string[]` | optional | `[]` | — |
+| `marks` | `Record<string, CalendarMark>` | optional | `{}` | — |
+| `labels` | `CalendarLabels` | ja | — | — |
+| `range` | `{ start: string; end: string } \| null` | optional | — | — |
+| `renderDayAccessory` | `(date: string, selected: boolean) => React.ReactNode` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/date-picker.tsx)
+
+### WeekStrip
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `startDate` | `string` | ja | — | — |
+| `renderDayAccessory` | `MonthCalendarProps['renderDayAccessory']` | optional | — | — |
+| `onChange` | `(date: string) => void` | ja | — | — |
+| `value` | `string \| null` | ja | — | — |
+| `today` | `string` | ja | — | — |
+| `locale` | `string` | optional | — | — |
+| `minDate` | `string` | optional | — | — |
+| `maxDate` | `string` | optional | — | — |
+| `marks` | `Record<string, CalendarMark>` | optional | `{}` | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/date-picker.tsx)
+
+{/* generated-api:end */}

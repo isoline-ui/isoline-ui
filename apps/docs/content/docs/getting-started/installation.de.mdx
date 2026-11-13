@@ -3,36 +3,34 @@ title: 'Installation'
 description: 'Installiere die aktuelle Version und binde sie in eine Expo-App ein.'
 ---
 
-## Erweiterter Komponenten-Katalog
+## Dokumentationsstand: 2.0.0 (Entwicklung)
 
-Checkbox, Slider, Avatar, Kalender, Zeit-/Farbauswahl und die weiteren neuen Komponenten gehören zum Entwicklungsstand **0.1.0-alpha.3**. Die veröffentlichte Alpha.2 enthält sie noch nicht. Baue die beiden Pakete aus demselben geprüften Quellstand und installiere die erzeugten Archive gemeinsam; ein npm-Release ist dafür nicht nötig.
-
-```sh
-npm ci --ignore-scripts
-npm run pack
-```
-
-Installiere anschließend die erzeugten Archive in deiner App:
-
-```sh
-npm install /path/to/isoline-ui-react-native-0.1.0-alpha.3.tgz /path/to/isoline-ui-native-0.1.0-alpha.3.tgz
-```
-
-Die folgende Alpha.2-URL bleibt der bisherige Release-Stand. Verwende für den erweiterten Katalog die zusammengehörigen Alpha.3-Archive.
+Diese Dokumentation beschreibt den aktuellen Quellstand mit Paketversion **2.0.0**. Er ist kein veröffentlichter npm-Release. Die historischen GitHub-Releases alpha.0/alpha.1 enthalten nicht diese API. Baue die Archive aus einem gemeinsam geprüften Commit.
 
 ## Bevor du beginnst
 
 Verwende eine App mit Expo SDK **57 oder 58** und React Native **0.86 oder 0.88**. Wenn du NativeWind 4 bereits nutzt, behalte deine Einrichtung und ergänze die folgenden Änderungen. Übernimm keine fremden Abhängigkeitsversionen ungeprüft.
 
-## 1. Das UI-Paket hinzufügen
+## 1. Archive aus dem Quellstand bauen
 
-Installiere das versionierte Release-Archiv:
+Voraussetzung: Node.js 24 oder neuer, npm und Git. Führe diese Befehle außerhalb deiner App aus:
 
 ```sh
-npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-react-native-0.1.0-alpha.2.tgz
+git clone https://github.com/isoline-ui/isoline-ui.git
+cd isoline-ui
+git rev-parse HEAD
+npm ci --ignore-scripts
+npm run check
+npm run pack
 ```
 
-Der Importname bleibt `@isoline-ui/react-native`. Committe `package.json` und die Lockdatei, damit dein Team und CI dasselbe Archiv installieren. Du brauchst keinen Isoline-npm-Account und keine npm-Organisation. Andere Abhängigkeiten kommen weiterhin aus deiner eingerichteten Registry.
+Notiere den ausgegebenen Commit für Team und CI. Für spätere Builds checke denselben Commit aus. `npm run pack` erzeugt die folgenden Archive im Repository-Hauptverzeichnis. Installiere das UI-Archiv aus deinem App-Verzeichnis (Pfad anpassen):
+
+```sh
+npm install ../isoline-ui/isoline-ui-react-native-2.0.0.tgz
+```
+
+Der Importname bleibt `@isoline-ui/react-native`. Bewahre das Archiv beispielsweise in `vendor/` deiner App auf und committe Archiv, `package.json` und Lockdatei, damit `npm ci` ohne lokalen Repository-Pfad funktioniert. Das native Archiv ist optional. Beide Archive müssen aus demselben Commit stammen.
 
 ## 2. Peer-Abhängigkeiten installieren
 

@@ -5,7 +5,7 @@ description: 'Choose one named value from a short list.'
 
 <ComponentPreview kind="catalog-menus" />
 
-Use `SelectField` for a setting whose choices need more room than a button group. The field opens its own modal list and closes after a selection.
+Use `SelectField` for a setting whose choices need more room than a button group. The field opens its own anchored popover and closes after a selection.
 
 ## A type-safe picker
 
@@ -34,7 +34,7 @@ export function SortPicker() {
 
 Choose an initial ID that exists in `options`. If options are loaded asynchronously, render the picker after you have a valid selection or provide a separate loading state.
 
-The current picker is a short, single-selection list. It does not provide searching, multi-select, an error prop, or a disabled prop. For many results, build a searchable list in your own sheet. Use [ButtonGroup](/en/docs/components/button-group) when all choices fit comfortably on the screen.
+SelectField is a short single-selection list in an anchored popover. `value={null}` displays `placeholder`. `label`, `hint` and `error` supply form structure; errors replace hints. `disabled` prevents opening and closes an already open menu. Individual options may be disabled. For long or asynchronous lists use [Combobox](/en/docs/components/combobox).
 
 ## Props
 
@@ -44,3 +44,35 @@ The current picker is a short, single-selection list. It does not provide search
 | `options`            | `SelectOption<T>[] · required`  | Options with a unique id and visible label. |
 | `onChange`           | `(value: T) => void · required` | Store the selected ID.                      |
 | `accessibilityLabel` | `string · required`             | Name of the setting this picker changes.    |
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### SelectField
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `value` | `T \| null` | yes | — | null displays the placeholder; non-null IDs must exist in options. |
+| `options` | `SelectOption<T>[]` | yes | — | — |
+| `onChange` | `(value: T) => void` | yes | — | — |
+| `accessibilityLabel` | `string` | yes | — | — |
+| `label` | `string` | optional | — | — |
+| `placeholder` | `string` | optional | `''` | — |
+| `hint` | `string` | optional | — | — |
+| `error` | `string \| null` | optional | — | — |
+| `menuMaterial` | `MaterialOptions['material']` | optional | `'auto'` | — |
+| `disabled` | `boolean` | optional | — | — |
+| `className` | `string` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/select-field.tsx)
+
+{/* generated-api:end */}

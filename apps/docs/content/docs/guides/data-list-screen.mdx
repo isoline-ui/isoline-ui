@@ -1,0 +1,92 @@
+---
+title: 'Reference data list'
+description: 'Search a list and try loading, error, retry, empty and content states.'
+---
+
+<ComponentPreview kind="catalog-data-list-screen" />
+
+This complete example runs beneath your existing IsolineProvider, safe-area and gesture providers. Data and server actions are local demonstrations; replace them with your application interfaces. The preview exposes repeatable state transitions.
+
+## Complete example
+
+```tsx
+import * as React from 'react';
+import { View } from 'react-native';
+import * as UI from '@isoline-ui/react-native';
+type StoryProps = { de?: boolean };
+function DataListScreenExample({ de = false }: StoryProps) {
+  const [state, setState] = React.useState<'loading' | 'error' | 'empty' | 'ready'>('ready');
+  const [query, setQuery] = React.useState('');
+  const rows = ['Isoline', 'Studio', 'Garden'].filter((row) =>
+    row.toLowerCase().includes(query.toLowerCase()),
+  );
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Text variant="heading">{de ? 'Sammlungen' : 'Collections'}</UI.Text>
+      <UI.ButtonGroup
+        items={[
+          { id: 'ready', label: de ? 'Inhalt' : 'Content' },
+          { id: 'loading', label: de ? 'Laden' : 'Loading' },
+          { id: 'error', label: de ? 'Fehler' : 'Error' },
+          { id: 'empty', label: de ? 'Leer' : 'Empty' },
+        ]}
+        value={state}
+        onChange={(value) => setState(value as typeof state)}
+      />
+      <UI.SearchField
+        value={query}
+        onChangeText={setQuery}
+        placeholder={de ? 'Sammlungen suchen' : 'Search collections'}
+        accessibilityLabel={de ? 'Sammlungen suchen' : 'Search collections'}
+        clearAccessibilityLabel={de ? 'Suche leeren' : 'Clear search'}
+      />
+      <View accessibilityState={{ busy: state === 'loading' }}>
+        {state === 'loading' ? (
+          <View style={{ gap: 12 }}>
+            <UI.Text accessibilityLiveRegion="polite">{de ? 'Lädt' : 'Loading'}</UI.Text>
+            <UI.Skeleton height={56} />
+            <UI.Skeleton height={56} />
+          </View>
+        ) : state === 'error' ? (
+          <UI.Card>
+            <UI.Text accessibilityLiveRegion="polite">
+              {de ? 'Laden fehlgeschlagen' : 'Could not load collections'}
+            </UI.Text>
+            <UI.Button
+              label={de ? 'Erneut versuchen' : 'Retry'}
+              onPress={() => setState('ready')}
+            />
+          </UI.Card>
+        ) : state === 'empty' || !rows.length ? (
+          <UI.EmptyState
+            shape="cookie"
+            icon={UI.BackIcon}
+            title={de ? 'Keine Sammlungen' : 'No collections'}
+            body={
+              de
+                ? 'Passe die Suche an oder lege eine Sammlung an.'
+                : 'Change your search or create a collection.'
+            }
+          />
+        ) : (
+          rows.map((row) => (
+            <UI.ListItem
+              key={row}
+              title={row}
+              description={de ? 'Sammlung' : 'Collection'}
+              leading={<UI.Avatar initials={row.slice(0, 2)} accessibilityLabel={row} />}
+            />
+          ))
+        )}
+      </View>
+    </View>
+  );
+}
+export function Example() {
+  return <DataListScreenExample de={false} />;
+}
+```
+
+## Integration
+
+Render the screen in your route’s scrolling viewport. For long data lists, replace the small example list with FlatList and retain loading/error/empty states in ListEmptyComponent. Verify focus, large text and the final action with the keyboard open on iOS and Android. For real requests, use cancellation or a request ID so an older response cannot overwrite newer state. Keep settings disabled until loaded; persistence and failure handling belong to your app.

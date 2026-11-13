@@ -75,8 +75,80 @@ export function Example() {
 
 Öffentliche Komponenten: `NavigationBar`, `TopBar`, `BackButton`, `BackIcon`, `ScreenTitle`.
 
-Wichtige Props: `title`, `leading`, `trailing`, `center`, `onBack`, `onPress`, `material`, `floating`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
 
 Glas, solide Alternativen und den Hintergrund vergleichen: [Picker und schwebende Materialien](/de/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### NavigationBar
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `title` | `string` | ja | — | — |
+| `leading` | `React.ReactNode` | optional | — | — |
+| `trailing` | `React.ReactNode` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | Floating navigation uses glass on supported iOS when a surface adapter is supplied. |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/toolbar.tsx)
+
+### TopBar
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `onBack` | `() => void` | ja | — | — |
+| `backLabel` | `string` | optional | — | — |
+| `center` | `React.ReactNode` | optional | — | — |
+| `actions` | `React.ReactNode` | optional | — | — |
+| `className` | `string` | optional | — | — |
+| `floating` | `boolean` | optional | `false` | iOS only: the bar floats over the screen from its top edge, with the content scrolling under it and fading out beneath the controls. The screen then pads its content by 'useTopBarInset()' instead of the status bar. |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'auto'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/top-bar.tsx)
+
+### BackButton
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `onPress` | `() => void` | ja | — | — |
+| `label` | `string` | optional | — | What the row leads back to, e.g. "Inbox", "Settings". Defaults to "Back". |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/back-button.tsx)
+
+### BackIcon
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `size` | `number` | optional | `24` | — |
+| `color` | `string` | optional | `'#000000'` | — |
+| `fill` | `string` | optional | — | — |
+| `ruleColor` | `string` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/back-icon.tsx)
+
+### ScreenTitle
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `title` | `string` | ja | — | — |
+| `caption` | `React.ReactNode` | optional | — | — |
+| `className` | `string` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/top-bar.tsx)
+
+{/* generated-api:end */}

@@ -79,6 +79,28 @@ export function Example() {
 
 Öffentliche Komponenten: `SwipeableRow`.
 
-Wichtige Props: `children`, `startActions`, `endActions`, `actionsLabel`, `accessibilityLabel`, `disabled`, `onSwipeStart`, `onSwipeEnd`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### SwipeableRow
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `children` | `React.ReactNode` | ja | — | — |
+| `accessibilityLabel` | `string` | ja | — | — |
+| `actionsLabel` | `string` | ja | — | — |
+| `startActions` | `SwipeAction[]` | optional | `[]` | — |
+| `endActions` | `SwipeAction[]` | optional | `[]` | — |
+| `disabled` | `boolean` | optional | — | — |
+| `showActionsButton` | `boolean` | optional | `true` | — |
+| `onSwipeStart` | `() => void` | optional | — | — |
+| `onSwipeEnd` | `() => void` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/swipeable-row.tsx)
+
+{/* generated-api:end */}

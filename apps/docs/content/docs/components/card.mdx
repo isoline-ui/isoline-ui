@@ -1,0 +1,96 @@
+---
+title: 'Card'
+description: 'Group content with a header, footer or a single card action.'
+---
+
+<ComponentPreview kind="catalog-card" />
+
+Group content with a header, footer or a single card action.
+
+## Usage and states
+
+Use `header` and `footer` for arbitrary content. Set `onPress` only when the whole card is one action; give it an accessible label and do not nest buttons or links. For a card containing separate actions, omit `onPress`. `className` and `style` target the outer container; no router or persistence is installed.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="CardExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function CardExample({ de = false }: StoryProps) {
+  const [status, setStatus] = React.useState('');
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Card
+        header={<UI.Text variant="heading">{de ? 'Sammlung' : 'Collection'}</UI.Text>}
+        footer={
+          <UI.Button
+            label={de ? 'Öffnen' : 'Open'}
+            onPress={() => setStatus(de ? 'Geöffnet' : 'Opened')}
+          />
+        }
+      >
+        <UI.Text>
+          {de ? 'Inhalt mit eigener Aktion.' : 'Content with a separate action.'}
+        </UI.Text>
+      </UI.Card>
+      <UI.Card
+        onPress={() => setStatus(de ? 'Karte ausgewählt' : 'Card selected')}
+        accessibilityLabel={de ? 'Sammlung auswählen' : 'Select collection'}
+      >
+        <UI.Text>
+          {de ? 'Die ganze Karte ist eine Aktion.' : 'The whole card is one action.'}
+        </UI.Text>
+      </UI.Card>
+      <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <CardExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `Card`.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### Card
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `header` | `React.ReactNode` | optional | — | — |
+| `footer` | `React.ReactNode` | optional | — | — |
+| `onPress` | `() => void` | optional | — | Makes the whole card one action. Do not nest interactive controls in an actionable card. |
+| `disabled` | `boolean` | optional | — | — |
+| `children` | `React.ReactNode` | yes | — | — |
+
+Also accepts inherited React Native props from its declared base type (for example View, Pressable or TextInput), and React ref attributes where applicable. All Isoline-specific props and material options are listed above.
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/card.tsx)
+
+{/* generated-api:end */}

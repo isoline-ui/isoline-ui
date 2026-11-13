@@ -32,3 +32,28 @@ export function Tabs() {
 ```
 
 On web, arrow keys, Home and End move among enabled tabs. Disabled entries are skipped. The selected tab is the keyboard entry point. Position a floating tab bar above the safe area and reserve content space yourself. `style` controls container layout; see [materials](/en/docs/foundations/materials) for material options.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### TabBar
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `items` | `TabBarItem<T>[]` | yes | — | — |
+| `value` | `T` | yes | — | — |
+| `onChange` | `(value: T) => void` | yes | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'auto'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/tab-bar.tsx)
+
+{/* generated-api:end */}

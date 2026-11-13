@@ -71,8 +71,55 @@ export function Example() {
 
 Public components: `SelectionHeader`, `ListSectionHeader`, `JumpToTopPill`.
 
-Key props: `count`, `countLabel`, `allSelected`, `onClear`, `onToggleAll`, `title`, `label`, `onPress`, `material`, `glassStyle`, `tintColor`, `fallbackColor`, `interactive`. Exported props types define the full contract. Labels and actions are supplied by the app.
-
 Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
 
 Compare glass, solid fallbacks and backdrop content: [Picker and floating materials](/en/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### SelectionHeader
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `count` | `number` | yes | — | — |
+| `countLabel` | `string` | yes | — | — |
+| `allSelected` | `boolean` | yes | — | — |
+| `onClear` | `() => void` | yes | — | — |
+| `onToggleAll` | `() => void` | yes | — | — |
+| `clearLabel` | `string` | yes | — | — |
+| `selectAllLabel` | `string` | yes | — | — |
+| `deselectAllLabel` | `string` | yes | — | — |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/list-controls.tsx)
+
+### ListSectionHeader
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `title` | `string` | yes | — | — |
+| `first` | `boolean` | optional | — | — |
+| `trailing` | `React.ReactNode` | optional | — | — |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/list-controls.tsx)
+
+### JumpToTopPill
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | yes | — | — |
+| `onPress` | `() => void` | yes | — | — |
+| `count` | `number` | optional | `0` | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/list-controls.tsx)
+
+{/* generated-api:end */}

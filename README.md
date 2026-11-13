@@ -8,16 +8,16 @@ Isoline keeps the common interaction and accessibility rules in one place while
 allowing each app to keep its own colours and typography. The built-in
 themes are Violet, Teal and Cyan.
 
-**Status:** 0.1.0-alpha.2, distributed through GitHub Releases. Isoline is not yet
-published to npm. The optional native package provides Android system colors and
-iOS Liquid Glass surfaces. Consumers can adopt shared primitives through
-forwarding modules. The expanded component catalogue is
-part of the paired 0.1.0-alpha.3 development snapshots; older alpha.2 archives
-do not contain it.
+**Documentation/API version: 2.0.0 (development source).** This version is not
+published to npm or available as a GitHub release asset. Historical alpha.0/alpha.1
+releases do not match this catalogue. Build local archives from one reviewed
+commit using the instructions below. Native appearance is optional.
 
 ## What is here
 
-- Buttons, button groups, chips, icon buttons and native switches.
+- Buttons with pending states, button groups, chips, icon buttons and native switches.
+- Radio groups, searchable selections, reusable cards/list rows, accordions and skeletons.
+- Shared field labels, hints and errors; protected overlay dismissal.
 - Text, text fields, search, checkbox, slider, avatar and action chips.
 - Calendar/date/time/color pickers and localized amount fields.
 - Banners, controlled undo feedback, swipeable rows and image zoom.
@@ -31,22 +31,30 @@ The runtime source is shipped for Metro to compile with the consuming app's
 NativeWind and Reanimated setup. Type declarations are generated separately.
 React and native runtimes are peer dependencies.
 
-## Test installation without npmjs
+[Choose components](https://isoline-ui.github.io/isoline-ui/en/docs/guides/choosing-components/)
+or try the complete [form](https://isoline-ui.github.io/isoline-ui/en/docs/guides/form-screen/),
+[list](https://isoline-ui.github.io/isoline-ui/en/docs/guides/data-list-screen/) and
+[settings](https://isoline-ui.github.io/isoline-ui/en/docs/guides/settings-screen/) examples.
 
-The alpha package is distributed as an npm-compatible tarball on GitHub Releases.
-Install this fixed version from an app directory:
+## Install the documented development API
+
+Use Node.js 24+ and npm. From a checkout of this repository:
 
 ```sh
-npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-react-native-0.1.0-alpha.2.tgz
+git rev-parse HEAD
+npm ci --ignore-scripts
+npm run check
+npm run pack
 ```
 
-The import name remains `@isoline-ui/react-native`. Isoline itself is downloaded
-from GitHub; its normal dependencies and peers still use the app's configured
-registry. Keep the peer versions selected by your Expo SDK.
+Record the source commit, then copy `isoline-ui-react-native-2.0.0.tgz` into your
+app's `vendor/` directory and run `npm install ./vendor/isoline-ui-react-native-2.0.0.tgz`.
+Commit the archive, package manifest and lockfile for reproducible CI installs.
+For native appearance, also install `isoline-ui-native-2.0.0.tgz` from the same commit.
 
-Follow the package guide for the NativeWind content scan, preset and provider.
-Installing the dependency alone does not migrate the app's existing components.
-See [distribution](docs/distribution.md) for local tarballs and update rules.
+Follow [installation](https://isoline-ui.github.io/isoline-ui/en/docs/getting-started/installation/)
+for peers, NativeWind, Metro and providers. Installing the package alone does not
+configure an app. See [distribution](docs/distribution.md) for archive/update rules.
 
 ## Development
 

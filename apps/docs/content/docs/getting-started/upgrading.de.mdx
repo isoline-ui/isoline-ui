@@ -3,6 +3,12 @@ title: 'Isoline aktualisieren'
 description: 'Aktualisiere die Release-Archive mit einer nachvollziehbaren Installation.'
 ---
 
+## Entwicklungsstände aktualisieren
+
+Diese Dokumentation beschreibt den 2.0.0-Quellstand, keinen veröffentlichten Release. Baue für ein Update beide Archive aus demselben neuen geprüften Commit. Lege sie in einem neuen, nach dem Commit benannten Unterverzeichnis von `vendor/` ab und aktualisiere die Installationspfade. Überschreibe das alte Archiv nicht, auch wenn die interne Entwicklungsversion weiterhin 2.0.0 lautet. Committe neue Archive, Paketmanifest und Lockdatei. Bewahre die vorherige Kombination für Rollbacks auf.
+
+Die folgenden Release-Regeln gelten, sobald ein passender unveränderlicher Release verfügbar ist. Historische Alpha-Releases sind keine Quelle für die aktuelle API.
+
 ## Ein Release auswählen
 
 Öffne [GitHub Releases](https://github.com/isoline-ui/isoline-ui/releases) und lies die Hinweise zur gewünschten Version. Verwende die `.tgz`-Paketdateien, nicht die automatisch erzeugte ZIP des gesamten Repositorys.
@@ -22,7 +28,7 @@ Ersetze kein altes `.tgz`-Archiv unter derselben URL oder Versionsnummer. Unver�
 ## Ein lokales Archiv verwenden
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-0.1.0-alpha.2.tgz
+npm install ./vendor/isoline-ui-react-native-2.0.0.tgz
 ```
 
 Stelle diese Datei deinem Team und CI zur Verfügung. Committe sie bei dieser Variante zusammen mit der App. Über mehrere Apps hinweg ist die Release-URL meistens einfacher.

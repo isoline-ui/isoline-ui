@@ -33,3 +33,42 @@ Install the paired optional native package and its Expo glass peer, then pass `s
 ## Material options
 
 Suitable controls and overlay surfaces support the shared material contract, including `glassStyle`, `tintColor`, `fallbackColor`, and `interactive`. See [Materials and Liquid Glass](/en/docs/foundations/materials) for defaults, adapters, states, and fallbacks.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### Toolbar
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `children` | `React.ReactNode` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'auto'` | Floating navigation uses glass on supported iOS when a surface adapter is supplied. |
+| `className` | `string` | optional | — | — |
+| `style` | `React.ComponentProps<typeof Animated.View>['style']` | optional | — | Motion from 'useToolbarAutoHide', when the toolbar scrolls away. |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/toolbar.tsx)
+
+### Snackbar
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `message` | `string` | yes | — | — |
+| `bottom` | `number` | optional | `12` | — |
+| `actionLabel` | `string` | optional | — | — |
+| `onAction` | `() => void` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/snackbar.tsx)
+
+{/* generated-api:end */}

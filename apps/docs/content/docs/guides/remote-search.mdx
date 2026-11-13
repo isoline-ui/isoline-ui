@@ -1,0 +1,54 @@
+---
+title: 'Remote search'
+description: 'Debounce requests, ignore stale responses and retain the selected option.'
+---
+
+Use controlled `query` and `onQueryChange` together. Combobox renders the supplied results without local filtering in this mode. Keep the selected option in `options` when a new page of results arrives. The function below is app-supplied and receives an AbortSignal; it should reject on network failure.
+
+```tsx
+import * as React from 'react';
+import { View } from 'react-native';
+import { Button, Combobox, Text, type SelectOption } from '@isoline-ui/react-native';
+type Option = SelectOption<string>;
+type Props = { search: (query: string, signal: AbortSignal) => Promise<Option[]> };
+export function RemotePicker({ search }: Props) {
+  const [query, setQuery] = React.useState('');
+  const [results, setResults] = React.useState<Option[]>([]);
+  const [selected, setSelected] = React.useState<Option | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState('');
+  const [attempt, setAttempt] = React.useState(0);
+  React.useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+    setLoading(true);
+    setError('');
+    const timer = setTimeout(() => {
+      void (async () => {
+        try {
+          const next = await search(query, controller.signal);
+          if (active) setResults(next);
+        } catch {
+          if (active) { setResults([]); setError('Search failed. Try again.'); }
+        } finally {
+          if (active) setLoading(false);
+        }
+      })();
+    }, 250);
+    return () => { active = false; clearTimeout(timer); controller.abort(); };
+  }, [query, search, attempt]);
+  const options = selected && !results.some(option => option.id === selected.id)
+    ? [selected, ...results] : results;
+  return <View style={{ gap: 12 }}>
+    <Combobox value={selected?.id ?? null} options={options}
+      onChange={id => setSelected(options.find(option => option.id === id) ?? null)}
+      query={query} onQueryChange={setQuery} loading={loading} loadingLabel="Searching"
+      accessibilityLabel="Choose a place" label="Place" placeholder="Choose a place"
+      searchLabel="Search places" emptyLabel={error || 'No results'} error={error || null} />
+    {error ? <><Text accessibilityLiveRegion="polite">{error}</Text>
+      <Button label="Retry search" onPress={() => setAttempt(value => value + 1)} /></> : null}
+  </View>;
+}
+```
+
+Keep `search` stable with useCallback in the parent. Cleanup aborts the request and independently ignores late responses, including clients that do not honor AbortSignal. Decide in your app how to paginate, cache and preserve results. Supply localized labels for every status. A selected cached option can appear beside current search results so its label remains available.

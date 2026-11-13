@@ -1,0 +1,28 @@
+---
+title: 'Komponenten anpassen'
+description: 'Styling-Ziele und die Zuständigkeit des Themes verstehen.'
+---
+
+## Styling-Vertrag
+
+Die vollständige Props-Referenz jeder Komponentenseite nennt eigene Styling-Props. Geerbte View-, Pressable- und TextInput-Props folgen React Native. Eine Komponente nimmt nicht automatisch alle Styling-Props anderer Komponenten an.
+
+| API | Ziel |
+| --- | --- |
+| Card, ListItem, Skeleton, Accordion, FormField: `className`, `style` | Äußerer Container, bei aktiver Karte/Zeile der äußere Pressable. |
+| SelectField, Combobox: `className`, `style` | Äußere Feldgruppe, nicht Popup/Sheet. |
+| Input: `className`, TextInput-`style` | Native Texteingabe; Label-/Fehlerlayout liegt außerhalb. |
+| TextField: `className`, `notchClassName` | Eigenen Vertrag beachten; notchClassName muss auf Android zur umgebenden Fläche passen. |
+| Button: `className`, `pressableClassName`, `style` | Äußerer Wrapper, Klassen des inneren Controls, Style des inneren Controls. |
+| Slider: `style`, activeColor/trackColor/thumbColor | Äußerer Wrapper und einzelne Farben. |
+| MaterialOptions | Material und Glas-Fallback, nicht Layout. |
+
+Für appweite Änderungen Farb-/Typografie-Tokens im Theme verwenden. Style für lokales Layout und Zustands-Props für Zustände verwenden. Den NativeWind-Scan des Pakets beibehalten; dynamisch zusammengesetzte Utility-Namen werden nicht zuverlässig kompiliert. Keine opaken Hintergründe auf Glas-Vorfahren setzen.
+
+## Zustände und Barrierefreiheit
+
+Farbänderungen ändern keine Semantik. disabled, selected, checked und loading über die API setzen. Lesbare Kontrastpaare in Hell/Dunkel erhalten. Textumbruch und große Systemschrift prüfen statt alle Zeilen auf feste Höhe zu begrenzen.
+
+## Muster erweitern
+
+Zuerst vorhandene Teile kombinieren. Routing, Datenabruf, Speicherung und Übersetzungen bleiben in der App. Eigene Controls brauchen Pressable mit Rolle, Beschriftung und Zustand; FormField liefert die sichtbare Feldstruktur. Siehe [Komponentenauswahl](/de/docs/guides/choosing-components).

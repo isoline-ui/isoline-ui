@@ -62,6 +62,8 @@ function useDialogTransition(visible: boolean, preserveOpacity: boolean) {
 
 export interface DialogProps extends MaterialOptions {
   visible: boolean;
+  /** Prevent backdrop, Back and accessibility dismissal; explicit app actions still work. */
+  dismissible?: boolean;
   onClose: () => void;
   /** Runs once the dialog is actually on screen — for one that focuses an input. */
   onShow?: () => void;
@@ -76,6 +78,7 @@ export interface DialogProps extends MaterialOptions {
  */
 export function Dialog({
   visible,
+  dismissible = true,
   onClose,
   onShow,
   children,
@@ -85,6 +88,9 @@ export function Dialog({
   fallbackColor,
   interactive = false,
 }: DialogProps) {
+  const requestClose = () => {
+    if (dismissible) onClose();
+  };
   const ios = useIsolinePlatform() === 'ios';
   const glass = ios && material !== 'solid';
   const { scrimStyle, panelStyle } = useDialogTransition(visible, glass);
@@ -99,7 +105,7 @@ export function Dialog({
       transparent
       presentationStyle="overFullScreen"
       animationType="none"
-      onRequestClose={onClose}
+      onRequestClose={requestClose}
       onShow={onShow}
     >
       <ThemeScope style={{ flex: 1 }}>
@@ -138,14 +144,14 @@ export function Dialog({
             <Pressable
               testID="isoline-dialog-backdrop"
               className="absolute inset-0"
-              onPress={onClose}
+              onPress={requestClose}
               accessible={false}
             />
 
             <Box
               testID="isoline-dialog-panel"
               accessibilityViewIsModal
-              onAccessibilityEscape={onClose}
+              onAccessibilityEscape={requestClose}
               className="w-full max-w-sm rounded-[28px] bg-popover"
               style={[
                 !web && panelStyle,

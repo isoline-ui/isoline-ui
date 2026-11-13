@@ -1,0 +1,85 @@
+---
+title: 'Listeneintrag'
+description: 'Allgemeine Zeilen mit führendem Inhalt und nachgelagerten Aktionen zusammensetzen.'
+---
+
+<ComponentPreview kind="catalog-list-item" />
+
+Allgemeine Zeilen mit führendem Inhalt und nachgelagerten Aktionen zusammensetzen.
+
+## Verwendung und Zustände
+
+Ohne `onPress` ist die Zeile ein statischer Container und darf unabhängige Aktionen enthalten. Mit `onPress` ist sie ein Button: führende und nachgelagerte Inhalte dekorativ halten, keine interaktiven Elemente verschachteln. `disabled` sperrt die Zeilenaktion; `selected` ändert Fläche und barrierefreien Zustand. Lange Texte umbrechen. `className` und `style` gelten für die Zeile.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="ListitemExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function ListItemExample({ de = false }: StoryProps) {
+  const [selected, setSelected] = React.useState(false);
+  return (
+    <View>
+      <UI.ListItem
+        title={de ? 'Projekt' : 'Project'}
+        description={de ? 'Zuletzt bearbeitet' : 'Recently edited'}
+        leading={<UI.Avatar initials="IS" accessibilityLabel="Isoline" />}
+        trailing={<UI.Badge label="3" />}
+        selected={selected}
+        onPress={() => setSelected(!selected)}
+      />
+      <UI.ListItem title={de ? 'Nicht verfügbar' : 'Unavailable'} disabled onPress={() => {}} />
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <ListItemExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `ListItem`.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### ListItem
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `title` | `string` | ja | — | — |
+| `description` | `string` | optional | — | — |
+| `leading` | `React.ReactNode` | optional | — | — |
+| `trailing` | `React.ReactNode` | optional | — | — |
+| `onPress` | `() => void` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `selected` | `boolean` | optional | — | — |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/list-item.tsx)
+
+{/* generated-api:end */}

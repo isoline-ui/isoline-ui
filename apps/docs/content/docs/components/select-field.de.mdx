@@ -5,7 +5,7 @@ description: 'Wähle einen benannten Wert aus einer kurzen Liste aus.'
 
 <ComponentPreview kind="catalog-menus" />
 
-Verwende `SelectField` für eine Einstellung, deren Optionen mehr Platz als eine Button-Gruppe benötigen. Das Feld öffnet eine eigene modale Liste und schließt sie nach der Auswahl.
+Verwende `SelectField` für eine Einstellung, deren Optionen mehr Platz als eine Button-Gruppe benötigen. Das Feld öffnet ein verankertes Popover und schließt sie nach der Auswahl.
 
 ## Eine typsichere Auswahl
 
@@ -34,13 +34,45 @@ export function SortPicker() {
 
 Wähle eine anfängliche ID, die in `options` vorkommt. Lädt deine App die Optionen asynchron, zeige die Auswahl erst mit einem gültigen Wert an oder verwende einen getrennten Ladezustand.
 
-Die aktuelle Komponente ist eine kurze Einzelauswahl. Sie bietet keine Suche, Mehrfachauswahl und keine Eigenschaften für Fehler oder Deaktivierung. Für viele Ergebnisse kannst du eine durchsuchbare Liste in einem eigenen Sheet bauen. Verwende [ButtonGroup](/de/docs/components/button-group), wenn alle Optionen bequem nebeneinander passen.
+SelectField ist eine kurze Einfachauswahl in einem verankerten Popover. `value={null}` zeigt `placeholder`. `label`, `hint` und `error` bilden den Formularzustand ab; Fehler haben Vorrang vor Hinweisen. `disabled` verhindert Öffnen und schließt ein bereits offenes Menü. Optionen können einzeln deaktiviert sein. Für lange oder asynchrone Listen verwende [Combobox](/de/docs/components/combobox).
 
 ## Eigenschaften
 
 | Eigenschaft          | Typ / Standard                  | Verwendung                                        |
 | -------------------- | ------------------------------- | ------------------------------------------------- |
-| `value`              | `T extends string · required`   | ID der ausgewählten Option.                       |
+| `value`              | `T oder null · erforderlich`   | ID der ausgewählten Option.                       |
 | `options`            | `SelectOption<T>[] · required`  | Optionen mit eindeutiger id und sichtbarem label. |
 | `onChange`           | `(value: T) => void · required` | Speichere die ausgewählte ID.                     |
 | `accessibilityLabel` | `string · required`             | Name der Einstellung, die diese Auswahl ändert.   |
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### SelectField
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `T \| null` | ja | — | null displays the placeholder; non-null IDs must exist in options. |
+| `options` | `SelectOption<T>[]` | ja | — | — |
+| `onChange` | `(value: T) => void` | ja | — | — |
+| `accessibilityLabel` | `string` | ja | — | — |
+| `label` | `string` | optional | — | — |
+| `placeholder` | `string` | optional | `''` | — |
+| `hint` | `string` | optional | — | — |
+| `error` | `string \| null` | optional | — | — |
+| `menuMaterial` | `MaterialOptions['material']` | optional | `'auto'` | — |
+| `disabled` | `boolean` | optional | — | — |
+| `className` | `string` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/select-field.tsx)
+
+{/* generated-api:end */}

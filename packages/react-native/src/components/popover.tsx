@@ -21,6 +21,7 @@ export type { AnchorRect } from './popover-layout.ts';
 export type PopoverAnchorRef = React.RefObject<React.ComponentRef<typeof View> | null>;
 export interface PopoverProps extends MaterialOptions {
   visible: boolean;
+  dismissible?: boolean;
   onClose: () => void;
   anchorRef?: PopoverAnchorRef;
   anchor?: AnchorRect;
@@ -34,6 +35,7 @@ export interface PopoverProps extends MaterialOptions {
 /** Controlled anchored surface. Native Modal provides back dismissal; web adds focus trapping/Escape. */
 export function Popover({
   visible,
+  dismissible = true,
   onClose,
   anchorRef,
   anchor,
@@ -49,6 +51,9 @@ export function Popover({
   fallbackColor,
   interactive = false,
 }: PopoverProps) {
+  const requestClose = () => {
+    if (dismissible) onClose();
+  };
   const window = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const labels = useLabels();
@@ -83,15 +88,17 @@ export function Popover({
       visible={visible}
       transparent
       animationType="none"
-      onRequestClose={onClose}
+      onRequestClose={requestClose}
       onShow={onShow}
     >
       <ThemeScope style={{ flex: 1 }}>
         <Pressable
           testID="popover-backdrop"
+          disabled={!dismissible}
+          accessible={dismissible}
           accessibilityLabel={labels.close}
           accessibilityRole="button"
-          onPress={onClose}
+          onPress={requestClose}
           style={{
             position: 'absolute',
             top: 0,
@@ -104,7 +111,7 @@ export function Popover({
         <View
           testID="isoline-popover-panel"
           accessibilityViewIsModal
-          onAccessibilityEscape={onClose}
+          onAccessibilityEscape={requestClose}
           accessibilityLabel={accessibilityLabel}
           style={{
             position: 'absolute',

@@ -1,4 +1,14 @@
 {
   "title": "Rezepte",
-  "pages": ["forms", "settings", "overlays", "troubleshooting"]
+  "pages": [
+    "forms",
+    "settings",
+    "overlays",
+    "troubleshooting",
+    "choosing-components",
+    "form-screen",
+    "data-list-screen",
+    "settings-screen",
+    "remote-search"
+  ]
 }

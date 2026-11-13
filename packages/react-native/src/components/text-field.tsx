@@ -255,7 +255,7 @@ export const TextField: React.ForwardRefExoticComponent<
       </View>
 
       {error ? (
-        <Text variant="caption" className="text-destructive">
+        <Text accessibilityLiveRegion="polite" variant="caption" className="text-destructive">
           {error}
         </Text>
       ) : null}
