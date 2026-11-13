@@ -1,38 +1,22 @@
 ---
 title: 'Isoline aktualisieren'
-description: 'Aktualisiere die Release-Archive mit einer nachvollziehbaren Installation.'
+description: 'Aktualisiere die npm-Pakete mit einer nachvollziehbaren Installation.'
 ---
 
-## Entwicklungsstände aktualisieren
+## Eine Version auswählen
 
-Diese Dokumentation beschreibt den 2.0.0-Quellstand, keinen veröffentlichten Release. Baue für ein Update beide Archive aus demselben neuen geprüften Commit. Lege sie in einem neuen, nach dem Commit benannten Unterverzeichnis von `vendor/` ab und aktualisiere die Installationspfade. Überschreibe das alte Archiv nicht, auch wenn die interne Entwicklungsversion weiterhin 2.0.0 lautet. Committe neue Archive, Paketmanifest und Lockdatei. Bewahre die vorherige Kombination für Rollbacks auf.
+Lies das [Changelog](https://github.com/isoline-ui/isoline-ui/blob/main/CHANGELOG.md) und prüfe die Versionen auf npm für [`@isoline-ui/react-native`](https://www.npmjs.com/package/@isoline-ui/react-native) und [`@isoline-ui/native`](https://www.npmjs.com/package/@isoline-ui/native). Lies die Hinweise zu jeder Version zwischen deiner und der Zielversion.
 
-Die folgenden Release-Regeln gelten, sobald ein passender unveränderlicher Release verfügbar ist. Historische Alpha-Releases sind keine Quelle für die aktuelle API.
-
-## Ein Release auswählen
-
-Öffne [GitHub Releases](https://github.com/isoline-ui/isoline-ui/releases) und lies die Hinweise zur gewünschten Version. Verwende die `.tgz`-Paketdateien, nicht die automatisch erzeugte ZIP des gesamten Repositorys.
-
-Für das UI-Paket allein aktualisierst du dessen Archiv-URL. Nutzt du die native Darstellung, aktualisiere **beide Pakete gemeinsam** auf dieselbe Version. Die Peer-Abhängigkeit des nativen Pakets erwartet die passende UI-Version.
+Nutzt du die native Darstellung, aktualisiere **beide Pakete gemeinsam** auf dieselbe Version. Die Peer-Abhängigkeit des nativen Pakets erwartet die passende UI-Version.
 
 ## Deine App aktualisieren
 
-1. Installiere die neue Archiv-URL beziehungsweise beide URLs mit deinem Paketmanager.
+1. Installiere die neue Version, zum Beispiel `npm install @isoline-ui/react-native@latest @isoline-ui/native@latest`.
 2. Committe `package.json` und die Lockdatei.
-3. Prüfe die Release-Hinweise auf geänderte Eigenschaften und native Abhängigkeiten.
+3. Prüfe das Changelog auf geänderte Eigenschaften und native Abhängigkeiten.
 4. Führe den Typecheck deiner App aus und probiere die verwendeten Bildschirme aus.
 5. Baue die native App neu, wenn sich nativer Code oder native Abhängigkeiten geändert haben.
 
-Ersetze kein altes `.tgz`-Archiv unter derselben URL oder Versionsnummer. Unveränderliche Release-URLs sorgen dafür, dass `npm ci` deine Installation reproduzieren kann.
-
-## Ein lokales Archiv verwenden
-
-```sh
-npm install ./vendor/isoline-ui-react-native-2.0.0.tgz
-```
-
-Stelle diese Datei deinem Team und CI zur Verfügung. Committe sie bei dieser Variante zusammen mit der App. Über mehrere Apps hinweg ist die Release-URL meistens einfacher.
-
 ## Falls ein Update Probleme macht
 
-Stelle die vorherige Archiv-URL und die Lockdatei wieder her. Hat sich der native Code geändert, brauchst du auch eine dazu passende native App-Version oder einen erneuten nativen Build. Siehe [Development-Builds](/de/docs/native/development-builds).
+Installiere die vorherigen Versionen erneut und stelle die Lockdatei wieder her. Hat sich der native Code geändert, brauchst du auch eine dazu passende native App-Version oder einen erneuten nativen Build. Siehe [Development-Builds](/de/docs/native/development-builds).

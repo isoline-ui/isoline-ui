@@ -7,13 +7,13 @@ Native system appearance for Isoline UI, distributed as an Expo module.
 - Web: CSS backdrop-filter approximation with solid fallbacks for unsupported browsers, reduced transparency and forced colors.
 - Unsupported devices, a missing Android bridge and reduced transparency use solid theme surfaces.
 
-Build **both** 2.0.0 Isoline archives from the same reviewed commit, then let Expo
-select the glass dependency for the app's SDK:
+[![npm](https://img.shields.io/npm/v/@isoline-ui/native)](https://www.npmjs.com/package/@isoline-ui/native)
 
-Build the matching 2.0.0 archives using the source installation guide first; copy them into your app’s `vendor/` directory.
+Install **both** Isoline packages at the same version, then let Expo select the
+glass dependency for the app's SDK:
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-2.0.0.tgz ./vendor/isoline-ui-native-2.0.0.tgz
+npm install @isoline-ui/react-native @isoline-ui/native
 npx expo install expo-glass-effect
 ```
 
@@ -57,7 +57,7 @@ screen into a native toolbar, tab bar or SwiftUI control.
 The npm name `@isoline-ui/native` is scoped; the Kotlin namespace
 `isoline.modules.systemcolors` and bridge name `IsolineSystemColors` are separate.
 Expo discovers the module from `expo-module.config.json` in the installed package.
-The archive contains the Android Gradle project and Kotlin sources. No manual
+The package contains the Android Gradle project and Kotlin sources. No manual
 `nativeModulesDir` entry is required for this dependency.
 
 The namespaced bridge can coexist with a local palette module during migration. Once consumers switch to the shared hook, remove their unused local

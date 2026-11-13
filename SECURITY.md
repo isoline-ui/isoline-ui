@@ -4,7 +4,7 @@
 
 | Version                        | Supported |
 | ------------------------------ | --------- |
-| 2.0.x (development source)     | Yes       |
+| 2.0.x                          | Yes       |
 | 1.x and earlier alpha archives | No        |
 
 ## Reporting a vulnerability

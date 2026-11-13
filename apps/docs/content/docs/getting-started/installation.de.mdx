@@ -3,34 +3,23 @@ title: 'Installation'
 description: 'Installiere die aktuelle Version und binde sie in eine Expo-App ein.'
 ---
 
-## Dokumentationsstand: 2.0.0 (Entwicklung)
+## Aktuelle Version: 2.0.0
 
-Diese Dokumentation beschreibt den aktuellen Quellstand mit Paketversion **2.0.0**. Er ist kein veröffentlichter npm-Release. Die historischen GitHub-Releases alpha.0/alpha.1 enthalten nicht diese API. Baue die Archive aus einem gemeinsam geprüften Commit.
+Diese Dokumentation beschreibt **2.0.0**, die aktuelle Version von [`@isoline-ui/react-native`](https://www.npmjs.com/package/@isoline-ui/react-native) und [`@isoline-ui/native`](https://www.npmjs.com/package/@isoline-ui/native) auf npm. Die historischen GitHub-Archive alpha.0/alpha.1 haben eine andere API.
 
 ## Bevor du beginnst
 
 Verwende eine App mit Expo SDK **57 oder 58** und React Native **0.86 oder 0.88**. Wenn du NativeWind 4 bereits nutzt, behalte deine Einrichtung und ergänze die folgenden Änderungen. Übernimm keine fremden Abhängigkeitsversionen ungeprüft.
 
-## 1. Archive aus dem Quellstand bauen
+## 1. Paket installieren
 
-Voraussetzung: Node.js 24 oder neuer, npm und Git. Führe diese Befehle außerhalb deiner App aus:
-
-```sh
-git clone https://github.com/isoline-ui/isoline-ui.git
-cd isoline-ui
-git rev-parse HEAD
-npm ci --ignore-scripts
-npm run check
-npm run pack
-```
-
-Notiere den ausgegebenen Commit für Team und CI. Für spätere Builds checke denselben Commit aus. `npm run pack` erzeugt die folgenden Archive im Repository-Hauptverzeichnis. Installiere das UI-Archiv aus deinem App-Verzeichnis (Pfad anpassen):
+Aus deinem App-Verzeichnis:
 
 ```sh
-npm install ../isoline-ui/isoline-ui-react-native-2.0.0.tgz
+npm install @isoline-ui/react-native
 ```
 
-Der Importname bleibt `@isoline-ui/react-native`. Bewahre das Archiv beispielsweise in `vendor/` deiner App auf und committe Archiv, `package.json` und Lockdatei, damit `npm ci` ohne lokalen Repository-Pfad funktioniert. Das native Archiv ist optional. Beide Archive müssen aus demselben Commit stammen.
+Für die optionale native Darstellung installierst du zusätzlich [`@isoline-ui/native`](/de/docs/native/overview) in derselben Version. Committe `package.json` und die Lockdatei, damit `npm ci` die Installation reproduziert.
 
 ## 2. Peer-Abhängigkeiten installieren
 
@@ -101,7 +90,7 @@ Unter [Dein erster Bildschirm](/de/docs/getting-started/first-screen) findest du
 
 ## 5. Bei Bedarf native Darstellung hinzufügen
 
-Für Android-Systemfarben und iOS Liquid Glass installierst du **beide zueinander passenden Isoline-Archive** und lässt Expo die Glas-Abhängigkeit auswählen. Siehe [Native Darstellung](/de/docs/native/overview).
+Für Android-Systemfarben und iOS Liquid Glass installierst du **beide Isoline-Pakete in derselben Version** und lässt Expo die Glas-Abhängigkeit auswählen. Siehe [Native Darstellung](/de/docs/native/overview).
 
 ## Die Einrichtung prüfen
 

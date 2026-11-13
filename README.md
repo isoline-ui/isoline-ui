@@ -8,6 +8,8 @@
 </p>
 
 <p align="center">
+  <a href="https://www.npmjs.com/package/@isoline-ui/react-native"><img src="https://img.shields.io/npm/v/@isoline-ui/react-native?label=%40isoline-ui%2Freact-native" alt="@isoline-ui/react-native on npm"></a>
+  <a href="https://www.npmjs.com/package/@isoline-ui/native"><img src="https://img.shields.io/npm/v/@isoline-ui/native?label=%40isoline-ui%2Fnative" alt="@isoline-ui/native on npm"></a>
   <a href="https://github.com/isoline-ui/isoline-ui/actions/workflows/check.yml"><img src="https://github.com/isoline-ui/isoline-ui/actions/workflows/check.yml/badge.svg" alt="Check status"></a>
   <a href="https://isoline-ui.github.io/isoline-ui/"><img src="https://img.shields.io/badge/docs-English%20%7C%20Deutsch-6a3db8" alt="Documentation in English and German"></a>
   <img src="https://img.shields.io/badge/React%20Native-0.86%20%7C%200.88-0b7fa0" alt="React Native 0.86 and 0.88">
@@ -19,6 +21,7 @@
   <a href="https://isoline-ui.github.io/isoline-ui/"><strong>Documentation</strong></a> ·
   <a href="https://isoline-ui.github.io/isoline-ui/de/docs/">Deutsch</a> ·
   <a href="https://isoline-ui.github.io/isoline-ui/en/docs/getting-started/installation/">Installation</a> ·
+  <a href="https://www.npmjs.com/package/@isoline-ui/react-native">npm</a> ·
   <a href="CHANGELOG.md">Changelog</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
 </p>
@@ -89,34 +92,27 @@ Try them all in the runnable Expo [showcase](examples/showcase).
 
 ## Installation
 
-> [!IMPORTANT]
-> **2.0.0 is the development source.** It is not published to npm or attached
-> to a GitHub release. The historical alpha.0/alpha.1 releases do not match this
-> API. Build local archives from one reviewed commit as shown below.
-
-Requirements: Node.js 24+ and npm. From a checkout of this repository:
+Install [`@isoline-ui/react-native`](https://www.npmjs.com/package/@isoline-ui/react-native) from npm:
 
 ```sh
-git rev-parse HEAD
-npm ci --ignore-scripts
-npm run check
-npm run pack
+npm install @isoline-ui/react-native
 ```
 
-Record the source commit, then copy `isoline-ui-react-native-2.0.0.tgz` into your
-app's `vendor/` directory and install it:
+For optional native appearance, add [`@isoline-ui/native`](https://www.npmjs.com/package/@isoline-ui/native)
+at the same version:
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-2.0.0.tgz
+npm install @isoline-ui/native
+npx expo install expo-glass-effect
 ```
-
-Commit the archive, package manifest and lockfile so CI installs are reproducible.
-For native appearance, also install `isoline-ui-native-2.0.0.tgz` from the same commit.
 
 Installing the package does not configure an app on its own. Follow the
 [installation guide](https://isoline-ui.github.io/isoline-ui/en/docs/getting-started/installation/)
-for peer dependencies, NativeWind, Metro and providers. See
-[distribution](docs/distribution.md) for archive and update rules.
+for peer dependencies, NativeWind, Metro and providers. To try an unreleased
+commit, see [distribution](docs/distribution.md).
+
+> [!NOTE]
+> The historical GitHub alpha.0/alpha.1 archives have a different API from 2.0.0.
 
 ## Compatibility
 

@@ -15,8 +15,13 @@ for (const file of [
 ]) {
   const text = fs.readFileSync(path.join(root, file), 'utf8');
   assert.ok(
-    text.includes(`isoline-ui-react-native-${ui.version}.tgz`),
-    `${file}: install must match package version`,
+    text.includes('npm install @isoline-ui/react-native'),
+    `${file}: must document installing the npm package`,
+  );
+  assert.doesNotMatch(
+    text,
+    /not (?:yet )?(?:a )?published|not an npm release|development source|noch nicht auf npm|keinen veröffentlichten/i,
+    `${file}: must not describe the npm release as unpublished`,
   );
   assert.doesNotMatch(
     text,
@@ -24,4 +29,4 @@ for (const file of [
     `${file}: nonexistent release asset`,
   );
 }
-console.log(`Documentation installation examples match paired ${ui.version} source archives.`);
+console.log(`Documentation installs ${ui.version} from npm with matching UI/native versions.`);
