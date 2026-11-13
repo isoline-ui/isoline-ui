@@ -1,5 +1,10 @@
 # Isoline UI
 
+General-purpose React Native UI library. Public APIs, presets, examples, docs
+and tests must remain independent of particular consuming products. Keep
+consumer integration history, migration tracking and app-specific decisions in
+the consuming repositories. Describe compatibility by framework/runtime versions.
+
 Public shared React Native UI. Keep app data, routes, stores, credentials and
 brand assets out of this repository.
 

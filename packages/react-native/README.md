@@ -30,7 +30,7 @@ module.exports = {
 ```
 
 Do not overwrite an app's custom fonts or additional semantic roles; extend
-the preset in the consumer. Atlas loads its fonts itself.
+the preset in the consumer. Font loading belongs to the consuming application.
 
 ```tsx
 import { IsolineProvider, Button, themes } from '@isoline-ui/react-native';
@@ -55,7 +55,7 @@ props. Use a theme matching the app's light/dark preference.
 
 `extendTheme` returns a new theme from token and typography overrides. Token
 values are HSL channel triplets, not full CSS colour expressions. Dynamic
-Material You roles and Yours' text preferences still require app adapters.
+Material You roles and persisted text preferences are supplied through consumer adapters.
 
 Haptics are opt-in: pass `haptics={{ selectionHaptic, impactHaptic }}` from the
 app so its saved preference is honoured. Labels are similarly supplied from

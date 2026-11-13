@@ -61,3 +61,11 @@ Standard React Native Pressable props are also supported, including accessibilit
 ## Material options
 
 Suitable controls and overlay surfaces support the shared material contract, including `glassStyle`, `tintColor`, `fallbackColor`, and `interactive`. See [Materials and Liquid Glass](/en/docs/foundations/materials) for defaults, adapters, states, and fallbacks.
+
+## iOS capsules
+
+On iOS, buttons use a capsule at their actual control height (44 points for
+XS, S and icon, 50 for M, 64 for L, 80 for XL). `shape` continues to select
+Android's resting geometry; iOS does not morph into a Material square.
+Labels retain system text scaling. Test long labels and large text on a phone.
+Dialog actions retain their separate flat alert treatment.

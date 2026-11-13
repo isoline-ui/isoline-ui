@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Use actual iOS button heights for capsule radii and icon width.
+- Give iOS filters a 44-point capsule, neutral fill and selected brand tint.
+- Document general platform geometry and build validation in English and German.
+- Keep guidance and compatibility independent of consuming applications.
+- Breaking: expose only palette-named theme presets (`violet`, `teal`, `cyan`); custom aliases belong in consumers. Ship this API removal in the next major release.
+
 ## 1.0.1
 
 - iOS: `Pressable` no longer hands NativeWind a style callback, which it dropped whenever a `className` was set. Chips, buttons and other pressables keep their radii, heights and colours.

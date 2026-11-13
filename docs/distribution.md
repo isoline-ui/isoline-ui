@@ -26,7 +26,7 @@ npm install ./vendor/isoline-ui-react-native-0.1.0-alpha.2.tgz
 ```
 
 For a local-file dependency, commit the archive or otherwise make the same path
-available in CI. The GitHub URL is preferable for testing across all three apps.
+available in CI. The GitHub URL is preferable for testing across consuming applications.
 
 ## Package contents and setup
 

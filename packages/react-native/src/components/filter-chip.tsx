@@ -93,7 +93,13 @@ export function FilterChip({
   const colors = useThemeColors();
   const ripple = useRipple();
 
-  const foreground = selected ? colors.onPrimaryContainer : colors.onSurfaceVariant;
+  const foreground = ios
+    ? selected
+      ? colors.onPrimary
+      : colors.onSurface
+    : selected
+      ? colors.onPrimaryContainer
+      : colors.onSurfaceVariant;
   const squish = useSquish();
 
   // Fill and clip on a plain wrapper, with the same radius on the Pressable
@@ -102,7 +108,7 @@ export function FilterChip({
   return (
     <Container
       className="shrink-0 overflow-hidden"
-      style={[{ borderRadius: ios ? 10 : corner.large }, !web && squish.style]}
+      style={[{ borderRadius: ios ? 22 : corner.large }, !web && squish.style]}
     >
       <Pressable
         {...squish.handlers}
@@ -119,7 +125,16 @@ export function FilterChip({
             ? 'border-primaryContainer bg-primaryContainer'
             : cn('border-outline', SURFACE_FILL[surface]),
         )}
-        style={{ borderRadius: ios ? 10 : corner.large }}
+        style={{
+          borderRadius: ios ? 22 : corner.large,
+          ...(ios
+            ? {
+                minHeight: 44,
+                borderWidth: 0,
+                backgroundColor: selected ? colors.primary : colors.secondaryContainer,
+              }
+            : {}),
+        }}
       >
         {Icon ? <Icon size={16} color={foreground} /> : null}
 

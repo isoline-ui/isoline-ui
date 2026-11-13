@@ -202,9 +202,14 @@ export function Button({
   const pressed = useSharedValue(0);
   const resolvedVariant = variant ?? 'default';
   const resolvedSize = size ?? 'm';
-  const metrics = METRICS[resolvedSize];
+  const iosHeight = { xs: 44, s: 44, m: 50, l: 64, xl: 80, icon: 44 }[resolvedSize];
+  const metrics = ios ? { ...METRICS[resolvedSize], height: iosHeight } : METRICS[resolvedSize];
 
-  const rest = ios ? 12 : shape === 'round' ? metrics.height / 2 : metrics.square;
+  const rest = ios
+    ? metrics.height / 2
+    : shape === 'round'
+      ? metrics.height / 2
+      : metrics.square;
   const active = ios ? rest : shape === 'round' ? metrics.square : metrics.height / 2;
 
   // Radius is shared with the wrapper below so the ripple's own clip morphs
@@ -255,7 +260,8 @@ export function Button({
           animated && scaleStyle,
           ios && {
             minHeight: 44,
-            height: { xs: 44, s: 44, m: 50, l: 64, xl: 80, icon: 44 }[resolvedSize],
+            height: iosHeight,
+            width: resolvedSize === 'icon' ? iosHeight : undefined,
             borderWidth: resolvedVariant === 'outline' ? 0 : undefined,
           },
           materialActive && { backgroundColor: 'transparent', borderWidth: 0 },

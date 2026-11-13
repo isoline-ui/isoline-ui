@@ -4,9 +4,8 @@
 `@isoline-ui/native` adapts native appearance to that contract. It does not own
 app stores, routing, translations or preferences.
 
-Android system palette reading and the pure role/interpolation logic were
-extracted from Yours' existing `expo-system-colors` and `dynamic-color.ts`.
-The mapping includes the original tinted surfaces; it is opt-in and preserves
+Android system palette reading and the pure role/interpolation logic provide
+opt-in dynamic colors. The mapping includes tinted surfaces and preserves
 brand typography and semantic error/success roles. NativeWind variables and
 literal native/SVG colors derive from the same resolved theme.
 
@@ -48,8 +47,8 @@ Keep SDK-selected peer versions. Replace the app's palette reader with
 Keep the scheme, brand, preference persistence and font loading in the app.
 Remove old local modules only after all imports are migrated. Add MaterialSurface
 to selected UI surfaces; native stack navigation and tabs remain separate
-platform integrations. The three production apps are not automatically migrated
-by installing these packages.
+platform integrations. Installing these packages does not migrate consumer
+integrations automatically.
 
 ### Alpha.1 build evidence
 

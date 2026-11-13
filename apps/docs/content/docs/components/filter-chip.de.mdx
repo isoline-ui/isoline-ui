@@ -44,3 +44,11 @@ Diese Komponente hat in der aktuellen Version keine Eigenschaften `disabled` ode
 | `onLongPress`         | `() => void`                                                        | Eine optionale zweite Aktion.                                 |
 | `icon / trailingIcon` | `React.ComponentType<IconProps>`                                    | Optionale führende und nachfolgende Icon-Komponenten.         |
 | `surface`             | `background / surfaceContainerHigh / popover · default: background` | Stimme den Chip auf die darunterliegende Fläche ab.           |
+
+## iOS-Kapseln
+
+Filter verwenden unter iOS Kapseln mit mindestens 44 Punkten Höhe. Die neutrale
+Füllung wechselt bei Auswahl zur Primärfarbe. Symbole, langes Drücken,
+Barrierefreiheit und Beschriftungen behalten dieselbe API. Android behält seine
+stabilen Füll- und Rahmenebenen. Die Textskalierung bleibt aktiv; lange Texte
+müssen in horizontalen Scrollbereichen geprüft werden.

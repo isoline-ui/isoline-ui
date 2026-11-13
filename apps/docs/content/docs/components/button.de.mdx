@@ -61,3 +61,12 @@ Die üblichen React-Native-Pressable-Eigenschaften werden ebenfalls unterstützt
 ## Materialoptionen
 
 Die passenden Controls und Overlay-Flächen unterstützen den gemeinsamen Materialvertrag einschließlich `glassStyle`, `tintColor`, `fallbackColor` und `interactive`. Siehe [Materialien und Liquid Glass](/de/docs/foundations/materials) für Standards, Adapter, Zustände und Alternativen.
+
+## iOS-Kapseln
+
+Unter iOS haben Buttons eine Kapselform entsprechend ihrer tatsächlichen Höhe:
+44 Punkte für XS, S und Icon, 50 für M, 64 für L und 80 für XL.
+`shape` wählt weiterhin die Android-Geometrie. iOS wechselt beim Drücken nicht
+zu einer Material-Form. Texte behalten die Systemskalierung; lange Beschriftungen
+und große Schrift müssen auf einem Gerät geprüft werden. Dialogaktionen behalten
+ihre eigene flache Darstellung.
