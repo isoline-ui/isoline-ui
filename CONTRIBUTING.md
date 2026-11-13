@@ -46,23 +46,27 @@ npm run docs:examples
 npm run docs:check
 ```
 
-Update both the English and German pages, and add a [CHANGELOG](CHANGELOG.md) entry
-for user-facing changes under `## Unreleased` at the top (start that section if it
-is not there).
+Update both the English and German pages. The [CHANGELOG](CHANGELOG.md) is written
+from pull request titles when a release is made, so give yours a clear one (see
+below).
 
 ## Pull requests
 
 - Keep each pull request focused on one change.
 - Explain what changed and why, and include screenshots or recordings for visual
   changes on both platforms where relevant.
+- Title it as a conventional commit, because it becomes the squash-merged commit
+  and decides the next version: `fix: …` (patch), `feat: …` (minor), `feat!: …`
+  or a `BREAKING CHANGE:` line in the description (major), or `docs:`, `chore:`,
+  `refactor:`, `test:`, `ci:` for changes that release nothing. Write the title
+  for the changelog: what a user of the library gets.
 - Mark breaking changes clearly.
 
 ## Releases
 
-Maintainers make releases with `npm run release -- <version>`, which writes the
-version everywhere it has to agree and turns `## Unreleased` into that version;
-see [distribution](docs/distribution.md). Do not add npm tokens or other secrets to
-workflows or source files.
+Releases are automatic: merging the release pull request that release-please keeps
+up to date publishes to npm. See [distribution](docs/distribution.md). Do not add
+npm tokens or other secrets to workflows or source files.
 
 ## Code of conduct
 

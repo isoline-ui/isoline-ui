@@ -1,0 +1,18 @@
+name: Pull request title
+# The release version is worked out from commit messages, and a pull request's
+# title becomes its commit message when it is squash-merged. So a title must
+# be a conventional commit: `feat: …` (a minor release), `fix: …` (a patch),
+# `feat!: …` or a BREAKING CHANGE footer (a major one), or a type that
+# releases nothing, such as `docs:`, `chore:`, `test:` or `ci:`.
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+permissions:
+  pull-requests: read
+jobs:
+  conventional:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
