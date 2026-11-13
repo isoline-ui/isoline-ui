@@ -24,27 +24,32 @@ const TOP_GAP = 24;
  */
 function NativePanelSheet({
   visible,
+  dismissible = true,
   onClose,
   children,
   ...materialOptions
 }: {
   visible: boolean;
+  dismissible?: boolean;
   onClose: () => void;
   children: React.ReactNode;
 } & MaterialOptions) {
+  const requestClose = React.useCallback(() => {
+    if (dismissible) onClose();
+  }, [dismissible, onClose]);
   const insets = useSafeAreaInsets();
   const window = useWindowDimensions();
   const keyboard = useAnimatedKeyboard();
-  const sheet = useSheet(visible, onClose);
+  const sheet = useSheet(visible, requestClose);
 
   React.useEffect(() => {
     if (!visible) return;
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
-      onClose();
+      requestClose();
       return true;
     });
     return () => subscription.remove();
-  }, [visible, onClose]);
+  }, [visible, requestClose]);
 
   const lift = useAnimatedStyle(() => ({
     transform: [{ translateY: -keyboard.height.value }],
@@ -64,7 +69,8 @@ function NativePanelSheet({
         {...materialOptions}
         sheet={sheet}
         visible={visible}
-        onClose={onClose}
+        onClose={requestClose}
+        dismissible={dismissible}
         lift={lift}
         panelStyle={panel}
       >
@@ -82,6 +88,7 @@ function NativePanelSheet({
 
 export interface PanelSheetProps extends MaterialOptions {
   visible: boolean;
+  dismissible?: boolean;
   onClose: () => void;
   children: React.ReactNode;
 }

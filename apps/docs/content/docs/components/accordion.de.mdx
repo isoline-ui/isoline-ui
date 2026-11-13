@@ -1,0 +1,83 @@
+---
+title: 'Accordion'
+description: 'Kontrollierte Inhalte ohne Navigationswechsel aufklappen.'
+---
+
+<ComponentPreview kind="catalog-accordion" />
+
+Kontrollierte Inhalte ohne Navigationswechsel aufklappen.
+
+## Verwendung und Zustände
+
+Die App kontrolliert `expanded`. Jede Instanz ist unabhängig; höchstens einen offenen Abschnitt bei Bedarf im Elternteil steuern. Verborgener Inhalt wird standardmäßig ausgehängt. `keepMounted` erhält lokalen Zustand, entfernt geschlossene Inhalte aber aus Layout und Fokusreihenfolge. Der Auslöser meldet geöffnet/deaktiviert. `className` und `style` gelten für die äußere Gruppe.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="AccordionExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function AccordionExample({ de = false }: StoryProps) {
+  const [expanded, setExpanded] = React.useState(false);
+  return (
+    <UI.Accordion
+      title={de ? 'Weitere Informationen' : 'More information'}
+      expanded={expanded}
+      onExpandedChange={setExpanded}
+    >
+      <UI.Text>
+        {de ? 'Dieser Inhalt wird auf Wunsch sichtbar.' : 'This content appears on request.'}
+      </UI.Text>
+      <UI.Button label={de ? 'Schließen' : 'Collapse'} onPress={() => setExpanded(false)} />
+    </UI.Accordion>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <AccordionExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `Accordion`.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Accordion
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `title` | `string` | ja | — | — |
+| `expanded` | `boolean` | ja | — | — |
+| `onExpandedChange` | `(expanded: boolean) => void` | ja | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `keepMounted` | `boolean` | optional | `false` | Keep expensive content mounted while collapsed; hidden content cannot receive focus. |
+| `children` | `React.ReactNode` | ja | — | — |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/accordion.tsx)
+
+{/* generated-api:end */}

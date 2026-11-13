@@ -1,0 +1,39 @@
+---
+title: 'Passende Komponenten wählen'
+description: 'Controls, Navigation und Overlays nach Aufgabe auswählen.'
+---
+
+## Eingaben und Auswahl
+
+| Aufgabe | Komponente | Grund |
+| --- | --- | --- |
+| Einfaches beschriftetes Textfeld | Input | Dauerhaftes Label, Hinweis und Fehler; TextInput-Props und Refs. |
+| Plattformabhängiges Textfeld | TextField | iOS mit festem Label, Android mit schwebender Outline. |
+| Inhalte filtern | SearchField | Suche und Leeren-Aktion ohne Formularvalidierung. |
+| Eine sichtbare Option | RadioGroup | Benannte Optionen mit Beschreibung und Radio-Semantik. |
+| Kompakte Auswahl weniger Werte | ButtonGroup | Alle Werte bleiben sichtbar. |
+| Eine Option aus kurzer Liste | SelectField | Verankertes Menü mit Platzhalter, Fehler und deaktiviertem Zustand. |
+| Eine Option aus langer oder entfernter Liste | Combobox | Durchsuchbares Sheet mit virtualisierten Treffern, Laden und Leerzustand. |
+| Unabhängige Mehrfachauswahl | Checkbox | Ausgewählt, teilweise ausgewählt und deaktiviert. |
+| Einstellung ein-/ausschalten | Switch / SettingsSwitchRow | Unmittelbare boolesche Änderung. |
+
+ButtonGroup wählt einen Wert. TabBar wählt eine Ansicht; Inhalt und Navigation liefert die App.
+
+## Overlays
+
+| Aufgabe | Komponente | Zuständigkeit |
+| --- | --- | --- |
+| Kurze Bestätigung | Dialog | Explizite Aktionen der App; `dismissible={false}` schützt Änderungen. |
+| Kurze Aufgabe über einem Bildschirm | BottomSheet | Modale Fläche; für lange Inhalte begrenztes Scrollen ergänzen. |
+| Formular mit viel Tastatureingabe | PanelSheet | Zuletzt im Screen rendern; folgt der Tastatur. |
+| Aktionsliste | MenuSheet | Für Aktionen statt beliebiger Formularinhalte. |
+| An einem Control verankerter Inhalt | Popover | Kontrollierte Fläche mit vermessenem Anker. |
+| Verankertes Aktionsmenü | ContextMenu | Menüzeilen und Auswahlsemantik. |
+
+Für lange oder mehrstufige Arbeit einen Bildschirm verwenden. `dismissible={false}` sperrt Hintergrund, Plattform-Schließen und Sheet-Gesten; explizite Speichern-/Abbrechen-Aktionen dürfen `visible` weiterhin ändern. Immer eine explizite Ausstiegsmöglichkeit anbieten und laufende Arbeit erklären.
+
+## Zusammensetzen
+
+Card für allgemeine Inhalte; SettingsCard/SettingsGroup für Einstellungen. ListItem für normale Zeilen, SettingsNavRow für Einstellungsziele. Accordion für aufklappbaren Inhalt, nicht Navigation. FormField für Controls ohne eigenes Label-/Fehlerlayout; Input und TextField nicht doppelt beschriften.
+
+Probiere [Formular](/de/docs/guides/form-screen), [Datenliste](/de/docs/guides/data-list-screen) und [Einstellungen](/de/docs/guides/settings-screen).

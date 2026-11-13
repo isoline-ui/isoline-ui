@@ -72,8 +72,88 @@ export function Example() {
 
 Öffentliche Komponenten: `TimeField`, `TimePickerSheet`, `TimeGrid`, `TimeChips`.
 
-Wichtige Props: `value`, `onChange`, `hourLabel`, `minuteLabel`, `minuteStep`, `presets`, `onConfirm`, `onClear`, `material`, `glassStyle`, `tintColor`, `fallbackColor`, `interactive`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
 
 Glas, solide Alternativen und den Hintergrund vergleichen: [Picker und schwebende Materialien](/de/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### TimeField
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | ja | — | — |
+| `emptyLabel` | `string` | ja | — | — |
+| `onChange` | `(time: string \| null) => void` | ja | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `value` | `string \| null` | ja | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+| `clearLabel` | `string` | optional | — | — |
+| `confirmLabel` | `string` | ja | — | — |
+| `presets` | `TimeOption[]` | optional | — | — |
+| `onConfirm` | `(time: string) => void` | optional | — | — |
+| `hourLabel` | `string` | ja | — | — |
+| `minuteLabel` | `string` | ja | — | — |
+| `minuteStep` | `number` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/time-picker.tsx)
+
+### TimePickerSheet
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | ja | — | — |
+| `onClose` | `() => void` | ja | — | — |
+| `title` | `string` | ja | — | — |
+| `confirmLabel` | `string` | ja | — | — |
+| `clearLabel` | `string` | optional | — | — |
+| `onClear` | `() => void` | optional | — | — |
+| `presets` | `TimeOption[]` | optional | `[]` | — |
+| `onConfirm` | `(time: string) => void` | optional | — | — |
+| `value` | `string \| null` | ja | — | — |
+| `onChange` | `(time: string) => void` | ja | — | — |
+| `hourLabel` | `string` | ja | — | — |
+| `minuteLabel` | `string` | ja | — | — |
+| `minuteStep` | `number` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/time-picker.tsx)
+
+### TimeGrid
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `string \| null` | ja | — | — |
+| `onChange` | `(time: string) => void` | ja | — | — |
+| `hourLabel` | `string` | ja | — | — |
+| `minuteLabel` | `string` | ja | — | — |
+| `minuteStep` | `number` | optional | `15` | — |
+| `disabled` | `boolean` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/time-picker.tsx)
+
+### TimeChips
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `string \| null` | ja | — | — |
+| `onChange` | `(time: string) => void` | ja | — | — |
+| `options` | `TimeOption[]` | ja | — | — |
+| `disabled` | `boolean` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/time-picker.tsx)
+
+{/* generated-api:end */}

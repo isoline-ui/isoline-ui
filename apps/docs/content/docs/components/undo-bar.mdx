@@ -109,8 +109,41 @@ export function Example() {
 
 Public components: `UndoBar`.
 
-Key props: `remainingMs`, `totalMs`, `paused`, `onPause`, `onResume`, `collapsed`, `onExpand`, `onUndo`, `onDismiss`, `message`, `actionLabel`, `dismissLabel`, `progress`, `showDismissButton`, `material`, `glassStyle`, `tintColor`, `fallbackColor`, `interactive`. Exported props types define the full contract. Labels and actions are supplied by the app.
-
 Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
 
 Compare glass, solid fallbacks and backdrop content: [Picker and floating materials](/en/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### UndoBar
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `message` | `string` | yes | — | — |
+| `actionLabel` | `string` | yes | — | — |
+| `dismissLabel` | `string` | yes | — | — |
+| `onUndo` | `() => void` | yes | — | — |
+| `onDismiss` | `() => void` | yes | — | — |
+| `remainingMs` | `number` | yes | — | Time supplied by the app's undo clock. This component never executes/expiries undo entries. |
+| `totalMs` | `number` | yes | — | — |
+| `progress` | `WavyProgressProps['progress']` | optional | — | — |
+| `paused` | `boolean` | optional | — | — |
+| `onPause` | `() => void` | optional | — | — |
+| `onResume` | `() => void` | optional | — | — |
+| `collapsed` | `boolean` | optional | — | — |
+| `onExpand` | `() => void` | optional | — | — |
+| `countLabel` | `string` | optional | — | — |
+| `showDismissButton` | `boolean` | optional | `true` | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/undo-bar.tsx)
+
+{/* generated-api:end */}

@@ -76,3 +76,43 @@ uses a neutral fill and ghost stays transparent. Colors come from the provider's
 theme. The control grows beyond its minimum height for text scaling, uses pressed
 opacity instead of a shape/scale morph and retains flat dialog-action styling.
 Consumers can use the same `Button` API without a platform-specific renderer.
+
+## Pending actions
+
+`loading` shows an indicator, disables activation and announces busy. `loadingLabel` supplies localized pending text; otherwise the normal label remains. Set loading before the request and reset it in finally; retain input after failure. Use a suitable layout if both labels need identical width.
+
+```tsx
+<Button label="Save" loading={saving} loadingLabel="Saving" onPress={submit} />
+```
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### Button
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `variant` | `"default" \| "secondary" \| "tonal" \| "tertiary" \| "outline" \| "ghost" \| "destructive" \| null \| undefined` | optional | — | — |
+| `size` | `"xs" \| "s" \| "m" \| "l" \| "xl" \| "icon" \| null \| undefined` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `true` | Enables material interaction, not an action handler. |
+| `children` | `React.ComponentProps<typeof Pressable>['children']` | optional | — | — |
+| `pressableClassName` | `string` | optional | — | — |
+| `label` | `string` | optional | — | — |
+| `loading` | `boolean` | optional | `false` | Disables activation and announces busy while preserving the button layout. |
+| `loadingLabel` | `string` | optional | — | — |
+| `icon` | `React.ComponentType<IconProps>` | optional | — | A leading symbol, drawn in the label's color. |
+| `shape` | `'round' \| 'square'` | optional | `'round'` | Resting shape. Pressing morphs to the other one and back. |
+| `haptic` | `boolean` | optional | `true` | Fires a selection tick on press. Off for destructive-adjacent actions. |
+
+Also accepts inherited React Native props from its declared base type (for example View, Pressable or TextInput), and React ref attributes where applicable. All Isoline-specific props and material options are listed above.
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/button.tsx)
+
+{/* generated-api:end */}

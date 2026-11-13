@@ -58,6 +58,7 @@ export interface LoadingIndicatorProps {
   /** Draws the M3 "contained" variant — the shape inside a tonal circle. */
   contained?: boolean;
   className?: string;
+  accessibilityLabel?: string;
 }
 
 export function LoadingIndicator({
@@ -65,6 +66,7 @@ export function LoadingIndicator({
   color,
   contained = false,
   className,
+  accessibilityLabel = 'Loading',
 }: LoadingIndicatorProps) {
   const ios = useIsolinePlatform() === 'ios';
   const theme = useThemeColors();
@@ -158,7 +160,7 @@ export function LoadingIndicator({
         <ActivityIndicator
           size={size <= 24 ? 'small' : 'large'}
           color={resolvedColor}
-          accessibilityLabel="Loading"
+          accessibilityLabel={accessibilityLabel}
         />
       </View>
     );
@@ -171,7 +173,7 @@ export function LoadingIndicator({
         backgroundColor: contained ? theme.surfaceContainerHighest : 'transparent',
       }}
       accessibilityRole="progressbar"
-      accessibilityLabel="Loading"
+      accessibilityLabel={accessibilityLabel}
     >
       <Animated.View style={spinStyle}>
         <Svg width={canvas} height={canvas}>

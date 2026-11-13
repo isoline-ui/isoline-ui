@@ -981,7 +981,448 @@ export function OverlayMaterialsExample({ de = false }: StoryProps) {
   );
 }
 
+export function InputExample({ de = false }: StoryProps) {
+  const [name, setName] = React.useState('');
+  const [submitted, setSubmitted] = React.useState(false);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Input
+        label={de ? 'Name' : 'Name'}
+        hint={de ? 'Dein öffentlicher Name' : 'Your public name'}
+        value={name}
+        onChangeText={setName}
+        error={submitted && !name.trim() ? (de ? 'Name fehlt.' : 'Enter your name.') : null}
+        autoCapitalize="words"
+      />
+      <UI.Input
+        label={de ? 'Nicht bearbeitbar' : 'Read only'}
+        value="Isoline"
+        editable={false}
+      />
+      <UI.Button label={de ? 'Prüfen' : 'Validate'} onPress={() => setSubmitted(true)} />
+    </View>
+  );
+}
+export function RadioExample({ de = false }: StoryProps) {
+  const [value, setValue] = React.useState<string | null>('standard');
+  return (
+    <UI.RadioGroup
+      value={value}
+      onValueChange={setValue}
+      accessibilityLabel={de ? 'Versandart' : 'Delivery'}
+    >
+      <UI.RadioItem
+        value="standard"
+        label={de ? 'Standardversand' : 'Standard delivery'}
+        description={de ? 'Drei bis fünf Tage' : 'Three to five days'}
+      />
+      <UI.RadioItem value="express" label="Express" />
+      <UI.RadioItem
+        value="unavailable"
+        label={de ? 'Nicht verfügbar' : 'Unavailable'}
+        disabled
+      />
+    </UI.RadioGroup>
+  );
+}
+export function CardExample({ de = false }: StoryProps) {
+  const [status, setStatus] = React.useState('');
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Card
+        header={<UI.Text variant="heading">{de ? 'Sammlung' : 'Collection'}</UI.Text>}
+        footer={
+          <UI.Button
+            label={de ? 'Öffnen' : 'Open'}
+            onPress={() => setStatus(de ? 'Geöffnet' : 'Opened')}
+          />
+        }
+      >
+        <UI.Text>
+          {de ? 'Inhalt mit eigener Aktion.' : 'Content with a separate action.'}
+        </UI.Text>
+      </UI.Card>
+      <UI.Card
+        onPress={() => setStatus(de ? 'Karte ausgewählt' : 'Card selected')}
+        accessibilityLabel={de ? 'Sammlung auswählen' : 'Select collection'}
+      >
+        <UI.Text>
+          {de ? 'Die ganze Karte ist eine Aktion.' : 'The whole card is one action.'}
+        </UI.Text>
+      </UI.Card>
+      <UI.Text accessibilityLiveRegion="polite">{status}</UI.Text>
+    </View>
+  );
+}
+export function ListItemExample({ de = false }: StoryProps) {
+  const [selected, setSelected] = React.useState(false);
+  return (
+    <View>
+      <UI.ListItem
+        title={de ? 'Projekt' : 'Project'}
+        description={de ? 'Zuletzt bearbeitet' : 'Recently edited'}
+        leading={<UI.Avatar initials="IS" accessibilityLabel="Isoline" />}
+        trailing={<UI.Badge label="3" />}
+        selected={selected}
+        onPress={() => setSelected(!selected)}
+      />
+      <UI.ListItem title={de ? 'Nicht verfügbar' : 'Unavailable'} disabled onPress={() => {}} />
+    </View>
+  );
+}
+export function SkeletonExample({ de = false }: StoryProps) {
+  const [loading, setLoading] = React.useState(true);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Button
+        label={de ? 'Ladezustand wechseln' : 'Toggle loading'}
+        onPress={() => setLoading(!loading)}
+      />
+      <View accessibilityState={{ busy: loading }}>
+        {loading ? (
+          <View style={{ gap: 12 }}>
+            <UI.Text accessibilityLiveRegion="polite">
+              {de ? 'Inhalt wird geladen' : 'Loading content'}
+            </UI.Text>
+            <UI.Skeleton width={64} height={64} radius={32} />
+            <UI.Skeleton />
+            <UI.Skeleton width="60%" />
+          </View>
+        ) : (
+          <UI.ListItem title={de ? 'Inhalt geladen' : 'Content loaded'} />
+        )}
+      </View>
+    </View>
+  );
+}
+export function AccordionExample({ de = false }: StoryProps) {
+  const [expanded, setExpanded] = React.useState(false);
+  return (
+    <UI.Accordion
+      title={de ? 'Weitere Informationen' : 'More information'}
+      expanded={expanded}
+      onExpandedChange={setExpanded}
+    >
+      <UI.Text>
+        {de ? 'Dieser Inhalt wird auf Wunsch sichtbar.' : 'This content appears on request.'}
+      </UI.Text>
+      <UI.Button label={de ? 'Schließen' : 'Collapse'} onPress={() => setExpanded(false)} />
+    </UI.Accordion>
+  );
+}
+export function FormFieldExample({ de = false }: StoryProps) {
+  const [checked, setChecked] = React.useState(false);
+  const label = de ? 'Einwilligung' : 'Consent';
+  const hint = de ? 'Du kannst die Auswahl ändern.' : 'You can change this choice.';
+  return (
+    <UI.FormField
+      label={label}
+      requiredLabel={de ? '(erforderlich)' : '(required)'}
+      hint={hint}
+    >
+      <UI.Checkbox
+        checked={checked}
+        onCheckedChange={setChecked}
+        accessibilityLabel={`${label}, ${hint}`}
+        label={de ? 'Ich stimme zu' : 'I agree'}
+      />
+    </UI.FormField>
+  );
+}
+export function ComboboxExample({ de = false }: StoryProps) {
+  const [value, setValue] = React.useState<string | null>(null);
+  return (
+    <UI.Combobox
+      value={value}
+      onChange={setValue}
+      label={de ? 'Land' : 'Country'}
+      accessibilityLabel={de ? 'Land auswählen' : 'Choose country'}
+      placeholder={de ? 'Bitte auswählen' : 'Select a country'}
+      searchLabel={de ? 'Länder suchen' : 'Search countries'}
+      emptyLabel={de ? 'Keine Treffer' : 'No results'}
+      options={[
+        { id: 'de', label: de ? 'Deutschland' : 'Germany' },
+        { id: 'fr', label: de ? 'Frankreich' : 'France' },
+        { id: 'it', label: de ? 'Italien' : 'Italy' },
+        { id: 'unavailable', label: de ? 'Nicht verfügbar' : 'Unavailable', disabled: true },
+      ]}
+    />
+  );
+}
+export function FormScreenExample({ de = false }: StoryProps) {
+  const [name, setName] = React.useState('');
+  const [country, setCountry] = React.useState<string | null>(null);
+  const [saving, setSaving] = React.useState(false);
+  const [error, setError] = React.useState('');
+  const [saved, setSaved] = React.useState(false);
+  const [simulateFailure, setSimulateFailure] = React.useState(false);
+  const [editing, setEditing] = React.useState(false);
+  const [sheetEditing, setSheetEditing] = React.useState(false);
+  const [draft, setDraft] = React.useState('');
+  const [submitted, setSubmitted] = React.useState(false);
+  const emailRef =
+    React.useRef<React.ComponentRef<typeof import('react-native').TextInput>>(null);
+  const [email, setEmail] = React.useState('');
+  async function submit() {
+    if (saving) return;
+    setSubmitted(true);
+    setSaved(false);
+    if (!name.trim() || !email.includes('@') || !country) return;
+    setSaving(true);
+    setError('');
+    try {
+      // Replace with the app's request; the switch makes the failure path reproducible.
+      await new Promise<void>((resolve, reject) =>
+        setTimeout(() => (simulateFailure ? reject(new Error('demo')) : resolve()), 500),
+      );
+      setSaved(true);
+      setEditing(false);
+    } catch {
+      setError(
+        de
+          ? 'Speichern fehlgeschlagen. Erneut versuchen.'
+          : 'Could not save. Please try again.',
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
+  return (
+    <UI.KeyboardInsetView>
+      <View style={{ gap: 16 }}>
+        <UI.Text variant="heading">{de ? 'Profil bearbeiten' : 'Edit profile'}</UI.Text>
+        <UI.Input
+          label="Name"
+          value={name}
+          onChangeText={(value) => {
+            setName(value);
+            setSaved(false);
+          }}
+          editable={!saving}
+          autoCapitalize="words"
+          error={submitted && !name.trim() ? (de ? 'Name fehlt.' : 'Enter your name.') : null}
+          returnKeyType="next"
+          onSubmitEditing={() => emailRef.current?.focus()}
+        />
+        <UI.TextField
+          ref={emailRef}
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          editable={!saving}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          error={
+            submitted && !email.includes('@')
+              ? de
+                ? 'E-Mail prüfen.'
+                : 'Check your email.'
+              : null
+          }
+          returnKeyType="done"
+          onSubmitEditing={() => void submit()}
+          notchClassName="bg-background"
+        />
+        <UI.SelectField
+          value={country}
+          onChange={setCountry}
+          disabled={saving}
+          label={de ? 'Land' : 'Country'}
+          accessibilityLabel={de ? 'Land' : 'Country'}
+          placeholder={de ? 'Bitte auswählen' : 'Choose a country'}
+          error={submitted && !country ? (de ? 'Land fehlt.' : 'Choose a country.') : null}
+          options={[
+            { id: 'de', label: de ? 'Deutschland' : 'Germany' },
+            { id: 'fr', label: de ? 'Frankreich' : 'France' },
+          ]}
+        />
+        <UI.Checkbox
+          checked={simulateFailure}
+          onCheckedChange={setSimulateFailure}
+          disabled={saving}
+          label={de ? 'Serverfehler simulieren' : 'Simulate server error'}
+          accessibilityLabel={de ? 'Serverfehler simulieren' : 'Simulate server error'}
+        />
+        {error ? <UI.Text accessibilityLiveRegion="polite">{error}</UI.Text> : null}
+        <UI.Button
+          label={de ? 'Profil speichern' : 'Save profile'}
+          loading={saving}
+          loadingLabel={de ? 'Wird gespeichert' : 'Saving profile'}
+          onPress={() => void submit()}
+        />
+        {saved ? (
+          <UI.Text accessibilityLiveRegion="polite">
+            {de ? 'Profil gespeichert' : 'Profile saved'}
+          </UI.Text>
+        ) : null}
+        <UI.Button
+          variant="outline"
+          label={de ? 'Geschütztes Formular öffnen' : 'Open protected form'}
+          onPress={() => setEditing(true)}
+        />
+        <UI.Button
+          label={de ? 'Geschütztes Sheet öffnen' : 'Open protected sheet'}
+          variant="outline"
+          onPress={() => setSheetEditing(true)}
+        />
+        <UI.BottomSheet
+          visible={sheetEditing}
+          dismissible={false}
+          onClose={() => setSheetEditing(false)}
+        >
+          <UI.TextField
+            label={de ? 'Sheet-Entwurf' : 'Sheet draft'}
+            value={draft}
+            onChangeText={setDraft}
+          />
+          <UI.Button
+            label={de ? 'Sheet schließen' : 'Close protected sheet'}
+            onPress={() => setSheetEditing(false)}
+          />
+        </UI.BottomSheet>
+        <UI.Dialog visible={editing} dismissible={false} onClose={() => setEditing(false)}>
+          <UI.Text>
+            {de
+              ? 'Nur die expliziten Aktionen schließen diesen Dialog.'
+              : 'Only explicit actions close this dialog.'}
+          </UI.Text>
+          <UI.TextField
+            label={de ? 'Entwurf' : 'Draft name'}
+            value={draft}
+            onChangeText={setDraft}
+          />
+          <UI.Button
+            label={de ? 'Änderungen verwerfen' : 'Discard changes'}
+            onPress={() => setEditing(false)}
+          />
+        </UI.Dialog>
+      </View>
+    </UI.KeyboardInsetView>
+  );
+}
+export function DataListScreenExample({ de = false }: StoryProps) {
+  const [state, setState] = React.useState<'loading' | 'error' | 'empty' | 'ready'>('ready');
+  const [query, setQuery] = React.useState('');
+  const rows = ['Isoline', 'Studio', 'Garden'].filter((row) =>
+    row.toLowerCase().includes(query.toLowerCase()),
+  );
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Text variant="heading">{de ? 'Sammlungen' : 'Collections'}</UI.Text>
+      <UI.ButtonGroup
+        items={[
+          { id: 'ready', label: de ? 'Inhalt' : 'Content' },
+          { id: 'loading', label: de ? 'Laden' : 'Loading' },
+          { id: 'error', label: de ? 'Fehler' : 'Error' },
+          { id: 'empty', label: de ? 'Leer' : 'Empty' },
+        ]}
+        value={state}
+        onChange={(value) => setState(value as typeof state)}
+      />
+      <UI.SearchField
+        value={query}
+        onChangeText={setQuery}
+        placeholder={de ? 'Sammlungen suchen' : 'Search collections'}
+        accessibilityLabel={de ? 'Sammlungen suchen' : 'Search collections'}
+        clearAccessibilityLabel={de ? 'Suche leeren' : 'Clear search'}
+      />
+      <View accessibilityState={{ busy: state === 'loading' }}>
+        {state === 'loading' ? (
+          <View style={{ gap: 12 }}>
+            <UI.Text accessibilityLiveRegion="polite">{de ? 'Lädt' : 'Loading'}</UI.Text>
+            <UI.Skeleton height={56} />
+            <UI.Skeleton height={56} />
+          </View>
+        ) : state === 'error' ? (
+          <UI.Card>
+            <UI.Text accessibilityLiveRegion="polite">
+              {de ? 'Laden fehlgeschlagen' : 'Could not load collections'}
+            </UI.Text>
+            <UI.Button
+              label={de ? 'Erneut versuchen' : 'Retry'}
+              onPress={() => setState('ready')}
+            />
+          </UI.Card>
+        ) : state === 'empty' || !rows.length ? (
+          <UI.EmptyState
+            shape="cookie"
+            icon={UI.BackIcon}
+            title={de ? 'Keine Sammlungen' : 'No collections'}
+            body={
+              de
+                ? 'Passe die Suche an oder lege eine Sammlung an.'
+                : 'Change your search or create a collection.'
+            }
+          />
+        ) : (
+          rows.map((row) => (
+            <UI.ListItem
+              key={row}
+              title={row}
+              description={de ? 'Sammlung' : 'Collection'}
+              leading={<UI.Avatar initials={row.slice(0, 2)} accessibilityLabel={row} />}
+            />
+          ))
+        )}
+      </View>
+    </View>
+  );
+}
+export function SettingsScreenExample({ de = false }: StoryProps) {
+  const [enabled, setEnabled] = React.useState(true);
+  const [language, setLanguage] = React.useState<string | null>('de');
+  const [expanded, setExpanded] = React.useState(false);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Text variant="heading">{de ? 'Einstellungen' : 'Settings'}</UI.Text>
+      <UI.SettingsSection title={de ? 'Benachrichtigungen' : 'Notifications'}>
+        <UI.SettingsGroup>
+          <UI.SettingsSwitchRow
+            label={de ? 'Erinnerungen' : 'Reminders'}
+            value={enabled}
+            onValueChange={setEnabled}
+            description={
+              de ? 'Werte bleiben in dieser Vorschau.' : 'Values stay in this preview.'
+            }
+          />
+        </UI.SettingsGroup>
+      </UI.SettingsSection>
+      <UI.FormField
+        label={de ? 'Sprache' : 'Language'}
+        hint={de ? 'Auswahl ohne App-Neustart.' : 'Choose without restarting the app.'}
+      >
+        <UI.RadioGroup
+          value={language}
+          onValueChange={setLanguage}
+          accessibilityLabel={de ? 'Sprache' : 'Language'}
+        >
+          <UI.RadioItem value="de" label="Deutsch" />
+          <UI.RadioItem value="en" label="English" />
+        </UI.RadioGroup>
+      </UI.FormField>
+      <UI.Accordion
+        title={de ? 'Über diese App' : 'About this app'}
+        expanded={expanded}
+        onExpandedChange={setExpanded}
+      >
+        <UI.Text>Isoline UI</UI.Text>
+      </UI.Accordion>
+    </View>
+  );
+}
+
 export const catalogStories = {
+  input: InputExample,
+  radio: RadioExample,
+  card: CardExample,
+  'list-item': ListItemExample,
+  skeleton: SkeletonExample,
+  accordion: AccordionExample,
+  'form-field': FormFieldExample,
+  combobox: ComboboxExample,
+  'form-screen': FormScreenExample,
+  'data-list-screen': DataListScreenExample,
+  'settings-screen': SettingsScreenExample,
   password: PasswordExample,
   'overlay-materials': OverlayMaterialsExample,
   'settings-list': SettingsListExample,

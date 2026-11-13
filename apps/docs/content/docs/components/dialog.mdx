@@ -45,7 +45,7 @@ export function ConfirmExample() {
 
 Dialog content can scroll when needed and accounts for safe areas. For a small form, use a `TextField` and focus it through `onShow`; see [Overlays with forms](/en/docs/guides/overlays). Keep long reading or multi-step work on a full screen.
 
-The dialog dismisses when the backdrop or a platform dismissal action is used. There is no separate prevent-dismiss prop in this release. If losing unfinished work would matter, manage the close callback appropriately in your app and provide clear actions.
+The dialog dismisses when the backdrop or a platform dismissal action is used. `dismissible={false}` prevents backdrop, Android Back and accessibility dismissal. Explicit app actions can still close it. If losing unfinished work would matter, manage the close callback appropriately in your app and provide clear actions.
 
 For asynchronous work, disable your submit button while pending, keep an error visible on failure, and only close after success. `DialogActions` lays out the actions; it does not submit or close anything itself.
 
@@ -62,3 +62,40 @@ For asynchronous work, disable your submit button while pending, keep an error v
 ## Material options
 
 Suitable controls and overlay surfaces support the shared material contract, including `glassStyle`, `tintColor`, `fallbackColor`, and `interactive`. See [Materials and Liquid Glass](/en/docs/foundations/materials) for defaults, adapters, states, and fallbacks.
+
+## Protect unfinished work
+
+Set `dismissible={false}` while saving or protecting unsaved edits. Backdrop, platform dismissal and sheet gestures then cannot close the overlay. Keep an explicit Save/Cancel action available; it can change the controlled visibility state. If discarding needs confirmation, manage that confirmation state in your app.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### Dialog
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | yes | — | — |
+| `dismissible` | `boolean` | optional | `true` | Prevent backdrop, Back and accessibility dismissal; explicit app actions still work. |
+| `onClose` | `() => void` | yes | — | — |
+| `onShow` | `() => void` | optional | — | Runs once the dialog is actually on screen — for one that focuses an input. |
+| `children` | `React.ReactNode` | yes | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/dialog.tsx)
+
+### DialogActions
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `children` | `React.ReactNode` | yes | — | — |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/dialog.tsx)
+
+{/* generated-api:end */}

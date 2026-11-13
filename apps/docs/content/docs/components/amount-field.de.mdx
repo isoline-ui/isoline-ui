@@ -7,6 +7,10 @@ description: 'Lokalen Eingabetext von geparsten numerischen Einheiten trennen. W
 
 Lokalen Eingabetext von geparsten numerischen Einheiten trennen. Währung, Validierung, Rundung und Speicherung bleiben explizite Entscheidungen der App.
 
+## Verwendung und Zustände
+
+Den Eingabestring in `value` behalten, damit unvollständige Eingaben erhalten bleiben. `onAmountChange` liefert eine Zahl in Währungseinheiten oder null für unvollständige/ungültige Texte, keine ganzzahligen Cent. `locale` steuert Trennzeichen, `currency` das Symbol; keine Umrechnung. Vor dem Speichern Endlichkeit und Produktgrenzen prüfen. Finanzberechnungen in der App mit einer passenden Dezimal-/Cent-Strategie ausführen.
+
 ## Vollständiges Beispiel
 
 Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
@@ -62,6 +66,29 @@ export function Example() {
 
 Öffentliche Komponenten: `AmountField`.
 
-Wichtige Props: `value`, `onChangeText`, `onAmountChange`, `currency`, `locale`, `label`, `error`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### AmountField
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `string` | ja | — | — |
+| `onChangeText` | `(value: string) => void` | ja | — | — |
+| `onAmountChange` | `(amount: number \| null) => void` | optional | — | — |
+| `currency` | `string \| null` | optional | — | — |
+| `locale` | `string` | optional | `'en-US'` | — |
+| `label` | `string` | ja | — | — |
+| `error` | `string \| null` | optional | — | Shown below the field in the error colour, which the border and label pick up too. |
+| `notchClassName` | `string` | optional | — | The 'bg-*' class of whatever surface the field sits on. The floated label needs an opaque patch behind it to mask the border line it overlaps, and that patch has to match the surface underneath — it defaults to the app's popover surface because every field so far lives in a dialog or sheet. |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/amount-field.tsx)
+
+{/* generated-api:end */}

@@ -59,3 +59,26 @@ Providers: `haptic` ist unter iOS standardmäßig aktiv und sonst inaktiv.
 `haptic={false}` unterdrückt es; `haptic={true}` aktiviert es auch auf anderen
 Plattformen. Langes Drücken bleibt eine eigene Aktion. Theme-Farben,
 Beschriftungen und Auswahlzustand kommen weiterhin von der Anwendung.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### FilterChip
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | ja | — | — |
+| `haptic` | `boolean` | optional | — | Selection feedback through the provider; defaults to enabled on iOS. |
+| `selected` | `boolean` | ja | — | — |
+| `onPress` | `() => void` | ja | — | — |
+| `onLongPress` | `() => void` | optional | — | A second, deliberate action on the same chip — removing a saved search, say. Optional: a chip that only filters has nothing to hide behind a hold. |
+| `icon` | `React.ComponentType<IconProps>` | optional | — | Optional leading icon. Drawn in both states, or in neither. |
+| `trailingIcon` | `React.ComponentType<IconProps>` | optional | — | Optional trailing icon — a chevron on a chip that opens a choice rather than toggling. Drawn in both states, like 'icon'. |
+| `surface` | `keyof typeof SURFACE_FILL` | optional | `'background'` | The tone the chip is drawn on. An unselected chip fills with it rather than staying transparent, so its fill is a colour change away from the selected one rather than a new drawable layer. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/filter-chip.tsx)
+
+{/* generated-api:end */}

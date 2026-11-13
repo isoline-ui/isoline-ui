@@ -8,44 +8,10 @@ const docs = path.join(root, 'apps/docs/content/docs');
 const catalog = JSON.parse(
   fs.readFileSync(path.join(root, 'apps/docs/component-catalog.json'), 'utf8'),
 );
-const legacy = {
-  Button: 'components/button',
-  ButtonGroup: 'components/button-group',
-  FilterChip: 'components/filter-chip',
-  IconButton: 'components/icon-button',
-  LoadingIndicator: 'components/loading-indicator',
-  TextField: 'components/text-field',
-  WavyProgress: 'components/wavy-progress',
-  MenuSheet: 'components/menu-sheet',
-  MenuSheetRows: 'components/menu-sheet',
-  SelectField: 'components/select-field',
-  ExpressiveShape: 'components/expressive-shape',
-  RowGap: 'components/layout-motion',
-  Pressable: 'components/pressable',
-  AnimatedPressable: 'components/pressable',
-  Switch: 'components/switch',
-  Dialog: 'components/dialog',
-  DialogActions: 'components/dialog',
-  BottomSheet: 'components/bottom-sheet',
-  SearchField: 'components/search-field',
-  Text: 'components/text',
-  ExpandIndicator: 'components/layout-motion',
-  Toolbar: 'components/floating-toolbar',
-  SplitButton: 'components/floating-actions',
-  FabMenu: 'components/floating-actions',
-  FloatingActionButton: 'components/floating-actions',
-  SheetFrame: 'components/advanced-sheets',
-  SheetScrollView: 'components/advanced-sheets',
-  PanelSheet: 'components/advanced-sheets',
-  TabBar: 'components/tab-bar',
-  Popover: 'components/popover',
-  ContextMenu: 'components/popover',
-  ContextMenuRows: 'components/popover',
-  IsolineProvider: 'foundations/provider',
-  Surface: 'foundations/materials',
-  SurfaceGroup: 'components/surface-group',
-  ThemeScope: 'foundations/materials',
-};
+const legacy = JSON.parse(
+  fs.readFileSync(path.join(root, 'apps/docs/component-pages.json'), 'utf8'),
+);
+
 const coverage = {
   ...legacy,
   ...Object.fromEntries(
@@ -106,6 +72,11 @@ for (const file of fs
   const source = fs.readFileSync(path.join(docs, 'components', file), 'utf8');
   assert.match(source, /<ComponentPreview\b/, `Component page has no demo: ${file}`);
   assert.match(source, /```tsx\b/, `Component page has no code example: ${file}`);
+  assert.match(
+    source,
+    /generated-api:start/,
+    `Component page has no source-derived API: ${file}`,
+  );
 }
 const stories = fs.readFileSync(
   path.join(root, 'examples/showcase/CatalogExamples.tsx'),

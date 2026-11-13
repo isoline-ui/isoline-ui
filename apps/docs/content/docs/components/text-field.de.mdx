@@ -55,3 +55,23 @@ Entscheide in deiner App, wann ein Fehler sichtbar wird: nach Verlassen des Feld
 | `notchClassName`  | `string · default: bg-popover` | Stimme den Hintergrund des schwebenden Labels auf die Umgebung ab.                              |
 | `ref`             | `TextInput ref`                | Fokussiere das Feld oder nutze native TextInput-Methoden.                                       |
 | `TextInput props` | `React Native TextInputProps`  | Übergib keyboardType, secureTextEntry, editable, returnKeyType und andere Eingabeeigenschaften. |
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### TextField
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | ja | — | — |
+| `error` | `string \| null` | optional | — | Shown below the field in the error colour, which the border and label pick up too. |
+| `notchClassName` | `string` | optional | — | The 'bg-*' class of whatever surface the field sits on. The floated label needs an opaque patch behind it to mask the border line it overlaps, and that patch has to match the surface underneath — it defaults to the app's popover surface because every field so far lives in a dialog or sheet. |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/text-field.tsx)
+
+{/* generated-api:end */}

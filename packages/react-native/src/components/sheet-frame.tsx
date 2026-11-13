@@ -51,8 +51,9 @@ function useKeptChildren(visible: boolean, children: React.ReactNode) {
  */
 export function SheetFrame({
   sheet,
+  dismissible = true,
   visible,
-  onClose,
+  onClose: onCloseProp,
   lift,
   panelStyle,
   children,
@@ -63,6 +64,7 @@ export function SheetFrame({
   fallbackColor,
   interactive = false,
 }: {
+  dismissible?: boolean;
   dragFrom?: 'handle' | 'panel';
   sheet: Sheet;
   visible: boolean;
@@ -71,6 +73,9 @@ export function SheetFrame({
   panelStyle?: StyleProp<AnimatedStyle<ViewStyle>>;
   children: React.ReactNode;
 } & MaterialOptions) {
+  const onClose = () => {
+    if (dismissible) onCloseProp();
+  };
   const labels = useLabels();
   const theme = useIsolineTheme();
   const ios = useIsolinePlatform() === 'ios';
@@ -95,7 +100,7 @@ export function SheetFrame({
         pointerEvents="box-none"
         className="absolute inset-0 items-center justify-end"
       >
-        <GestureDetector gesture={wholePanel ? sheet.pull : Gesture.Native()}>
+        <GestureDetector gesture={dismissible && wholePanel ? sheet.pull : Gesture.Native()}>
           <Animated.View
             onLayout={sheet.onPanelLayout}
             accessibilityViewIsModal
@@ -141,21 +146,23 @@ export function SheetFrame({
             />
 
             {/* The handle closes the sheet when tapped, and is how TalkBack does. */}
-            <GestureDetector gesture={wholePanel ? Gesture.Native() : sheet.pull}>
-              <Pressable
-                onPress={onClose}
-                accessibilityRole="button"
-                accessibilityLabel={labels.close}
-                className="-mx-4 -mt-3 items-center py-3"
-              >
-                <View
-                  className="h-1 w-8 rounded-full"
-                  style={{ backgroundColor: colors.onSurfaceVariant, opacity: 0.4 }}
-                />
-              </Pressable>
-            </GestureDetector>
+            {dismissible ? (
+              <GestureDetector gesture={wholePanel ? Gesture.Native() : sheet.pull}>
+                <Pressable
+                  onPress={onClose}
+                  accessibilityRole="button"
+                  accessibilityLabel={labels.close}
+                  className="-mx-4 -mt-3 items-center py-3"
+                >
+                  <View
+                    className="h-1 w-8 rounded-full"
+                    style={{ backgroundColor: colors.onSurfaceVariant, opacity: 0.4 }}
+                  />
+                </Pressable>
+              </GestureDetector>
+            ) : null}
 
-            {ios ? (
+            {ios && dismissible ? (
               <Pressable
                 onPress={onClose}
                 accessibilityRole="button"

@@ -52,3 +52,28 @@ Halte Beschriftungen auch bei größerer Schrift kurz genug. Für längere Auswa
 ## Materialoptionen
 
 Die passenden Controls und Overlay-Flächen unterstützen den gemeinsamen Materialvertrag einschließlich `glassStyle`, `tintColor`, `fallbackColor` und `interactive`. Siehe [Materialien und Liquid Glass](/de/docs/foundations/materials) für Standards, Adapter, Zustände und Alternativen.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### ButtonGroup
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `items` | `ButtonGroupItem<T>[]` | ja | — | — |
+| `value` | `T` | ja | — | — |
+| `onChange` | `(value: T) => void` | ja | — | — |
+| `className` | `string` | optional | — | — |
+| `compact` | `boolean` | optional | — | Drop the label on unselected buttons, leaving icon + badge. Meant for groups where every item carries a badge, so the count alone still identifies it — the selected button keeps the only visible label. |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/button-group.tsx)
+
+{/* generated-api:end */}

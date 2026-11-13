@@ -7,6 +7,10 @@ description: 'Ein numerischer Wert mit Zeiger-, Tastatur- und barrierefreier Bed
 
 Ein numerischer Wert mit Zeiger-, Tastatur- und barrierefreier Bedienung.
 
+## Verwendung und Zustände
+
+Der Standardbereich ist 0–1; `step=0` ist kontinuierlich. Werte werden begrenzt und Schritte gerastert. `onValueChange` aktualisiert beim Ziehen sowie bei Tastatur-/Hilfstechnologie-Aktionen; `onSlidingComplete` dient dem Abschluss einer Geste. `valueLabel` für verständliche Einheiten und eine barrierefreie Beschriftung angeben. Deaktivierte Regler ändern sich nicht. Farben lassen sich einzeln überschreiben; `style` gilt für den äußeren Wrapper.
+
 ## Vollständiges Beispiel
 
 Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
@@ -66,6 +70,35 @@ export function Example() {
 
 Öffentliche Komponenten: `Slider`.
 
-Wichtige Props: `value`, `onValueChange`, `minimumValue`, `maximumValue`, `step`, `disabled`, `onSlidingComplete`, `hapticStep`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Slider
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `number` | ja | — | — |
+| `onValueChange` | `(value: number) => void` | ja | — | — |
+| `onSlidingComplete` | `(value: number) => void` | optional | — | — |
+| `minimumValue` | `number` | optional | `0` | — |
+| `maximumValue` | `number` | optional | `1` | — |
+| `step` | `number` | optional | `0` | — |
+| `hapticStep` | `number` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `accessibilityLabel` | `string` | ja | — | — |
+| `valueLabel` | `string` | optional | — | — |
+| `leadingLabel` | `string` | optional | — | — |
+| `trailingLabel` | `string` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `activeColor` | `string` | optional | — | — |
+| `trackColor` | `string` | optional | — | — |
+| `thumbColor` | `string` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/slider.tsx)
+
+{/* generated-api:end */}

@@ -1,0 +1,90 @@
+---
+title: 'Skeleton'
+description: 'Statische Platzhalter anzeigen, während Inhalte laden.'
+---
+
+<ComponentPreview kind="catalog-skeleton" />
+
+Statische Platzhalter anzeigen, während Inhalte laden.
+
+## Verwendung und Zustände
+
+Mehrere Blöcke passend zum späteren Layout verwenden. Skeletons sind statisch, nicht interaktiv und vor Hilfstechnologien verborgen. Den Ladezustand einmal am umgebenden Bereich mit lokalisiertem Status und Busy-Zustand mitteilen. Nach Erfolg ersetzen, bei Fehler Nachricht und Wiederholen-Aktion zeigen. Breite/Höhe nehmen React-Native-Dimensionen an; `radius` ist in dp.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="SkeletonExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function SkeletonExample({ de = false }: StoryProps) {
+  const [loading, setLoading] = React.useState(true);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Button
+        label={de ? 'Ladezustand wechseln' : 'Toggle loading'}
+        onPress={() => setLoading(!loading)}
+      />
+      <View accessibilityState={{ busy: loading }}>
+        {loading ? (
+          <View style={{ gap: 12 }}>
+            <UI.Text accessibilityLiveRegion="polite">
+              {de ? 'Inhalt wird geladen' : 'Loading content'}
+            </UI.Text>
+            <UI.Skeleton width={64} height={64} radius={32} />
+            <UI.Skeleton />
+            <UI.Skeleton width="60%" />
+          </View>
+        ) : (
+          <UI.ListItem title={de ? 'Inhalt geladen' : 'Content loaded'} />
+        )}
+      </View>
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <SkeletonExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `Skeleton`.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Skeleton
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `width` | `DimensionValue` | optional | `'100%'` | — |
+| `height` | `DimensionValue` | optional | `16` | — |
+| `radius` | `number` | optional | `8` | — |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/skeleton.tsx)
+
+{/* generated-api:end */}

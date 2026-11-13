@@ -1,0 +1,102 @@
+---
+title: 'Radio-Gruppe'
+description: 'Eine sichtbare Option mit Tastatur und Screenreader auswählen.'
+---
+
+<ComponentPreview kind="catalog-radio" />
+
+Eine sichtbare Option mit Tastatur und Screenreader auswählen.
+
+## Verwendung und Zustände
+
+Für eine sichtbare Einfachauswahl. `RadioItem` mit eindeutigen Werten direkt in `RadioGroup` platzieren; Fragmente und verschachtelte Gruppen werden nicht registriert. `null` bedeutet keine Auswahl. Pfeiltasten überspringen deaktivierte Einträge, Home/End wählen den ersten/letzten verfügbaren Eintrag. Eine Gruppenbeschriftung angeben. Für unabhängige Mehrfachauswahl Checkbox verwenden.
+
+## Vollständiges Beispiel
+
+Die Demo und dieses Beispiel verwenden dieselbe Implementierung. In einer bestehenden App verwende den vorhandenen Provider weiter.
+
+```tsx title="RadiogroupExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function RadioExample({ de = false }: StoryProps) {
+  const [value, setValue] = React.useState<string | null>('standard');
+  return (
+    <UI.RadioGroup
+      value={value}
+      onValueChange={setValue}
+      accessibilityLabel={de ? 'Versandart' : 'Delivery'}
+    >
+      <UI.RadioItem
+        value="standard"
+        label={de ? 'Standardversand' : 'Standard delivery'}
+        description={de ? 'Drei bis fünf Tage' : 'Three to five days'}
+      />
+      <UI.RadioItem value="express" label="Express" />
+      <UI.RadioItem
+        value="unavailable"
+        label={de ? 'Nicht verfügbar' : 'Unavailable'}
+        disabled
+      />
+    </UI.RadioGroup>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <RadioExample de={true} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Öffentliche Komponenten: `RadioGroup`, `RadioItem`.
+
+Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### RadioGroup
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `string \| null` | ja | — | — |
+| `onValueChange` | `(value: string) => void` | ja | — | — |
+| `accessibilityLabel` | `string` | ja | — | Overrides the text that's read by the screen reader when the user interacts with the element. By default, the label is constructed by traversing all the children and accumulating all the 'Text' nodes separated by space.  See https://reactnative.dev/docs/view#accessibilitylabel |
+| `disabled` | `boolean` | optional | — | — |
+| `children` | `React.ReactNode` | ja | — | — |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/radio-group.tsx)
+
+### RadioItem
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `string` | ja | — | — |
+| `label` | `string` | ja | — | — |
+| `description` | `string` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/radio-group.tsx)
+
+{/* generated-api:end */}

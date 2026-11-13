@@ -1,0 +1,66 @@
+---
+title: 'Referenz: Einstellungen'
+description: 'Gruppierte Schalter, Einfachauswahl und aufklappbare Inhalte ohne Router oder Store zusammensetzen.'
+---
+
+<ComponentPreview kind="catalog-settings-screen" />
+
+Dieses vollständige Beispiel läuft unter deinem vorhandenen IsolineProvider mit Safe-Area- und Gesture-Providern. Daten und Serveraktionen sind bewusst lokale Demonstrationen; ersetze sie durch deine Anwendungsschnittstellen. Die Vorschau erlaubt reproduzierbare Zustandswechsel.
+
+## Vollständiges Beispiel
+
+```tsx
+import * as React from 'react';
+import { View } from 'react-native';
+import * as UI from '@isoline-ui/react-native';
+type StoryProps = { de?: boolean };
+function SettingsScreenExample({ de = false }: StoryProps) {
+  const [enabled, setEnabled] = React.useState(true);
+  const [language, setLanguage] = React.useState<string | null>('de');
+  const [expanded, setExpanded] = React.useState(false);
+  return (
+    <View style={{ gap: 16 }}>
+      <UI.Text variant="heading">{de ? 'Einstellungen' : 'Settings'}</UI.Text>
+      <UI.SettingsSection title={de ? 'Benachrichtigungen' : 'Notifications'}>
+        <UI.SettingsGroup>
+          <UI.SettingsSwitchRow
+            label={de ? 'Erinnerungen' : 'Reminders'}
+            value={enabled}
+            onValueChange={setEnabled}
+            description={
+              de ? 'Werte bleiben in dieser Vorschau.' : 'Values stay in this preview.'
+            }
+          />
+        </UI.SettingsGroup>
+      </UI.SettingsSection>
+      <UI.FormField
+        label={de ? 'Sprache' : 'Language'}
+        hint={de ? 'Auswahl ohne App-Neustart.' : 'Choose without restarting the app.'}
+      >
+        <UI.RadioGroup
+          value={language}
+          onValueChange={setLanguage}
+          accessibilityLabel={de ? 'Sprache' : 'Language'}
+        >
+          <UI.RadioItem value="de" label="Deutsch" />
+          <UI.RadioItem value="en" label="English" />
+        </UI.RadioGroup>
+      </UI.FormField>
+      <UI.Accordion
+        title={de ? 'Über diese App' : 'About this app'}
+        expanded={expanded}
+        onExpandedChange={setExpanded}
+      >
+        <UI.Text>Isoline UI</UI.Text>
+      </UI.Accordion>
+    </View>
+  );
+}
+export function Example() {
+  return <SettingsScreenExample de={true} />;
+}
+```
+
+## Integration
+
+Render den Bildschirm im scrollbaren Bereich deiner Route. Bei langen Datenlisten ersetze die kleine Beispiel-Liste durch FlatList und behalte Lade-/Fehler-/Leerzustände als ListEmptyComponent. Prüfe Fokus, große Schrift und die letzte Aktion bei geöffneter Tastatur auf iOS und Android. Für einen echten Request verwende Abbruch oder eine Request-ID, damit eine ältere Antwort keinen neueren Zustand überschreibt. Einstellungen sollten erst nach dem erfolgreichen Laden editierbar sein; Speicherung und Fehlerbehandlung bleiben in deiner App.

@@ -3,9 +3,13 @@ title: 'Eingabe'
 description: 'Ein einfaches Eingabefeld mit Beschriftung, Hinweis, Fehler und optionaler Passwortsichtbarkeit.'
 ---
 
-<ComponentPreview kind="catalog-layout" />
+<ComponentPreview kind="catalog-input" />
 
 Ein einfaches Eingabefeld mit Beschriftung, Hinweis, Fehler und optionaler Passwortsichtbarkeit.
+
+## Verwendung und Zustände
+
+Input bietet eine einfache dauerhaft sichtbare Beschriftung, TextField eine plattformabhängige Darstellung. Beide nehmen TextInput-Props und Refs an. Das Beispiel zeigt Hinweis, Validierung und ein nicht bearbeitbares Feld. Fehler ersetzen Hinweise; `editable={false}` sperrt die Eingabe. Tastatur, Autofill und Großschreibung passend zu den Daten setzen. `className` gestaltet TextInput, nicht die äußere Gruppe.
 
 ## Vollständiges Beispiel
 
@@ -20,40 +24,26 @@ import * as UI from '@isoline-ui/react-native';
 
 type StoryProps = { de?: boolean };
 
-function LayoutExample({ de = false }: StoryProps) {
-  const [expanded, setExpanded] = React.useState(false),
-    [value, setValue] = React.useState('');
-  const t = (en: string, german: string) => (de ? german : en);
+function InputExample({ de = false }: StoryProps) {
+  const [name, setName] = React.useState('');
+  const [submitted, setSubmitted] = React.useState(false);
   return (
-    <UI.KeyboardInsetView>
-      <View style={{ gap: 16 }}>
-        <View>
-          <UI.Text>{t('First row', 'Erste Zeile')}</UI.Text>
-          <UI.RowGap />
-          <UI.Text>{t('Second row', 'Zweite Zeile')}</UI.Text>
-        </View>
-        <UI.Button
-          label={t('Expand details', 'Details aufklappen')}
-          onPress={() => setExpanded((value) => !value)}
-        />
-        <UI.ExpandIndicator expanded={expanded} />
-        <UI.Badge label="3" />
-        <UI.Input
-          accessibilityLabel={t('Example input', 'Beispieleingabe')}
-          value={value}
-          onChangeText={setValue}
-        />
-        <UI.EmptyState
-          icon={UI.BackIcon}
-          shape="cookie"
-          title={t('Nothing here yet', 'Noch keine Einträge')}
-          body={t(
-            'An empty state keeps the next action clear.',
-            'Ein leerer Zustand zeigt die nächste Aktion.',
-          )}
-        />
-      </View>
-    </UI.KeyboardInsetView>
+    <View style={{ gap: 16 }}>
+      <UI.Input
+        label={de ? 'Name' : 'Name'}
+        hint={de ? 'Dein öffentlicher Name' : 'Your public name'}
+        value={name}
+        onChangeText={setName}
+        error={submitted && !name.trim() ? (de ? 'Name fehlt.' : 'Enter your name.') : null}
+        autoCapitalize="words"
+      />
+      <UI.Input
+        label={de ? 'Nicht bearbeitbar' : 'Read only'}
+        value="Isoline"
+        editable={false}
+      />
+      <UI.Button label={de ? 'Prüfen' : 'Validate'} onPress={() => setSubmitted(true)} />
+    </View>
   );
 }
 
@@ -62,7 +52,7 @@ export function Example() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <UI.IsolineProvider theme={UI.themes.violet.light}>
-          <LayoutExample de={true} />
+          <InputExample de={true} />
         </UI.IsolineProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
@@ -74,8 +64,26 @@ export function Example() {
 
 Öffentliche Komponenten: `Input`.
 
-Wichtige Props: `value`, `onChangeText`, `label`, `hint`, `error`, `secureTextEntry`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
 
 Maskierung, Anzeigen/Verbergen und Passwortmanager-Hinweise: [Passwortfelder](/de/docs/components/password-input).
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Input
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | optional | — | — |
+| `error` | `string \| null` | optional | — | Shown below the field in destructive color. |
+| `hint` | `string` | optional | — | — |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/input.tsx)
+
+{/* generated-api:end */}

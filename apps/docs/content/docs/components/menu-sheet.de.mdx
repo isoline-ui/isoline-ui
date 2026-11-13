@@ -61,3 +61,37 @@ Die aktuelle Eintrags-API bietet keine Eigenschaften für Deaktivierung, Unterti
 | `item.color / item.fill` | `string`                          | Optionale abweichende Icon-Farbe oder -Füllung. |
 
 Die eigene [Floating-Toolbar-Anleitung](/de/docs/components/floating-toolbar) zeigt Positionierung, Safe-Area-Abstände und Aktionen in einer interaktiven Vorschau.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### MenuSheet
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | ja | — | — |
+| `onClose` | `() => void` | ja | — | — |
+| `title` | `string` | ja | — | — |
+| `subject` | `string` | optional | — | A line under the title saying what the actions would act on. |
+| `items` | `MenuSheetItem[]` | ja | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/menu-sheet.tsx)
+
+### MenuSheetRows
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `items` | `MenuSheetItem[]` | ja | — | — |
+| `onClose` | `() => void` | ja | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/menu-sheet.tsx)
+
+{/* generated-api:end */}

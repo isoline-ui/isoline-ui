@@ -58,3 +58,23 @@ export function LiveProgress() {
   return <WavyProgress progress={progress} height={8} />;
 }
 ```
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### WavyProgress
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `progress` | `number \| SharedValue<number>` | ja | — | 0 to 1. |
+| `height` | `number` | optional | `HEIGHT` | — |
+| `color` | `string` | optional | — | — |
+| `trackColor` | `string` | optional | — | — |
+| `animated` | `boolean` | optional | `true` | A still wave, for small previews where motion would only distract. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/wavy-progress.tsx)
+
+{/* generated-api:end */}

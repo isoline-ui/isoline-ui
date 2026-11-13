@@ -4,29 +4,41 @@ Isoline test packages are attached to GitHub prereleases as `.tgz` files created
 by `npm pack`. Each tarball is a package under `packages/react-native` or `packages/native`, not a
 GitHub source archive of the entire monorepo.
 
-## Install
+## Install the documented 2.0.0 development source
+
+The current API is a development source version, not a published release asset.
+Historical alpha.0/alpha.1 archives do not include the current catalogue.
 
 ```sh
-npm install https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-react-native-0.1.0-alpha.2.tgz https://github.com/isoline-ui/isoline-ui/releases/download/v0.1.0-alpha.2/isoline-ui-native-0.1.0-alpha.2.tgz
+git clone https://github.com/isoline-ui/isoline-ui.git
+cd isoline-ui
+git rev-parse HEAD
+npm ci --ignore-scripts
+npm run check
+npm run pack
+```
+
+Record the commit and use it for subsequent builds. Copy the resulting archives
+into the consuming app's `vendor/` directory. From the app:
+
+```sh
+npm install ./vendor/isoline-ui-react-native-2.0.0.tgz
+```
+
+For optional native appearance, install the matching native archive too:
+
+```sh
+npm install ./vendor/isoline-ui-native-2.0.0.tgz
 npx expo install expo-glass-effect
 ```
 
-Commit both package.json and the lockfile in each app. npm records the release
-URL and the package integrity in the lockfile. A clean CI checkout can then use
-`npm ci`; no npm account or Isoline npm organisation is needed.
+Commit the archives, package.json and lockfile. A clean CI checkout can then run
+`npm ci`. Ordinary dependencies still come from the configured registry. Keep
+native peers selected by the consuming Expo SDK. Never pair archives from different
+commits simply because their development version strings match.
 
-The other package dependencies still come from the configured npm registry.
-Do not upgrade native peers to arbitrary latest versions: retain the versions
-selected by the consuming Expo SDK.
-
-A downloaded archive also works:
-
-```sh
-npm install ./vendor/isoline-ui-react-native-0.1.0-alpha.2.tgz
-```
-
-For a local-file dependency, commit the archive or otherwise make the same path
-available in CI. The GitHub URL is preferable for testing across consuming applications.
+Once an authorized immutable release exists, its versioned GitHub asset URLs can
+replace the local archives. Do not invent an asset URL before uploading a release.
 
 ## Package contents and setup
 

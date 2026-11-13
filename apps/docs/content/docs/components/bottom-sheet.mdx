@@ -59,3 +59,34 @@ Use [SheetScrollView and PanelSheet](/en/docs/components/advanced-sheets) for co
 ## Material options
 
 Suitable controls and overlay surfaces support the shared material contract, including `glassStyle`, `tintColor`, `fallbackColor`, and `interactive`. See [Materials and Liquid Glass](/en/docs/foundations/materials) for defaults, adapters, states, and fallbacks.
+
+## Protect unfinished work
+
+Set `dismissible={false}` while saving or protecting unsaved edits. Backdrop, platform dismissal and sheet gestures then cannot close the overlay. Keep an explicit Save/Cancel action available; it can change the controlled visibility state. If discarding needs confirmation, manage that confirmation state in your app.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### BottomSheet
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | yes | — | — |
+| `dismissible` | `boolean` | optional | — | — |
+| `keyboardAware` | `boolean` | optional | — | Reserve Android keyboard space for searchable modal content; iOS keeps native avoidance. |
+| `onClose` | `() => void` | yes | — | — |
+| `maxHeight` | `DimensionValue` | optional | — | — |
+| `onShow` | `() => void` | optional | — | — |
+| `children` | `React.ReactNode` | yes | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/bottom-sheet.tsx)
+
+{/* generated-api:end */}

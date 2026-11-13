@@ -55,3 +55,56 @@ export function NotificationsSetting({
 `RefreshControl` forwards **all** native refresh-control props, including `children` and `style`, and supplies theme colours only when you omit them. Use it in React Native list/scroll-view `refreshControl` as usual.
 
 `TextField` also includes the password visibility control. See [password inputs](/en/docs/components/password-input) for both live field styles and [overlay materials](/en/docs/components/overlay-materials) for a password form inside a glass sheet.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### Input
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | optional | — | — |
+| `error` | `string \| null` | optional | — | Shown below the field in destructive color. |
+| `hint` | `string` | optional | — | — |
+
+Also accepts inherited React Native props from its declared base type (for example View, Pressable or TextInput), and React ref attributes where applicable. All Isoline-specific props and material options are listed above.
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/input.tsx)
+
+### TopBar
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `onBack` | `() => void` | yes | — | — |
+| `backLabel` | `string` | optional | — | — |
+| `center` | `React.ReactNode` | optional | — | — |
+| `actions` | `React.ReactNode` | optional | — | — |
+| `className` | `string` | optional | — | — |
+| `floating` | `boolean` | optional | `false` | iOS only: the bar floats over the screen from its top edge, with the content scrolling under it and fading out beneath the controls. The screen then pads its content by 'useTopBarInset()' instead of the status bar. |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'auto'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/top-bar.tsx)
+
+### SettingsNavRow
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `icon` | `SettingsIcon` | optional | — | — |
+| `leading` | `React.ReactNode` | optional | — | Custom leading content in the icon's place — an account's color dot. |
+| `label` | `string` | yes | — | — |
+| `description` | `string` | optional | — | — |
+| `value` | `string` | optional | — | The current choice, shown at the row's trailing edge. |
+| `onPress` | `() => void` | yes | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `destructive` | `boolean` | optional | — | For a row that removes something: red label, and no chevron to follow. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-list.tsx)
+
+{/* generated-api:end */}

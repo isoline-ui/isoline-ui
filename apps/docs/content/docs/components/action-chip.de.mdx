@@ -63,8 +63,36 @@ export function Example() {
 
 Öffentliche Komponenten: `ActionChip`.
 
-Wichtige Props: `label`, `icon`, `tone`, `onPress`, `disabled`, `material`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
 
 Glas, solide Alternativen und den Hintergrund vergleichen: [Picker und schwebende Materialien](/de/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### ActionChip
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | ja | — | — |
+| `icon` | `React.ComponentType<IconProps>` | optional | — | — |
+| `tone` | `'neutral' \| 'primary' \| 'secondary' \| 'tertiary'` | optional | `'neutral'` | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+| `pressableClassName` | `string` | optional | — | — |
+| `loading` | `boolean` | optional | — | Disables activation and announces busy while preserving the button layout. |
+| `loadingLabel` | `string` | optional | — | — |
+| `shape` | `'round' \| 'square'` | optional | — | Resting shape. Pressing morphs to the other one and back. |
+| `haptic` | `boolean` | optional | — | Fires a selection tick on press. Off for destructive-adjacent actions. |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/action-chip.tsx)
+
+{/* generated-api:end */}

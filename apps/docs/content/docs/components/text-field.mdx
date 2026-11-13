@@ -55,3 +55,23 @@ Use a ref to focus the field from a dialog or sheet's `onShow`. The [overlay rec
 | `notchClassName`  | `string · default: bg-popover` | Match the floating label’s background to the field’s surrounding surface.                     |
 | `ref`             | `TextInput ref`                | Focus the input or use native TextInput methods.                                              |
 | `TextInput props` | `React Native TextInputProps`  | Pass keyboardType, secureTextEntry, editable, returnKeyType, and other supported input props. |
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### TextField
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | yes | — | — |
+| `error` | `string \| null` | optional | — | Shown below the field in the error colour, which the border and label pick up too. |
+| `notchClassName` | `string` | optional | — | The 'bg-*' class of whatever surface the field sits on. The floated label needs an opaque patch behind it to mask the border line it overlaps, and that patch has to match the surface underneath — it defaults to the app's popover surface because every field so far lives in a dialog or sheet. |
+
+Also accepts inherited React Native props from its declared base type (for example View, Pressable or TextInput), and React ref attributes where applicable. All Isoline-specific props and material options are listed above.
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/text-field.tsx)
+
+{/* generated-api:end */}

@@ -17,3 +17,82 @@ description: 'Glasoptionen für Aktionen, Suche und segmentierte Controls.'
 Stelle die [Materialadapter](/de/docs/foundations/materials) am Provider bereit. `Button` und `IconButton` aktivieren bei Glas standardmäßig Materialinteraktion. Ihre gedrückten und deaktivierten Inhalte ändern sich, ohne die gesamte Glasfläche zu verblassen. Deaktivierte Segmente führen keine Auswahlaktion aus.
 
 `SelectField` akzeptiert dieselben Optionen sowie `menuMaterial` und `disabled`. Optionen können selbst `disabled` sein. Der Picker verwendet eine verankerte, innerhalb des Viewports gehaltene Menüfläche.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Button
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `variant` | `"default" \| "secondary" \| "tonal" \| "tertiary" \| "outline" \| "ghost" \| "destructive" \| null \| undefined` | optional | — | — |
+| `size` | `"xs" \| "s" \| "m" \| "l" \| "xl" \| "icon" \| null \| undefined` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `true` | Enables material interaction, not an action handler. |
+| `children` | `React.ComponentProps<typeof Pressable>['children']` | optional | — | — |
+| `pressableClassName` | `string` | optional | — | — |
+| `label` | `string` | optional | — | — |
+| `loading` | `boolean` | optional | `false` | Disables activation and announces busy while preserving the button layout. |
+| `loadingLabel` | `string` | optional | — | — |
+| `icon` | `React.ComponentType<IconProps>` | optional | — | A leading symbol, drawn in the label's color. |
+| `shape` | `'round' \| 'square'` | optional | `'round'` | Resting shape. Pressing morphs to the other one and back. |
+| `haptic` | `boolean` | optional | `true` | Fires a selection tick on press. Off for destructive-adjacent actions. |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/button.tsx)
+
+### IconButton
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `icon` | `React.ComponentType<{ size?: number; color?: string; fill?: string }>` | ja | — | — |
+| `onPress` | `(event: GestureResponderEvent) => void` | ja | — | Receives the press event, for a button nested inside a pressable row that has to stop the row from seeing the same tap. |
+| `size` | `number` | optional | `40` | Touch target diameter in dp; also sets the ripple's radius. |
+| `iconSize` | `number` | optional | `18` | — |
+| `color` | `string` | optional | — | Defaults to 'onSurfaceVariant'. |
+| `fill` | `string` | optional | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `hitSlop` | `PressableProps['hitSlop']` | optional | `8` | — |
+| `className` | `string` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | For a filled/elevated variant — plain RN styles, since 'elevation' can't be a class. |
+| `disabled` | `boolean` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `true` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/icon-button.tsx)
+
+### SelectField
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `T \| null` | ja | — | null displays the placeholder; non-null IDs must exist in options. |
+| `options` | `SelectOption<T>[]` | ja | — | — |
+| `onChange` | `(value: T) => void` | ja | — | — |
+| `accessibilityLabel` | `string` | ja | — | — |
+| `label` | `string` | optional | — | — |
+| `placeholder` | `string` | optional | `''` | — |
+| `hint` | `string` | optional | — | — |
+| `error` | `string \| null` | optional | — | — |
+| `menuMaterial` | `MaterialOptions['material']` | optional | `'auto'` | — |
+| `disabled` | `boolean` | optional | — | — |
+| `className` | `string` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/select-field.tsx)
+
+{/* generated-api:end */}

@@ -51,3 +51,23 @@ export function RelatedActions() {
 ```
 
 Ohne Adapter bleibt die Layoutgruppe nutzbar. Ältere iOS-Versionen und reduzierte Transparenz zeigen solide Flächen. Browser animieren den Abstand, behalten aber separate CSS-Flächen; native Verschmelzung und Brechung werden nicht nachgebildet. Verwende `animate={false}` für sofortige Layoutänderungen. Beliebige SwiftUI-Matched-Geometry-Übergänge sind kein Teil dieser API.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### SurfaceGroup
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `spacing` | `number` | optional | — | — |
+| `gap` | `number` | optional | — | — |
+| `animate` | `boolean` | optional | `true` | — |
+
+Zusätzlich gelten die geerbten React-Native-Props des angegebenen Basistyps (z. B. View, Pressable oder TextInput) und gegebenenfalls React-Ref-Attribute. Eigene Props und Materialoptionen stehen vollständig in der Tabelle.
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/provider.tsx)
+
+{/* generated-api:end */}

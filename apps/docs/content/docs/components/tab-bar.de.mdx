@@ -32,3 +32,28 @@ export function Tabs() {
 ```
 
 Im Web wechseln Pfeiltasten, Home und End zwischen verfügbaren Tabs. Deaktivierte Einträge werden übersprungen. Die ausgewählte Registerkarte ist der Tastatureinstieg. Platziere eine schwebende Tab-Bar selbst oberhalb der Safe Area und halte Platz im Inhalt frei. `style` steuert das Containerlayout; die Materialoptionen sind unter [Materialien](/de/docs/foundations/materials) beschrieben.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### TabBar
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `items` | `TabBarItem<T>[]` | ja | — | — |
+| `value` | `T` | ja | — | — |
+| `onChange` | `(value: T) => void` | ja | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'auto'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/tab-bar.tsx)
+
+{/* generated-api:end */}

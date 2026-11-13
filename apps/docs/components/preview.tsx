@@ -68,8 +68,19 @@ export function ComponentPreview({
     window.addEventListener('message', ready);
     return () => window.removeEventListener('message', ready);
   }, [platform, theme, dark]);
+  const compactHeights: Record<string, number> = {
+    'catalog-radio': 240,
+    'catalog-card': 360,
+    'catalog-list-item': 240,
+    'catalog-skeleton': 280,
+    'catalog-accordion': 240,
+    'catalog-form-field': 240,
+    'catalog-combobox': 480,
+    'catalog-input': 420,
+  };
   const height =
-    kind === 'catalog-password'
+    compactHeights[kind] ??
+    (kind === 'catalog-password'
       ? 420
       : kind.startsWith('catalog-')
         ? 660
@@ -89,7 +100,7 @@ export function ComponentPreview({
                       ? 460
                       : kind === 'button'
                         ? 300
-                        : 240;
+                        : 240);
   return (
     <div className={`component-preview ${hero ? 'hero-preview' : ''}`} data-platform={platform}>
       <div className="preview-controls">

@@ -44,3 +44,65 @@ export function Actions() {
 ```
 
 Menu surfaces default to `material="auto"`; the shared [adapters and fallbacks](/en/docs/foundations/materials) apply. A custom `Popover` additionally accepts `width`, `style`, `placement`, and `onShow`. Confirmation, authorization, and navigation remain app responsibilities. This is a shared React Native menu, not a UIKit context-menu controller.
+
+## Protect unfinished work
+
+Set `dismissible={false}` while saving or protecting unsaved edits. Backdrop, platform dismissal and sheet gestures then cannot close the overlay. Keep an explicit Save/Cancel action available; it can change the controlled visibility state. If discarding needs confirmation, manage that confirmation state in your app.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### Popover
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | yes | — | — |
+| `dismissible` | `boolean` | optional | `true` | — |
+| `onClose` | `() => void` | yes | — | — |
+| `anchorRef` | `PopoverAnchorRef` | optional | — | — |
+| `anchor` | `AnchorRect` | optional | — | — |
+| `placement` | `'top' \| 'bottom'` | optional | `'bottom'` | — |
+| `width` | `number` | optional | `300` | — |
+| `accessibilityLabel` | `string` | yes | — | — |
+| `children` | `React.ReactNode` | yes | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `onShow` | `() => void` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'auto'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/popover.tsx)
+
+### ContextMenu
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `children` | `React.ReactNode` | yes | — | — |
+| `accessibilityLabel` | `string` | yes | — | — |
+| `items` | `ContextMenuItem[]` | yes | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `onOpenChange` | `(open: boolean) => void` | optional | — | — |
+| `placement` | `'top' \| 'bottom'` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/context-menu.tsx)
+
+### ContextMenuRows
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `items` | `ContextMenuItem[]` | yes | — | — |
+| `onClose` | `() => void` | yes | — | — |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/context-menu.tsx)
+
+{/* generated-api:end */}

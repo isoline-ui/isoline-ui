@@ -67,6 +67,40 @@ export function Example() {
 
 Öffentliche Komponenten: `SettingsScreenLayout`, `SettingsRow`.
 
-Wichtige Props: `title`, `caption`, `onBack`, `backLabel`, `children`, `overlay`, `scrollProps`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### SettingsScreenLayout
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `title` | `string` | ja | — | — |
+| `caption` | `string` | optional | — | — |
+| `onBack` | `() => void` | ja | — | — |
+| `backLabel` | `string` | ja | — | — |
+| `children` | `React.ReactNode` | ja | — | — |
+| `overlay` | `React.ReactNode` | optional | — | — |
+| `scrollProps` | `Omit<ScrollViewProps, 'children'>` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/list-controls.tsx)
+
+### SettingsRow
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `icon` | `React.ComponentType<IconProps>` | optional | — | — |
+| `label` | `string` | ja | — | — |
+| `description` | `string` | optional | — | — |
+| `onPress` | `() => void` | optional | — | — |
+| `value` | `boolean` | optional | — | A switch instead of a chevron. |
+| `onValueChange` | `(value: boolean) => void` | optional | — | — |
+| `first` | `boolean` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-row.tsx)
+
+{/* generated-api:end */}

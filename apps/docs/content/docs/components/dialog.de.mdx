@@ -45,7 +45,7 @@ export function ConfirmExample() {
 
 Der Dialoginhalt kann bei Bedarf scrollen und berücksichtigt Safe Areas. Für ein kleines Formular verwende ein `TextField` und fokussiere es über `onShow`; siehe [Overlays mit Formularen](/de/docs/guides/overlays). Längere Lesetexte oder mehrstufige Aufgaben gehören auf einen vollständigen Bildschirm.
 
-Der Dialog ruft beim Tippen auf den Hintergrund und bei plattformspezifischem Schließen deinen Callback auf. Eine getrennte Eigenschaft zum Verhindern des Schließens gibt es in dieser Version nicht. Behandle `onClose` in deiner App passend, wenn sonst ungespeicherte Arbeit verloren ginge, und biete klare Aktionen an.
+Der Dialog ruft beim Tippen auf den Hintergrund und bei plattformspezifischem Schließen deinen Callback auf. `dismissible={false}` verhindert Schließen über Hintergrund, Android Back und Accessibility Escape. Explizite App-Aktionen können weiterhin schließen. Behandle `onClose` in deiner App passend, wenn sonst ungespeicherte Arbeit verloren ginge, und biete klare Aktionen an.
 
 Deaktiviere bei asynchroner Arbeit den Absenden-Button während der Anfrage, zeige Fehler an und schließe erst nach Erfolg. `DialogActions` ordnet die Aktionen an. Es sendet und schließt nicht selbst.
 
@@ -62,3 +62,40 @@ Deaktiviere bei asynchroner Arbeit den Absenden-Button während der Anfrage, zei
 ## Materialoptionen
 
 Die passenden Controls und Overlay-Flächen unterstützen den gemeinsamen Materialvertrag einschließlich `glassStyle`, `tintColor`, `fallbackColor` und `interactive`. Siehe [Materialien und Liquid Glass](/de/docs/foundations/materials) für Standards, Adapter, Zustände und Alternativen.
+
+## Ungespeicherte Arbeit schützen
+
+Setze `dismissible={false}` während einer Anfrage oder bei ungespeicherten Änderungen. Hintergrund, Plattform-Schließen und Sheet-Gesten schließen dann nicht. Eine explizite Speichern-/Abbrechen-Aktion muss verfügbar bleiben; sie kann den kontrollierten Sichtbarkeitszustand ändern. Bei Rückfragen zum Verwerfen verwaltet die App einen eigenen Bestätigungszustand.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Dialog
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | ja | — | — |
+| `dismissible` | `boolean` | optional | `true` | Prevent backdrop, Back and accessibility dismissal; explicit app actions still work. |
+| `onClose` | `() => void` | ja | — | — |
+| `onShow` | `() => void` | optional | — | Runs once the dialog is actually on screen — for one that focuses an input. |
+| `children` | `React.ReactNode` | ja | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/dialog.tsx)
+
+### DialogActions
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `children` | `React.ReactNode` | ja | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/dialog.tsx)
+
+{/* generated-api:end */}

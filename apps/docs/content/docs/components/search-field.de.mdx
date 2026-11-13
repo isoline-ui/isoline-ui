@@ -57,3 +57,30 @@ Die Leeren-Aktion erscheint nur bei einem nicht leeren Wert. Beide Beschriftunge
 ## Materialoptionen
 
 Die passenden Controls und Overlay-Flächen unterstützen den gemeinsamen Materialvertrag einschließlich `glassStyle`, `tintColor`, `fallbackColor` und `interactive`. Siehe [Materialien und Liquid Glass](/de/docs/foundations/materials) für Standards, Adapter, Zustände und Alternativen.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### SearchField
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `value` | `string` | ja | — | — |
+| `onChangeText` | `(value: string) => void` | ja | — | — |
+| `placeholder` | `string` | ja | — | — |
+| `accessibilityLabel` | `string` | ja | — | — |
+| `clearAccessibilityLabel` | `string` | ja | — | Label for the clear button, which only appears once something is typed. |
+| `autoFocus` | `boolean` | optional | `false` | Opens the keyboard on mount — for a screen whose only job is this field. |
+| `className` | `string` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/search-field.tsx)
+
+{/* generated-api:end */}

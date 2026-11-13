@@ -1,0 +1,54 @@
+---
+title: 'Serversuche'
+description: 'Anfragen verzögern, veraltete Antworten ignorieren und die Auswahl erhalten.'
+---
+
+Für Serversuche `query` und `onQueryChange` gemeinsam kontrollieren. Combobox zeigt diese Treffer ohne lokalen Filter. Die ausgewählte Option beim Trefferwechsel in `options` behalten. Die App liefert die Suchfunktion mit AbortSignal; Netzwerkfehler muss sie als Fehler zurückgeben.
+
+```tsx
+import * as React from 'react';
+import { View } from 'react-native';
+import { Button, Combobox, Text, type SelectOption } from '@isoline-ui/react-native';
+type Option = SelectOption<string>;
+type Props = { search: (query: string, signal: AbortSignal) => Promise<Option[]> };
+export function RemotePicker({ search }: Props) {
+  const [query, setQuery] = React.useState('');
+  const [results, setResults] = React.useState<Option[]>([]);
+  const [selected, setSelected] = React.useState<Option | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState('');
+  const [attempt, setAttempt] = React.useState(0);
+  React.useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+    setLoading(true);
+    setError('');
+    const timer = setTimeout(() => {
+      void (async () => {
+        try {
+          const next = await search(query, controller.signal);
+          if (active) setResults(next);
+        } catch {
+          if (active) { setResults([]); setError('Suche fehlgeschlagen. Erneut versuchen.'); }
+        } finally {
+          if (active) setLoading(false);
+        }
+      })();
+    }, 250);
+    return () => { active = false; clearTimeout(timer); controller.abort(); };
+  }, [query, search, attempt]);
+  const options = selected && !results.some(option => option.id === selected.id)
+    ? [selected, ...results] : results;
+  return <View style={{ gap: 12 }}>
+    <Combobox value={selected?.id ?? null} options={options}
+      onChange={id => setSelected(options.find(option => option.id === id) ?? null)}
+      query={query} onQueryChange={setQuery} loading={loading} loadingLabel="Suche läuft"
+      accessibilityLabel="Ort auswählen" label="Ort" placeholder="Ort auswählen"
+      searchLabel="Orte suchen" emptyLabel={error || 'Keine Treffer'} error={error || null} />
+    {error ? <><Text accessibilityLiveRegion="polite">{error}</Text>
+      <Button label="Suche wiederholen" onPress={() => setAttempt(value => value + 1)} /></> : null}
+  </View>;
+}
+```
+
+`search` im Elternteil mit useCallback stabil halten. Cleanup bricht die Anfrage ab und ignoriert unabhängig davon verspätete Antworten, auch wenn ein Client AbortSignal nicht beachtet. Pagination, Cache und erhaltene Treffer bleiben in der App. Alle Statusbeschriftungen lokalisieren. Die zwischengespeicherte Auswahl darf neben aktuellen Treffern erscheinen, damit ihre Beschriftung verfügbar bleibt.

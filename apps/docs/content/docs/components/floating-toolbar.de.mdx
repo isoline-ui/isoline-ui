@@ -114,3 +114,26 @@ Für einen Titel mit vor- und nachgestellten Navigationsaktionen verwende `Navig
 ## Materialoptionen
 
 Die passenden Controls und Overlay-Flächen unterstützen den gemeinsamen Materialvertrag einschließlich `glassStyle`, `tintColor`, `fallbackColor` und `interactive`. Siehe [Materialien und Liquid Glass](/de/docs/foundations/materials) für Standards, Adapter, Zustände und Alternativen.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Toolbar
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `children` | `React.ReactNode` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'auto'` | Floating navigation uses glass on supported iOS when a surface adapter is supplied. |
+| `className` | `string` | optional | — | — |
+| `style` | `React.ComponentProps<typeof Animated.View>['style']` | optional | — | Motion from 'useToolbarAutoHide', when the toolbar scrolls away. |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | `false` | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/toolbar.tsx)
+
+{/* generated-api:end */}

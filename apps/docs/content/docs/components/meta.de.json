@@ -50,6 +50,13 @@
     "keyboard-inset-view",
     "input",
     "navigation-bars",
-    "snackbar"
+    "snackbar",
+    "radio-group",
+    "card",
+    "list-item",
+    "skeleton",
+    "accordion",
+    "form-field",
+    "combobox"
   ]
 }

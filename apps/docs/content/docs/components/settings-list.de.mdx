@@ -85,8 +85,103 @@ export function Example() {
 
 Öffentliche Komponenten: `SettingsSection`, `SettingsGroup`, `SettingsNavRow`, `SettingsChoiceRow`, `SettingsSwitchRow`, `SettingsSelectRow`, `SettingsCard`.
 
-Wichtige Props: `label`, `description`, `value`, `onChange`, `selected`, `onPress`, `children`, `material`, `menuMaterial`, `glassStyle`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
 
 Glas, solide Alternativen und den Hintergrund vergleichen: [Picker und schwebende Materialien](/de/docs/components/overlay-materials).
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### SettingsSection
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `title` | `string` | optional | — | — |
+| `children` | `React.ReactNode` | ja | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-list.tsx)
+
+### SettingsGroup
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `children` | `React.ReactNode` | ja | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-list.tsx)
+
+### SettingsNavRow
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `icon` | `SettingsIcon` | optional | — | — |
+| `leading` | `React.ReactNode` | optional | — | Custom leading content in the icon's place — an account's color dot. |
+| `label` | `string` | ja | — | — |
+| `description` | `string` | optional | — | — |
+| `value` | `string` | optional | — | The current choice, shown at the row's trailing edge. |
+| `onPress` | `() => void` | ja | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `destructive` | `boolean` | optional | — | For a row that removes something: red label, and no chevron to follow. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-list.tsx)
+
+### SettingsChoiceRow
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `leading` | `React.ReactNode` | optional | — | Custom leading content — a calendar's color dot. |
+| `label` | `string` | ja | — | — |
+| `description` | `string` | optional | — | — |
+| `selected` | `boolean` | ja | — | — |
+| `onPress` | `() => void` | ja | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-list.tsx)
+
+### SettingsSwitchRow
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `icon` | `SettingsIcon` | optional | — | — |
+| `leading` | `React.ReactNode` | optional | — | Custom leading content in the icon's place — a calendar's color dot. |
+| `label` | `string` | ja | — | — |
+| `description` | `string` | optional | — | — |
+| `value` | `boolean` | ja | — | — |
+| `onValueChange` | `(value: boolean) => void` | ja | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-list.tsx)
+
+### SettingsSelectRow
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `menuMaterial` | `MaterialOptions['material']` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `icon` | `SettingsIcon` | optional | — | — |
+| `label` | `string` | ja | — | — |
+| `description` | `string` | optional | — | — |
+| `value` | `T` | ja | — | — |
+| `options` | `SelectOption<T>[]` | ja | — | — |
+| `onChange` | `(value: T) => void` | ja | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-list.tsx)
+
+### SettingsCard
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `children` | `React.ReactNode` | ja | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-list.tsx)
+
+{/* generated-api:end */}

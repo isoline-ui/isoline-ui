@@ -212,8 +212,226 @@ export function Example() {
 
 Public components: `DateField`, `DatePickerSheet`, `TimeField`, `TimePickerSheet`, `ColorPickerSheet`, `SettingsSelectRow`, `JumpToTopPill`, `UndoBar`, `PanelSheet`.
 
-Key props: `material`, `glassStyle`, `tintColor`, `fallbackColor`, `interactive`, `menuMaterial`. Exported props types define the full contract. Labels and actions are supplied by the app.
-
 Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
 
 This complete example registers the optional `@isoline-ui/native` adapter. Installation, iOS requirements and solid fallbacks: [Material setup](/en/docs/foundations/materials).
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### DateField
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | yes | — | — |
+| `emptyLabel` | `string` | yes | — | — |
+| `onChange` | `(date: string \| null) => void` | yes | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `value` | `string \| null` | yes | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+| `quickDates` | `QuickDateOption[]` | optional | — | — |
+| `clearLabel` | `string` | optional | — | — |
+| `today` | `string` | yes | — | — |
+| `locale` | `string` | optional | — | — |
+| `month` | `string` | optional | — | — |
+| `onMonthChange` | `(month: string) => void` | optional | — | — |
+| `firstDayOfWeek` | `number` | optional | — | — |
+| `minDate` | `string` | optional | — | — |
+| `maxDate` | `string` | optional | — | — |
+| `disabledDates` | `readonly string[]` | optional | — | — |
+| `marks` | `Record<string, CalendarMark>` | optional | — | — |
+| `labels` | `CalendarLabels` | yes | — | — |
+| `range` | `{ start: string; end: string } \| null` | optional | — | — |
+| `renderDayAccessory` | `(date: string, selected: boolean) => React.ReactNode` | optional | — | — |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/date-picker.tsx)
+
+### DatePickerSheet
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | yes | — | — |
+| `onClose` | `() => void` | yes | — | — |
+| `title` | `string` | yes | — | — |
+| `quickDates` | `QuickDateOption[]` | optional | `[]` | — |
+| `onClear` | `() => void` | optional | — | — |
+| `clearLabel` | `string` | optional | — | — |
+| `value` | `string \| null` | yes | — | — |
+| `onChange` | `(date: string) => void` | yes | — | — |
+| `today` | `string` | yes | — | — |
+| `locale` | `string` | optional | — | — |
+| `month` | `string` | optional | — | — |
+| `onMonthChange` | `(month: string) => void` | optional | — | — |
+| `firstDayOfWeek` | `number` | optional | — | — |
+| `minDate` | `string` | optional | — | — |
+| `maxDate` | `string` | optional | — | — |
+| `disabledDates` | `readonly string[]` | optional | — | — |
+| `marks` | `Record<string, CalendarMark>` | optional | — | — |
+| `labels` | `CalendarLabels` | yes | — | — |
+| `range` | `{ start: string; end: string } \| null` | optional | — | — |
+| `renderDayAccessory` | `(date: string, selected: boolean) => React.ReactNode` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/date-picker.tsx)
+
+### TimeField
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | yes | — | — |
+| `emptyLabel` | `string` | yes | — | — |
+| `onChange` | `(time: string \| null) => void` | yes | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `value` | `string \| null` | yes | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+| `clearLabel` | `string` | optional | — | — |
+| `confirmLabel` | `string` | yes | — | — |
+| `presets` | `TimeOption[]` | optional | — | — |
+| `onConfirm` | `(time: string) => void` | optional | — | — |
+| `hourLabel` | `string` | yes | — | — |
+| `minuteLabel` | `string` | yes | — | — |
+| `minuteStep` | `number` | optional | — | — |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/time-picker.tsx)
+
+### TimePickerSheet
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | yes | — | — |
+| `onClose` | `() => void` | yes | — | — |
+| `title` | `string` | yes | — | — |
+| `confirmLabel` | `string` | yes | — | — |
+| `clearLabel` | `string` | optional | — | — |
+| `onClear` | `() => void` | optional | — | — |
+| `presets` | `TimeOption[]` | optional | `[]` | — |
+| `onConfirm` | `(time: string) => void` | optional | — | — |
+| `value` | `string \| null` | yes | — | — |
+| `onChange` | `(time: string) => void` | yes | — | — |
+| `hourLabel` | `string` | yes | — | — |
+| `minuteLabel` | `string` | yes | — | — |
+| `minuteStep` | `number` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/time-picker.tsx)
+
+### ColorPickerSheet
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | yes | — | — |
+| `onClose` | `() => void` | yes | — | — |
+| `title` | `string` | yes | — | — |
+| `value` | `string \| null` | yes | — | — |
+| `onChange` | `(value: string) => void` | yes | — | — |
+| `swatches` | `ColorSwatch[]` | yes | — | — |
+| `accessibilityLabel` | `string` | yes | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/color-picker.tsx)
+
+### SettingsSelectRow
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `menuMaterial` | `MaterialOptions['material']` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `icon` | `SettingsIcon` | optional | — | — |
+| `label` | `string` | yes | — | — |
+| `description` | `string` | optional | — | — |
+| `value` | `T` | yes | — | — |
+| `options` | `SelectOption<T>[]` | yes | — | — |
+| `onChange` | `(value: T) => void` | yes | — | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/settings-list.tsx)
+
+### JumpToTopPill
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | yes | — | — |
+| `onPress` | `() => void` | yes | — | — |
+| `count` | `number` | optional | `0` | — |
+| `accessibilityLabel` | `string` | optional | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/list-controls.tsx)
+
+### UndoBar
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `message` | `string` | yes | — | — |
+| `actionLabel` | `string` | yes | — | — |
+| `dismissLabel` | `string` | yes | — | — |
+| `onUndo` | `() => void` | yes | — | — |
+| `onDismiss` | `() => void` | yes | — | — |
+| `remainingMs` | `number` | yes | — | Time supplied by the app's undo clock. This component never executes/expiries undo entries. |
+| `totalMs` | `number` | yes | — | — |
+| `progress` | `WavyProgressProps['progress']` | optional | — | — |
+| `paused` | `boolean` | optional | — | — |
+| `onPause` | `() => void` | optional | — | — |
+| `onResume` | `() => void` | optional | — | — |
+| `collapsed` | `boolean` | optional | — | — |
+| `onExpand` | `() => void` | optional | — | — |
+| `countLabel` | `string` | optional | — | — |
+| `showDismissButton` | `boolean` | optional | `true` | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | `'solid'` | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/undo-bar.tsx)
+
+### PanelSheet
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `visible` | `boolean` | yes | — | — |
+| `dismissible` | `boolean` | optional | — | — |
+| `onClose` | `() => void` | yes | — | — |
+| `children` | `React.ReactNode` | yes | — | — |
+| `material` | `'auto' \| 'glass' \| 'solid'` | optional | — | — |
+| `glassStyle` | `'regular' \| 'clear'` | optional | — | — |
+| `tintColor` | `string` | optional | — | — |
+| `fallbackColor` | `string` | optional | — | — |
+| `interactive` | `boolean` | optional | — | Enables material interaction, not an action handler. |
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/panel-sheet.tsx)
+
+{/* generated-api:end */}

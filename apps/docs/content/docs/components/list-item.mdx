@@ -1,0 +1,85 @@
+---
+title: 'List item'
+description: 'Compose general-purpose rows with leading content and trailing actions.'
+---
+
+<ComponentPreview kind="catalog-list-item" />
+
+Compose general-purpose rows with leading content and trailing actions.
+
+## Usage and states
+
+A row without `onPress` is a static container and can contain independent trailing controls. A row with `onPress` is one button: use decorative leading/trailing content, not nested interactive elements. `disabled` prevents that row action; `selected` changes its surface and accessible state. Long titles and descriptions wrap. `className` and `style` apply to the row.
+
+## Complete example
+
+The demo and this example use the same implementation. Reuse the existing provider when integrating this into an app.
+
+```tsx title="ListitemExample.tsx"
+import * as React from 'react';
+import { View, ScrollView } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import * as UI from '@isoline-ui/react-native';
+
+type StoryProps = { de?: boolean };
+
+function ListItemExample({ de = false }: StoryProps) {
+  const [selected, setSelected] = React.useState(false);
+  return (
+    <View>
+      <UI.ListItem
+        title={de ? 'Projekt' : 'Project'}
+        description={de ? 'Zuletzt bearbeitet' : 'Recently edited'}
+        leading={<UI.Avatar initials="IS" accessibilityLabel="Isoline" />}
+        trailing={<UI.Badge label="3" />}
+        selected={selected}
+        onPress={() => setSelected(!selected)}
+      />
+      <UI.ListItem title={de ? 'Nicht verfügbar' : 'Unavailable'} disabled onPress={() => {}} />
+    </View>
+  );
+}
+
+export function Example() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <UI.IsolineProvider theme={UI.themes.violet.light}>
+          <ListItemExample de={false} />
+        </UI.IsolineProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+## API
+
+Public components: `ListItem`.
+
+Check large text, disabled states and VoiceOver/TalkBack in the native screen. Browser demos do not replace device tests.
+
+{/* generated-api:start */}
+
+## Complete props reference
+
+Generated from the public TypeScript API; CI checks these tables for drift. “—” means no explicit default in the component function. The sections above explain use cases and state-dependent behavior.
+
+### ListItem
+
+| Prop | Type | Required | Default | Behavior |
+| --- | --- | --- | --- | --- |
+| `title` | `string` | yes | — | — |
+| `description` | `string` | optional | — | — |
+| `leading` | `React.ReactNode` | optional | — | — |
+| `trailing` | `React.ReactNode` | optional | — | — |
+| `onPress` | `() => void` | optional | — | — |
+| `disabled` | `boolean` | optional | — | — |
+| `selected` | `boolean` | optional | — | — |
+
+Also accepts inherited React Native props from its declared base type (for example View, Pressable or TextInput), and React ref attributes where applicable. All Isoline-specific props and material options are listed above.
+
+[Type definition and implementation](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/list-item.tsx)
+
+{/* generated-api:end */}

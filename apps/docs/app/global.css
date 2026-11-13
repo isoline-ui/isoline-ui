@@ -170,6 +170,7 @@ h4 {
   margin: 30px 0;
 }
 .home {
+  overflow-x: clip;
   max-width: 1320px;
   margin: auto;
   padding: 0 56px;

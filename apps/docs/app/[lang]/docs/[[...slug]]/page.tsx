@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import uiPackage from '../../../../../../packages/react-native/package.json';
 import { source } from '@/lib/source';
 import {
   DocsBody,
@@ -25,6 +27,14 @@ export default async function Page({ params }: Props) {
             : 'Components'
           : 'ISOLINE UI'}
       </div>
+      <p className="text-sm text-fd-muted-foreground">
+        {lang === 'de'
+          ? `API ${uiPackage.version} · Entwicklungsstand · `
+          : `API ${uiPackage.version} · Development source · `}
+        <Link prefetch={false} className="underline" href={`/${lang}/docs/getting-started/installation/`}>
+          {lang === 'de' ? 'Installationsweg' : 'Installation instructions'}
+        </Link>
+      </p>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>

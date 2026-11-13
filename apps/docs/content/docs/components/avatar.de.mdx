@@ -71,6 +71,30 @@ export function Example() {
 
 Öffentliche Komponenten: `Avatar`.
 
-Wichtige Props: `initials`, `source`, `renderImage`, `size`, `accent`, `badge`, `accessibilityLabel`. Die exportierten Props-Typen enthalten den vollständigen Vertrag. Beschriftungen und Aktionen werden von der App geliefert.
-
 Prüfe große Schrift, deaktivierte Zustände und VoiceOver/TalkBack im nativen Bildschirm. Browser-Demos ersetzen keine Gerätetests.
+
+{/* generated-api:start */}
+
+## Vollständige Props-Referenz
+
+Aus der öffentlichen TypeScript-API erzeugt; CI prüft diese Tabellen auf Änderungen. „—“ bedeutet: kein expliziter Default in der Komponentenfunktion. Die Abschnitte darüber erklären Anwendungsfälle und zustandsabhängiges Verhalten.
+
+### Avatar
+
+| Prop | Typ | Pflicht | Default | Verhalten |
+| --- | --- | --- | --- | --- |
+| `accessibilityLabel` | `string` | ja | — | — |
+| `initials` | `string` | optional | — | — |
+| `source` | `ImageSourcePropType` | optional | — | — |
+| `size` | `number` | optional | `44` | — |
+| `color` | `string` | optional | — | — |
+| `foregroundColor` | `string` | optional | — | — |
+| `accent` | `string` | optional | — | — |
+| `badge` | `React.ReactNode` | optional | — | — |
+| `renderImage` | `(size: number, onError: () => void) => React.ReactNode` | optional | — | — |
+| `style` | `StyleProp<ViewStyle>` | optional | — | — |
+| `className` | `string` | optional | — | — |
+
+[Typdefinition und Implementierung](https://github.com/isoline-ui/isoline-ui/blob/main/packages/react-native/src/components/avatar.tsx)
+
+{/* generated-api:end */}

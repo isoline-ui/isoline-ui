@@ -1,0 +1,28 @@
+---
+title: 'Customize components'
+description: 'Know which element receives styles and which changes belong in the theme.'
+---
+
+## Styling contract
+
+The complete props reference on each component page lists Isoline-specific styling props. Inherited View, Pressable and TextInput props follow their React Native contracts. A component does not accept arbitrary styling props simply because another component does.
+
+| API | Target |
+| --- | --- |
+| Card, ListItem, Skeleton, Accordion, FormField: `className`, `style` | Outer container, or outer Pressable for an actionable card/row. |
+| SelectField, Combobox: `className`, `style` | Outer field group; not the popup/sheet. |
+| Input: `className`, TextInput `style` | Editable native TextInput; label/error layout stays outside. |
+| TextField: `className`, `notchClassName` | Consult its contract; notchClassName must match the surrounding surface on Android. |
+| Button: `className`, `pressableClassName`, `style` | Outer wrapper, inner control classes, inner control style respectively. |
+| Slider: `style`, activeColor/trackColor/thumbColor | Outer wrapper and individual colors. |
+| MaterialOptions | Surface implementation and glass fallback, not layout. |
+
+Prefer theme color/typography tokens for app-wide changes. Use style for local layout and component props for states. Keep NativeWind’s package content scan; arbitrary runtime-generated utility names are not guaranteed to be compiled. Do not add opaque backgrounds to glass ancestors.
+
+## States and accessibility
+
+Changing a color does not change semantics. Pass disabled, selected, checked and loading through the component API. Preserve readable foreground/background pairs in light/dark themes. Allow text wrapping and test large system text rather than constraining every row to a fixed height.
+
+## Extending a pattern
+
+Compose existing components first. Keep routing, fetching, storage and translations in the app. For a custom control use Pressable with an appropriate accessible role, label and state; use FormField for visible field structure. See [component choices](/en/docs/guides/choosing-components).
