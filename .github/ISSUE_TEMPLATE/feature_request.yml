@@ -1,0 +1,21 @@
+name: Feature request
+description: Suggest a component, prop or improvement.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API or behaviour
+      description: Describe it in general terms, independent of any particular app.
+      render: tsx
+  - type: textarea
+    id: platforms
+    attributes:
+      label: Platform considerations
+      description: How should it behave on Android and on iOS? Any accessibility needs?
