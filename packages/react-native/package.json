@@ -1,6 +1,6 @@
 {
   "name": "@isoline-ui/react-native",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Shared expressive React Native components with platform-aware interaction",
   "license": "MIT",
   "repository": {
