@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Centralize iOS button spacing, label/icon sizes, semantic fills, disabled opacity and press feedback behind the existing Button API; preserve dialog-action styling and scalable minimum heights.
+- Centralize iOS filter-chip spacing/type/feedback and add optional provider-backed `haptic` selection feedback (enabled by default on iOS).
+
 - Use actual iOS button heights for capsule radii and icon width.
 - Give iOS filters a 44-point capsule, neutral fill and selected brand tint.
 - Document general platform geometry and build validation in English and German.

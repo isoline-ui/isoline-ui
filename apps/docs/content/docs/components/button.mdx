@@ -69,3 +69,10 @@ XS, S and icon, 50 for M, 64 for L, 80 for XL). `shape` continues to select
 Android's resting geometry; iOS does not morph into a Material square.
 Labels retain system text scaling. Test long labels and large text on a phone.
 Dialog actions retain their separate flat alert treatment.
+
+On iOS the component also owns spacing, label/icon sizes and semantic emphasis.
+Secondary and destructive controls use a neutral fill with tinted text; outline
+uses a neutral fill and ghost stays transparent. Colors come from the provider's
+theme. The control grows beyond its minimum height for text scaling, uses pressed
+opacity instead of a shape/scale morph and retains flat dialog-action styling.
+Consumers can use the same `Button` API without a platform-specific renderer.
