@@ -1,0 +1,50 @@
+name: Bug report
+description: Something in Isoline UI does not work as documented.
+labels: [bug]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: What you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: A minimal component snippet or showcase screen is ideal.
+      render: tsx
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Isoline UI version or commit
+      placeholder: 2.0.0 @ abc1234
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      multiple: true
+      options: [Android, iOS, Web preview]
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Expo / React Native versions
+      placeholder: Expo 58, React Native 0.88
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device or simulator
+      placeholder: Pixel 9 (Android 17), iPhone 17 simulator (iOS 27)
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots, logs or other context
