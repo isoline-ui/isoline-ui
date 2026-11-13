@@ -8,7 +8,7 @@
 - [ ] Showcase Android and iOS bundle checks
 - [ ] `npm run docs:check` (if docs or component APIs changed)
 - [ ] English and German docs updated (if applicable)
-- [ ] CHANGELOG entry (for user-facing changes)
+- [ ] Title is a conventional commit (`fix:`, `feat:`, `feat!:`, `docs:` …): it decides the next version and becomes the changelog line
 
 ## Platforms tried
 

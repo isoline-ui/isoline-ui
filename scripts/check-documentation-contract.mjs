@@ -4,7 +4,8 @@ import path from 'node:path';
 
 /**
  * Holds the release contract: both packages and everything that pins them
- * share one version (scripts/release.mjs writes them together), and the
+ * share one version (release-please writes them together, see
+ * release-please-config.json), and the
  * install guides install from npm without naming a version, so a release
  * never has to touch them.
  */
