@@ -29,9 +29,13 @@ export default async function Page({ params }: Props) {
       </div>
       <p className="text-sm text-fd-muted-foreground">
         {lang === 'de'
-          ? `API ${uiPackage.version} · Entwicklungsstand · `
-          : `API ${uiPackage.version} · Development source · `}
-        <Link prefetch={false} className="underline" href={`/${lang}/docs/getting-started/installation/`}>
+          ? `API ${uiPackage.version} · npm · `
+          : `API ${uiPackage.version} · npm · `}
+        <Link
+          prefetch={false}
+          className="underline"
+          href={`/${lang}/docs/getting-started/installation/`}
+        >
           {lang === 'de' ? 'Installationsweg' : 'Installation instructions'}
         </Link>
       </p>

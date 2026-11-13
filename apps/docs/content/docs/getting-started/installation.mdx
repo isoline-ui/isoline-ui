@@ -3,34 +3,23 @@ title: 'Installation'
 description: 'Install the current release and connect it to an Expo app.'
 ---
 
-## Documentation version: 2.0.0 (development)
+## Current version: 2.0.0
 
-This documentation describes the current source with package version **2.0.0**. It is not a published npm release. Historical GitHub releases alpha.0/alpha.1 do not contain this API. Build archives from one reviewed commit.
+This documentation describes **2.0.0**, the current release of [`@isoline-ui/react-native`](https://www.npmjs.com/package/@isoline-ui/react-native) and [`@isoline-ui/native`](https://www.npmjs.com/package/@isoline-ui/native) on npm. The historical GitHub alpha.0/alpha.1 archives have a different API.
 
 ## Before you start
 
 Use an Expo SDK **57 or 58** app with React Native **0.86 or 0.88**. If you already use NativeWind 4, keep your existing setup and merge the changes below. Do not replace your app's dependency versions with those from an unrelated example.
 
-## 1. Build archives from source
+## 1. Install the package
 
-You need Node.js 24 or newer, npm and Git. Run these commands outside your app:
-
-```sh
-git clone https://github.com/isoline-ui/isoline-ui.git
-cd isoline-ui
-git rev-parse HEAD
-npm ci --ignore-scripts
-npm run check
-npm run pack
-```
-
-Record the printed commit for your team and CI. Check out that same commit for subsequent builds. `npm run pack` creates these archives at the repository root. From your app directory, install the UI archive (adjust the path):
+From your app directory:
 
 ```sh
-npm install ../isoline-ui/isoline-ui-react-native-2.0.0.tgz
+npm install @isoline-ui/react-native
 ```
 
-The import name remains `@isoline-ui/react-native`. Keep the archive in your app, for example under `vendor/`, and commit the archive, `package.json` and lockfile so `npm ci` works without a local repository path. The native archive is optional. Both archives must come from the same commit.
+For optional native appearance, also install [`@isoline-ui/native`](/en/docs/native/overview) at the same version. Commit `package.json` and your lockfile so `npm ci` reproduces the installation.
 
 ## 2. Install the peer dependencies
 
@@ -101,7 +90,7 @@ Follow [Your first screen](/en/docs/getting-started/first-screen) for a complete
 
 ## 5. Add native appearance when you need it
 
-For Android system colors and iOS Liquid Glass, install **both matching 2.0.0 source archives** and let Expo choose the glass dependency. See [Native appearance](/en/docs/native/overview).
+For Android system colors and iOS Liquid Glass, install **both packages at the same version** and let Expo choose the glass dependency. See [Native appearance](/en/docs/native/overview).
 
 ## Check the setup
 

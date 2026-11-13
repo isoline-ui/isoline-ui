@@ -1,13 +1,23 @@
-# Distribution without npmjs
+# Distribution
 
-Isoline test packages are attached to GitHub prereleases as `.tgz` files created
-by `npm pack`. Each tarball is a package under `packages/react-native` or `packages/native`, not a
-GitHub source archive of the entire monorepo.
+Released versions of `@isoline-ui/react-native` and `@isoline-ui/native` are
+published to npm:
 
-## Install the documented 2.0.0 development source
+- https://www.npmjs.com/package/@isoline-ui/react-native
+- https://www.npmjs.com/package/@isoline-ui/native
 
-The current API is a development source version, not a published release asset.
-Historical alpha.0/alpha.1 archives do not include the current catalogue.
+```sh
+npm install @isoline-ui/react-native
+npm install @isoline-ui/native   # optional native appearance, same version
+npx expo install expo-glass-effect
+```
+
+Install both packages at the same version and commit the lockfile.
+
+## Installing an unreleased commit
+
+To try changes that are not on npm yet, build local archives from one reviewed
+commit:
 
 ```sh
 git clone https://github.com/isoline-ui/isoline-ui.git
@@ -18,27 +28,12 @@ npm run check
 npm run pack
 ```
 
-Record the commit and use it for subsequent builds. Copy the resulting archives
-into the consuming app's `vendor/` directory. From the app:
-
-```sh
-npm install ./vendor/isoline-ui-react-native-2.0.0.tgz
-```
-
-For optional native appearance, install the matching native archive too:
-
-```sh
-npm install ./vendor/isoline-ui-native-2.0.0.tgz
-npx expo install expo-glass-effect
-```
-
-Commit the archives, package.json and lockfile. A clean CI checkout can then run
-`npm ci`. Ordinary dependencies still come from the configured registry. Keep
-native peers selected by the consuming Expo SDK. Never pair archives from different
-commits simply because their development version strings match.
-
-Once an authorized immutable release exists, its versioned GitHub asset URLs can
-replace the local archives. Do not invent an asset URL before uploading a release.
+Copy the resulting archives into the consuming app's `vendor/` directory and
+install them from the app, for example
+`npm install ./vendor/isoline-ui-react-native-2.0.0.tgz ./vendor/isoline-ui-native-2.0.0.tgz`.
+Commit the archives, package.json and lockfile so a clean `npm ci` works. Never
+pair archives from different commits, even when their version strings match, and
+switch back to the npm release once it contains the change.
 
 ## Package contents and setup
 
@@ -52,7 +47,6 @@ preferences remain consumer responsibilities. See the package README.
 - Build and check the package before packing; use a new tag/version for updates.
 - Attach the archive and SHA256SUMS to a prerelease targeting its source commit.
 - Do not replace a published archive or move a release tag.
-- This distribution step is independent of npm publishing.
 
 ## Automated prereleases
 
