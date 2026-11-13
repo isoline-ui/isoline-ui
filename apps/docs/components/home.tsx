@@ -77,7 +77,8 @@ export function Home({ locale }: { locale: Locale }) {
             ))}
           </svg>
           <div className="hero-copy">
-            <a
+            <Link
+              prefetch={false}
               className="release-badge"
               href={`/${de ? 'de' : 'en'}/docs/getting-started/installation/`}
             >
@@ -86,7 +87,7 @@ export function Home({ locale }: { locale: Locale }) {
                 ? `${uiPackage.version} · Entwicklungsstand`
                 : `${uiPackage.version} · Development source`}
               <ArrowUpRight size={12} />
-            </a>
+            </Link>
             <p className="eyebrow">REACT NATIVE · EXPO · ISOLINE UI</p>
             <h1>
               {de ? (
