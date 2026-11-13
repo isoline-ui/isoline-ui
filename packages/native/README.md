@@ -7,13 +7,13 @@ Native system appearance for Isoline UI, distributed as an Expo module.
 - Web: CSS backdrop-filter approximation with solid fallbacks for unsupported browsers, reduced transparency and forced colors.
 - Unsupported devices, a missing Android bridge and reduced transparency use solid theme surfaces.
 
-Build **both** 2.0.0 Isoline archives from the same reviewed commit, then let Expo
+Build **both** 2.1.0 Isoline archives from the same reviewed commit, then let Expo
 select the glass dependency for the app's SDK:
 
-Build the matching 2.0.0 archives using the source installation guide first; copy them into your app’s `vendor/` directory.
+Build the matching 2.1.0 archives using the source installation guide first; copy them into your app’s `vendor/` directory.
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-2.0.0.tgz ./vendor/isoline-ui-native-2.0.0.tgz
+npm install ./vendor/isoline-ui-react-native-2.1.0.tgz ./vendor/isoline-ui-native-2.1.0.tgz
 npx expo install expo-glass-effect
 ```
 

@@ -5,7 +5,7 @@ description: 'Update the release archives without losing a reproducible installa
 
 ## Updating development snapshots
 
-This documentation targets the 2.0.0 source, not a published release. For an update, build both archives from the same new reviewed commit. Store them in a new commit-named subdirectory under `vendor/` and update the installation paths. Do not overwrite the previous archive even if the internal development version remains 2.0.0. Commit the new archives, package manifest and lockfile. Keep the previous combination for rollback.
+This documentation targets the 2.1.0 source, not a published release. For an update, build both archives from the same new reviewed commit. Store them in a new commit-named subdirectory under `vendor/` and update the installation paths. Do not overwrite the previous archive even if the internal development version remains 2.1.0. Commit the new archives, package manifest and lockfile. Keep the previous combination for rollback.
 
 The release rules below apply once a matching immutable release is available. Historical alpha releases do not provide the current API.
 
@@ -28,7 +28,7 @@ Do not replace an old `.tgz` file while keeping its URL or version. Use immutabl
 ## Keeping a local archive
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-2.0.0.tgz
+npm install ./vendor/isoline-ui-react-native-2.1.0.tgz
 ```
 
 Keep that file available to your teammates and CI. Commit it with the app if you choose this approach. Installing from the release URL is usually simpler across several apps.

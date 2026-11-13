@@ -4,7 +4,7 @@ Isoline test packages are attached to GitHub prereleases as `.tgz` files created
 by `npm pack`. Each tarball is a package under `packages/react-native` or `packages/native`, not a
 GitHub source archive of the entire monorepo.
 
-## Install the documented 2.0.0 development source
+## Install the documented 2.1.0 development source
 
 The current API is a development source version, not a published release asset.
 Historical alpha.0/alpha.1 archives do not include the current catalogue.
@@ -22,13 +22,13 @@ Record the commit and use it for subsequent builds. Copy the resulting archives
 into the consuming app's `vendor/` directory. From the app:
 
 ```sh
-npm install ./vendor/isoline-ui-react-native-2.0.0.tgz
+npm install ./vendor/isoline-ui-react-native-2.1.0.tgz
 ```
 
 For optional native appearance, install the matching native archive too:
 
 ```sh
-npm install ./vendor/isoline-ui-native-2.0.0.tgz
+npm install ./vendor/isoline-ui-native-2.1.0.tgz
 npx expo install expo-glass-effect
 ```
 

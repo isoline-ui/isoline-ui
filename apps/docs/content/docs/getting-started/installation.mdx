@@ -3,9 +3,9 @@ title: 'Installation'
 description: 'Install the current release and connect it to an Expo app.'
 ---
 
-## Documentation version: 2.0.0 (development)
+## Documentation version: 2.1.0 (development)
 
-This documentation describes the current source with package version **2.0.0**. It is not a published npm release. Historical GitHub releases alpha.0/alpha.1 do not contain this API. Build archives from one reviewed commit.
+This documentation describes the current source with package version **2.1.0**. It is not a published npm release. Historical GitHub releases alpha.0/alpha.1 do not contain this API. Build archives from one reviewed commit.
 
 ## Before you start
 
@@ -27,7 +27,7 @@ npm run pack
 Record the printed commit for your team and CI. Check out that same commit for subsequent builds. `npm run pack` creates these archives at the repository root. From your app directory, install the UI archive (adjust the path):
 
 ```sh
-npm install ../isoline-ui/isoline-ui-react-native-2.0.0.tgz
+npm install ../isoline-ui/isoline-ui-react-native-2.1.0.tgz
 ```
 
 The import name remains `@isoline-ui/react-native`. Keep the archive in your app, for example under `vendor/`, and commit the archive, `package.json` and lockfile so `npm ci` works without a local repository path. The native archive is optional. Both archives must come from the same commit.
@@ -101,7 +101,7 @@ Follow [Your first screen](/en/docs/getting-started/first-screen) for a complete
 
 ## 5. Add native appearance when you need it
 
-For Android system colors and iOS Liquid Glass, install **both matching 2.0.0 source archives** and let Expo choose the glass dependency. See [Native appearance](/en/docs/native/overview).
+For Android system colors and iOS Liquid Glass, install **both matching 2.1.0 source archives** and let Expo choose the glass dependency. See [Native appearance](/en/docs/native/overview).
 
 ## Check the setup
 

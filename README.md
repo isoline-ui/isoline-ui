@@ -8,7 +8,7 @@ Isoline keeps the common interaction and accessibility rules in one place while
 allowing each app to keep its own colours and typography. The built-in
 themes are Violet, Teal and Cyan.
 
-**Documentation/API version: 2.0.0 (development source).** This version is not
+**Documentation/API version: 2.1.0 (development source).** This version is not
 published to npm or available as a GitHub release asset. Historical alpha.0/alpha.1
 releases do not match this catalogue. Build local archives from one reviewed
 commit using the instructions below. Native appearance is optional.
@@ -47,10 +47,10 @@ npm run check
 npm run pack
 ```
 
-Record the source commit, then copy `isoline-ui-react-native-2.0.0.tgz` into your
-app's `vendor/` directory and run `npm install ./vendor/isoline-ui-react-native-2.0.0.tgz`.
+Record the source commit, then copy `isoline-ui-react-native-2.1.0.tgz` into your
+app's `vendor/` directory and run `npm install ./vendor/isoline-ui-react-native-2.1.0.tgz`.
 Commit the archive, package manifest and lockfile for reproducible CI installs.
-For native appearance, also install `isoline-ui-native-2.0.0.tgz` from the same commit.
+For native appearance, also install `isoline-ui-native-2.1.0.tgz` from the same commit.
 
 Follow [installation](https://isoline-ui.github.io/isoline-ui/en/docs/getting-started/installation/)
 for peers, NativeWind, Metro and providers. Installing the package alone does not

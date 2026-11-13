@@ -3,9 +3,9 @@ title: 'Installation'
 description: 'Installiere die aktuelle Version und binde sie in eine Expo-App ein.'
 ---
 
-## Dokumentationsstand: 2.0.0 (Entwicklung)
+## Dokumentationsstand: 2.1.0 (Entwicklung)
 
-Diese Dokumentation beschreibt den aktuellen Quellstand mit Paketversion **2.0.0**. Er ist kein veröffentlichter npm-Release. Die historischen GitHub-Releases alpha.0/alpha.1 enthalten nicht diese API. Baue die Archive aus einem gemeinsam geprüften Commit.
+Diese Dokumentation beschreibt den aktuellen Quellstand mit Paketversion **2.1.0**. Er ist kein veröffentlichter npm-Release. Die historischen GitHub-Releases alpha.0/alpha.1 enthalten nicht diese API. Baue die Archive aus einem gemeinsam geprüften Commit.
 
 ## Bevor du beginnst
 
@@ -27,7 +27,7 @@ npm run pack
 Notiere den ausgegebenen Commit für Team und CI. Für spätere Builds checke denselben Commit aus. `npm run pack` erzeugt die folgenden Archive im Repository-Hauptverzeichnis. Installiere das UI-Archiv aus deinem App-Verzeichnis (Pfad anpassen):
 
 ```sh
-npm install ../isoline-ui/isoline-ui-react-native-2.0.0.tgz
+npm install ../isoline-ui/isoline-ui-react-native-2.1.0.tgz
 ```
 
 Der Importname bleibt `@isoline-ui/react-native`. Bewahre das Archiv beispielsweise in `vendor/` deiner App auf und committe Archiv, `package.json` und Lockdatei, damit `npm ci` ohne lokalen Repository-Pfad funktioniert. Das native Archiv ist optional. Beide Archive müssen aus demselben Commit stammen.
