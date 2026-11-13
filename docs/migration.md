@@ -16,6 +16,20 @@ consuming applications. No public package imports an app alias.
 Use explicit package versions or immutable commit references, never a moving
 Git branch for shipped app builds.
 
+## 2.0.0
+
+The deprecated theme aliases are gone. Replace them with the palette names, or
+define the alias in the app:
+
+| Removed         | Use             |
+| --------------- | --------------- |
+| `themes.inboki` | `themes.violet` |
+| `themes.yours`  | `themes.teal`   |
+| `themes.atlas`  | `themes.cyan`   |
+
+On iOS, buttons and filter chips are now capsules at the iOS heights. An app
+that drew its own iOS button or filter chip for that can use these instead.
+
 ## Expanded catalogue and app adapters
 
 Use forwarding modules to adopt reusable presentations with explicit contracts: Avatar, Checkbox,

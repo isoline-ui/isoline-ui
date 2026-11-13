@@ -1,12 +1,12 @@
 # Changelog
 
-## Unreleased
+## 2.0.0
 
-- Use actual iOS button heights for capsule radii and icon width.
-- Give iOS filters a 44-point capsule, neutral fill and selected brand tint.
+- Breaking: only the palette-named theme presets remain: `themes.violet`, `themes.teal` and `themes.cyan`. The deprecated aliases `themes.inboki`, `themes.yours` and `themes.atlas` are removed; use the palette name, or define your own alias in the app.
+- iOS: buttons are capsules at the actual iOS heights (radius half the height, square icon buttons).
+- iOS: filter chips are 44-point capsules with a neutral fill and the brand tint when selected.
 - Document general platform geometry and build validation in English and German.
 - Keep guidance and compatibility independent of consuming applications.
-- Breaking: expose only palette-named theme presets (`violet`, `teal`, `cyan`); custom aliases belong in consumers. Ship this API removal in the next major release.
 
 ## 1.0.1
 
