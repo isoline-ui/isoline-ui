@@ -2,7 +2,7 @@
 
 Share semantic colours, component structure, emphasis and accessibility rules.
 Control geometry follows the selected platform.
-Keep the three product identities distinct through theme values and typography.
+Consumers define their own identity through theme values and typography.
 
 - Android keeps contained ripples; iOS receives pressed-opacity feedback.
 - Native switches keep OS geometry and use semantic brand colours.
@@ -20,14 +20,13 @@ A successful bundle is not a device interaction test. Before release, verify
 VoiceOver/TalkBack focus, keyboard placement, large text, interrupted gestures,
 light/dark contrast and nested overlays on Android and iOS.
 
-Atlas currently has more developed SheetFrame/PanelSheet scroll coordination.
-Reconcile those behaviours explicitly before migrating its sheets; do not
-replace them with the simpler alpha sheet.
+When migrating sheets, compare scroll coordination, keyboard handling and
+dismissal semantics before replacing an existing implementation.
 
-## Lessons from Atlas iOS preparation
+## Platform geometry and integration
 
-Atlas PRs #49–54 showed that a shared layout still needs platform control
-geometry. Buttons and filter chips now use iOS capsules behind the same API;
+A shared layout still needs platform control geometry. Buttons and filter
+chips use iOS capsules behind the same API;
 Android retains M3 Expressive. App-specific accent roles stay in consumer themes.
 
 Use Liquid Glass for floating controls through the native surface adapter,
@@ -38,7 +37,7 @@ reading text and forms must remain scalable. Device-test contrast over photos,
 long translations, keyboard placement and accessible names.
 
 Build readiness is separate: align all Expo dependencies to the consumer's SDK
-and run `expo install --check` in CI. Atlas had a successful archive that crashed
-in dyld because ExpoCamera and ExpoModulesCore disagreed. A Metro bundle cannot
+and run `expo install --check` in CI. Incompatible precompiled native modules
+can produce an archive that crashes at launch with a missing symbol. A Metro bundle cannot
 prove native ABI compatibility. Compile on macOS and cold-launch the signed or
 re-signed IPA on a phone before calling the native port validated.

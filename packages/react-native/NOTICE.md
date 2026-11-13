@@ -1,8 +1,7 @@
 # Source notices
 
-The initial primitives were extracted with the owner's authorisation from the
-UI code maintained for Yours, Inboki and Atlas. Product data, credentials,
-artwork and feature code are not included.
+The initial primitives were extracted from existing UI code with the owner's
+authorisation. Product data, credentials, artwork and feature code are not included.
 
 The existing MIT notice for 650 Industries, Inc. (Expo) is retained in LICENSE.
 Isoline-specific functional glyphs use simple original SVG paths. App-specific

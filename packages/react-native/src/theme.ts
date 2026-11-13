@@ -162,12 +162,6 @@ export const themes = {
   violet,
   teal,
   cyan,
-  /** @deprecated Use themes.violet. */
-  inboki: violet,
-  /** @deprecated Use themes.teal. */
-  yours: teal,
-  /** @deprecated Use themes.cyan. */
-  atlas: cyan,
 } as const;
 
 export const elevation = {

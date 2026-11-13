@@ -10,8 +10,8 @@ themes are Violet, Teal and Cyan.
 
 **Status:** 0.1.0-alpha.2, distributed through GitHub Releases. Isoline is not yet
 published to npm. The optional native package provides Android system colors and
-iOS Liquid Glass surfaces. The three apps already use shared primitives through
-forwarding modules and vendored archives. The expanded component catalogue is
+iOS Liquid Glass surfaces. Consumers can adopt shared primitives through
+forwarding modules. The expanded component catalogue is
 part of the paired 0.1.0-alpha.3 development snapshots; older alpha.2 archives
 do not contain it.
 

@@ -1,12 +1,11 @@
 # Compatibility
 
-Initial targets:
+Intended framework targets:
 
-| Consumer | Expo | React Native | React |
-| -------- | ---- | ------------ | ----- |
-| Yours    | 57   | 0.86         | 19.2  |
-| Inboki   | 58   | 0.88         | 19.3  |
-| Atlas    | 58   | 0.88         | 19.3  |
+| Expo SDK | React Native | React |
+| -------- | ------------ | ----- |
+| 57       | 0.86         | 19.2  |
+| 58       | 0.88         | 19.3  |
 
 Peer ranges express intended compatibility, not proof of every intermediate
 version. The component showcase is the integration surface. Native iPhone
@@ -14,17 +13,15 @@ and Android interaction checks are required before a stable release.
 
 The optional `@isoline-ui/native` package supplies an Android Expo module and
 an iOS glass adapter. Native peers, including `expo-glass-effect`, must be
-installed using the version selected by each consuming Expo SDK. See [native
+installed using the version selected by the consuming Expo SDK. See [native
 appearance](native.md).
 
-## Local verification
+## Verification
 
-- The package typecheck, declaration build, pure tests and boundary tests pass
-  with the Expo 58 / React Native 0.88 dependency set.
-- The Expo 58 showcase bundles for both iOS and Android.
-- The earlier alpha.2 package sources were checked against Yours' Expo 57 native peer type
-  definitions. This does not replace an Expo 57 native build or device test.
-- The three apps already install paired vendored alpha.2 archives and forward
-  their shared primitives to Isoline. The alpha.3 catalogue requires refreshed
-  paired archives, adapter updates and consumer checks. Native device validation
-  remains necessary; an app dependency update is not a native interaction test.
+- Package typechecks, declaration builds, pure tests and boundary tests run
+  against the showcase's Expo 58 / React Native 0.88 dependency set.
+- The Expo 58 showcase is exported for both iOS and Android.
+- Earlier package sources were also checked against Expo 57 / React Native 0.86
+  peer types. This does not establish an SDK 57 native build or device result.
+- Each consumer must verify its own dependency graph, native build and device
+  interactions. Installing or updating a package does not validate that integration.

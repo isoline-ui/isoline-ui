@@ -4,7 +4,9 @@
 
 - Use actual iOS button heights for capsule radii and icon width.
 - Give iOS filters a 44-point capsule, neutral fill and selected brand tint.
-- Document platform geometry and Atlas build/validation lessons in English and German.
+- Document general platform geometry and build validation in English and German.
+- Keep guidance and compatibility independent of consuming applications.
+- Breaking: expose only palette-named theme presets (`violet`, `teal`, `cyan`); custom aliases belong in consumers. Ship this API removal in the next major release.
 
 ## 1.0.1
 

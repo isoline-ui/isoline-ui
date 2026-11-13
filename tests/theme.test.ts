@@ -58,13 +58,9 @@ test('overriding a typography metric retains the brand font', () => {
   assert.equal(custom.typography?.title?.fontSize, 36);
 });
 
-test('generic presets preserve the previous theme contracts through aliases', () => {
-  for (const [name, legacy] of [
-    ['violet', 'inboki'],
-    ['teal', 'yours'],
-    ['cyan', 'atlas'],
-  ] as const) {
-    assert.equal(themes[name], themes[legacy]);
+test('public presets use palette names and provide both appearance contracts', () => {
+  assert.deepEqual(Object.keys(themes).sort(), ['cyan', 'teal', 'violet']);
+  for (const name of ['violet', 'teal', 'cyan'] as const) {
     for (const scheme of ['light', 'dark'] as const) {
       assert.equal(themes[name][scheme].name, name);
       assert.equal(themes[name][scheme].scheme, scheme);

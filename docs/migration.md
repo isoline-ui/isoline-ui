@@ -11,15 +11,14 @@ Use the paired versioned UI/native archives from GitHub Releases. Keep existing 
 5. Run the consumer's typecheck, tests and Android/iOS exports. Gesture,
    accessibility and keyboard behaviour also need real device validation.
 
-Keep mail transports, collectors, canvas/pins, data access, brand artwork,
-screens and routes inside the apps. No public package imports an app alias.
+Keep domain logic, data access, brand artwork, screens and routes inside the
+consuming applications. No public package imports an app alias.
 Use explicit package versions or immutable commit references, never a moving
 Git branch for shipped app builds.
 
 ## Expanded catalogue and app adapters
 
-The three consumers already forward their base UI primitives to Isoline. The
-remaining reusable presentations now have explicit contracts: Avatar, Checkbox,
+Use forwarding modules to adopt reusable presentations with explicit contracts: Avatar, Checkbox,
 Slider, ActionChip, date/time/color pickers, AmountField, Banner/InlineNotice,
 UndoBar, ZoomableImage, SwipeableRow and list/settings layout controls.
 

@@ -58,8 +58,7 @@ Expo discovers the module from `expo-module.config.json` in the installed packag
 The archive contains the Android Gradle project and Kotlin sources. No manual
 `nativeModulesDir` entry is required for this dependency.
 
-The new bridge name allows coexistence with Yours' old `ExpoSystemColors` during
-migration. Once consumers switch to the shared hook, remove their unused local
+The namespaced bridge can coexist with a local palette module during migration. Once consumers switch to the shared hook, remove their unused local
 module and palette/theme logic. Do not copy the new native module into `modules/`
 as well as installing it.
 
