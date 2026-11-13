@@ -10,6 +10,7 @@ import Animated, {
 
 import { Surface, type MaterialOptions } from '../provider.tsx';
 import { usesPlatformMaterial } from '../material.ts';
+import { iosButtonAppearance, iosButtonMetrics } from '../ios-controls.ts';
 import { DialogActionContext } from './dialog-context.ts';
 import type { IconProps } from './icons.tsx';
 import { AnimatedPressable, Pressable } from './pressable.tsx';
@@ -179,22 +180,22 @@ export function Button({
 }: ButtonProps) {
   const web = Platform.OS === 'web';
   const platform = useIsolinePlatform();
+  const ios = platform === 'ios';
   const materialActive = usesPlatformMaterial(platform, material);
   const Container = (
-    materialActive ? Surface : web ? View : Animated.View
+    materialActive ? Surface : web || ios ? View : Animated.View
   ) as typeof Animated.View;
   const Control = (
-    web || materialActive ? Pressable : AnimatedPressable
+    web || ios || materialActive ? Pressable : AnimatedPressable
   ) as typeof AnimatedPressable;
   // Reanimated only drives the animated styles it finds in a plain `style`
   // value: inside a style callback they are dropped, and the control keeps
   // square corners under its rounded clip (an Outlined border then shows only
   // as broken top and bottom lines). So the animated control gets a resolved
   // array, and a caller's style callback is fed the pressed state from here.
-  const animated = !web && !materialActive;
+  const animated = !web && !ios && !materialActive;
   const tracksPressed = web || (animated && typeof style === 'function');
   const [pressedNow, setPressedNow] = React.useState(false);
-  const ios = useIsolinePlatform() === 'ios';
   const alertAction = React.useContext(DialogActionContext) && ios;
   const { selectionHaptic } = useHaptics();
   const ripple = useRipple();
@@ -202,7 +203,17 @@ export function Button({
   const pressed = useSharedValue(0);
   const resolvedVariant = variant ?? 'default';
   const resolvedSize = size ?? 'm';
-  const iosHeight = { xs: 44, s: 44, m: 50, l: 64, xl: 80, icon: 44 }[resolvedSize];
+  const iosMetrics = iosButtonMetrics[resolvedSize];
+  const iosHeight = iosMetrics.height;
+  const iosLook = iosButtonAppearance(colors)[resolvedVariant];
+  const ink =
+    alertAction || materialActive
+      ? resolvedVariant === 'destructive'
+        ? colors.error
+        : colors.primary
+      : ios
+        ? iosLook.ink
+        : iconColor(colors, resolvedVariant);
   const metrics = ios ? { ...METRICS[resolvedSize], height: iosHeight } : METRICS[resolvedSize];
 
   const rest = ios
@@ -229,7 +240,7 @@ export function Button({
         ? { material, glassStyle, tintColor, fallbackColor, interactive }
         : {})}
       style={[
-        web || materialActive
+        web || ios || materialActive
           ? {
               borderRadius: alertAction
                 ? 0
@@ -240,27 +251,31 @@ export function Button({
                     : rest,
             }
           : radiusStyle,
-        alertAction && { flex: 1 },
+        ios && props.disabled && { opacity: 0.4 },
+        alertAction && { flex: 1, borderRadius: 0 },
       ]}
       className={cn(!materialActive && 'overflow-hidden', className)}
     >
       <Control
         className={cn(
           buttonVariants({ variant, size }),
-          props.disabled && 'opacity-50',
+          !ios && props.disabled && 'opacity-50',
           pressableClassName,
         )}
         style={resolveStyle(animated, pressedNow, (state: PressableStateCallbackType) => [
-          web || materialActive
+          web || ios || materialActive
             ? {
                 borderRadius: pressedNow ? active : rest,
-                transform: [{ scale: pressedNow ? 0.97 : 1 }],
+                transform: ios ? undefined : [{ scale: pressedNow ? 0.97 : 1 }],
               }
             : radiusStyle,
           animated && scaleStyle,
           ios && {
-            minHeight: 44,
-            height: iosHeight,
+            minHeight: iosHeight,
+            height: 'auto',
+            paddingHorizontal: iosMetrics.padding,
+            gap: resolvedSize === 'xs' ? 5 : 7,
+            backgroundColor: iosLook.fill,
             width: resolvedSize === 'icon' ? iosHeight : undefined,
             borderWidth: resolvedVariant === 'outline' ? 0 : undefined,
           },
@@ -271,12 +286,12 @@ export function Button({
         android_ripple={{ color: rippleByVariant(ripple)[resolvedVariant] }}
         onPressIn={(event) => {
           if (tracksPressed) setPressedNow(true);
-          pressed.value = withSpring(1, spatial.fast);
+          if (!ios) pressed.value = withSpring(1, spatial.fast);
           onPressIn?.(event);
         }}
         onPressOut={(event) => {
           if (tracksPressed) setPressedNow(false);
-          pressed.value = withSpring(0, spatial.default);
+          if (!ios) pressed.value = withSpring(0, spatial.default);
           onPressOut?.(event);
         }}
         onPress={(event) => {
@@ -290,28 +305,19 @@ export function Button({
         {(state: PressableStateCallbackType) => (
           <>
             {Icon ? (
-              <Icon
-                size={ICON_SIZE[resolvedSize]}
-                color={
-                  alertAction || materialActive
-                    ? resolvedVariant === 'destructive'
-                      ? colors.error
-                      : colors.primary
-                    : iconColor(colors, resolvedVariant)
-                }
-              />
+              <Icon size={ios ? iosMetrics.icon : ICON_SIZE[resolvedSize]} color={ink} />
             ) : null}
             {label ? (
               <Text
                 className={cn(labelVariants({ variant, size }))}
-                style={
-                  alertAction || materialActive
-                    ? {
-                        color:
-                          resolvedVariant === 'destructive' ? colors.error : colors.primary,
-                      }
-                    : undefined
-                }
+                style={[
+                  ios && {
+                    fontSize: iosMetrics.label,
+                    lineHeight: iosMetrics.label + 5,
+                    fontWeight: '600',
+                  },
+                  (ios || alertAction || materialActive) && { color: ink },
+                ]}
                 numberOfLines={1}
               >
                 {label}

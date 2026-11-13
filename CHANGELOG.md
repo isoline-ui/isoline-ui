@@ -3,8 +3,9 @@
 ## 2.0.0
 
 - Breaking: only the palette-named theme presets remain: `themes.violet`, `themes.teal` and `themes.cyan`. The deprecated aliases `themes.inboki`, `themes.yours` and `themes.atlas` are removed; use the palette name, or define your own alias in the app.
-- iOS: buttons are capsules at the actual iOS heights (radius half the height, square icon buttons).
-- iOS: filter chips are 44-point capsules with a neutral fill and the brand tint when selected.
+- iOS: buttons are capsules at the actual iOS heights (radius half the height, square icon buttons). Button now owns their iOS padding, label and icon sizes, the fill and ink of each variant, the disabled opacity and the pressed dimming, behind the existing API; dialog actions keep their plain style and minimum heights still scale with the text size.
+- iOS: filter chips are 44-point capsules with a neutral fill and the brand tint when selected, with iOS spacing, type and pressed dimming.
+- FilterChip takes an optional `haptic` for a selection tick through the provider's haptics, on by default on iOS.
 - Document general platform geometry and build validation in English and German.
 - Keep guidance and compatibility independent of consuming applications.
 

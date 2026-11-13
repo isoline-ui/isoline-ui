@@ -70,3 +70,11 @@ Unter iOS haben Buttons eine Kapselform entsprechend ihrer tatsächlichen Höhe:
 zu einer Material-Form. Texte behalten die Systemskalierung; lange Beschriftungen
 und große Schrift müssen auf einem Gerät geprüft werden. Dialogaktionen behalten
 ihre eigene flache Darstellung.
+
+Unter iOS verwaltet die Komponente auch Abstände, Text- und Symbolgrößen sowie
+die semantische Gewichtung. Sekundäre und destruktive Buttons verwenden eine
+neutrale Füllung mit farbigem Text. Outline erhält eine neutrale Füllung; Ghost
+bleibt transparent. Farben kommen aus dem Theme des Providers. Bei großer Schrift
+kann die Mindesthöhe wachsen. Die Druckrückmeldung verwendet Deckkraft statt
+Form- oder Skalierungsanimation. Dialogaktionen behalten ihre flache Darstellung.
+Konsumierende Anwendungen benötigen keine eigene iOS-Implementierung.

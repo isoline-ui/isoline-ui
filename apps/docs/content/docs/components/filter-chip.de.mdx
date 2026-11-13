@@ -52,3 +52,10 @@ Füllung wechselt bei Auswahl zur Primärfarbe. Symbole, langes Drücken,
 Barrierefreiheit und Beschriftungen behalten dieselbe API. Android behält seine
 stabilen Füll- und Rahmenebenen. Die Textskalierung bleibt aktiv; lange Texte
 müssen in horizontalen Scrollbereichen geprüft werden.
+
+Die gemeinsame iOS-Komponente verwaltet Abstände, Text- und Symbolgrößen sowie
+die Deckkraft beim Drücken. Auswahlfeedback verwendet den Haptik-Callback des
+Providers: `haptic` ist unter iOS standardmäßig aktiv und sonst inaktiv.
+`haptic={false}` unterdrückt es; `haptic={true}` aktiviert es auch auf anderen
+Plattformen. Langes Drücken bleibt eine eigene Aktion. Theme-Farben,
+Beschriftungen und Auswahlzustand kommen weiterhin von der Anwendung.

@@ -52,3 +52,9 @@ system-role fill and the primary tint when selected. Leading/trailing icons,
 long press, selection accessibility and labels keep the same API. Android keeps
 its stable fill/border layers and expressive motion. Do not disable text scaling
 for filters; verify large labels inside horizontal scroll containers.
+
+The shared iOS control owns its spacing, label and trailing-icon sizes and
+pressed-opacity feedback. Selection feedback uses the provider's haptic callback:
+`haptic` defaults to enabled on iOS and disabled elsewhere. Pass `haptic={false}`
+to suppress it or `haptic={true}` to opt in on another platform. Long press stays
+a separate action. Theme colors, labels and selection remain consumer inputs.
