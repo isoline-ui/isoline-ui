@@ -1,0 +1,95 @@
+name: Release
+# Every push to main lets release-please read the conventional commits since
+# the last release and keep one release pull request up to date: the next
+# version (feat → minor, fix/perf → patch, `!` or BREAKING CHANGE → major),
+# the changelog, and that version written into both packages, the native
+# package's peer, the showcase and the lockfile (release-please-config.json).
+# Merging that pull request tags vX.Y.Z, creates the GitHub release and
+# publishes both packages to npm.
+#
+# Publishing uses npm Trusted Publishing: npm trusts this workflow file through
+# GitHub's OIDC token, so there is no npm token in the repository, and every
+# package gets a provenance statement. Each package must name this repository
+# and `release-please.yml` as its trusted publisher on npmjs.com.
+#
+# Run it by hand (Actions → Release → Run workflow) to publish the version
+# main's packages carry when it is not on npm yet: the first release, or one
+# whose publishing failed. Versions already on npm are skipped.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: release
+  cancel-in-progress: false
+jobs:
+  release-please:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: release-please
+    # `always()` lets a manual run publish although release-please is skipped.
+    if: >-
+      always() && (github.event_name == 'workflow_dispatch' ||
+      needs.release-please.outputs.release_created == 'true')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      # Trusted Publishing needs npm 11.5.1 or newer.
+      - run: npm install --global npm@11.6.2
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: npm run docs:check
+      - name: Packages carry the released version
+        id: version
+        env:
+          RELEASED: ${{ needs.release-please.outputs.version }}
+        run: |
+          VERSION="${RELEASED:-$(node -p "require('./packages/react-native/package.json').version")}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          for package in react-native native; do
+            actual="$(node -p "require('./packages/$package/package.json').version")"
+            if [ "$actual" != "$VERSION" ]; then
+              echo "packages/$package is at $actual, the release is $VERSION" >&2
+              exit 1
+            fi
+          done
+      # The UI package first: the native package's peer expects it. A version
+      # already on npm is skipped, so a re-run after a partial failure finishes
+      # the release instead of failing on what went through.
+      - name: Publish to npm
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          for name in @isoline-ui/react-native @isoline-ui/native; do
+            if npm view "$name@$VERSION" version > /dev/null 2>&1; then
+              echo "$name@$VERSION is already on npm"
+            else
+              npm publish --workspace "$name" --access public
+            fi
+          done
