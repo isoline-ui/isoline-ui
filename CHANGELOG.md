@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1
+
+- Fix an opaque strip at the bottom of native glass sheets. `BottomSheet` and `PanelSheet` now keep their material continuous through the bottom safe area and upward overscroll, while solid sheets retain their separate extension below the panel.
+
 ## 2.1.0
 
 - New components: `Card`, `ListItem`, `FormField`, `RadioGroup`, `Combobox`, `Accordion` and `Skeleton`, with English and German guides, examples and reference screens.
