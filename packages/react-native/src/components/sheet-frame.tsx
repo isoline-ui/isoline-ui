@@ -13,6 +13,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { type AnimatedStyle } from 'react-native-reanimated';
 
 import { Text } from './text.tsx';
+import { sheetEdgeLayout } from './sheet-edge-layout.ts';
 import { Pressable } from './pressable.tsx';
 import type { Sheet, SheetScrollContextValue } from './sheet-transition.ts';
 import {
@@ -82,6 +83,7 @@ export function SheetFrame({
   const glass = ios && material !== 'solid';
   const colors = useThemeColors();
   const shown = useKeptChildren(visible, children);
+  const edge = sheetEdgeLayout(glass, colors.surfaceContainerLow);
 
   const wholePanel = (dragFrom ?? theme.sheetGesture ?? 'handle') === 'panel';
   return (
@@ -129,21 +131,15 @@ export function SheetFrame({
                 interactive={interactive}
                 pointerEvents="none"
                 style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
+                  ...edge.material,
                   borderTopLeftRadius: ios ? 20 : 32,
                   borderTopRightRadius: ios ? 20 : 32,
                 }}
               />
             ) : null}
-            {/* Below the panel, out of sight until a pull up lifts it off the edge. */}
-            <View
-              pointerEvents="none"
-              className="absolute left-0 right-0 top-full h-24 bg-surfaceContainerLow"
-            />
+            {/* Glass extends continuously. Solid sheets need a separate extension below
+                the border box; a percentage top can overlap the safe-area padding. */}
+            {edge.extension ? <View pointerEvents="none" style={edge.extension} /> : null}
 
             {/* The handle closes the sheet when tapped, and is how TalkBack does. */}
             {dismissible ? (
