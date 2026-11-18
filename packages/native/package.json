@@ -1,6 +1,6 @@
 {
   "name": "@isoline-ui/native",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Native system colors and platform materials for Isoline UI",
   "license": "MIT",
   "type": "module",
@@ -38,7 +38,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@isoline-ui/react-native": "2.1.2",
+    "@isoline-ui/react-native": "2.1.3",
     "expo": ">=57 <59",
     "expo-glass-effect": ">=57 <59",
     "react": ">=19.2 <20",

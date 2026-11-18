@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.3](https://github.com/isoline-ui/isoline-ui/compare/v2.1.2...v2.1.3) (2026-11-18)
+
+
+### Fixes
+
+* keep glass sheet backgrounds continuous at the bottom edge ([01cbb9a](https://github.com/isoline-ui/isoline-ui/commit/01cbb9a9339629cd395df4b05945ece7cae3ff0f))
+* keep glass sheet backgrounds continuous at the bottom edge ([9e9f3ef](https://github.com/isoline-ui/isoline-ui/commit/9e9f3ef34045c9fec86b5e09596f2cdd5530ee3a))
+* keep SettingsSelectRow's field at the width of its value ([76ddd8d](https://github.com/isoline-ui/isoline-ui/commit/76ddd8d2e851e7e974d8b4baf3540169702ef6ae))
+* keep SettingsSelectRow's field at the width of its value ([4f084f1](https://github.com/isoline-ui/isoline-ui/commit/4f084f1e8c8a3cd0b200630ee8122b024c65423a))
+
 ## 2.1.2
 
 - `SettingsSelectRow` no longer collapses its field into a tall, empty pill on Android and iOS. `SelectField`'s value text now grows from its own width instead of a flex basis of 0, so the field keeps the width of its value in a row and still fills a full-width layout; the row caps the field at 55% so the label keeps room.
