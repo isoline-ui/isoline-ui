@@ -95,7 +95,11 @@ export function SelectField<T extends string>({
           >
             <Text
               style={{
-                flex: 1,
+                // Grow to fill a full-width field, but keep the text's own width
+                // as the basis: `flex: 1` (basis 0) collapses the field to the
+                // chevron when its parent does not set a width, as in a row.
+                flexGrow: 1,
+                flexShrink: 1,
                 fontSize: 15,
                 color: selected ? colors.onSurface : colors.onSurfaceVariant,
               }}
