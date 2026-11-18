@@ -287,6 +287,8 @@ export function SettingsSelectRow<T extends string>({
         options={options}
         onChange={onChange}
         accessibilityLabel={accessibilityLabel ?? label}
+        // Size to the chosen value, and leave the label at least half the row.
+        style={{ flexShrink: 1, maxWidth: '55%' }}
       />
     </View>
   );

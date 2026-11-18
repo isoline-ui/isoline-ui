@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2
+
+- `SettingsSelectRow` no longer collapses its field into a tall, empty pill on Android and iOS. `SelectField`'s value text now grows from its own width instead of a flex basis of 0, so the field keeps the width of its value in a row and still fills a full-width layout; the row caps the field at 55% so the label keeps room.
+
 ## 2.1.1
 
 - Fix an opaque strip at the bottom of native glass sheets. `BottomSheet` and `PanelSheet` now keep their material continuous through the bottom safe area and upward overscroll, while solid sheets retain their separate extension below the panel.
