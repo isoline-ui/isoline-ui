@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.3](https://github.com/isoline-ui/isoline-ui/compare/v2.1.2...v2.1.3) (2026-11-24)
+
+
+### Fixes
+
+* remove the resting text field label background and center input text ([e4e7467](https://github.com/isoline-ui/isoline-ui/commit/e4e74672fca2ee21dab3c52c5a480d91d7fc6041))
+* remove the resting text field label background and center input text ([f386e7f](https://github.com/isoline-ui/isoline-ui/commit/f386e7f8877b85826abd2799be48263febbbf3d9))
+
 ## 2.1.2
 
 - `SettingsSelectRow` no longer collapses its field into a tall, empty pill on Android and iOS. `SelectField`'s value text now grows from its own width instead of a flex basis of 0, so the field keeps the width of its value in a row and still fills a full-width layout; the row caps the field at 55% so the label keeps room.
