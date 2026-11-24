@@ -18,3 +18,16 @@ brand assets out of this repository.
 - Do not publish an npm release before the organisation/scope and release
   authorisation are established. Never add tokens to workflows or source files.
 - Do not describe a Metro export as an Xcode/device test.
+
+## Commits and releases
+
+Use Conventional Commits for commits that land on `main`. If squash merging,
+check the final squash commit message. Release Please uses these messages to
+build the changelog and decide the next version. Use `fix: …` for bug fixes,
+`perf: …` for performance improvements, and `feat: …` for new features. Use
+`docs: …` for documentation-only changes.
+
+If a merged change has an invalid commit message, add the corrected message
+between `BEGIN_COMMIT_OVERRIDE` and `END_COMMIT_OVERRIDE` on separate lines in
+the merged pull request description, then rerun the Release workflow for the
+push that merged it.
