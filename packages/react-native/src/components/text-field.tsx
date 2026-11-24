@@ -116,6 +116,10 @@ export const TextField: React.ForwardRefExoticComponent<
     ],
   }));
 
+  const notchStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(float.value, [0, 0.5, 1], [0, 0, 1], 'clamp'),
+  }));
+
   const labelTextStyle = useAnimatedStyle(() => ({
     color: error
       ? colors.error
@@ -180,11 +184,11 @@ export const TextField: React.ForwardRefExoticComponent<
           onFocus={handleFocus}
           onBlur={handleBlur}
           className={cn(
-            'h-14 rounded px-4 pt-2 text-base text-foreground',
+            'h-14 rounded px-4 py-0 text-base text-foreground',
             secureTextEntry && 'pr-14',
             className,
           )}
-          style={style}
+          style={[Platform.OS === 'android' && { textAlignVertical: 'center' }, style]}
           placeholder={floated ? placeholder : undefined}
           accessibilityLabel={accessibilityLabel ?? label}
           {...props}
@@ -226,8 +230,12 @@ export const TextField: React.ForwardRefExoticComponent<
                 : labelWrapStyle,
               { transformOrigin: 'left center' },
             ]}
-            className={cn('rounded px-1', notchClassName ?? 'bg-popover')}
+            className="px-1"
           >
+            <Box
+              className={cn('absolute inset-0 rounded', notchClassName ?? 'bg-popover')}
+              style={web ? { opacity: floated ? 1 : 0 } : notchStyle}
+            />
             <Label
               style={
                 web
